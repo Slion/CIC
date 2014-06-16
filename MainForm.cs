@@ -13,8 +13,12 @@ namespace SharpDisplayManager
 {
     public partial class MainForm : Form
     {
+        DateTime LastTickTime;
+
         public MainForm()
         {
+            LastTickTime = DateTime.Now;
+
             InitializeComponent();
         }
 
@@ -52,6 +56,17 @@ namespace SharpDisplayManager
             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height);
             tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
             bmp.Save("c:\\capture.png");
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            //Update our animations
+            DateTime NewTickTime = DateTime.Now;
+
+            marqueeLabelTop.UpdateAnimation(LastTickTime, NewTickTime);
+            marqueeLabelBottom.UpdateAnimation(LastTickTime, NewTickTime);
+
+            LastTickTime = NewTickTime;
         }
     }
 }

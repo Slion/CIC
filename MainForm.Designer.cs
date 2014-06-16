@@ -28,16 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
             this.buttonCapture = new System.Windows.Forms.Button();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.marqueeLabel1 = new SharpDisplayManager.MarqueeLabel();
-            this.marqueeLabel2 = new SharpDisplayManager.MarqueeLabel();
             this.buttonFont = new System.Windows.Forms.Button();
             this.tabPageTests = new System.Windows.Forms.TabPage();
             this.fontDialog = new System.Windows.Forms.FontDialog();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
+            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
@@ -84,8 +85,8 @@
             this.tableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel.ColumnCount = 1;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.Controls.Add(this.marqueeLabel1, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.marqueeLabel2, 0, 1);
+            this.tableLayoutPanel.Controls.Add(this.marqueeLabelTop, 0, 0);
+            this.tableLayoutPanel.Controls.Add(this.marqueeLabelBottom, 0, 1);
             this.tableLayoutPanel.Location = new System.Drawing.Point(215, 165);
             this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -96,35 +97,16 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 4;
-            // 
-            // marqueeLabel1
-            // 
-            this.marqueeLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabel1.Location = new System.Drawing.Point(1, 1);
-            this.marqueeLabel1.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabel1.Name = "marqueeLabel1";
-            this.marqueeLabel1.PixelsPerSecond = 128;
-            this.marqueeLabel1.Size = new System.Drawing.Size(254, 30);
-            this.marqueeLabel1.TabIndex = 2;
-            this.marqueeLabel1.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabel1.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabel2
-            // 
-            this.marqueeLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabel2.Location = new System.Drawing.Point(1, 32);
-            this.marqueeLabel2.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabel2.Name = "marqueeLabel2";
-            this.marqueeLabel2.PixelsPerSecond = 64;
-            this.marqueeLabel2.Size = new System.Drawing.Size(254, 31);
-            this.marqueeLabel2.TabIndex = 3;
-            this.marqueeLabel2.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabel2.UseCompatibleTextRendering = true;
             // 
             // buttonFont
             // 
@@ -145,6 +127,41 @@
             this.tabPageTests.TabIndex = 1;
             this.tabPageTests.Text = "Test";
             this.tabPageTests.UseVisualStyleBackColor = true;
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 50;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -187);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -61);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
             // MainForm
             // 
@@ -168,11 +185,11 @@
         private System.Windows.Forms.TabPage tabPageTests;
         private System.Windows.Forms.Button buttonFont;
         private System.Windows.Forms.FontDialog fontDialog;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        private MarqueeLabel marqueeLabel1;
-        private MarqueeLabel marqueeLabel2;
+        private MarqueeLabel marqueeLabelTop;
+        private MarqueeLabel marqueeLabelBottom;
         private System.Windows.Forms.Button buttonCapture;
+        private System.Windows.Forms.Timer timer;
     }
 }
 
