@@ -71,6 +71,23 @@ namespace SharpDisplayManager
             MiniDisplaySetBrightness(iDevice, aBrightness);
         }
 
+        public int WidthInPixels()
+        {
+            return MiniDisplayWidthInPixels(iDevice);
+        }
+
+        public int HeightInPixels()
+        {
+            return MiniDisplayHeightInPixels(iDevice);
+        }
+
+        public void SetPixel(int aX, int aY, int aValue)
+        {
+            MiniDisplaySetPixel(iDevice,aX,aY,aValue);
+        }
+
+
+
         //Our display device handle
         IntPtr iDevice;
 
@@ -97,6 +114,15 @@ namespace SharpDisplayManager
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern int MiniDisplayMaxBrightness(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int MiniDisplayWidthInPixels(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int MiniDisplayHeightInPixels(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int MiniDisplaySetPixel(IntPtr aDevice, int aX, int aY, int aValue);
 
 
     }
