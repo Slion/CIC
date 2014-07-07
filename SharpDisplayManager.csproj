@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="CbtHook.cs" />
     <Compile Include="DialogBox.cs" />
+    <Compile Include="Display.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
