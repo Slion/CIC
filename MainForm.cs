@@ -14,10 +14,12 @@ namespace SharpDisplayManager
     public partial class MainForm : Form
     {
         DateTime LastTickTime;
+        Display iDisplay;
 
         public MainForm()
         {
             LastTickTime = DateTime.Now;
+            iDisplay = new Display();
 
             InitializeComponent();
         }
@@ -67,6 +69,38 @@ namespace SharpDisplayManager
             marqueeLabelBottom.UpdateAnimation(LastTickTime, NewTickTime);
 
             LastTickTime = NewTickTime;
+        }
+
+        private void buttonOpen_Click(object sender, EventArgs e)
+        {
+            if (iDisplay.Open())
+            {
+                trackBarBrightness.Minimum = iDisplay.MinBrightness();
+                trackBarBrightness.Maximum = iDisplay.MaxBrightness();                
+            }
+            
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            iDisplay.Close();
+        }
+
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            iDisplay.Clear();
+            iDisplay.SwapBuffers();
+        }
+
+        private void buttonFill_Click(object sender, EventArgs e)
+        {
+            iDisplay.Fill();
+            iDisplay.SwapBuffers();
+        }
+
+        private void trackBarBrightness_Scroll(object sender, EventArgs e)
+        {
+            iDisplay.SetBrightness(trackBarBrightness.Value);
         }
     }
 }

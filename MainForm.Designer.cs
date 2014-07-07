@@ -37,11 +37,17 @@
             this.tabPageTests = new System.Windows.Forms.TabPage();
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.buttonOpen = new System.Windows.Forms.Button();
+            this.buttonClose = new System.Windows.Forms.Button();
+            this.buttonClear = new System.Windows.Forms.Button();
+            this.buttonFill = new System.Windows.Forms.Button();
+            this.trackBarBrightness = new System.Windows.Forms.TrackBar();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -59,6 +65,11 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.trackBarBrightness);
+            this.tabPageDisplay.Controls.Add(this.buttonFill);
+            this.tabPageDisplay.Controls.Add(this.buttonClear);
+            this.tabPageDisplay.Controls.Add(this.buttonClose);
+            this.tabPageDisplay.Controls.Add(this.buttonOpen);
             this.tabPageDisplay.Controls.Add(this.buttonCapture);
             this.tabPageDisplay.Controls.Add(this.tableLayoutPanel);
             this.tabPageDisplay.Controls.Add(this.buttonFont);
@@ -87,12 +98,20 @@
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.Controls.Add(this.marqueeLabelTop, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.marqueeLabelBottom, 0, 1);
-            this.tableLayoutPanel.Location = new System.Drawing.Point(215, 165);
+            this.tableLayoutPanel.Location = new System.Drawing.Point(180, 161);
             this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 2;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -134,11 +153,62 @@
             this.timer.Interval = 50;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // buttonOpen
+            // 
+            this.buttonOpen.Location = new System.Drawing.Point(6, 6);
+            this.buttonOpen.Name = "buttonOpen";
+            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpen.TabIndex = 6;
+            this.buttonOpen.Text = "Open";
+            this.buttonOpen.UseVisualStyleBackColor = true;
+            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Location = new System.Drawing.Point(6, 35);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.TabIndex = 7;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // buttonClear
+            // 
+            this.buttonClear.Location = new System.Drawing.Point(6, 64);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(75, 23);
+            this.buttonClear.TabIndex = 8;
+            this.buttonClear.Text = "Clear";
+            this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
+            // 
+            // buttonFill
+            // 
+            this.buttonFill.Location = new System.Drawing.Point(6, 93);
+            this.buttonFill.Name = "buttonFill";
+            this.buttonFill.Size = new System.Drawing.Size(75, 23);
+            this.buttonFill.TabIndex = 9;
+            this.buttonFill.Text = "Fill";
+            this.buttonFill.UseVisualStyleBackColor = true;
+            this.buttonFill.Click += new System.EventHandler(this.buttonFill_Click);
+            // 
+            // trackBarBrightness
+            // 
+            this.trackBarBrightness.BackColor = System.Drawing.SystemColors.Window;
+            this.trackBarBrightness.Location = new System.Drawing.Point(470, 6);
+            this.trackBarBrightness.Name = "trackBarBrightness";
+            this.trackBarBrightness.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.trackBarBrightness.Size = new System.Drawing.Size(45, 324);
+            this.trackBarBrightness.TabIndex = 10;
+            this.trackBarBrightness.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarBrightness.Scroll += new System.EventHandler(this.trackBarBrightness_Scroll);
+            // 
             // marqueeLabelTop
             // 
             this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
             this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -187);
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -313);
             this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelTop.Name = "marqueeLabelTop";
             this.marqueeLabelTop.OwnTimer = false;
@@ -152,7 +222,7 @@
             // marqueeLabelBottom
             // 
             this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -61);
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -166);
             this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelBottom.Name = "marqueeLabelBottom";
             this.marqueeLabelBottom.OwnTimer = false;
@@ -173,7 +243,9 @@
             this.Text = "Sharp Display Manager";
             this.tabControl.ResumeLayout(false);
             this.tabPageDisplay.ResumeLayout(false);
+            this.tabPageDisplay.PerformLayout();
             this.tableLayoutPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -190,6 +262,11 @@
         private MarqueeLabel marqueeLabelBottom;
         private System.Windows.Forms.Button buttonCapture;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Button buttonFill;
+        private System.Windows.Forms.Button buttonClear;
+        private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.Button buttonOpen;
+        private System.Windows.Forms.TrackBar trackBarBrightness;
     }
 }
 
