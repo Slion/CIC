@@ -43,10 +43,11 @@ namespace SharpDisplayManager
             if (DlgBox.ShowDialog(fontDialog) != DialogResult.Cancel)
             {
 
-                MsgBox.Show("MessageBox MsgBox", "MsgBox caption");
+                //MsgBox.Show("MessageBox MsgBox", "MsgBox caption");
 
                 //MessageBox.Show("Ok");
-                //textBox1.Font = fontDlg.Font;
+                marqueeLabelTop.Font = fontDialog.Font;
+                marqueeLabelBottom.Font = fontDialog.Font;
                 //label1.Font = fontDlg.Font;
                 //textBox1.BackColor = fontDlg.Color;
                 //label1.ForeColor = fontDlg.Color;
@@ -69,6 +70,29 @@ namespace SharpDisplayManager
             marqueeLabelBottom.UpdateAnimation(LastTickTime, NewTickTime);
 
             LastTickTime = NewTickTime;
+
+            //Update our display
+            if (iDisplay.IsOpen())
+            {
+                //Draw to bitmap
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height);
+                tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
+                //Send it to our display 
+                for (int i = 0; i < bmp.Width; i++)
+                {
+                    for (int j = 0; j < bmp.Height; j++)
+                    {
+                        unchecked
+                        {
+                        uint color=(uint)bmp.GetPixel(i, j).ToArgb();
+                        iDisplay.SetPixel(i, j, Convert.ToInt32(color!=0xFFFFFFFF));
+                        }
+                    }
+                }
+
+                iDisplay.SwapBuffers();
+
+            }
         }
 
         private void buttonOpen_Click(object sender, EventArgs e)
