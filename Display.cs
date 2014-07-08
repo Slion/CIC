@@ -85,10 +85,37 @@ namespace SharpDisplayManager
             MiniDisplaySetPixel(iDevice,aX,aY,aValue);
         }
 
+        public string Vendor()
+        {
+            IntPtr ptr = MiniDisplayVendor(iDevice);
+            string str = Marshal.PtrToStringUni(ptr);
+            return str;
+        }
 
+        public string Product()
+        {
+            IntPtr ptr = MiniDisplayProduct(iDevice);
+            string str = Marshal.PtrToStringUni(ptr);
+            return str;
+        }
+
+        public string SerialNumber()
+        {
+            IntPtr ptr = MiniDisplaySerialNumber(iDevice);
+            string str = Marshal.PtrToStringUni(ptr);
+            return str;
+        }
 
         //Our display device handle
         IntPtr iDevice;
+
+        public enum TMiniDisplayRequest
+        {
+            EMiniDisplayRequestNone,
+            EMiniDisplayRequestDeviceId,
+            EMiniDisplayRequestFirmwareRevision,
+            EMiniDisplayRequestPowerSupplyStatus
+        }
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr MiniDisplayOpen();
@@ -122,6 +149,46 @@ namespace SharpDisplayManager
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern int MiniDisplaySetPixel(IntPtr aDevice, int aX, int aY, int aValue);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr MiniDisplayVendor(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr MiniDisplayProduct(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr MiniDisplaySerialNumber(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr MiniDisplayDeviceId(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr MiniDisplayFirmwareRevision(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool MiniDisplayPowerSupplyStatus(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayRequestDeviceId(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayRequestFirmwareRevision(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayRequestPowerSupplyStatus(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern TMiniDisplayRequest MiniDisplayAttemptRequestCompletion(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern TMiniDisplayRequest MiniDisplayCurrentRequest(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayCancelRequest(IntPtr aDevice);
+
+
+        
+        
 
 
     }

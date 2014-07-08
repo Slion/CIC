@@ -162,7 +162,8 @@ namespace SharpDisplayManager
                 trackBarBrightness.SmallChange = 1;
                 iDisplay.SetBrightness(Properties.Settings.Default.DisplayBrightness);
 
-                toolStripStatusLabelConnect.Text = "Connected";
+                toolStripStatusLabelConnect.Text = "Connected - " + iDisplay.Vendor() + " - " + iDisplay.Product();
+                //+ " - " + iDisplay.SerialNumber();
             }
             else
             {
