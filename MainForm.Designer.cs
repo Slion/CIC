@@ -38,8 +38,6 @@
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonCapture = new System.Windows.Forms.Button();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
-            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.buttonFont = new System.Windows.Forms.Button();
             this.tabPageTests = new System.Windows.Forms.TabPage();
             this.fontDialog = new System.Windows.Forms.FontDialog();
@@ -48,6 +46,9 @@
             this.toolStripStatusLabelConnect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSpring = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
+            this.checkBoxShowBorders = new System.Windows.Forms.CheckBox();
+            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
+            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
@@ -70,6 +71,7 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.checkBoxShowBorders);
             this.tabPageDisplay.Controls.Add(this.trackBarBrightness);
             this.tabPageDisplay.Controls.Add(this.buttonFill);
             this.tabPageDisplay.Controls.Add(this.buttonClear);
@@ -198,39 +200,6 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 4;
             // 
-            // marqueeLabelTop
-            // 
-            this.marqueeLabelTop.AutoEllipsis = true;
-            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
-            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelTop.Name = "marqueeLabelTop";
-            this.marqueeLabelTop.OwnTimer = false;
-            this.marqueeLabelTop.PixelsPerSecond = 64;
-            this.marqueeLabelTop.Separator = "";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 30);
-            this.marqueeLabelTop.TabIndex = 2;
-            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelTop.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabelBottom
-            // 
-            this.marqueeLabelBottom.AutoEllipsis = true;
-            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
-            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
-            this.marqueeLabelBottom.OwnTimer = false;
-            this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = " | ";
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
-            this.marqueeLabelBottom.TabIndex = 3;
-            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
-            // 
             // buttonFont
             // 
             this.buttonFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -289,6 +258,50 @@
             this.toolStripStatusLabelFps.Size = new System.Drawing.Size(26, 17);
             this.toolStripStatusLabelFps.Text = "FPS";
             // 
+            // checkBoxShowBorders
+            // 
+            this.checkBoxShowBorders.AutoSize = true;
+            this.checkBoxShowBorders.Location = new System.Drawing.Point(113, 344);
+            this.checkBoxShowBorders.Name = "checkBoxShowBorders";
+            this.checkBoxShowBorders.Size = new System.Drawing.Size(91, 17);
+            this.checkBoxShowBorders.TabIndex = 11;
+            this.checkBoxShowBorders.Text = "Show borders";
+            this.checkBoxShowBorders.UseVisualStyleBackColor = true;
+            this.checkBoxShowBorders.CheckedChanged += new System.EventHandler(this.checkBoxShowBorders_CheckedChanged);
+            // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Separator = "";
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 9);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 21);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Separator = null;
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -332,6 +345,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelConnect;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFps;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSpring;
+        private System.Windows.Forms.CheckBox checkBoxShowBorders;
     }
 }
 
