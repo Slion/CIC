@@ -22,6 +22,7 @@ namespace SharpDisplayManager
             iDisplay = new Display();
 
             InitializeComponent();
+            UpdateStatus();
         }
 
         private void buttonFont_Click(object sender, EventArgs e)
@@ -77,7 +78,7 @@ namespace SharpDisplayManager
                 //Draw to bitmap
                 System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height);
                 tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
-                //Send it to our display 
+                //Send it to our display
                 for (int i = 0; i < bmp.Width; i++)
                 {
                     for (int j = 0; j < bmp.Height; j++)
@@ -99,10 +100,14 @@ namespace SharpDisplayManager
         {
             if (iDisplay.Open())
             {
-                trackBarBrightness.Minimum = iDisplay.MinBrightness();
-                trackBarBrightness.Maximum = iDisplay.MaxBrightness();                
+                UpdateStatus();
             }
-            
+            else
+            {
+                UpdateStatus();
+                toolStripStatusLabelConnect.Text = "Connection error";
+            }
+
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -126,5 +131,30 @@ namespace SharpDisplayManager
         {
             iDisplay.SetBrightness(trackBarBrightness.Value);
         }
+
+        private void UpdateStatus()
+        {
+            if (iDisplay.IsOpen())
+            {
+                buttonFill.Enabled = true;
+                buttonClear.Enabled = true;
+                buttonOpen.Enabled = false;
+                buttonClose.Enabled = true;
+                trackBarBrightness.Enabled = true;
+                trackBarBrightness.Minimum = iDisplay.MinBrightness();
+                trackBarBrightness.Maximum = iDisplay.MaxBrightness();
+                toolStripStatusLabelConnect.Text = "Connected";
+            }
+            else
+            {
+                buttonFill.Enabled = false;
+                buttonClear.Enabled = false;
+                buttonOpen.Enabled = true;
+                buttonClose.Enabled = false;
+                trackBarBrightness.Enabled = false;
+                toolStripStatusLabelConnect.Text = "Not connected";
+            }
+        }
+
     }
 }
