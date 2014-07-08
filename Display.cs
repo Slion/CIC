@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 //
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace SharpDisplayManager
 {
@@ -23,7 +22,7 @@ namespace SharpDisplayManager
         {
             if (iDevice == IntPtr.Zero)
             {
-                iDevice = MiniDisplayOpen();                
+                iDevice = MiniDisplayOpen();
             }
             return iDevice != IntPtr.Zero;
         }
