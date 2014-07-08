@@ -26,6 +26,7 @@ namespace SharpDisplayManager
             //Load settings
             marqueeLabelTop.Font = Properties.Settings.Default.DisplayFont;
             marqueeLabelBottom.Font = Properties.Settings.Default.DisplayFont;
+            checkBoxShowBorders.Checked = Properties.Settings.Default.DisplayShowBorders;
         }
 
         private void buttonFont_Click(object sender, EventArgs e)
@@ -89,7 +90,7 @@ namespace SharpDisplayManager
                         unchecked
                         {
                         uint color=(uint)bmp.GetPixel(i, j).ToArgb();
-                        iDisplay.SetPixel(i, j, Convert.ToInt32(color!=0xFFFFFFFF));
+                        iDisplay.SetPixel(i, j, Convert.ToInt32((checkBoxShowBorders.Checked?color!=0xFFFFFFFF:color == 0xFF000000)));
                         }
                     }
                 }
@@ -122,6 +123,7 @@ namespace SharpDisplayManager
         private void buttonClose_Click(object sender, EventArgs e)
         {
             iDisplay.Close();
+            UpdateStatus();
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -138,7 +140,10 @@ namespace SharpDisplayManager
 
         private void trackBarBrightness_Scroll(object sender, EventArgs e)
         {
+            Properties.Settings.Default.DisplayBrightness = trackBarBrightness.Value;
+            Properties.Settings.Default.Save();
             iDisplay.SetBrightness(trackBarBrightness.Value);
+
         }
 
         private void UpdateStatus()
@@ -151,7 +156,12 @@ namespace SharpDisplayManager
                 buttonClose.Enabled = true;
                 trackBarBrightness.Enabled = true;
                 trackBarBrightness.Minimum = iDisplay.MinBrightness();
-                trackBarBrightness.Maximum = iDisplay.MaxBrightness();
+                trackBarBrightness.Maximum = iDisplay.MaxBrightness();                
+                trackBarBrightness.Value = Properties.Settings.Default.DisplayBrightness;
+                trackBarBrightness.LargeChange = Math.Max(1,(iDisplay.MaxBrightness() - iDisplay.MinBrightness())/5);
+                trackBarBrightness.SmallChange = 1;
+                iDisplay.SetBrightness(Properties.Settings.Default.DisplayBrightness);
+
                 toolStripStatusLabelConnect.Text = "Connected";
             }
             else
@@ -161,8 +171,14 @@ namespace SharpDisplayManager
                 buttonOpen.Enabled = true;
                 buttonClose.Enabled = false;
                 trackBarBrightness.Enabled = false;
-                toolStripStatusLabelConnect.Text = "Not connected";
+                toolStripStatusLabelConnect.Text = "Disconnected";
             }
+        }
+
+        private void checkBoxShowBorders_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DisplayShowBorders = checkBoxShowBorders.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }
