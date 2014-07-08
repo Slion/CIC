@@ -14,6 +14,9 @@ namespace SharpDisplayManager
     class MarqueeLabel : Label
     {
         private bool iOwnTimer;
+        private TextFormatFlags iTextFormatFlags;
+        private StringFormat iStringFormat;
+        private SolidBrush iBrush;
 
         [Category("Behavior")]
         [Description("How fast is our text scrolling, in pixels per second.")]
@@ -51,7 +54,7 @@ namespace SharpDisplayManager
 
             }
         }
-        
+
         private int CurrentPosition { get; set; }
         private Timer Timer { get; set; }
         private DateTime LastTickTime { get; set; }
@@ -66,6 +69,7 @@ namespace SharpDisplayManager
             //PixelsPerSecond = 32;
             LastTickTime = DateTime.Now;
             PixelsLeft = 0;
+            iBrush = new SolidBrush(ForeColor);
         }
 
         public void UpdateAnimation(DateTime aLastTickTime, DateTime aNewTickTime)
@@ -112,11 +116,123 @@ namespace SharpDisplayManager
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            DateTime NewTickTime = DateTime.Now;                       
+            DateTime NewTickTime = DateTime.Now;
             //
             UpdateAnimation(LastTickTime, NewTickTime);
             //
             LastTickTime = NewTickTime;
+        }
+
+        private StringFormat GetStringFormatFromContentAllignment(ContentAlignment ca)
+        {
+            StringFormat format = new StringFormat();
+            switch (ca)
+            {
+                case ContentAlignment.TopCenter:
+                    format.Alignment = StringAlignment.Near;
+                    format.LineAlignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.TopLeft:
+                    format.Alignment = StringAlignment.Near;
+                    format.LineAlignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.TopRight:
+                    format.Alignment = StringAlignment.Near;
+                    format.LineAlignment = StringAlignment.Far;
+                    break;
+                case ContentAlignment.MiddleCenter:
+                    format.Alignment = StringAlignment.Center;
+                    format.LineAlignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.MiddleLeft:
+                    format.Alignment = StringAlignment.Center;
+                    format.LineAlignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.MiddleRight:
+                    format.Alignment = StringAlignment.Center;
+                    format.LineAlignment = StringAlignment.Far;
+                    break;
+                case ContentAlignment.BottomCenter:
+                    format.Alignment = StringAlignment.Far;
+                    format.LineAlignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.BottomLeft:
+                    format.Alignment = StringAlignment.Far;
+                    format.LineAlignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.BottomRight:
+                    format.Alignment = StringAlignment.Far;
+                    format.LineAlignment = StringAlignment.Far;
+                    break;
+            }
+
+            format.FormatFlags |= StringFormatFlags.NoWrap;
+            format.FormatFlags |= StringFormatFlags.NoClip;
+            format.Trimming = StringTrimming.None;
+
+            return format;
+        }
+
+        protected override void OnForeColorChanged(EventArgs e)
+        {
+            iBrush = new SolidBrush(ForeColor);
+
+            base.OnForeColorChanged(e);
+        }
+
+        protected override void OnTextAlignChanged(EventArgs e)
+        {
+            iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter;
+
+            switch (TextAlign)
+            {
+                case ContentAlignment.BottomCenter:
+                    iTextFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.Bottom;
+                    break;
+
+                case ContentAlignment.BottomLeft:
+                    iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.Bottom;
+                    break;
+
+                case ContentAlignment.BottomRight:
+                    iTextFormatFlags = TextFormatFlags.Right | TextFormatFlags.Bottom;
+                    break;
+
+                case ContentAlignment.MiddleCenter:
+                    iTextFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
+                    break;
+
+                case ContentAlignment.MiddleLeft:
+                    iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter;
+                    break;
+
+                case ContentAlignment.MiddleRight:
+                    iTextFormatFlags = TextFormatFlags.Right | TextFormatFlags.VerticalCenter;
+                    break;
+
+                case ContentAlignment.TopCenter:
+                    iTextFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.Top;
+                    break;
+
+                case ContentAlignment.TopLeft:
+                    iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.Top;
+                    break;
+
+                case ContentAlignment.TopRight:
+                    iTextFormatFlags = TextFormatFlags.Right | TextFormatFlags.Top;
+                    break;
+            }
+
+
+            iTextFormatFlags |= TextFormatFlags.PreserveGraphicsTranslateTransform;
+            //format |= TextFormatFlags.PreserveGraphicsClipping;
+            iTextFormatFlags |= TextFormatFlags.NoClipping;
+
+            iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
+
+
+            base.OnTextAlignChanged(e);
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -124,7 +240,12 @@ namespace SharpDisplayManager
             //Disable anti-aliasing
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             e.Graphics.TranslateTransform((float)CurrentPosition, 0);
-            base.OnPaint(e);
+            e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+
+            //DrawText is not working without anti-aliasing. See: stackoverflow.com/questions/8283631/graphics-drawstring-vs-textrenderer-drawtextwhich-can-deliver-better-quality
+            //TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, ForeColor, BackColor, iTextFormatFlags);
+
+            //base.OnPaint(e);
         }
 
         protected override void Dispose(bool disposing)
