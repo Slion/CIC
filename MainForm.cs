@@ -23,6 +23,9 @@ namespace SharpDisplayManager
 
             InitializeComponent();
             UpdateStatus();
+            //Load settings
+            marqueeLabelTop.Font = Properties.Settings.Default.DisplayFont;
+            marqueeLabelBottom.Font = Properties.Settings.Default.DisplayFont;
         }
 
         private void buttonFont_Click(object sender, EventArgs e)
@@ -49,6 +52,8 @@ namespace SharpDisplayManager
                 //MessageBox.Show("Ok");
                 marqueeLabelTop.Font = fontDialog.Font;
                 marqueeLabelBottom.Font = fontDialog.Font;
+                Properties.Settings.Default.DisplayFont = fontDialog.Font;
+                Properties.Settings.Default.Save();
                 //label1.Font = fontDlg.Font;
                 //textBox1.BackColor = fontDlg.Color;
                 //label1.ForeColor = fontDlg.Color;
@@ -69,8 +74,6 @@ namespace SharpDisplayManager
 
             marqueeLabelTop.UpdateAnimation(LastTickTime, NewTickTime);
             marqueeLabelBottom.UpdateAnimation(LastTickTime, NewTickTime);
-
-            LastTickTime = NewTickTime;
 
             //Update our display
             if (iDisplay.IsOpen())
@@ -94,6 +97,12 @@ namespace SharpDisplayManager
                 iDisplay.SwapBuffers();
 
             }
+
+            //Compute instant FPS
+            toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " FPS";
+
+            LastTickTime = NewTickTime;
+
         }
 
         private void buttonOpen_Click(object sender, EventArgs e)
@@ -155,6 +164,5 @@ namespace SharpDisplayManager
                 toolStripStatusLabelConnect.Text = "Not connected";
             }
         }
-
     }
 }

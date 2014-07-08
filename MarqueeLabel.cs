@@ -17,6 +17,13 @@ namespace SharpDisplayManager
         private StringFormat iStringFormat;
         private SolidBrush iBrush;
         private SizeF iTextSize;
+        private SizeF iSeparatorSize;
+
+        [Category("Appearance")]
+        [Description("Separator in our scrolling loop.")]
+        [DefaultValue(" | ")]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        public string Separator { get; set; }
 
         [Category("Behavior")]
         [Description("How fast is our text scrolling, in pixels per second.")]
@@ -80,9 +87,9 @@ namespace SharpDisplayManager
                 return;
             }
 
-            while (CurrentPosition > (iTextSize.Width))
+            while (CurrentPosition > (iTextSize.Width + iSeparatorSize.Width))
             {
-                CurrentPosition -= ((int)iTextSize.Width);
+                CurrentPosition -= ((int)(iTextSize.Width + iSeparatorSize.Width));
             }
 
             PixelsLeft += aNewTickTime.Subtract(aLastTickTime).TotalSeconds * PixelsPerSecond;
@@ -194,6 +201,7 @@ namespace SharpDisplayManager
             Graphics g = this.CreateGraphics();
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             iTextSize = g.MeasureString(Text, Font);
+            iSeparatorSize = g.MeasureString(Separator, Font);
             iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
 
             if (NeedToScroll())
@@ -234,8 +242,11 @@ namespace SharpDisplayManager
                 //Draw the first one
                 e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
                 e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
-                //Draw the last one
+                //Draw separator
                 e.Graphics.TranslateTransform(iTextSize.Width, 0);
+                e.Graphics.DrawString(Separator, Font, iBrush, ClientRectangle, iStringFormat);
+                //Draw the last one
+                e.Graphics.TranslateTransform(iSeparatorSize.Width, 0);
                 e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
             }
             else
