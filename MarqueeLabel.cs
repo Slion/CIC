@@ -14,9 +14,9 @@ namespace SharpDisplayManager
     class MarqueeLabel : Label
     {
         private bool iOwnTimer;
-        private TextFormatFlags iTextFormatFlags;
         private StringFormat iStringFormat;
         private SolidBrush iBrush;
+        private SizeF iTextSize;
 
         [Category("Behavior")]
         [Description("How fast is our text scrolling, in pixels per second.")]
@@ -74,9 +74,15 @@ namespace SharpDisplayManager
 
         public void UpdateAnimation(DateTime aLastTickTime, DateTime aNewTickTime)
         {
-            while (CurrentPosition > Width)
+            if (!NeedToScroll())
             {
-                CurrentPosition = -Width;
+                CurrentPosition = 0;
+                return;
+            }
+
+            while (CurrentPosition > (iTextSize.Width))
+            {
+                CurrentPosition -= ((int)iTextSize.Width);
             }
 
             PixelsLeft += aNewTickTime.Subtract(aLastTickTime).TotalSeconds * PixelsPerSecond;
@@ -175,61 +181,45 @@ namespace SharpDisplayManager
 
         protected override void OnForeColorChanged(EventArgs e)
         {
+            //Color has changed recreate our brush
             iBrush = new SolidBrush(ForeColor);
 
             base.OnForeColorChanged(e);
         }
 
-        protected override void OnTextAlignChanged(EventArgs e)
+
+        private void HandleTextSizeChange()
         {
-            iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter;
-
-            switch (TextAlign)
-            {
-                case ContentAlignment.BottomCenter:
-                    iTextFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.Bottom;
-                    break;
-
-                case ContentAlignment.BottomLeft:
-                    iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.Bottom;
-                    break;
-
-                case ContentAlignment.BottomRight:
-                    iTextFormatFlags = TextFormatFlags.Right | TextFormatFlags.Bottom;
-                    break;
-
-                case ContentAlignment.MiddleCenter:
-                    iTextFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
-                    break;
-
-                case ContentAlignment.MiddleLeft:
-                    iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter;
-                    break;
-
-                case ContentAlignment.MiddleRight:
-                    iTextFormatFlags = TextFormatFlags.Right | TextFormatFlags.VerticalCenter;
-                    break;
-
-                case ContentAlignment.TopCenter:
-                    iTextFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.Top;
-                    break;
-
-                case ContentAlignment.TopLeft:
-                    iTextFormatFlags = TextFormatFlags.Left | TextFormatFlags.Top;
-                    break;
-
-                case ContentAlignment.TopRight:
-                    iTextFormatFlags = TextFormatFlags.Right | TextFormatFlags.Top;
-                    break;
-            }
-
-
-            iTextFormatFlags |= TextFormatFlags.PreserveGraphicsTranslateTransform;
-            //format |= TextFormatFlags.PreserveGraphicsClipping;
-            iTextFormatFlags |= TextFormatFlags.NoClipping;
-
+            //Update text size according to text and font
+            Graphics g = this.CreateGraphics();
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+            iTextSize = g.MeasureString(Text, Font);
             iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
 
+            if (NeedToScroll())
+            {
+                //Always align left when scrolling
+                iStringFormat.Alignment = StringAlignment.Near;
+            }
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            HandleTextSizeChange();
+
+            base.OnTextChanged(e);
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            HandleTextSizeChange();
+
+            base.OnFontChanged(e);
+        }
+
+        protected override void OnTextAlignChanged(EventArgs e)
+        {
+            iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
 
             base.OnTextAlignChanged(e);
 
@@ -239,13 +229,36 @@ namespace SharpDisplayManager
         {
             //Disable anti-aliasing
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            e.Graphics.TranslateTransform((float)CurrentPosition, 0);
-            e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+            if (NeedToScroll())
+            {
+                //Draw the first one
+                e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
+                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                //Draw the last one
+                e.Graphics.TranslateTransform(iTextSize.Width, 0);
+                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+            }
+            else
+            {
+                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+            }
+
+
 
             //DrawText is not working without anti-aliasing. See: stackoverflow.com/questions/8283631/graphics-drawstring-vs-textrenderer-drawtextwhich-can-deliver-better-quality
             //TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, ForeColor, BackColor, iTextFormatFlags);
 
             //base.OnPaint(e);
+        }
+
+        public bool NeedToScroll()
+        {
+            //if (Width < e.Graphics.MeasureString(Text, Font).Width)
+            if (Width < iTextSize.Width)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected override void Dispose(bool disposing)
