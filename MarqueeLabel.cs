@@ -23,18 +23,21 @@ namespace SharpDisplayManager
         [Description("Separator in our scrolling loop.")]
         [DefaultValue(" | ")]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Separator { get; set; }
 
         [Category("Behavior")]
         [Description("How fast is our text scrolling, in pixels per second.")]
         [DefaultValue(32)]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int PixelsPerSecond { get; set; }
 
         [Category("Behavior")]
         [Description("Use an internal or an external timer.")]
         [DefaultValue(true)]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool OwnTimer
         {
             get
@@ -139,6 +142,7 @@ namespace SharpDisplayManager
         private StringFormat GetStringFormatFromContentAllignment(ContentAlignment ca)
         {
             StringFormat format = new StringFormat();
+            format = StringFormat.GenericTypographic;
             switch (ca)
             {
                 case ContentAlignment.TopCenter:
@@ -181,6 +185,7 @@ namespace SharpDisplayManager
 
             format.FormatFlags |= StringFormatFlags.NoWrap;
             format.FormatFlags |= StringFormatFlags.NoClip;
+            format.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
             format.Trimming = StringTrimming.None;
 
             return format;
@@ -197,12 +202,14 @@ namespace SharpDisplayManager
 
         private void HandleTextSizeChange()
         {
+            //For all string measurements and drawing issues refer to the following article:
+            // http://stackoverflow.com/questions/1203087/why-is-graphics-measurestring-returning-a-higher-than-expected-number
             //Update text size according to text and font
             Graphics g = this.CreateGraphics();
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            iTextSize = g.MeasureString(Text, Font);
-            iSeparatorSize = g.MeasureString(Separator, Font);
             iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
+            iTextSize = g.MeasureString(Text, Font, Int32.MaxValue, iStringFormat);
+            iSeparatorSize = g.MeasureString(Separator, Font, Int32.MaxValue, iStringFormat);
 
             if (NeedToScroll())
             {

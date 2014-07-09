@@ -34,6 +34,7 @@ namespace SharpDisplayManager
             //fontDialog.ShowColor = true;
             //fontDialog.ShowApply = true;
             fontDialog.ShowEffects = true;
+            fontDialog.Font = marqueeLabelTop.Font;
             //fontDialog.ShowHelp = true;
 
             //fontDlg.MaxSize = 40;
@@ -156,7 +157,7 @@ namespace SharpDisplayManager
                 buttonClose.Enabled = true;
                 trackBarBrightness.Enabled = true;
                 trackBarBrightness.Minimum = iDisplay.MinBrightness();
-                trackBarBrightness.Maximum = iDisplay.MaxBrightness();                
+                trackBarBrightness.Maximum = iDisplay.MaxBrightness();
                 trackBarBrightness.Value = Properties.Settings.Default.DisplayBrightness;
                 trackBarBrightness.LargeChange = Math.Max(1,(iDisplay.MaxBrightness() - iDisplay.MinBrightness())/5);
                 trackBarBrightness.SmallChange = 1;
