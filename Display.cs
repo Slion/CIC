@@ -85,6 +85,43 @@ namespace SharpDisplayManager
             MiniDisplaySetPixel(iDevice,aX,aY,aValue);
         }
 
+        public void RequestPowerSupplyStatus()
+        {
+            MiniDisplayRequestPowerSupplyStatus(iDevice);
+        }
+
+        public void RequestDeviceId()
+        {
+            MiniDisplayRequestDeviceId(iDevice);
+        }
+
+        public void RequestFirmwareRevision()
+        {
+            MiniDisplayRequestFirmwareRevision(iDevice);
+        }
+
+        public bool PowerSupplyStatus()
+        {
+            bool res = MiniDisplayPowerSupplyStatus(iDevice);
+            return res;
+        }
+
+        public TMiniDisplayRequest AttemptRequestCompletion()
+        {
+            return MiniDisplayAttemptRequestCompletion(iDevice);
+        }
+
+        public TMiniDisplayRequest CurrentRequest()
+        {
+            return MiniDisplayCurrentRequest(iDevice);
+        }
+
+        public bool IsRequestPending()
+        {
+            return CurrentRequest() != TMiniDisplayRequest.EMiniDisplayRequestNone;
+        }
+
+
         public string Vendor()
         {
             IntPtr ptr = MiniDisplayVendor(iDevice);
@@ -103,6 +140,20 @@ namespace SharpDisplayManager
         {
             IntPtr ptr = MiniDisplaySerialNumber(iDevice);
             string str = Marshal.PtrToStringUni(ptr);
+            return str;
+        }
+
+        public string DeviceId()
+        {
+            IntPtr ptr = MiniDisplayDeviceId(iDevice);
+            string str = Marshal.PtrToStringAnsi(ptr);
+            return str;
+        }
+
+        public string FirmwareRevision()
+        {
+            IntPtr ptr = MiniDisplayFirmwareRevision(iDevice);
+            string str = Marshal.PtrToStringAnsi(ptr);
             return str;
         }
 
@@ -166,6 +217,7 @@ namespace SharpDisplayManager
         public static extern IntPtr MiniDisplayFirmwareRevision(IntPtr aDevice);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool MiniDisplayPowerSupplyStatus(IntPtr aDevice);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
@@ -185,10 +237,6 @@ namespace SharpDisplayManager
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern void MiniDisplayCancelRequest(IntPtr aDevice);
-
-
-        
-        
 
 
     }
