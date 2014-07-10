@@ -49,6 +49,7 @@
             this.toolStripStatusLabelConnect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSpring = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelPower = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
@@ -237,7 +238,6 @@
             this.marqueeLabelBottom.Name = "marqueeLabelBottom";
             this.marqueeLabelBottom.OwnTimer = false;
             this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = " | ";
             this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
             this.marqueeLabelBottom.TabIndex = 3;
             this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
@@ -276,6 +276,7 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelConnect,
             this.toolStripStatusLabelSpring,
+            this.toolStripStatusLabelPower,
             this.toolStripStatusLabelFps});
             this.statusStrip.Location = new System.Drawing.Point(0, 420);
             this.statusStrip.Name = "statusStrip";
@@ -293,7 +294,7 @@
             // toolStripStatusLabelSpring
             // 
             this.toolStripStatusLabelSpring.Name = "toolStripStatusLabelSpring";
-            this.toolStripStatusLabelSpring.Size = new System.Drawing.Size(497, 17);
+            this.toolStripStatusLabelSpring.Size = new System.Drawing.Size(442, 17);
             this.toolStripStatusLabelSpring.Spring = true;
             // 
             // toolStripStatusLabelFps
@@ -301,6 +302,12 @@
             this.toolStripStatusLabelFps.Name = "toolStripStatusLabelFps";
             this.toolStripStatusLabelFps.Size = new System.Drawing.Size(26, 17);
             this.toolStripStatusLabelFps.Text = "FPS";
+            // 
+            // toolStripStatusLabelPower
+            // 
+            this.toolStripStatusLabelPower.Name = "toolStripStatusLabelPower";
+            this.toolStripStatusLabelPower.Size = new System.Drawing.Size(24, 17);
+            this.toolStripStatusLabelPower.Text = "NA";
             // 
             // MainForm
             // 
@@ -346,6 +353,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFps;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSpring;
         private System.Windows.Forms.CheckBox checkBoxShowBorders;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelPower;
     }
 }
 

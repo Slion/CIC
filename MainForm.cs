@@ -69,8 +69,41 @@ namespace SharpDisplayManager
             bmp.Save("c:\\capture.png");
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void CheckForRequestResults()
         {
+            if (iDisplay.IsRequestPending())
+            {
+                switch (iDisplay.AttemptRequestCompletion())
+                {
+                    case Display.TMiniDisplayRequest.EMiniDisplayRequestPowerSupplyStatus:
+                        if (iDisplay.PowerSupplyStatus())
+                        {
+                            toolStripStatusLabelPower.Text = "ON";
+                        }
+                        else
+                        {
+                            toolStripStatusLabelPower.Text = "OFF";
+                        }
+                        //Issue next request then
+                        iDisplay.RequestDeviceId();
+                        break;
+
+                    case Display.TMiniDisplayRequest.EMiniDisplayRequestDeviceId:
+                        toolStripStatusLabelConnect.Text += " - " + iDisplay.DeviceId();
+                        //Issue next request then
+                        iDisplay.RequestFirmwareRevision();
+                        break;
+
+                    case Display.TMiniDisplayRequest.EMiniDisplayRequestFirmwareRevision:
+                        toolStripStatusLabelConnect.Text += " v" + iDisplay.FirmwareRevision();
+                        //No more request to issue
+                        break;
+                }
+            }
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {        
             //Update our animations
             DateTime NewTickTime = DateTime.Now;
 
@@ -80,6 +113,8 @@ namespace SharpDisplayManager
             //Update our display
             if (iDisplay.IsOpen())
             {
+                CheckForRequestResults();
+
                 //Draw to bitmap
                 System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height);
                 tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
@@ -112,6 +147,7 @@ namespace SharpDisplayManager
             if (iDisplay.Open())
             {
                 UpdateStatus();
+                iDisplay.RequestPowerSupplyStatus();
             }
             else
             {
