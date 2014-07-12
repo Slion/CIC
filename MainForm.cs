@@ -23,11 +23,25 @@ namespace SharpDisplayManager
 
             InitializeComponent();
             UpdateStatus();
+
             //Load settings
             marqueeLabelTop.Font = Properties.Settings.Default.DisplayFont;
             marqueeLabelBottom.Font = Properties.Settings.Default.DisplayFont;
             checkBoxShowBorders.Checked = Properties.Settings.Default.DisplayShowBorders;
+            checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
+            //
+            tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.DisplayConnectOnStartup)
+            {
+                iDisplay.Open();
+                UpdateStatus();
+            }
+        }
+
 
         private void buttonFont_Click(object sender, EventArgs e)
         {
@@ -126,7 +140,8 @@ namespace SharpDisplayManager
                         unchecked
                         {
                         uint color=(uint)bmp.GetPixel(i, j).ToArgb();
-                        iDisplay.SetPixel(i, j, Convert.ToInt32((checkBoxShowBorders.Checked?color!=0xFFFFFFFF:color == 0xFF000000)));
+                        //(checkBoxShowBorders.Checked?color!=0xFFFFFFFF:color == 0xFF000000)
+                        iDisplay.SetPixel(i, j, Convert.ToInt32(color != 0xFFFFFFFF));
                         }
                     }
                 }
@@ -213,10 +228,20 @@ namespace SharpDisplayManager
             }
         }
 
+
+
         private void checkBoxShowBorders_CheckedChanged(object sender, EventArgs e)
         {
+            tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             Properties.Settings.Default.DisplayShowBorders = checkBoxShowBorders.Checked;
             Properties.Settings.Default.Save();
         }
+
+        private void checkBoxConnectOnStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DisplayConnectOnStartup = checkBoxConnectOnStartup.Checked;
+            Properties.Settings.Default.Save();
+        }
+
     }
 }

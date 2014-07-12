@@ -58,5 +58,17 @@ namespace SharpDisplayManager.Properties {
                 this["DisplayShowBorders"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisplayConnectOnStartup {
+            get {
+                return ((bool)(this["DisplayConnectOnStartup"]));
+            }
+            set {
+                this["DisplayConnectOnStartup"] = value;
+            }
+        }
     }
 }
