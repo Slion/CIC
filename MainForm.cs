@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using CodeProject.Dialog;
+using System.Drawing.Imaging;
+
 
 namespace SharpDisplayManager
 {
@@ -15,6 +18,8 @@ namespace SharpDisplayManager
     {
         DateTime LastTickTime;
         Display iDisplay;
+        System.Drawing.Bitmap iBmp;
+        bool iCreateBitmap; //Workaround render to bitmap issues when minimized
 
         public MainForm()
         {
@@ -31,6 +36,9 @@ namespace SharpDisplayManager
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
             //
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
+            //We have a bug when drawing minimized and reusing our bitmap
+            iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+            iCreateBitmap = false;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -80,7 +88,22 @@ namespace SharpDisplayManager
         {
             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height);
             tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
-            bmp.Save("c:\\capture.png");
+            //Bitmap bmpToSave = new Bitmap(bmp);
+            bmp.Save("D:\\capture.png");
+
+            /*
+            string outputFileName = "d:\\capture.png";
+            using (MemoryStream memory = new MemoryStream())
+            {
+                using (FileStream fs = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                    byte[] bytes = memory.ToArray();
+                    fs.Write(bytes, 0, bytes.Length);
+                }
+            }
+             */
+
         }
 
         private void CheckForRequestResults()
@@ -117,7 +140,7 @@ namespace SharpDisplayManager
         }
 
         private void timer_Tick(object sender, EventArgs e)
-        {        
+        {
             //Update our animations
             DateTime NewTickTime = DateTime.Now;
 
@@ -129,19 +152,27 @@ namespace SharpDisplayManager
             {
                 CheckForRequestResults();
 
-                //Draw to bitmap
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height);
-                tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
-                //Send it to our display
-                for (int i = 0; i < bmp.Width; i++)
+                //Draw to bitmap                
+                if (iCreateBitmap)
                 {
-                    for (int j = 0; j < bmp.Height; j++)
+                    iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+                }
+                tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
+                //iBmp.Save("D:\\capture.png");
+                
+                //iBmp.
+
+                //Send it to our display
+                for (int i = 0; i < iBmp.Width; i++)
+                {
+                    for (int j = 0; j < iBmp.Height; j++)
                     {
                         unchecked
                         {
-                        uint color=(uint)bmp.GetPixel(i, j).ToArgb();
-                        //(checkBoxShowBorders.Checked?color!=0xFFFFFFFF:color == 0xFF000000)
-                        iDisplay.SetPixel(i, j, Convert.ToInt32(color != 0xFFFFFFFF));
+                            uint color = (uint)iBmp.GetPixel(i, j).ToArgb();
+                            //For some reason when the app is minimized in the task bar only the alpha of our color is set.
+                            //Thus that strange test for rendering to work both when the app is in the task bar and when it isn't.
+                            iDisplay.SetPixel(i, j, Convert.ToInt32(!(color != 0xFF000000)));
                         }
                     }
                 }
@@ -241,6 +272,16 @@ namespace SharpDisplayManager
         {
             Properties.Settings.Default.DisplayConnectOnStartup = checkBoxConnectOnStartup.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                // Do some stuff
+                //iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+                iCreateBitmap = true;
+            }
         }
 
     }
