@@ -49,9 +49,9 @@
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
-            this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
@@ -291,41 +291,32 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 5;
-            // 
-            // marqueeLabelTop
-            // 
-            this.marqueeLabelTop.AutoEllipsis = true;
-            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
-            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelTop.Name = "marqueeLabelTop";
-            this.marqueeLabelTop.OwnTimer = false;
-            this.marqueeLabelTop.PixelsPerSecond = 64;
-            this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 1);
-            this.marqueeLabelTop.TabIndex = 2;
-            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelTop.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabelBottom
-            // 
-            this.marqueeLabelBottom.AutoEllipsis = true;
-            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -19);
-            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
-            this.marqueeLabelBottom.OwnTimer = false;
-            this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = null;
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
-            this.marqueeLabelBottom.TabIndex = 3;
-            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
             // checkBoxConnectOnStartup
             // 
@@ -338,6 +329,39 @@
             this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
             this.checkBoxConnectOnStartup.CheckedChanged += new System.EventHandler(this.checkBoxConnectOnStartup_CheckedChanged);
             // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -901);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Separator = "|";
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -481);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Separator = null;
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,6 +373,7 @@
             this.Name = "MainForm";
             this.Text = "Sharp Display Manager";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tabControl.ResumeLayout(false);
             this.tabPageDisplay.ResumeLayout(false);
             this.tabPageDisplay.PerformLayout();
