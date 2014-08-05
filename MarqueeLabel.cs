@@ -11,6 +11,7 @@ using System.Drawing;
 
 namespace SharpDisplayManager
 {
+    [System.ComponentModel.DesignerCategory("Code")]
     class MarqueeLabel : Label
     {
         private bool iOwnTimer;
