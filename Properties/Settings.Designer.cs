@@ -70,5 +70,17 @@ namespace SharpDisplayManager.Properties {
                 this["DisplayConnectOnStartup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisplayReverseScreen {
+            get {
+                return ((bool)(this["DisplayReverseScreen"]));
+            }
+            set {
+                this["DisplayReverseScreen"] = value;
+            }
+        }
     }
 }
