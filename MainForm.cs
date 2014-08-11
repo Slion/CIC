@@ -34,6 +34,7 @@ namespace SharpDisplayManager
             marqueeLabelBottom.Font = Properties.Settings.Default.DisplayFont;
             checkBoxShowBorders.Checked = Properties.Settings.Default.DisplayShowBorders;
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
+            checkBoxReverseScreen.Checked = Properties.Settings.Default.DisplayReverseScreen;
             //
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             //We have a bug when drawing minimized and reusing our bitmap
@@ -139,6 +140,32 @@ namespace SharpDisplayManager
             }
         }
 
+
+        public delegate int CoordinateTranslationDelegate(System.Drawing.Bitmap aBmp, int aInt);
+
+
+        public static int ScreenReversedX(System.Drawing.Bitmap aBmp, int aX)
+        {
+            return aBmp.Width - aX - 1;
+        }
+
+        public int ScreenReversedY(System.Drawing.Bitmap aBmp, int aY)
+        {
+            return iBmp.Height - aY - 1;
+        }
+
+        public int ScreenX(System.Drawing.Bitmap aBmp, int aX)
+        {
+            return aX;
+        }
+
+        public int ScreenY(System.Drawing.Bitmap aBmp, int aY)
+        {
+            return aY;
+        }
+
+
+        //This is our timer tick responsible to perform our render
         private void timer_Tick(object sender, EventArgs e)
         {
             //Update our animations
@@ -159,9 +186,23 @@ namespace SharpDisplayManager
                 }
                 tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
                 //iBmp.Save("D:\\capture.png");
-                
-                //iBmp.
 
+                //Select proper coordinate translation functions
+                //We used delegate/function pointer to support reverse screen without doing an extra test on each pixels
+                CoordinateTranslationDelegate screenX;
+                CoordinateTranslationDelegate screenY;
+
+                if (Properties.Settings.Default.DisplayReverseScreen)
+                {
+                    screenX = ScreenReversedX;
+                    screenY = ScreenReversedY;
+                }
+                else
+                {
+                    screenX = ScreenX;
+                    screenY = ScreenY;
+                }
+                
                 //Send it to our display
                 for (int i = 0; i < iBmp.Width; i++)
                 {
@@ -172,7 +213,7 @@ namespace SharpDisplayManager
                             uint color = (uint)iBmp.GetPixel(i, j).ToArgb();
                             //For some reason when the app is minimized in the task bar only the alpha of our color is set.
                             //Thus that strange test for rendering to work both when the app is in the task bar and when it isn't.
-                            iDisplay.SetPixel(i, j, Convert.ToInt32(!(color != 0xFF000000)));
+                            iDisplay.SetPixel(screenX(iBmp, i), screenY(iBmp, j), Convert.ToInt32(!(color != 0xFF000000)));
                         }
                     }
                 }
@@ -263,6 +304,7 @@ namespace SharpDisplayManager
 
         private void checkBoxShowBorders_CheckedChanged(object sender, EventArgs e)
         {
+            //Save our show borders setting
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             Properties.Settings.Default.DisplayShowBorders = checkBoxShowBorders.Checked;
             Properties.Settings.Default.Save();
@@ -270,7 +312,15 @@ namespace SharpDisplayManager
 
         private void checkBoxConnectOnStartup_CheckedChanged(object sender, EventArgs e)
         {
+            //Save our connect on startup setting
             Properties.Settings.Default.DisplayConnectOnStartup = checkBoxConnectOnStartup.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBoxReverseScreen_CheckedChanged(object sender, EventArgs e)
+        {
+            //Save our reverse screen setting
+            Properties.Settings.Default.DisplayReverseScreen = checkBoxReverseScreen.Checked;
             Properties.Settings.Default.Save();
         }
 
