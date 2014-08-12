@@ -25,8 +25,9 @@ namespace SharpDisplayClient
 
         private void buttonSetText_Click(object sender, EventArgs e)
         {
-            iClient.SetText(0,"Top");
-            iClient.SetText(1, "Bottom");
+            //iClient.SetText(0,"Top");
+            //iClient.SetText(1, "Bottom");
+            iClient.SetTexts(new string[] { "Top", "Bottom" });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
