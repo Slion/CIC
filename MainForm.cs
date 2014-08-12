@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using CodeProject.Dialog;
 using System.Drawing.Imaging;
+using System.ServiceModel;
 
 
 namespace SharpDisplayManager
@@ -20,6 +21,7 @@ namespace SharpDisplayManager
         Display iDisplay;
         System.Drawing.Bitmap iBmp;
         bool iCreateBitmap; //Workaround render to bitmap issues when minimized
+        ServiceHost iServiceHost;
 
         public MainForm()
         {
@@ -44,6 +46,8 @@ namespace SharpDisplayManager
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            StartServer();
+
             if (Properties.Settings.Default.DisplayConnectOnStartup)
             {
                 iDisplay.Open();
@@ -91,6 +95,8 @@ namespace SharpDisplayManager
             tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
             //Bitmap bmpToSave = new Bitmap(bmp);
             bmp.Save("D:\\capture.png");
+
+            marqueeLabelTop.Text = "Sweet";
 
             /*
             string outputFileName = "d:\\capture.png";
@@ -333,6 +339,30 @@ namespace SharpDisplayManager
                 iCreateBitmap = true;
             }
         }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            StopServer();
+        }
+
+        public void StartServer()
+        {
+            iServiceHost = new ServiceHost
+                (
+                    typeof(DisplayServer),
+                    new Uri[] { new Uri("net.pipe://localhost") }
+                );
+
+            iServiceHost.AddServiceEndpoint(typeof(IDisplayService), new NetNamedPipeBinding(), "DisplayService");
+            iServiceHost.Open();
+        }
+
+        public void StopServer()
+        {
+            //Tell connected client first? Is that possible?
+            iServiceHost.Close();
+        }
+
 
     }
 }
