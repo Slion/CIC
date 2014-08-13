@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using System.Collections;
 using System.ServiceModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SharpDisplayManager
 {
@@ -47,8 +49,18 @@ namespace SharpDisplayManager
         public void Connect(string aClientName)
         {
             IDisplayServiceCallback callback = OperationContext.Current.GetCallbackChannel<IDisplayServiceCallback>();
-            callback.OnConnected();
+            //remove the old client if any
+            if (Program.iMainForm.iClients.Keys.Contains(aClientName))
+            {
+                Program.iMainForm.iClients.Remove(aClientName);
+            }
+            //Register our client
+            Program.iMainForm.iClients.Add(aClientName, callback);
+  
+            //For some reason MP still hangs on that one
+            //callback.OnConnected();
         }
+
 
     }
 
