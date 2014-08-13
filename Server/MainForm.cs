@@ -350,10 +350,10 @@ namespace SharpDisplayManager
             iServiceHost = new ServiceHost
                 (
                     typeof(DisplayServer),
-                    new Uri[] { new Uri("net.pipe://localhost") }
+                    new Uri[] { new Uri("net.tcp://localhost:8001/") }
                 );
 
-            iServiceHost.AddServiceEndpoint(typeof(IDisplayService), new NetNamedPipeBinding(), "DisplayService");
+            iServiceHost.AddServiceEndpoint(typeof(IDisplayService), new NetTcpBinding(), "DisplayService");
             iServiceHost.Open();
         }
 

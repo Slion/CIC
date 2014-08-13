@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using SharpDisplayManager;
+
 
 namespace SharpDisplayClient
 {
     public partial class MainForm : Form
     {
-        ChannelFactory<SharpDisplayManager.IDisplayService> iChannelFactory;
-        SharpDisplayManager.IDisplayService iClient;
+        ClientOutput iClientOutput;
+        ClientInput iClientInput;
 
         public MainForm()
         {
@@ -27,18 +27,17 @@ namespace SharpDisplayClient
         {
             //iClient.SetText(0,"Top");
             //iClient.SetText(1, "Bottom");
-            iClient.SetTexts(new string[] { "Top", "Bottom" });
+            iClientOutput.SetTexts(new string[] { "Top", "Bottom" });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            iClientInput = new ClientInput();
+            InstanceContext context = new InstanceContext(iClientInput);
+            iClientOutput = new ClientOutput(context);
 
-            iChannelFactory = new ChannelFactory<SharpDisplayManager.IDisplayService>(
-                new NetNamedPipeBinding(),
-                new EndpointAddress(
-                "net.pipe://localhost/DisplayService"));
+            iClientOutput.Connect("TestClient");
 
-            iClient = iChannelFactory.CreateChannel();
         }
     }
 }

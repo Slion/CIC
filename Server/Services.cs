@@ -2,15 +2,29 @@
 using System.ServiceModel;
 using System.Collections;
 
+
 namespace SharpDisplayManager
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(IDisplayServiceCallback))]
     public interface IDisplayService
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
+        void Connect(string aClientName);
+
+        [OperationContract(IsOneWay = true)]
         void SetText(int aLineIndex, string aText);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void SetTexts(System.Collections.Generic.IList<string> aTexts);
+    }
+
+
+    public interface IDisplayServiceCallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void OnConnected();
+
+        [OperationContract]
+        void OnServerClosing();
     }
 }
