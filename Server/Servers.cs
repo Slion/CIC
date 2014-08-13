@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections;
+using System.ServiceModel;
 
 namespace SharpDisplayManager
 {
@@ -8,6 +9,7 @@ namespace SharpDisplayManager
     /// Implement our display service.
     /// This class is instantiated anew whenever a client send a request.
     /// </summary>
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     class DisplayServer : IDisplayService
     {
         //From IDisplayService
@@ -39,6 +41,13 @@ namespace SharpDisplayManager
                 {
                     Program.iMainForm.marqueeLabelBottom.Text = aText;
                 }
+        }
+
+        //
+        public void Connect(string aClientName)
+        {
+            IDisplayServiceCallback callback = OperationContext.Current.GetCallbackChannel<IDisplayServiceCallback>();
+            callback.OnConnected();
         }
 
     }
