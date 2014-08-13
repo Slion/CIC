@@ -27,7 +27,8 @@ namespace SharpDisplayClient
             //Debug.Assert(Thread.CurrentThread.IsThreadPoolThread);
             //Trace.WriteLine("Callback thread = " + Thread.CurrentThread.ManagedThreadId);
 
-            MessageBox.Show("OnServerClosing()", "Client");
+            //MessageBox.Show("OnServerClosing()", "Client");
+            Program.iMainForm.CloseConnection();
         }
     }
 

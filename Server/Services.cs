@@ -24,7 +24,7 @@ namespace SharpDisplayManager
         [OperationContract(IsOneWay = true)]
         void OnConnected();
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void OnServerClosing();
     }
 }

@@ -22,11 +22,16 @@ namespace SharpDisplayManager
         System.Drawing.Bitmap iBmp;
         bool iCreateBitmap; //Workaround render to bitmap issues when minimized
         ServiceHost iServiceHost;
+        /// <summary>
+        /// Our collection of clients
+        /// </summary>
+        public Dictionary<string, IDisplayServiceCallback> iClients;
 
         public MainForm()
         {
             LastTickTime = DateTime.Now;
             iDisplay = new Display();
+            iClients = new Dictionary<string, IDisplayServiceCallback>();
 
             InitializeComponent();
             UpdateStatus();
@@ -360,8 +365,37 @@ namespace SharpDisplayManager
         public void StopServer()
         {
             //Tell connected client first? Is that possible?
+            BroadcastCloseEvent();
             iServiceHost.Close();
         }
+
+        public void BroadcastCloseEvent()
+        {
+            var inactiveClients = new List<string>();
+            foreach (var client in iClients)
+            {
+                //if (client.Key != eventData.ClientName)
+                {
+                    try
+                    {
+                        client.Value.OnServerClosing(/*eventData*/);
+                    }
+                    catch (Exception ex)
+                    {
+                        inactiveClients.Add(client.Key);
+                    }
+                }
+            }
+
+            if (inactiveClients.Count > 0)
+            {
+                foreach (var client in inactiveClients)
+                {
+                    iClients.Remove(client);
+                }
+            }
+        }
+
 
 
     }

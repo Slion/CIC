@@ -8,6 +8,8 @@ namespace SharpDisplayClient
 {
     static class Program
     {
+        public static MainForm iMainForm;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +18,8 @@ namespace SharpDisplayClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            iMainForm = new MainForm();
+            Application.Run(iMainForm);
         }
     }
 }
