@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace SharpDisplayClient
 {
-    static class Program
+    static public class Program
     {
         public static MainForm iMainForm;
 
@@ -14,7 +14,7 @@ namespace SharpDisplayClient
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static public void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

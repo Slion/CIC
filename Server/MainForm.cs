@@ -11,7 +11,10 @@ using System.IO;
 using CodeProject.Dialog;
 using System.Drawing.Imaging;
 using System.ServiceModel;
+using System.Threading;
+//
 using SharpDisplayInterface;
+using SharpDisplayClient;
 
 
 namespace SharpDisplayManager
@@ -395,6 +398,12 @@ namespace SharpDisplayManager
                     iClients.Remove(client);
                 }
             }
+        }
+
+        private void buttonStartClient_Click(object sender, EventArgs e)
+        {
+            Thread clientThread = new Thread(SharpDisplayClient.Program.Main);
+            clientThread.Start();
         }
 
 
