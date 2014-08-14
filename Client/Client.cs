@@ -11,7 +11,10 @@ using System.ServiceModel.Channels;
 
 namespace SharpDisplayClient
 {
-    public partial class ClientInput : IDisplayServiceCallback
+    /// <summary>
+    ///
+    /// </summary>
+    public partial class ClientInput : IDisplayServiceCallback, IDisposable
     {
         public void OnConnected()
         {
@@ -30,10 +33,18 @@ namespace SharpDisplayClient
             //MessageBox.Show("OnServerClosing()", "Client");
             Program.iMainForm.CloseConnection();
         }
+
+        //From IDisposable
+        public void Dispose()
+        {
+
+        }
     }
 
 
-
+    /// <summary>
+    ///
+    /// </summary>
     public partial class ClientOutput : DuplexClientBase<IDisplayService>, IDisplayService
     {
         public ClientOutput(InstanceContext callbackInstance)

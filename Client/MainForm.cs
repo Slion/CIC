@@ -16,7 +16,6 @@ namespace SharpDisplayClient
     public partial class MainForm : Form
     {
         ClientOutput iClientOutput;
-        InstanceContext iInstanceContext;
         ClientInput iClientInput;
 
         public MainForm()
@@ -34,8 +33,9 @@ namespace SharpDisplayClient
         private void MainForm_Load(object sender, EventArgs e)
         {
             iClientInput = new ClientInput();
-            iInstanceContext = new InstanceContext(iClientInput);
-            iClientOutput = new ClientOutput(iInstanceContext);
+            //Instance context is then managed by our client class
+            InstanceContext instanceContext = new InstanceContext(iClientInput);
+            iClientOutput = new ClientOutput(instanceContext);
 
             iClientOutput.Connect("TestClient");
 
@@ -43,9 +43,6 @@ namespace SharpDisplayClient
 
         public void CloseConnection()
         {
-            //If we close the instance context after the client output it hangs
-            iInstanceContext.Close();
-            iInstanceContext = null;
             iClientOutput.Close();
             iClientOutput = null;
             iClientInput = null;
