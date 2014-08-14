@@ -32,6 +32,7 @@ namespace SharpDisplayClient
 
             //MessageBox.Show("OnServerClosing()", "Client");
             Program.iMainForm.CloseConnection();
+            Program.iMainForm.Close();
         }
 
         //From IDisposable
