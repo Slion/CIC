@@ -31,10 +31,14 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
+            this.buttonSuspend = new System.Windows.Forms.Button();
+            this.buttonStartClient = new System.Windows.Forms.Button();
             this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
             this.panelDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
+            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.checkBoxShowBorders = new System.Windows.Forms.CheckBox();
             this.trackBarBrightness = new System.Windows.Forms.TrackBar();
             this.buttonFill = new System.Windows.Forms.Button();
@@ -51,10 +55,7 @@
             this.toolStripStatusLabelSpring = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelPower = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonStartClient = new System.Windows.Forms.Button();
-            this.buttonSuspend = new System.Windows.Forms.Button();
-            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
-            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
+            this.checkBoxFixedPitchFontOnly = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             this.panelDisplay.SuspendLayout();
@@ -78,6 +79,7 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.checkBoxFixedPitchFontOnly);
             this.tabPageDisplay.Controls.Add(this.buttonSuspend);
             this.tabPageDisplay.Controls.Add(this.buttonStartClient);
             this.tabPageDisplay.Controls.Add(this.checkBoxReverseScreen);
@@ -98,6 +100,26 @@
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
+            // 
+            // buttonSuspend
+            // 
+            this.buttonSuspend.Location = new System.Drawing.Point(7, 253);
+            this.buttonSuspend.Name = "buttonSuspend";
+            this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
+            this.buttonSuspend.TabIndex = 16;
+            this.buttonSuspend.Text = "Suspend";
+            this.buttonSuspend.UseVisualStyleBackColor = true;
+            this.buttonSuspend.Click += new System.EventHandler(this.buttonSuspend_Click);
+            // 
+            // buttonStartClient
+            // 
+            this.buttonStartClient.Location = new System.Drawing.Point(6, 282);
+            this.buttonStartClient.Name = "buttonStartClient";
+            this.buttonStartClient.Size = new System.Drawing.Size(75, 23);
+            this.buttonStartClient.TabIndex = 15;
+            this.buttonStartClient.Text = "Start Client";
+            this.buttonStartClient.UseVisualStyleBackColor = true;
+            this.buttonStartClient.Click += new System.EventHandler(this.buttonStartClient_Click);
             // 
             // checkBoxReverseScreen
             // 
@@ -205,6 +227,39 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 5;
+            // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Separator = "|";
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 30);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Separator = null;
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
             // checkBoxShowBorders
             // 
@@ -346,58 +401,15 @@
             this.toolStripStatusLabelFps.Size = new System.Drawing.Size(26, 17);
             this.toolStripStatusLabelFps.Text = "FPS";
             // 
-            // buttonStartClient
+            // checkBoxFixedPitchFontOnly
             // 
-            this.buttonStartClient.Location = new System.Drawing.Point(6, 282);
-            this.buttonStartClient.Name = "buttonStartClient";
-            this.buttonStartClient.Size = new System.Drawing.Size(75, 23);
-            this.buttonStartClient.TabIndex = 15;
-            this.buttonStartClient.Text = "Start Client";
-            this.buttonStartClient.UseVisualStyleBackColor = true;
-            this.buttonStartClient.Click += new System.EventHandler(this.buttonStartClient_Click);
-            // 
-            // buttonSuspend
-            // 
-            this.buttonSuspend.Location = new System.Drawing.Point(7, 253);
-            this.buttonSuspend.Name = "buttonSuspend";
-            this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
-            this.buttonSuspend.TabIndex = 16;
-            this.buttonSuspend.Text = "Suspend";
-            this.buttonSuspend.UseVisualStyleBackColor = true;
-            this.buttonSuspend.Click += new System.EventHandler(this.buttonSuspend_Click);
-            // 
-            // marqueeLabelTop
-            // 
-            this.marqueeLabelTop.AutoEllipsis = true;
-            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -376);
-            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelTop.Name = "marqueeLabelTop";
-            this.marqueeLabelTop.OwnTimer = false;
-            this.marqueeLabelTop.PixelsPerSecond = 64;
-            this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 20);
-            this.marqueeLabelTop.TabIndex = 2;
-            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelTop.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabelBottom
-            // 
-            this.marqueeLabelBottom.AutoEllipsis = true;
-            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -250);
-            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
-            this.marqueeLabelBottom.OwnTimer = false;
-            this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = null;
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
-            this.marqueeLabelBottom.TabIndex = 3;
-            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
+            this.checkBoxFixedPitchFontOnly.AutoSize = true;
+            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(113, 275);
+            this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
+            this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
+            this.checkBoxFixedPitchFontOnly.TabIndex = 17;
+            this.checkBoxFixedPitchFontOnly.Text = "Fixed pitch font only";
+            this.checkBoxFixedPitchFontOnly.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -453,6 +465,7 @@
         private System.Windows.Forms.CheckBox checkBoxReverseScreen;
         private System.Windows.Forms.Button buttonStartClient;
         private System.Windows.Forms.Button buttonSuspend;
+        private System.Windows.Forms.CheckBox checkBoxFixedPitchFontOnly;
     }
 }
 

@@ -71,6 +71,9 @@ namespace SharpDisplayManager
             //fontDialog.ShowApply = true;
             fontDialog.ShowEffects = true;
             fontDialog.Font = marqueeLabelTop.Font;
+
+            fontDialog.FixedPitchOnly = checkBoxFixedPitchFontOnly.Checked;
+
             //fontDialog.ShowHelp = true;
 
             //fontDlg.MaxSize = 40;
