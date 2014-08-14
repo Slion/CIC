@@ -17,6 +17,9 @@ namespace SharpDisplayInterface
         void Connect(string aClientName);
 
         [OperationContract(IsOneWay = true)]
+        void Disconnect(string aClientName);
+
+        [OperationContract(IsOneWay = true)]
         void SetText(int aLineIndex, string aText);
 
         [OperationContract(IsOneWay = true)]

@@ -49,17 +49,24 @@ namespace SharpDisplayManager
         //
         public void Connect(string aClientName)
         {
+            Disconnect(aClientName);
+
+            //Register our client and its callback interface
             IDisplayServiceCallback callback = OperationContext.Current.GetCallbackChannel<IDisplayServiceCallback>();
+            Program.iMainForm.iClients.Add(aClientName, callback);
+
+            //For some reason MP still hangs on that one
+            //callback.OnConnected();
+        }
+
+        ///
+        public void Disconnect(string aClientName)
+        {
             //remove the old client if any
             if (Program.iMainForm.iClients.Keys.Contains(aClientName))
             {
                 Program.iMainForm.iClients.Remove(aClientName);
             }
-            //Register our client
-            Program.iMainForm.iClients.Add(aClientName, callback);
-
-            //For some reason MP still hangs on that one
-            //callback.OnConnected();
         }
 
 

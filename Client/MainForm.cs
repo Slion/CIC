@@ -15,8 +15,8 @@ namespace SharpDisplayClient
 {
     public partial class MainForm : Form
     {
-        ClientOutput iClientOutput;
-        ClientInput iClientInput;
+        Client iClient;
+        Callback iCallback;
 
         public MainForm()
         {
@@ -27,25 +27,34 @@ namespace SharpDisplayClient
         {
             //iClient.SetText(0,"Top");
             //iClient.SetText(1, "Bottom");
-            iClientOutput.SetTexts(new string[] { "Top", "Bottom" });
+            iClient.SetTexts(new string[] { "Top", "Bottom" });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            iClientInput = new ClientInput();
+            iCallback = new Callback();
             //Instance context is then managed by our client class
-            InstanceContext instanceContext = new InstanceContext(iClientInput);
-            iClientOutput = new ClientOutput(instanceContext);
+            InstanceContext instanceContext = new InstanceContext(iCallback);
+            iClient = new Client(instanceContext);
 
-            iClientOutput.Connect("TestClient");
+            iClient.Connect("TestClient");
 
         }
 
         public void CloseConnection()
         {
-            iClientOutput.Close();
-            iClientOutput = null;
-            iClientInput = null;
+            iClient.Close();
+            iClient = null;
+            iCallback = null;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (iClient != null) //Could catch exception instead
+            {
+                iClient.Disconnect();
+                CloseConnection();
+            }
         }
     }
 }
