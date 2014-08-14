@@ -11,6 +11,7 @@ using System.IO;
 using CodeProject.Dialog;
 using System.Drawing.Imaging;
 using System.ServiceModel;
+using SharpDisplayInterface;
 
 
 namespace SharpDisplayManager
@@ -190,7 +191,7 @@ namespace SharpDisplayManager
             {
                 CheckForRequestResults();
 
-                //Draw to bitmap                
+                //Draw to bitmap
                 if (iCreateBitmap)
                 {
                     iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
@@ -213,7 +214,7 @@ namespace SharpDisplayManager
                     screenX = ScreenX;
                     screenY = ScreenY;
                 }
-                
+
                 //Send it to our display
                 for (int i = 0; i < iBmp.Width; i++)
                 {

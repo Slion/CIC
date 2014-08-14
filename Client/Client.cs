@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SharpDisplayManager;
+using SharpDisplayInterface;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
 
 namespace SharpDisplayClient
 {
-    public partial class ClientInput : SharpDisplayManager.IDisplayServiceCallback
+    public partial class ClientInput : IDisplayServiceCallback
     {
         public void OnConnected()
         {

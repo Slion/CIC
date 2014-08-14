@@ -4,6 +4,7 @@ using System.Collections;
 using System.ServiceModel;
 using System.Collections.Generic;
 using System.Linq;
+using SharpDisplayInterface;
 
 namespace SharpDisplayManager
 {
@@ -30,7 +31,7 @@ namespace SharpDisplayManager
                 }
             }
         }
-        
+
         //
         public void SetText(int aLineIndex, string aText)
         {
@@ -56,7 +57,7 @@ namespace SharpDisplayManager
             }
             //Register our client
             Program.iMainForm.iClients.Add(aClientName, callback);
-  
+
             //For some reason MP still hangs on that one
             //callback.OnConnected();
         }

@@ -80,9 +80,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Server\SharpDisplayManager.csproj">
-      <Project>{1da8c1b3-18c5-4e74-be4e-0b0e15fbaf49}</Project>
-      <Name>SharpDisplayManager</Name>
+    <ProjectReference Include="..\Interface\SharpDisplayInterface.csproj">
+      <Project>{88eee0dc-abbc-4738-bad6-7e08cf7f50f9}</Project>
+      <Name>SharpDisplayInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
