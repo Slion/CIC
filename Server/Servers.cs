@@ -67,6 +67,7 @@ namespace SharpDisplayManager
             {
                 Program.iMainForm.iClients.Remove(aClientName);
             }
+
         }
 
 

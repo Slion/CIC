@@ -30,6 +30,7 @@ namespace SharpDisplayManager
         /// Our collection of clients
         /// </summary>
         public Dictionary<string, IDisplayServiceCallback> iClients;
+        public bool iClosing;
 
         public MainForm()
         {
@@ -372,8 +373,15 @@ namespace SharpDisplayManager
         public void StopServer()
         {
             //Tell connected client first? Is that possible?
-            BroadcastCloseEvent();
-            iServiceHost.Close();
+
+            if (iClients.Count>0)
+            {
+                //Tell our clients
+                BroadcastCloseEvent();
+            }
+
+            //iServiceHost.Close();
+
         }
 
         public void BroadcastCloseEvent()
@@ -420,6 +428,11 @@ namespace SharpDisplayManager
             {
                 buttonSuspend.Text = "Pause";
             }
+        }
+
+        private void buttonCloseClients_Click(object sender, EventArgs e)
+        {
+            BroadcastCloseEvent();
         }
 
 

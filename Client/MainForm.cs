@@ -37,24 +37,38 @@ namespace SharpDisplayClient
             InstanceContext instanceContext = new InstanceContext(iCallback);
             iClient = new Client(instanceContext);
 
-            iClient.Connect("TestClient");
+            //Connect using unique name
+            string name = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt");
+            iClient.Connect(name);
+            Text = Text + ": " + name;
 
         }
 
         public void CloseConnection()
         {
-            iClient.Close();
+            if (IsClientReady())
+            {
+                //iClient.Disconnect();
+                iClient.Close();
+            }
+
             iClient = null;
             iCallback = null;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (iClient != null) //Could catch exception instead
+            if (IsClientReady()) //Could catch exception instead
             {
                 iClient.Disconnect();
-                CloseConnection();
             }
+
+            CloseConnection();
+        }
+
+        public bool IsClientReady()
+        {
+            return (iClient != null && iClient.State == CommunicationState.Opened);
         }
     }
 }

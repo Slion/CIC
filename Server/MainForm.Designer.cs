@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
+            this.checkBoxFixedPitchFontOnly = new System.Windows.Forms.CheckBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
             this.buttonStartClient = new System.Windows.Forms.Button();
             this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
@@ -55,7 +56,7 @@
             this.toolStripStatusLabelSpring = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelPower = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
-            this.checkBoxFixedPitchFontOnly = new System.Windows.Forms.CheckBox();
+            this.buttonCloseClients = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             this.panelDisplay.SuspendLayout();
@@ -79,6 +80,7 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.buttonCloseClients);
             this.tabPageDisplay.Controls.Add(this.checkBoxFixedPitchFontOnly);
             this.tabPageDisplay.Controls.Add(this.buttonSuspend);
             this.tabPageDisplay.Controls.Add(this.buttonStartClient);
@@ -100,6 +102,16 @@
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxFixedPitchFontOnly
+            // 
+            this.checkBoxFixedPitchFontOnly.AutoSize = true;
+            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(113, 275);
+            this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
+            this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
+            this.checkBoxFixedPitchFontOnly.TabIndex = 17;
+            this.checkBoxFixedPitchFontOnly.Text = "Fixed pitch font only";
+            this.checkBoxFixedPitchFontOnly.UseVisualStyleBackColor = true;
             // 
             // buttonSuspend
             // 
@@ -401,15 +413,15 @@
             this.toolStripStatusLabelFps.Size = new System.Drawing.Size(26, 17);
             this.toolStripStatusLabelFps.Text = "FPS";
             // 
-            // checkBoxFixedPitchFontOnly
+            // buttonCloseClients
             // 
-            this.checkBoxFixedPitchFontOnly.AutoSize = true;
-            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(113, 275);
-            this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
-            this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
-            this.checkBoxFixedPitchFontOnly.TabIndex = 17;
-            this.checkBoxFixedPitchFontOnly.Text = "Fixed pitch font only";
-            this.checkBoxFixedPitchFontOnly.UseVisualStyleBackColor = true;
+            this.buttonCloseClients.Location = new System.Drawing.Point(7, 224);
+            this.buttonCloseClients.Name = "buttonCloseClients";
+            this.buttonCloseClients.Size = new System.Drawing.Size(75, 23);
+            this.buttonCloseClients.TabIndex = 18;
+            this.buttonCloseClients.Text = "Close Clients";
+            this.buttonCloseClients.UseVisualStyleBackColor = true;
+            this.buttonCloseClients.Click += new System.EventHandler(this.buttonCloseClients_Click);
             // 
             // MainForm
             // 
@@ -466,6 +478,7 @@
         private System.Windows.Forms.Button buttonStartClient;
         private System.Windows.Forms.Button buttonSuspend;
         private System.Windows.Forms.CheckBox checkBoxFixedPitchFontOnly;
+        private System.Windows.Forms.Button buttonCloseClients;
     }
 }
 
