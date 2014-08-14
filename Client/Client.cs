@@ -14,7 +14,7 @@ namespace SharpDisplayClient
     /// <summary>
     ///
     /// </summary>
-    public partial class ClientInput : IDisplayServiceCallback, IDisposable
+    public partial class Callback : IDisplayServiceCallback, IDisposable
     {
         public void OnConnected()
         {
@@ -45,15 +45,24 @@ namespace SharpDisplayClient
     /// <summary>
     ///
     /// </summary>
-    public partial class ClientOutput : DuplexClientBase<IDisplayService>, IDisplayService
+    public partial class Client : DuplexClientBase<IDisplayService>
     {
-        public ClientOutput(InstanceContext callbackInstance)
+        private string Name { get; set; }
+
+        public Client(InstanceContext callbackInstance)
             : base(callbackInstance, new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:8001/DisplayService"))
         { }
 
         public void Connect(string aClientName)
         {
+            Name = aClientName;
             Channel.Connect(aClientName);
+        }
+
+        public void Disconnect()
+        {
+            Channel.Disconnect(Name);
+            Name = "";
         }
 
         public void SetText(int aLineIndex, string aText)
@@ -66,7 +75,6 @@ namespace SharpDisplayClient
         {
             Channel.SetTexts(aTexts);
         }
-
 
     }
 }
