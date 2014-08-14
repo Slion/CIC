@@ -5,6 +5,7 @@ using System.Collections;
 
 namespace SharpDisplayManager
 {
+    /*
     [ServiceContract(CallbackContract = typeof(IDisplayServiceCallback))]
     public interface IDisplayService
     {
@@ -27,4 +28,5 @@ namespace SharpDisplayManager
         [OperationContract(IsOneWay = true)]
         void OnServerClosing();
     }
+     */
 }
