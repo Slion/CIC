@@ -16,6 +16,9 @@ namespace SharpDisplayClient
         [STAThread]
         static public void Main()
         {
+            //Set high priority to our process to avoid lags when rendering to our screen
+            System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.AboveNormal;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             iMainForm = new MainForm();
