@@ -406,6 +406,19 @@ namespace SharpDisplayManager
             clientThread.Start();
         }
 
+        private void buttonSuspend_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = !timer.Enabled;
+            if (!timer.Enabled)
+            {
+                buttonSuspend.Text = "Suspend";
+            }
+            else
+            {
+                buttonSuspend.Text = "Pause";
+            }
+        }
+
 
 
     }
