@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
+            this.buttonCloseClients = new System.Windows.Forms.Button();
             this.checkBoxFixedPitchFontOnly = new System.Windows.Forms.CheckBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
             this.buttonStartClient = new System.Windows.Forms.Button();
@@ -38,8 +39,6 @@
             this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
             this.panelDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
-            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.checkBoxShowBorders = new System.Windows.Forms.CheckBox();
             this.trackBarBrightness = new System.Windows.Forms.TrackBar();
             this.buttonFill = new System.Windows.Forms.Button();
@@ -56,13 +55,17 @@
             this.toolStripStatusLabelSpring = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelPower = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
-            this.buttonCloseClients = new System.Windows.Forms.Button();
+            this.tabPageClients = new System.Windows.Forms.TabPage();
+            this.treeViewClients = new System.Windows.Forms.TreeView();
+            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
+            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.tabControl.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
             this.statusStrip.SuspendLayout();
+            this.tabPageClients.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -72,6 +75,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabPageDisplay);
             this.tabControl.Controls.Add(this.tabPageTests);
+            this.tabControl.Controls.Add(this.tabPageClients);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -102,6 +106,16 @@
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
+            // 
+            // buttonCloseClients
+            // 
+            this.buttonCloseClients.Location = new System.Drawing.Point(7, 224);
+            this.buttonCloseClients.Name = "buttonCloseClients";
+            this.buttonCloseClients.Size = new System.Drawing.Size(75, 23);
+            this.buttonCloseClients.TabIndex = 18;
+            this.buttonCloseClients.Text = "Close Clients";
+            this.buttonCloseClients.UseVisualStyleBackColor = true;
+            this.buttonCloseClients.Click += new System.EventHandler(this.buttonCloseClients_Click);
             // 
             // checkBoxFixedPitchFontOnly
             // 
@@ -239,39 +253,6 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 5;
-            // 
-            // marqueeLabelTop
-            // 
-            this.marqueeLabelTop.AutoEllipsis = true;
-            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
-            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelTop.Name = "marqueeLabelTop";
-            this.marqueeLabelTop.OwnTimer = false;
-            this.marqueeLabelTop.PixelsPerSecond = 64;
-            this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 30);
-            this.marqueeLabelTop.TabIndex = 2;
-            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelTop.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabelBottom
-            // 
-            this.marqueeLabelBottom.AutoEllipsis = true;
-            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
-            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
-            this.marqueeLabelBottom.OwnTimer = false;
-            this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = null;
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
-            this.marqueeLabelBottom.TabIndex = 3;
-            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
             // checkBoxShowBorders
             // 
@@ -413,15 +394,57 @@
             this.toolStripStatusLabelFps.Size = new System.Drawing.Size(26, 17);
             this.toolStripStatusLabelFps.Text = "FPS";
             // 
-            // buttonCloseClients
+            // tabPageClients
             // 
-            this.buttonCloseClients.Location = new System.Drawing.Point(7, 224);
-            this.buttonCloseClients.Name = "buttonCloseClients";
-            this.buttonCloseClients.Size = new System.Drawing.Size(75, 23);
-            this.buttonCloseClients.TabIndex = 18;
-            this.buttonCloseClients.Text = "Close Clients";
-            this.buttonCloseClients.UseVisualStyleBackColor = true;
-            this.buttonCloseClients.Click += new System.EventHandler(this.buttonCloseClients_Click);
+            this.tabPageClients.Controls.Add(this.treeViewClients);
+            this.tabPageClients.Location = new System.Drawing.Point(4, 22);
+            this.tabPageClients.Name = "tabPageClients";
+            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageClients.Size = new System.Drawing.Size(592, 369);
+            this.tabPageClients.TabIndex = 2;
+            this.tabPageClients.Text = "Clients";
+            this.tabPageClients.UseVisualStyleBackColor = true;
+            // 
+            // treeViewClients
+            // 
+            this.treeViewClients.Location = new System.Drawing.Point(6, 6);
+            this.treeViewClients.Name = "treeViewClients";
+            this.treeViewClients.Size = new System.Drawing.Size(439, 357);
+            this.treeViewClients.TabIndex = 0;
+            this.treeViewClients.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewClients_AfterSelect);
+            // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Separator = "|";
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 9);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 21);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Separator = null;
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
             // MainForm
             // 
@@ -444,6 +467,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.tabPageClients.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -471,14 +495,16 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelPower;
         private System.Windows.Forms.Panel panelDisplay;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        public MarqueeLabel marqueeLabelTop;
-        public MarqueeLabel marqueeLabelBottom;
+        private MarqueeLabel marqueeLabelTop;
+        private MarqueeLabel marqueeLabelBottom;
         private System.Windows.Forms.CheckBox checkBoxConnectOnStartup;
         private System.Windows.Forms.CheckBox checkBoxReverseScreen;
         private System.Windows.Forms.Button buttonStartClient;
         private System.Windows.Forms.Button buttonSuspend;
         private System.Windows.Forms.CheckBox checkBoxFixedPitchFontOnly;
         private System.Windows.Forms.Button buttonCloseClients;
+        private System.Windows.Forms.TabPage tabPageClients;
+        private System.Windows.Forms.TreeView treeViewClients;
     }
 }
 

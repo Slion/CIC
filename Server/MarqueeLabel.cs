@@ -203,6 +203,7 @@ namespace SharpDisplayManager
 
         private void HandleTextSizeChange()
         {
+            CurrentPosition = 0;
             //For all string measurements and drawing issues refer to the following article:
             // http://stackoverflow.com/questions/1203087/why-is-graphics-measurestring-returning-a-higher-than-expected-number
             //Update text size according to text and font

@@ -14,7 +14,8 @@ namespace SharpDisplayClient
     /// <summary>
     ///
     /// </summary>
-    public partial class Callback : IDisplayServiceCallback, IDisposable
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    public class Callback : IDisplayServiceCallback, IDisposable
     {
         public void OnConnected()
         {
@@ -46,12 +47,14 @@ namespace SharpDisplayClient
     /// <summary>
     ///
     /// </summary>
-    public partial class Client : DuplexClientBase<IDisplayService>
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    public class Client : DuplexClientBase<IDisplayService>
     {
-        private string Name { get; set; }
+        public string Name { get; set; }
+        public string SessionId { get { return InnerChannel.SessionId; } }
 
         public Client(InstanceContext callbackInstance)
-            : base(callbackInstance, new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:8001/DisplayService"))
+            : base(callbackInstance, new NetTcpBinding(SecurityMode.None, true), new EndpointAddress("net.tcp://localhost:8001/DisplayService"))
         { }
 
         public void Connect(string aClientName)
@@ -76,6 +79,8 @@ namespace SharpDisplayClient
         {
             Channel.SetTexts(aTexts);
         }
+
+        
 
     }
 }

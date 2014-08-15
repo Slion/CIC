@@ -27,7 +27,7 @@ namespace SharpDisplayClient
         {
             //iClient.SetText(0,"Top");
             //iClient.SetText(1, "Bottom");
-            iClient.SetTexts(new string[] { "Top", "Bottom" });
+            iClient.SetTexts(new string[] { iClient.Name, iClient.SessionId });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -40,7 +40,8 @@ namespace SharpDisplayClient
             //Connect using unique name
             string name = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt");
             iClient.Connect(name);
-            Text = Text + ": " + name;
+            //Text = Text + ": " + name;
+            Text = Text + ": " + iClient.SessionId;
 
         }
 
