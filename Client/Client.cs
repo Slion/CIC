@@ -14,9 +14,16 @@ namespace SharpDisplayClient
     /// <summary>
     ///
     /// </summary>
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Callback : IDisplayServiceCallback, IDisposable
     {
+        private MainForm MainForm { get; set; }
+
+        public Callback(MainForm aMainForm)
+        {
+            MainForm = aMainForm;
+        }
+
         public void OnConnected()
         {
             //Debug.Assert(Thread.CurrentThread.IsThreadPoolThread);
@@ -32,8 +39,8 @@ namespace SharpDisplayClient
             //Trace.WriteLine("Callback thread = " + Thread.CurrentThread.ManagedThreadId);
 
             //MessageBox.Show("OnServerClosing()", "Client");
-            Program.iMainForm.CloseConnection();
-            Program.iMainForm.Close();
+            MainForm.CloseConnectionThreadSafe();
+            MainForm.CloseThreadSafe();
         }
 
         //From IDisposable
@@ -47,7 +54,7 @@ namespace SharpDisplayClient
     /// <summary>
     ///
     /// </summary>
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Client : DuplexClientBase<IDisplayService>
     {
         public string Name { get; set; }

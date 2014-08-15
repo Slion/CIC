@@ -12,6 +12,7 @@ using CodeProject.Dialog;
 using System.Drawing.Imaging;
 using System.ServiceModel;
 using System.Threading;
+using System.Diagnostics;
 //
 using SharpDisplayInterface;
 using SharpDisplayClient;
@@ -386,6 +387,8 @@ namespace SharpDisplayManager
 
         public void BroadcastCloseEvent()
         {
+            Trace.TraceInformation("BroadcastCloseEvent - start");
+
             var inactiveClients = new List<string>();
             foreach (var client in iClients)
             {
@@ -393,6 +396,7 @@ namespace SharpDisplayManager
                 {
                     try
                     {
+                        Trace.TraceInformation("BroadcastCloseEvent - " + client.Key);
                         client.Value.OnServerClosing(/*eventData*/);
                     }
                     catch (Exception ex)
