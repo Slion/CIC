@@ -33,7 +33,7 @@ namespace SharpDisplayClient
         }
 
 
-        public void OnServerClosing()
+        public void OnCloseOrder()
         {
             //Debug.Assert(Thread.CurrentThread.IsThreadPoolThread);
             //Trace.WriteLine("Callback thread = " + Thread.CurrentThread.ManagedThreadId);
@@ -64,16 +64,10 @@ namespace SharpDisplayClient
             : base(callbackInstance, new NetTcpBinding(SecurityMode.None, true), new EndpointAddress("net.tcp://localhost:8001/DisplayService"))
         { }
 
-        public void Connect(string aClientName)
+        public void SetName(string aClientName)
         {
             Name = aClientName;
-            Channel.Connect(aClientName);
-        }
-
-        public void Disconnect()
-        {
-            Channel.Disconnect(Name);
-            Name = "";
+            Channel.SetName(aClientName);
         }
 
         public void SetText(int aLineIndex, string aText)
@@ -81,13 +75,14 @@ namespace SharpDisplayClient
             Channel.SetText(aLineIndex, aText);
         }
 
-
         public void SetTexts(System.Collections.Generic.IList<string> aTexts)
         {
             Channel.SetTexts(aTexts);
         }
 
-        
-
+        public int ClientCount()
+        {
+            return Channel.ClientCount();
+        }
     }
 }

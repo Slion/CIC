@@ -20,6 +20,7 @@ namespace SharpDisplayManager
     class DisplayServer : IDisplayService, IDisposable
     {
         public string SessionId { get; set; }
+        public string Name { get; set; }
 
         DisplayServer()
         {
@@ -51,8 +52,10 @@ namespace SharpDisplayManager
         }
 
         //
-        public void Connect(string aClientName)
+        public void SetName(string aClientName)
         {
+            Name = aClientName;
+            Program.iMainForm.SetClientNameThreadSafe(SessionId, Name);
             //Disconnect(aClientName);
 
             //Register our client and its callback interface
@@ -64,17 +67,9 @@ namespace SharpDisplayManager
         }
 
         ///
-        public void Disconnect(string aClientName)
+        public int ClientCount()
         {
-            //remove the old client if any
-            /*
-            if (Program.iMainForm.iClients.Keys.Contains(aClientName))
-            {
-                Program.iMainForm.iClients.Remove(aClientName);
-                Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aClientName,false)[0]);
-            }
-             */
-
+            return Program.iMainForm.iClients.Count;
         }
 
         

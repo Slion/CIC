@@ -39,10 +39,11 @@ namespace SharpDisplayClient
             iClient = new Client(instanceContext);
 
             //Connect using unique name
-            string name = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt");
-            iClient.Connect(name);
+            //string name = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt");
+            string name = "Client-" + (iClient.ClientCount() - 1);
+            iClient.SetName(name);
             //Text = Text + ": " + name;
-            Text = Text + ": " + iClient.SessionId;
+            Text = "[[" + name + "]]  " + iClient.SessionId;
 
         }
 
@@ -67,7 +68,6 @@ namespace SharpDisplayClient
                 //We are in the proper thread
                 if (IsClientReady())
                 {
-                    //iClient.Disconnect();
                     Trace.TraceInformation("Closing client: " + iClient.SessionId);
                     iClient.Close();
                     Trace.TraceInformation("Closed client: " + iClient.SessionId);
@@ -99,11 +99,6 @@ namespace SharpDisplayClient
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (IsClientReady()) //Could catch exception instead
-            {
-                iClient.Disconnect();
-            }
-
             CloseConnectionThreadSafe();
         }
 
