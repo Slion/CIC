@@ -9,8 +9,9 @@ using System.Collections;
 
 namespace SharpDisplayInterface
 {
-
-    [ServiceContract(CallbackContract = typeof(IDisplayServiceCallback))]
+    
+    [ServiceContract(   CallbackContract = typeof(IDisplayServiceCallback),
+                        SessionMode = SessionMode.Required)]
     public interface IDisplayService
     {
         [OperationContract(IsOneWay = true)]

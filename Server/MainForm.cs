@@ -366,7 +366,7 @@ namespace SharpDisplayManager
                     new Uri[] { new Uri("net.tcp://localhost:8001/") }
                 );
 
-            iServiceHost.AddServiceEndpoint(typeof(IDisplayService), new NetTcpBinding(), "DisplayService");
+            iServiceHost.AddServiceEndpoint(typeof(IDisplayService), new NetTcpBinding(SecurityMode.None,true), "DisplayService");
             iServiceHost.Open();
         }
 
@@ -407,6 +407,7 @@ namespace SharpDisplayManager
                 foreach (var client in inactiveClients)
                 {
                     iClients.Remove(client);
+                    Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(client, false)[0]);
                 }
             }
         }
@@ -435,7 +436,122 @@ namespace SharpDisplayManager
             BroadcastCloseEvent();
         }
 
+        private void treeViewClients_AfterSelect(object sender, TreeViewEventArgs e)
+        {
 
+        }
+
+        public delegate void AddClientDelegate(string aSessionId, IDisplayServiceCallback aCallback);
+        public delegate void RemoveClientDelegate(string aSessionId);
+        public delegate void SetTextDelegate(int aLineIndex, string aText);
+        public delegate void SetTextsDelegate(System.Collections.Generic.IList<string> aTexts);
+
+       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        /// <param name="aCallback"></param>
+        public void AddClientThreadSafe(string aSessionId, IDisplayServiceCallback aCallback)
+        {
+            if (this.treeViewClients.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                AddClientDelegate d = new AddClientDelegate(AddClientThreadSafe);
+                this.Invoke(d, new object[] { aSessionId, aCallback });
+            }
+            else
+            {
+                //We are in the proper thread
+                //Add this session to our collection of clients
+                Program.iMainForm.iClients.Add(aSessionId, aCallback);
+                //Add this session to our UI
+                Program.iMainForm.treeViewClients.Nodes.Add(aSessionId, aSessionId);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        public void RemoveClientThreadSafe(string aSessionId)
+        {
+            if (this.treeViewClients.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                RemoveClientDelegate d = new RemoveClientDelegate(RemoveClientThreadSafe);
+                this.Invoke(d, new object[] { aSessionId });
+            }
+            else
+            {
+                //We are in the proper thread
+                            //Remove this session from both client collection and UI tree view
+                if (Program.iMainForm.iClients.Keys.Contains(aSessionId))
+                {
+                    Program.iMainForm.iClients.Remove(aSessionId);
+                    Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0]);
+                }                
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aLineIndex"></param>
+        /// <param name="aText"></param>
+        public void SetTextThreadSafe(int aLineIndex, string aText)
+        {
+            if (this.treeViewClients.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                SetTextDelegate d = new SetTextDelegate(SetTextThreadSafe);
+                this.Invoke(d, new object[] { aLineIndex, aText });
+            }
+            else
+            {
+                //We are in the proper thread
+                //Only support two lines for now
+                if (aLineIndex == 0)
+                {
+                    Program.iMainForm.marqueeLabelTop.Text = aText;
+                }
+                else if (aLineIndex == 1)
+                {
+                    Program.iMainForm.marqueeLabelBottom.Text = aText;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aTexts"></param>
+        public void SetTextsThreadSafe(System.Collections.Generic.IList<string> aTexts)
+        {
+            if (this.treeViewClients.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                SetTextsDelegate d = new SetTextsDelegate(SetTextsThreadSafe);
+                this.Invoke(d, new object[] { aTexts });
+            }
+            else
+            {
+                //We are in the proper thread
+                //Only support two lines for now
+                for (int i = 0; i < aTexts.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        Program.iMainForm.marqueeLabelTop.Text = aTexts[i];
+                    }
+                    else if (i == 1)
+                    {
+                        Program.iMainForm.marqueeLabelBottom.Text = aTexts[i];
+                    }
+                }
+            }
+
+        }
 
     }
 }
