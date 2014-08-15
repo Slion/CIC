@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Diagnostics;
 
 
 namespace SharpDisplayClient
@@ -32,7 +33,7 @@ namespace SharpDisplayClient
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            iCallback = new Callback();
+            iCallback = new Callback(this);
             //Instance context is then managed by our client class
             InstanceContext instanceContext = new InstanceContext(iCallback);
             iClient = new Client(instanceContext);
@@ -45,17 +46,56 @@ namespace SharpDisplayClient
 
         }
 
-        public void CloseConnection()
-        {
-            if (IsClientReady())
-            {
-                //iClient.Disconnect();
-                iClient.Close();
-            }
 
-            iClient = null;
-            iCallback = null;
+       
+        public delegate void CloseConnectionDelegate();
+        public delegate void CloseDelegate();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void CloseConnectionThreadSafe()
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                CloseConnectionDelegate d = new CloseConnectionDelegate(CloseConnectionThreadSafe);
+                this.Invoke(d, new object[] { });
+            }
+            else
+            {
+                //We are in the proper thread
+                if (IsClientReady())
+                {
+                    //iClient.Disconnect();
+                    Trace.TraceInformation("Closing client: " + iClient.SessionId);
+                    iClient.Close();
+                    Trace.TraceInformation("Closed client: " + iClient.SessionId);
+                }
+
+                iClient = null;
+                iCallback = null;
+            }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void CloseThreadSafe()
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                CloseDelegate d = new CloseDelegate(CloseThreadSafe);
+                this.Invoke(d, new object[] { });
+            }
+            else
+            {
+                //We are in the proper thread
+                Close();
+            }
+        }
+
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -64,7 +104,7 @@ namespace SharpDisplayClient
                 iClient.Disconnect();
             }
 
-            CloseConnection();
+            CloseConnectionThreadSafe();
         }
 
         public bool IsClientReady()
