@@ -357,6 +357,7 @@ namespace SharpDisplayManager
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopServer();
+            e.Cancel = iClosing;
         }
 
         public void StartServer()
@@ -373,16 +374,24 @@ namespace SharpDisplayManager
 
         public void StopServer()
         {
-            //Tell connected client first? Is that possible?
-
-            if (iClients.Count>0)
+            if (iClients.Count > 0 && !iClosing)
             {
                 //Tell our clients
+                iClosing = true;
                 BroadcastCloseEvent();
             }
-
-            //iServiceHost.Close();
-
+            else if (iClosing)
+            {
+                if (MessageBox.Show("Force exit?", "Waiting for clients...", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    iClosing = false; //We make sure we force close if asked twice
+                }
+            }
+            else
+            {                
+                //We removed that as it often lags for some reason
+                //iServiceHost.Close();
+            }
         }
 
         public void BroadcastCloseEvent()
@@ -397,7 +406,7 @@ namespace SharpDisplayManager
                     try
                     {
                         Trace.TraceInformation("BroadcastCloseEvent - " + client.Key);
-                        client.Value.OnServerClosing(/*eventData*/);
+                        client.Value.OnCloseOrder(/*eventData*/);
                     }
                     catch (Exception ex)
                     {
@@ -449,6 +458,7 @@ namespace SharpDisplayManager
         public delegate void RemoveClientDelegate(string aSessionId);
         public delegate void SetTextDelegate(int aLineIndex, string aText);
         public delegate void SetTextsDelegate(System.Collections.Generic.IList<string> aTexts);
+        public delegate void SetClientNameDelegate(string aSessionId, string aName);
 
        
         /// <summary>
@@ -494,7 +504,16 @@ namespace SharpDisplayManager
                 {
                     Program.iMainForm.iClients.Remove(aSessionId);
                     Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0]);
-                }                
+                }
+
+                if (iClosing && iClients.Count == 0)
+                {
+                    //We were closing our form
+                    //All clients are now closed
+                    //Just resume our close operation
+                    iClosing = false;
+                    Close();
+                }
             }
         }
 
@@ -554,7 +573,38 @@ namespace SharpDisplayManager
                     }
                 }
             }
+        }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        /// <param name="aName"></param>
+        public void SetClientNameThreadSafe(string aSessionId, string aName)
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                SetClientNameDelegate d = new SetClientNameDelegate(SetClientNameThreadSafe);
+                this.Invoke(d, new object[] { aSessionId, aName });
+            }
+            else
+            {
+                //We are in the proper thread
+                //Remove this session from both client collection and UI tree view
+                if (Program.iMainForm.iClients.Keys.Contains(aSessionId))
+                {
+                    //Change our session node text 
+                    TreeNode node = Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0];
+                    node.Text = aName;
+                    //Add a child with SessionId
+                    node.Nodes.Add(new TreeNode(aSessionId));
+
+                    //Program.iMainForm.iClients.Remove(aSessionId);
+                    //Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0]);
+                }
+            }
         }
 
     }
