@@ -20,6 +20,27 @@ using SharpDisplayClient;
 
 namespace SharpDisplayManager
 {
+    /// <summary>
+    /// A UI thread copy of a client relevant data.
+    /// Keeping this copy in the UI thread helps us deal with threading issues.
+    /// </summary>
+    public class ClientData
+    {
+        public ClientData(string aSessionId, IDisplayServiceCallback aCallback)
+        {
+            SessionId = aSessionId;
+            Name = "";
+            Texts = new List<string>();
+            Callback = aCallback;
+        }
+
+        public string SessionId { get; set;}
+        public string Name { get; set;}
+        public List<string> Texts { get; set;}
+        public IDisplayServiceCallback Callback { get; set;}
+    }
+
+
     public partial class MainForm : Form
     {
         DateTime LastTickTime;
@@ -30,14 +51,14 @@ namespace SharpDisplayManager
         /// <summary>
         /// Our collection of clients
         /// </summary>
-        public Dictionary<string, IDisplayServiceCallback> iClients;
+        public Dictionary<string, ClientData> iClients;
         public bool iClosing;
 
         public MainForm()
         {
             LastTickTime = DateTime.Now;
             iDisplay = new Display();
-            iClients = new Dictionary<string, IDisplayServiceCallback>();
+            iClients = new Dictionary<string, ClientData>();
 
             InitializeComponent();
             UpdateStatus();
@@ -406,7 +427,7 @@ namespace SharpDisplayManager
                     try
                     {
                         Trace.TraceInformation("BroadcastCloseEvent - " + client.Key);
-                        client.Value.OnCloseOrder(/*eventData*/);
+                        client.Value.Callback.OnCloseOrder(/*eventData*/);
                     }
                     catch (Exception ex)
                     {
@@ -454,6 +475,7 @@ namespace SharpDisplayManager
 
         }
 
+        //Delegates are used for our thread safe method 
         public delegate void AddClientDelegate(string aSessionId, IDisplayServiceCallback aCallback);
         public delegate void RemoveClientDelegate(string aSessionId);
         public delegate void SetTextDelegate(int aLineIndex, string aText);
@@ -468,7 +490,7 @@ namespace SharpDisplayManager
         /// <param name="aCallback"></param>
         public void AddClientThreadSafe(string aSessionId, IDisplayServiceCallback aCallback)
         {
-            if (this.treeViewClients.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 AddClientDelegate d = new AddClientDelegate(AddClientThreadSafe);
@@ -478,9 +500,10 @@ namespace SharpDisplayManager
             {
                 //We are in the proper thread
                 //Add this session to our collection of clients
-                Program.iMainForm.iClients.Add(aSessionId, aCallback);
+                ClientData newClient = new ClientData(aSessionId, aCallback);
+                Program.iMainForm.iClients.Add(aSessionId, newClient);
                 //Add this session to our UI
-                Program.iMainForm.treeViewClients.Nodes.Add(aSessionId, aSessionId);
+                UpdateClientTreeViewNode(newClient);
             }
         }
 
@@ -490,7 +513,7 @@ namespace SharpDisplayManager
         /// <param name="aSessionId"></param>
         public void RemoveClientThreadSafe(string aSessionId)
         {
-            if (this.treeViewClients.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 RemoveClientDelegate d = new RemoveClientDelegate(RemoveClientThreadSafe);
@@ -499,7 +522,7 @@ namespace SharpDisplayManager
             else
             {
                 //We are in the proper thread
-                            //Remove this session from both client collection and UI tree view
+                //Remove this session from both client collection and UI tree view
                 if (Program.iMainForm.iClients.Keys.Contains(aSessionId))
                 {
                     Program.iMainForm.iClients.Remove(aSessionId);
@@ -524,7 +547,7 @@ namespace SharpDisplayManager
         /// <param name="aText"></param>
         public void SetTextThreadSafe(int aLineIndex, string aText)
         {
-            if (this.treeViewClients.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 SetTextDelegate d = new SetTextDelegate(SetTextThreadSafe);
@@ -536,11 +559,11 @@ namespace SharpDisplayManager
                 //Only support two lines for now
                 if (aLineIndex == 0)
                 {
-                    Program.iMainForm.marqueeLabelTop.Text = aText;
+                    marqueeLabelTop.Text = aText;
                 }
                 else if (aLineIndex == 1)
                 {
-                    Program.iMainForm.marqueeLabelBottom.Text = aText;
+                    marqueeLabelBottom.Text = aText;
                 }
             }
         }
@@ -551,7 +574,7 @@ namespace SharpDisplayManager
         /// <param name="aTexts"></param>
         public void SetTextsThreadSafe(System.Collections.Generic.IList<string> aTexts)
         {
-            if (this.treeViewClients.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 SetTextsDelegate d = new SetTextsDelegate(SetTextsThreadSafe);
@@ -565,11 +588,11 @@ namespace SharpDisplayManager
                 {
                     if (i == 0)
                     {
-                        Program.iMainForm.marqueeLabelTop.Text = aTexts[i];
+                        marqueeLabelTop.Text = aTexts[i];
                     }
                     else if (i == 1)
                     {
-                        Program.iMainForm.marqueeLabelBottom.Text = aTexts[i];
+                        marqueeLabelBottom.Text = aTexts[i];
                     }
                 }
             }
@@ -592,17 +615,73 @@ namespace SharpDisplayManager
             else
             {
                 //We are in the proper thread
-                //Remove this session from both client collection and UI tree view
-                if (Program.iMainForm.iClients.Keys.Contains(aSessionId))
+                //Get our client
+                ClientData client = iClients[aSessionId];
+                if (client != null)
                 {
-                    //Change our session node text 
-                    TreeNode node = Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0];
-                    node.Text = aName;
-                    //Add a child with SessionId
-                    node.Nodes.Add(new TreeNode(aSessionId));
+                    //Set its name
+                    client.Name = aName;
+                    //Update our tree-view
+                    UpdateClientTreeViewNode(client);
+                }
+            }
+        }
 
-                    //Program.iMainForm.iClients.Remove(aSessionId);
-                    //Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0]);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aClient"></param>
+        private void UpdateClientTreeViewNode(ClientData aClient)
+        {
+            if (aClient == null)
+            {
+                return;
+            }
+
+            TreeNode node = null;
+            //Check that our client node already exists
+            //Get our client root node using its key which is our session ID
+            TreeNode[] nodes = treeViewClients.Nodes.Find(aClient.SessionId, false);
+            if (nodes.Count()>0)
+            {
+                //We already have a node for that client
+                node = nodes[0];
+                //Clear children as we are going to recreate them below
+                node.Nodes.Clear();
+            }
+            else
+            {
+                //Client node does not exists create a new one
+                treeViewClients.Nodes.Add(aClient.SessionId, aClient.SessionId);
+                node = treeViewClients.Nodes.Find(aClient.SessionId, false)[0];
+            }
+
+            if (node != null)
+            {
+                //Change its name
+                if (aClient.Name != "")
+                {
+                    //We have a name, us it as text for our root node
+                    node.Text = aClient.Name;
+                    //Add a child with SessionId
+                    node.Nodes.Add(new TreeNode(aClient.SessionId));
+                }
+                else
+                {
+                    //No name, use session ID instead
+                    node.Text = aClient.SessionId;
+                }
+        
+                if (aClient.Texts.Count > 0)
+                {
+                    //Create root node for our texts
+                    TreeNode textsRoot = new TreeNode("Text");
+                    node.Nodes.Add(textsRoot);
+                    //For each text add a new entry
+                    foreach (string text in aClient.Texts)
+                    {
+                        textsRoot.Nodes.Add(new TreeNode(text));
+                    }
                 }
             }
         }

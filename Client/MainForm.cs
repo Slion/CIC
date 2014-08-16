@@ -28,7 +28,7 @@ namespace SharpDisplayClient
         {
             //iClient.SetText(0,"Top");
             //iClient.SetText(1, "Bottom");
-            iClient.SetTexts(new string[] { iClient.Name, iClient.SessionId });
+            iClient.SetTexts(new string[] { textBoxTop.Text, textBoxBottom.Text });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -44,6 +44,10 @@ namespace SharpDisplayClient
             iClient.SetName(name);
             //Text = Text + ": " + name;
             Text = "[[" + name + "]]  " + iClient.SessionId;
+
+            //
+            textBoxTop.Text = iClient.Name;
+            textBoxBottom.Text = iClient.SessionId;
 
         }
 
