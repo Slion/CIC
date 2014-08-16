@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             this.buttonSetText = new System.Windows.Forms.Button();
+            this.textBoxTop = new System.Windows.Forms.TextBox();
+            this.textBoxBottom = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // buttonSetText
             // 
-            this.buttonSetText.Location = new System.Drawing.Point(170, 104);
+            this.buttonSetText.Location = new System.Drawing.Point(12, 132);
             this.buttonSetText.Name = "buttonSetText";
             this.buttonSetText.Size = new System.Drawing.Size(75, 23);
             this.buttonSetText.TabIndex = 0;
@@ -41,23 +43,42 @@
             this.buttonSetText.UseVisualStyleBackColor = true;
             this.buttonSetText.Click += new System.EventHandler(this.buttonSetText_Click);
             // 
+            // textBoxTop
+            // 
+            this.textBoxTop.Location = new System.Drawing.Point(12, 31);
+            this.textBoxTop.Name = "textBoxTop";
+            this.textBoxTop.Size = new System.Drawing.Size(419, 20);
+            this.textBoxTop.TabIndex = 1;
+            // 
+            // textBoxBottom
+            // 
+            this.textBoxBottom.Location = new System.Drawing.Point(12, 57);
+            this.textBoxBottom.Name = "textBoxBottom";
+            this.textBoxBottom.Size = new System.Drawing.Size(419, 20);
+            this.textBoxBottom.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 252);
+            this.Controls.Add(this.textBoxBottom);
+            this.Controls.Add(this.textBoxTop);
             this.Controls.Add(this.buttonSetText);
             this.Name = "MainForm";
             this.Text = "Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Button buttonSetText;
+        private System.Windows.Forms.TextBox textBoxTop;
+        private System.Windows.Forms.TextBox textBoxBottom;
     }
 }
 

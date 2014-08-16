@@ -80,6 +80,7 @@ namespace SharpDisplayManager
             //PixelsPerSecond = 32;
             LastTickTime = DateTime.Now;
             PixelsLeft = 0;
+            CurrentPosition = 0;
             iBrush = new SolidBrush(ForeColor);
         }
 
@@ -203,7 +204,11 @@ namespace SharpDisplayManager
 
         private void HandleTextSizeChange()
         {
+            //Reset our timer whenever our text changes
             CurrentPosition = 0;
+            LastTickTime = DateTime.Now;
+            PixelsLeft = 0;
+
             //For all string measurements and drawing issues refer to the following article:
             // http://stackoverflow.com/questions/1203087/why-is-graphics-measurestring-returning-a-higher-than-expected-number
             //Update text size according to text and font
@@ -248,15 +253,18 @@ namespace SharpDisplayManager
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             if (NeedToScroll())
             {
-                //Draw the first one
+                //Draw it all in a single call
                 e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
-                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                e.Graphics.DrawString(Text + Separator + Text, Font, iBrush, ClientRectangle, iStringFormat);
+                //Draw the first one
+                //e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
+                //e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
                 //Draw separator
-                e.Graphics.TranslateTransform(iTextSize.Width, 0);
-                e.Graphics.DrawString(Separator, Font, iBrush, ClientRectangle, iStringFormat);
+                //e.Graphics.TranslateTransform(iTextSize.Width, 0);
+                //e.Graphics.DrawString(Separator, Font, iBrush, ClientRectangle, iStringFormat);
                 //Draw the last one
-                e.Graphics.TranslateTransform(iSeparatorSize.Width, 0);
-                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                //e.Graphics.TranslateTransform(iSeparatorSize.Width, 0);
+                //e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
             }
             else
             {
