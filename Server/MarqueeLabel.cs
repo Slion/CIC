@@ -19,6 +19,8 @@ namespace SharpDisplayManager
         private SolidBrush iBrush;
         private SizeF iTextSize;
         private SizeF iSeparatorSize;
+        private SizeF iScrollSize;
+        //private ContentAlignment iRequestedContentAlignment;
 
         [Category("Appearance")]
         [Description("Separator in our scrolling loop.")]
@@ -82,6 +84,7 @@ namespace SharpDisplayManager
             PixelsLeft = 0;
             CurrentPosition = 0;
             iBrush = new SolidBrush(ForeColor);
+            //iRequestedContentAlignment = TextAlign;
         }
 
         public void UpdateAnimation(DateTime aLastTickTime, DateTime aNewTickTime)
@@ -92,10 +95,18 @@ namespace SharpDisplayManager
                 return;
             }
 
+            /*
             while (CurrentPosition > (iTextSize.Width + iSeparatorSize.Width))
             {
                 CurrentPosition -= ((int)(iTextSize.Width + iSeparatorSize.Width));
             }
+             */
+
+            while (CurrentPosition > iScrollSize.Width)
+            {
+                CurrentPosition -= (int)iScrollSize.Width;
+            }
+
 
             PixelsLeft += aNewTickTime.Subtract(aLastTickTime).TotalSeconds * PixelsPerSecond;
 
@@ -148,36 +159,36 @@ namespace SharpDisplayManager
             switch (ca)
             {
                 case ContentAlignment.TopCenter:
-                    format.Alignment = StringAlignment.Near;
-                    format.LineAlignment = StringAlignment.Center;
+                    format.Alignment = StringAlignment.Center;
+                    format.LineAlignment = StringAlignment.Near;
                     break;
                 case ContentAlignment.TopLeft:
                     format.Alignment = StringAlignment.Near;
                     format.LineAlignment = StringAlignment.Near;
                     break;
                 case ContentAlignment.TopRight:
-                    format.Alignment = StringAlignment.Near;
-                    format.LineAlignment = StringAlignment.Far;
+                    format.Alignment = StringAlignment.Far;
+                    format.LineAlignment = StringAlignment.Near;
                     break;
                 case ContentAlignment.MiddleCenter:
                     format.Alignment = StringAlignment.Center;
                     format.LineAlignment = StringAlignment.Center;
                     break;
                 case ContentAlignment.MiddleLeft:
-                    format.Alignment = StringAlignment.Center;
-                    format.LineAlignment = StringAlignment.Near;
+                    format.Alignment = StringAlignment.Near;
+                    format.LineAlignment = StringAlignment.Center;
                     break;
                 case ContentAlignment.MiddleRight:
-                    format.Alignment = StringAlignment.Center;
-                    format.LineAlignment = StringAlignment.Far;
-                    break;
-                case ContentAlignment.BottomCenter:
                     format.Alignment = StringAlignment.Far;
                     format.LineAlignment = StringAlignment.Center;
                     break;
+                case ContentAlignment.BottomCenter:
+                    format.Alignment = StringAlignment.Center;
+                    format.LineAlignment = StringAlignment.Far;
+                    break;
                 case ContentAlignment.BottomLeft:
-                    format.Alignment = StringAlignment.Far;
-                    format.LineAlignment = StringAlignment.Near;
+                    format.Alignment = StringAlignment.Near;
+                    format.LineAlignment = StringAlignment.Far;
                     break;
                 case ContentAlignment.BottomRight:
                     format.Alignment = StringAlignment.Far;
@@ -208,6 +219,8 @@ namespace SharpDisplayManager
             CurrentPosition = 0;
             LastTickTime = DateTime.Now;
             PixelsLeft = 0;
+            //Reset text align
+            //TextAlign = iRequestedContentAlignment;
 
             //For all string measurements and drawing issues refer to the following article:
             // http://stackoverflow.com/questions/1203087/why-is-graphics-measurestring-returning-a-higher-than-expected-number
@@ -217,11 +230,23 @@ namespace SharpDisplayManager
             iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
             iTextSize = g.MeasureString(Text, Font, Int32.MaxValue, iStringFormat);
             iSeparatorSize = g.MeasureString(Separator, Font, Int32.MaxValue, iStringFormat);
+            //Scroll width is the width of our text and our separator without taking kerning into account since
+            //both text and separator are drawn independently from each other.
+            iScrollSize.Width = iSeparatorSize.Width + iTextSize.Width;
+            iScrollSize.Height = Math.Max(iSeparatorSize.Height, iTextSize.Height); //Not relevant for now
+            //We don't want scroll with to take kerning into account so we don't use the following
+            //iScrollSize = g.MeasureString(Text + Separator, Font, Int32.MaxValue, iStringFormat);
 
             if (NeedToScroll())
             {
                 //Always align left when scrolling
-                iStringFormat.Alignment = StringAlignment.Near;
+                //Somehow draw string still takes into our control alignment so we need to set it too
+                //ContentAlignment original = TextAlign;
+                TextAlign = ContentAlignment.MiddleLeft;
+                //Make sure our original text alignment remain the same even though we override it when scrolling
+                //iRequestedContentAlignment = original; 
+                //iStringFormat will get updated in OnTextAlignChanged
+                //iStringFormat.Alignment = StringAlignment.Near;
             }
         }
 
@@ -242,7 +267,7 @@ namespace SharpDisplayManager
         protected override void OnTextAlignChanged(EventArgs e)
         {
             iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
-
+            //iRequestedContentAlignment = TextAlign;
             base.OnTextAlignChanged(e);
 
         }
@@ -253,18 +278,20 @@ namespace SharpDisplayManager
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             if (NeedToScroll())
             {
-                //Draw it all in a single call
-                e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
-                e.Graphics.DrawString(Text + Separator + Text, Font, iBrush, ClientRectangle, iStringFormat);
-                //Draw the first one
+                //Draw it all in a single call would take kerning into account
                 //e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
-                //e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                //e.Graphics.DrawString(Text + Separator + Text, Font, iBrush, ClientRectangle, iStringFormat);
+
+                //Doing separate draw operation allows us not to take kerning into account between separator and string
+                //Draw the first one
+                e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
+                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
                 //Draw separator
-                //e.Graphics.TranslateTransform(iTextSize.Width, 0);
-                //e.Graphics.DrawString(Separator, Font, iBrush, ClientRectangle, iStringFormat);
+                e.Graphics.TranslateTransform(iTextSize.Width, 0);
+                e.Graphics.DrawString(Separator, Font, iBrush, ClientRectangle, iStringFormat);
                 //Draw the last one
-                //e.Graphics.TranslateTransform(iSeparatorSize.Width, 0);
-                //e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                e.Graphics.TranslateTransform(iSeparatorSize.Width, 0);
+                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
             }
             else
             {

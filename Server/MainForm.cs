@@ -20,27 +20,6 @@ using SharpDisplayClient;
 
 namespace SharpDisplayManager
 {
-    /// <summary>
-    /// A UI thread copy of a client relevant data.
-    /// Keeping this copy in the UI thread helps us deal with threading issues.
-    /// </summary>
-    public class ClientData
-    {
-        public ClientData(string aSessionId, IDisplayServiceCallback aCallback)
-        {
-            SessionId = aSessionId;
-            Name = "";
-            Texts = new List<string>();
-            Callback = aCallback;
-        }
-
-        public string SessionId { get; set;}
-        public string Name { get; set;}
-        public List<string> Texts { get; set;}
-        public IDisplayServiceCallback Callback { get; set;}
-    }
-
-
     public partial class MainForm : Form
     {
         DateTime LastTickTime;
@@ -478,8 +457,8 @@ namespace SharpDisplayManager
         //Delegates are used for our thread safe method 
         public delegate void AddClientDelegate(string aSessionId, IDisplayServiceCallback aCallback);
         public delegate void RemoveClientDelegate(string aSessionId);
-        public delegate void SetTextDelegate(int aLineIndex, string aText);
-        public delegate void SetTextsDelegate(System.Collections.Generic.IList<string> aTexts);
+        public delegate void SetTextDelegate(string SessionId, int aLineIndex, string aText);
+        public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<string> aTexts);
         public delegate void SetClientNameDelegate(string aSessionId, string aName);
 
        
@@ -545,25 +524,39 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aLineIndex"></param>
         /// <param name="aText"></param>
-        public void SetTextThreadSafe(int aLineIndex, string aText)
+        public void SetTextThreadSafe(string aSessionId, int aLineIndex, string aText)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 SetTextDelegate d = new SetTextDelegate(SetTextThreadSafe);
-                this.Invoke(d, new object[] { aLineIndex, aText });
+                this.Invoke(d, new object[] { aSessionId, aLineIndex, aText });
             }
             else
             {
-                //We are in the proper thread
-                //Only support two lines for now
-                if (aLineIndex == 0)
+                ClientData client = iClients[aSessionId];
+                if (client != null)
                 {
-                    marqueeLabelTop.Text = aText;
-                }
-                else if (aLineIndex == 1)
-                {
-                    marqueeLabelBottom.Text = aText;
+                    //Make sure all our texts are in place
+                    while (client.Texts.Count < (aLineIndex + 1))
+                    {
+                        client.Texts.Add("");
+                    }
+                    client.Texts[aLineIndex] = aText;
+
+                    //We are in the proper thread
+                    //Only support two lines for now
+                    if (aLineIndex == 0)
+                    {
+                        marqueeLabelTop.Text = aText;                        
+                    }
+                    else if (aLineIndex == 1)
+                    {
+                        marqueeLabelBottom.Text = aText;
+                    }
+
+
+                    UpdateClientTreeViewNode(client);
                 }
             }
         }
@@ -572,28 +565,49 @@ namespace SharpDisplayManager
         /// 
         /// </summary>
         /// <param name="aTexts"></param>
-        public void SetTextsThreadSafe(System.Collections.Generic.IList<string> aTexts)
+        public void SetTextsThreadSafe(string aSessionId, System.Collections.Generic.IList<string> aTexts)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 SetTextsDelegate d = new SetTextsDelegate(SetTextsThreadSafe);
-                this.Invoke(d, new object[] { aTexts });
+                this.Invoke(d, new object[] { aSessionId, aTexts });
             }
             else
             {
-                //We are in the proper thread
-                //Only support two lines for now
-                for (int i = 0; i < aTexts.Count; i++)
+                ClientData client = iClients[aSessionId];
+                if (client != null)
                 {
-                    if (i == 0)
+                    //Populate our client with the given texts
+                    int j = 0;
+                    foreach (string text in aTexts)
                     {
-                        marqueeLabelTop.Text = aTexts[i];
+                        if (client.Texts.Count < (j + 1))
+                        {
+                            client.Texts.Add(text);
+                        }
+                        else
+                        {
+                            client.Texts[j]=text;
+                        }
+                        j++;
                     }
-                    else if (i == 1)
+                    //We are in the proper thread
+                    //Only support two lines for now
+                    for (int i = 0; i < aTexts.Count; i++)
                     {
-                        marqueeLabelBottom.Text = aTexts[i];
+                        if (i == 0)
+                        {
+                            marqueeLabelTop.Text = aTexts[i];
+                        }
+                        else if (i == 1)
+                        {
+                            marqueeLabelBottom.Text = aTexts[i];
+                        }
                     }
+
+
+                    UpdateClientTreeViewNode(client);
                 }
             }
         }
@@ -683,8 +697,30 @@ namespace SharpDisplayManager
                         textsRoot.Nodes.Add(new TreeNode(text));
                     }
                 }
+
+                node.ExpandAll();
             }
         }
 
+    }
+
+    /// <summary>
+    /// A UI thread copy of a client relevant data.
+    /// Keeping this copy in the UI thread helps us deal with threading issues.
+    /// </summary>
+    public class ClientData
+    {
+        public ClientData(string aSessionId, IDisplayServiceCallback aCallback)
+        {
+            SessionId = aSessionId;
+            Name = "";
+            Texts = new List<string>();
+            Callback = aCallback;
+        }
+
+        public string SessionId { get; set; }
+        public string Name { get; set; }
+        public List<string> Texts { get; set; }
+        public IDisplayServiceCallback Callback { get; set; }
     }
 }
