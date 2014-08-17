@@ -42,13 +42,13 @@ namespace SharpDisplayManager
         //From IDisplayService
         public void SetTexts(System.Collections.Generic.IList<string> aTexts)
         {
-            Program.iMainForm.SetTextsThreadSafe(aTexts);
+            Program.iMainForm.SetTextsThreadSafe(SessionId, aTexts);
         }
 
         //
         public void SetText(int aLineIndex, string aText)
         {
-            Program.iMainForm.SetTextThreadSafe(aLineIndex, aText);
+            Program.iMainForm.SetTextThreadSafe(SessionId, aLineIndex, aText);
         }
 
         //
