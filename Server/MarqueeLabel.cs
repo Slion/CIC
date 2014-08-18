@@ -85,6 +85,13 @@ namespace SharpDisplayManager
             CurrentPosition = 0;
             iBrush = new SolidBrush(ForeColor);
             //iRequestedContentAlignment = TextAlign;
+
+            //Following is needed if we ever switch from Label to Control base class. 
+            //Without it you get some pretty nasty flicker
+            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            //SetStyle(ControlStyles.UserPaint, true);
+            //SetStyle(ControlStyles.AllPaintingInWmPaint, true); 
+            //SetStyle(ControlStyles.DoubleBuffer, true);
         }
 
         public void UpdateAnimation(DateTime aLastTickTime, DateTime aNewTickTime)
