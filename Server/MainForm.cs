@@ -59,6 +59,11 @@ namespace SharpDisplayManager
         {
             StartServer();
 
+            //
+            CheckFontHeight();
+            //
+
+
             if (Properties.Settings.Default.DisplayConnectOnStartup)
             {
                 iDisplay.Open();
@@ -98,17 +103,25 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.DisplayFont = fontDialog.Font;
                 Properties.Settings.Default.Save();
                 //
-                if (fontDialog.Font.Height > marqueeLabelBottom.Height)
-                {
-                    labelWarning.Text = "WARNING: Selected font is too height by " + (fontDialog.Font.Height - marqueeLabelBottom.Height) + " pixels!";
-                    labelWarning.Visible = true;
-                }
-                else
-                {
-                    labelWarning.Visible = false;
-                }
-
+                CheckFontHeight();
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void CheckFontHeight()
+        {
+            if (marqueeLabelBottom.Font.Height > marqueeLabelBottom.Height)
+            {
+                labelWarning.Text = "WARNING: Selected font is too height by " + (marqueeLabelBottom.Font.Height - marqueeLabelBottom.Height) + " pixels!";
+                labelWarning.Visible = true;
+            }
+            else
+            {
+                labelWarning.Visible = false;
+            }
+
         }
 
         private void buttonCapture_Click(object sender, EventArgs e)
