@@ -97,9 +97,17 @@ namespace SharpDisplayManager
                 marqueeLabelBottom.Font = fontDialog.Font;
                 Properties.Settings.Default.DisplayFont = fontDialog.Font;
                 Properties.Settings.Default.Save();
-                //label1.Font = fontDlg.Font;
-                //textBox1.BackColor = fontDlg.Color;
-                //label1.ForeColor = fontDlg.Color;
+                //
+                if (fontDialog.Font.Height > marqueeLabelBottom.Height)
+                {
+                    labelWarning.Text = "WARNING: Selected font is too height by " + (fontDialog.Font.Height - marqueeLabelBottom.Height) + " pixels!";
+                    labelWarning.Visible = true;
+                }
+                else
+                {
+                    labelWarning.Visible = false;
+                }
+
             }
         }
 
@@ -388,7 +396,7 @@ namespace SharpDisplayManager
                 }
             }
             else
-            {                
+            {
                 //We removed that as it often lags for some reason
                 //iServiceHost.Close();
             }
@@ -429,6 +437,7 @@ namespace SharpDisplayManager
         {
             Thread clientThread = new Thread(SharpDisplayClient.Program.Main);
             clientThread.Start();
+            BringToFront();
         }
 
         private void buttonSuspend_Click(object sender, EventArgs e)
@@ -454,16 +463,16 @@ namespace SharpDisplayManager
 
         }
 
-        //Delegates are used for our thread safe method 
+        //Delegates are used for our thread safe method
         public delegate void AddClientDelegate(string aSessionId, IDisplayServiceCallback aCallback);
         public delegate void RemoveClientDelegate(string aSessionId);
         public delegate void SetTextDelegate(string SessionId, int aLineIndex, string aText);
         public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<string> aTexts);
         public delegate void SetClientNameDelegate(string aSessionId, string aName);
 
-       
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="aSessionId"></param>
         /// <param name="aCallback"></param>
@@ -487,7 +496,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="aSessionId"></param>
         public void RemoveClientThreadSafe(string aSessionId)
@@ -520,7 +529,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="aLineIndex"></param>
         /// <param name="aText"></param>
@@ -548,7 +557,7 @@ namespace SharpDisplayManager
                     //Only support two lines for now
                     if (aLineIndex == 0)
                     {
-                        marqueeLabelTop.Text = aText;                        
+                        marqueeLabelTop.Text = aText;
                     }
                     else if (aLineIndex == 1)
                     {
@@ -562,7 +571,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="aTexts"></param>
         public void SetTextsThreadSafe(string aSessionId, System.Collections.Generic.IList<string> aTexts)
@@ -614,7 +623,7 @@ namespace SharpDisplayManager
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="aSessionId"></param>
         /// <param name="aName"></param>
@@ -642,7 +651,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="aClient"></param>
         private void UpdateClientTreeViewNode(ClientData aClient)
@@ -685,7 +694,7 @@ namespace SharpDisplayManager
                     //No name, use session ID instead
                     node.Text = aClient.SessionId;
                 }
-        
+
                 if (aClient.Texts.Count > 0)
                 {
                     //Create root node for our texts
@@ -701,6 +710,7 @@ namespace SharpDisplayManager
                 node.ExpandAll();
             }
         }
+
 
     }
 
