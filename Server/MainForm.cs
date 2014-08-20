@@ -108,7 +108,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         void CheckFontHeight()
         {
@@ -721,6 +721,42 @@ namespace SharpDisplayManager
                 }
 
                 node.ExpandAll();
+            }
+        }
+
+        private void buttonAddRow_Click(object sender, EventArgs e)
+        {
+            if (tableLayoutPanel.RowCount < 6)
+            {
+                tableLayoutPanel.RowCount++;
+                CheckFontHeight();
+            }
+        }
+
+        private void buttonRemoveRow_Click(object sender, EventArgs e)
+        {
+            if (tableLayoutPanel.RowCount > 1)
+            {
+                tableLayoutPanel.RowCount--;
+                CheckFontHeight();
+            }
+        }
+
+        private void buttonAddColumn_Click(object sender, EventArgs e)
+        {
+            if (tableLayoutPanel.ColumnCount < 8)
+            {
+                tableLayoutPanel.ColumnCount++;
+                //CheckFontHeight();
+            }
+        }
+
+        private void buttonRemoveColumn_Click(object sender, EventArgs e)
+        {
+            if (tableLayoutPanel.ColumnCount > 1)
+            {
+                tableLayoutPanel.ColumnCount--;
+                //CheckFontHeight();
             }
         }
 

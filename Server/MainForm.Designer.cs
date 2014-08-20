@@ -31,8 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panelDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
-            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -59,6 +57,13 @@
             this.buttonCapture = new System.Windows.Forms.Button();
             this.buttonFont = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPageDesign = new System.Windows.Forms.TabPage();
+            this.buttonAddRow = new System.Windows.Forms.Button();
+            this.buttonRemoveRow = new System.Windows.Forms.Button();
+            this.buttonAddColumn = new System.Windows.Forms.Button();
+            this.buttonRemoveColumn = new System.Windows.Forms.Button();
+            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
+            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -66,6 +71,7 @@
             this.tabPageDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
             this.tabControl.SuspendLayout();
+            this.tabPageDesign.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelDisplay
@@ -153,39 +159,6 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 5;
-            // 
-            // marqueeLabelTop
-            // 
-            this.marqueeLabelTop.AutoEllipsis = true;
-            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
-            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelTop.Name = "marqueeLabelTop";
-            this.marqueeLabelTop.OwnTimer = false;
-            this.marqueeLabelTop.PixelsPerSecond = 64;
-            this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 30);
-            this.marqueeLabelTop.TabIndex = 2;
-            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelTop.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabelBottom
-            // 
-            this.marqueeLabelBottom.AutoEllipsis = true;
-            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
-            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
-            this.marqueeLabelBottom.OwnTimer = false;
-            this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = "|";
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
-            this.marqueeLabelBottom.TabIndex = 3;
-            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
             // timer
             // 
@@ -279,19 +252,15 @@
             // 
             // tabPageDisplay
             // 
-            this.tabPageDisplay.Controls.Add(this.labelWarning);
-            this.tabPageDisplay.Controls.Add(this.checkBoxFixedPitchFontOnly);
             this.tabPageDisplay.Controls.Add(this.buttonSuspend);
             this.tabPageDisplay.Controls.Add(this.checkBoxReverseScreen);
             this.tabPageDisplay.Controls.Add(this.checkBoxConnectOnStartup);
-            this.tabPageDisplay.Controls.Add(this.checkBoxShowBorders);
             this.tabPageDisplay.Controls.Add(this.trackBarBrightness);
             this.tabPageDisplay.Controls.Add(this.buttonFill);
             this.tabPageDisplay.Controls.Add(this.buttonClear);
             this.tabPageDisplay.Controls.Add(this.buttonClose);
             this.tabPageDisplay.Controls.Add(this.buttonOpen);
             this.tabPageDisplay.Controls.Add(this.buttonCapture);
-            this.tabPageDisplay.Controls.Add(this.buttonFont);
             this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
             this.tabPageDisplay.Name = "tabPageDisplay";
             this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
@@ -305,7 +274,7 @@
             this.labelWarning.AutoSize = true;
             this.labelWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWarning.ForeColor = System.Drawing.Color.Red;
-            this.labelWarning.Location = new System.Drawing.Point(87, 9);
+            this.labelWarning.Location = new System.Drawing.Point(9, 9);
             this.labelWarning.Name = "labelWarning";
             this.labelWarning.Size = new System.Drawing.Size(80, 16);
             this.labelWarning.TabIndex = 18;
@@ -317,7 +286,7 @@
             // 
             this.checkBoxFixedPitchFontOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxFixedPitchFontOnly.AutoSize = true;
-            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(113, 223);
+            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(84, 294);
             this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
             this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
             this.checkBoxFixedPitchFontOnly.TabIndex = 17;
@@ -327,7 +296,7 @@
             // buttonSuspend
             // 
             this.buttonSuspend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSuspend.Location = new System.Drawing.Point(6, 230);
+            this.buttonSuspend.Location = new System.Drawing.Point(6, 259);
             this.buttonSuspend.Name = "buttonSuspend";
             this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
             this.buttonSuspend.TabIndex = 16;
@@ -339,7 +308,7 @@
             // 
             this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxReverseScreen.AutoSize = true;
-            this.checkBoxReverseScreen.Location = new System.Drawing.Point(113, 246);
+            this.checkBoxReverseScreen.Location = new System.Drawing.Point(113, 271);
             this.checkBoxReverseScreen.Name = "checkBoxReverseScreen";
             this.checkBoxReverseScreen.Size = new System.Drawing.Size(101, 17);
             this.checkBoxReverseScreen.TabIndex = 14;
@@ -351,7 +320,7 @@
             // 
             this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxConnectOnStartup.AutoSize = true;
-            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 269);
+            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 294);
             this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
             this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
             this.checkBoxConnectOnStartup.TabIndex = 13;
@@ -363,7 +332,7 @@
             // 
             this.checkBoxShowBorders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxShowBorders.AutoSize = true;
-            this.checkBoxShowBorders.Location = new System.Drawing.Point(113, 292);
+            this.checkBoxShowBorders.Location = new System.Drawing.Point(84, 271);
             this.checkBoxShowBorders.Name = "checkBoxShowBorders";
             this.checkBoxShowBorders.Size = new System.Drawing.Size(91, 17);
             this.checkBoxShowBorders.TabIndex = 11;
@@ -427,7 +396,7 @@
             // buttonCapture
             // 
             this.buttonCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCapture.Location = new System.Drawing.Point(6, 259);
+            this.buttonCapture.Location = new System.Drawing.Point(6, 288);
             this.buttonCapture.Name = "buttonCapture";
             this.buttonCapture.Size = new System.Drawing.Size(75, 23);
             this.buttonCapture.TabIndex = 5;
@@ -438,7 +407,7 @@
             // buttonFont
             // 
             this.buttonFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonFont.Location = new System.Drawing.Point(6, 288);
+            this.buttonFont.Location = new System.Drawing.Point(3, 288);
             this.buttonFont.Name = "buttonFont";
             this.buttonFont.Size = new System.Drawing.Size(75, 23);
             this.buttonFont.TabIndex = 0;
@@ -453,17 +422,109 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabPageDisplay);
             this.tabControl.Controls.Add(this.tabPageClients);
+            this.tabControl.Controls.Add(this.tabPageDesign);
             this.tabControl.Location = new System.Drawing.Point(12, 139);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(600, 343);
             this.tabControl.TabIndex = 0;
             // 
+            // tabPageDesign
+            // 
+            this.tabPageDesign.Controls.Add(this.buttonRemoveColumn);
+            this.tabPageDesign.Controls.Add(this.checkBoxFixedPitchFontOnly);
+            this.tabPageDesign.Controls.Add(this.buttonAddColumn);
+            this.tabPageDesign.Controls.Add(this.buttonFont);
+            this.tabPageDesign.Controls.Add(this.buttonRemoveRow);
+            this.tabPageDesign.Controls.Add(this.buttonAddRow);
+            this.tabPageDesign.Controls.Add(this.checkBoxShowBorders);
+            this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDesign.Name = "tabPageDesign";
+            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDesign.Size = new System.Drawing.Size(592, 317);
+            this.tabPageDesign.TabIndex = 3;
+            this.tabPageDesign.Text = "Design";
+            this.tabPageDesign.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddRow
+            // 
+            this.buttonAddRow.Location = new System.Drawing.Point(7, 7);
+            this.buttonAddRow.Name = "buttonAddRow";
+            this.buttonAddRow.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddRow.TabIndex = 0;
+            this.buttonAddRow.Text = "Add row";
+            this.buttonAddRow.UseVisualStyleBackColor = true;
+            this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
+            // 
+            // buttonRemoveRow
+            // 
+            this.buttonRemoveRow.Location = new System.Drawing.Point(7, 37);
+            this.buttonRemoveRow.Name = "buttonRemoveRow";
+            this.buttonRemoveRow.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveRow.TabIndex = 1;
+            this.buttonRemoveRow.Text = "Remove row";
+            this.buttonRemoveRow.UseVisualStyleBackColor = true;
+            this.buttonRemoveRow.Click += new System.EventHandler(this.buttonRemoveRow_Click);
+            // 
+            // buttonAddColumn
+            // 
+            this.buttonAddColumn.Location = new System.Drawing.Point(89, 7);
+            this.buttonAddColumn.Name = "buttonAddColumn";
+            this.buttonAddColumn.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddColumn.TabIndex = 2;
+            this.buttonAddColumn.Text = "Add column";
+            this.buttonAddColumn.UseVisualStyleBackColor = true;
+            this.buttonAddColumn.Click += new System.EventHandler(this.buttonAddColumn_Click);
+            // 
+            // buttonRemoveColumn
+            // 
+            this.buttonRemoveColumn.Location = new System.Drawing.Point(89, 37);
+            this.buttonRemoveColumn.Name = "buttonRemoveColumn";
+            this.buttonRemoveColumn.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveColumn.TabIndex = 3;
+            this.buttonRemoveColumn.Text = "Remove col.";
+            this.buttonRemoveColumn.UseVisualStyleBackColor = true;
+            this.buttonRemoveColumn.Click += new System.EventHandler(this.buttonRemoveColumn_Click);
+            // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Separator = "|";
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 1);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -19);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Separator = "|";
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 517);
+            this.Controls.Add(this.labelWarning);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panelDisplay);
@@ -482,6 +543,8 @@
             this.tabPageDisplay.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).EndInit();
             this.tabControl.ResumeLayout(false);
+            this.tabPageDesign.ResumeLayout(false);
+            this.tabPageDesign.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -519,6 +582,11 @@
         private System.Windows.Forms.Button buttonCloseClients;
         private System.Windows.Forms.Button buttonStartClient;
         private System.Windows.Forms.Label labelWarning;
+        private System.Windows.Forms.TabPage tabPageDesign;
+        private System.Windows.Forms.Button buttonRemoveColumn;
+        private System.Windows.Forms.Button buttonAddColumn;
+        private System.Windows.Forms.Button buttonRemoveRow;
+        private System.Windows.Forms.Button buttonAddRow;
     }
 }
 
