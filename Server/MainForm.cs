@@ -66,7 +66,7 @@ namespace SharpDisplayManager
 
             if (Properties.Settings.Default.DisplayConnectOnStartup)
             {
-                iDisplay.Open();
+                iDisplay.Open(Display.TMiniDisplayType.EMiniDisplayAutoDetect);
                 UpdateStatus();
             }
         }
@@ -272,7 +272,7 @@ namespace SharpDisplayManager
 
         private void buttonOpen_Click(object sender, EventArgs e)
         {
-            if (iDisplay.Open())
+            if (iDisplay.Open(Display.TMiniDisplayType.EMiniDisplayAutoDetect))
             {
                 UpdateStatus();
                 iDisplay.RequestPowerSupplyStatus();
