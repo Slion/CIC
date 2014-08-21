@@ -18,11 +18,11 @@ namespace SharpDisplayManager
         }
 
         //
-        public bool Open()
+        public bool Open(TMiniDisplayType aType)
         {
             if (iDevice == IntPtr.Zero)
             {
-                iDevice = MiniDisplayOpen();
+                iDevice = MiniDisplayOpen(aType);
             }
             return iDevice != IntPtr.Zero;
         }
@@ -160,16 +160,24 @@ namespace SharpDisplayManager
         //Our display device handle
         IntPtr iDevice;
 
+        public enum TMiniDisplayType
+        {
+            EMiniDisplayAutoDetect, /*Not yet implemented*/
+            EMiniDisplayFutabaGP1212A01,
+            EMiniDisplayFutabaGP1212A02
+        };
+
+
         public enum TMiniDisplayRequest
         {
             EMiniDisplayRequestNone,
             EMiniDisplayRequestDeviceId,
             EMiniDisplayRequestFirmwareRevision,
             EMiniDisplayRequestPowerSupplyStatus
-        }
+        };
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr MiniDisplayOpen();
+        public static extern IntPtr MiniDisplayOpen(TMiniDisplayType aType);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern void MiniDisplayClose(IntPtr aDevice);
