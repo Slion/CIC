@@ -43,27 +43,27 @@
             this.buttonStartClient = new System.Windows.Forms.Button();
             this.treeViewClients = new System.Windows.Forms.TreeView();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
-            this.labelWarning = new System.Windows.Forms.Label();
-            this.checkBoxFixedPitchFontOnly = new System.Windows.Forms.CheckBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
-            this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
-            this.checkBoxShowBorders = new System.Windows.Forms.CheckBox();
             this.trackBarBrightness = new System.Windows.Forms.TrackBar();
             this.buttonFill = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonCapture = new System.Windows.Forms.Button();
+            this.labelWarning = new System.Windows.Forms.Label();
+            this.checkBoxFixedPitchFontOnly = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowBorders = new System.Windows.Forms.CheckBox();
             this.buttonFont = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageDesign = new System.Windows.Forms.TabPage();
-            this.buttonAddRow = new System.Windows.Forms.Button();
-            this.buttonRemoveRow = new System.Windows.Forms.Button();
-            this.buttonAddColumn = new System.Windows.Forms.Button();
             this.buttonRemoveColumn = new System.Windows.Forms.Button();
+            this.buttonAddColumn = new System.Windows.Forms.Button();
+            this.buttonRemoveRow = new System.Windows.Forms.Button();
+            this.buttonAddRow = new System.Windows.Forms.Button();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
+            this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -173,7 +173,7 @@
             this.toolStripStatusLabelSpring,
             this.toolStripStatusLabelPower,
             this.toolStripStatusLabelFps});
-            this.statusStrip.Location = new System.Drawing.Point(0, 495);
+            this.statusStrip.Location = new System.Drawing.Point(0, 420);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip.Size = new System.Drawing.Size(624, 22);
@@ -212,14 +212,13 @@
             this.tabPageClients.Location = new System.Drawing.Point(4, 22);
             this.tabPageClients.Name = "tabPageClients";
             this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageClients.Size = new System.Drawing.Size(592, 317);
+            this.tabPageClients.Size = new System.Drawing.Size(592, 242);
             this.tabPageClients.TabIndex = 2;
             this.tabPageClients.Text = "Clients";
             this.tabPageClients.UseVisualStyleBackColor = true;
             // 
             // buttonCloseClients
             // 
-            this.buttonCloseClients.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonCloseClients.Location = new System.Drawing.Point(6, 35);
             this.buttonCloseClients.Name = "buttonCloseClients";
             this.buttonCloseClients.Size = new System.Drawing.Size(75, 23);
@@ -230,7 +229,6 @@
             // 
             // buttonStartClient
             // 
-            this.buttonStartClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonStartClient.Location = new System.Drawing.Point(6, 6);
             this.buttonStartClient.Name = "buttonStartClient";
             this.buttonStartClient.Size = new System.Drawing.Size(75, 23);
@@ -246,14 +244,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.treeViewClients.Location = new System.Drawing.Point(87, 6);
             this.treeViewClients.Name = "treeViewClients";
-            this.treeViewClients.Size = new System.Drawing.Size(499, 308);
+            this.treeViewClients.Size = new System.Drawing.Size(499, 233);
             this.treeViewClients.TabIndex = 0;
             this.treeViewClients.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewClients_AfterSelect);
             // 
             // tabPageDisplay
             // 
             this.tabPageDisplay.Controls.Add(this.buttonSuspend);
-            this.tabPageDisplay.Controls.Add(this.checkBoxReverseScreen);
             this.tabPageDisplay.Controls.Add(this.checkBoxConnectOnStartup);
             this.tabPageDisplay.Controls.Add(this.trackBarBrightness);
             this.tabPageDisplay.Controls.Add(this.buttonFill);
@@ -264,39 +261,15 @@
             this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
             this.tabPageDisplay.Name = "tabPageDisplay";
             this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDisplay.Size = new System.Drawing.Size(592, 317);
+            this.tabPageDisplay.Size = new System.Drawing.Size(592, 242);
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
             // 
-            // labelWarning
-            // 
-            this.labelWarning.AutoSize = true;
-            this.labelWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelWarning.ForeColor = System.Drawing.Color.Red;
-            this.labelWarning.Location = new System.Drawing.Point(9, 9);
-            this.labelWarning.Name = "labelWarning";
-            this.labelWarning.Size = new System.Drawing.Size(80, 16);
-            this.labelWarning.TabIndex = 18;
-            this.labelWarning.Text = "WARNING";
-            this.labelWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelWarning.Visible = false;
-            // 
-            // checkBoxFixedPitchFontOnly
-            // 
-            this.checkBoxFixedPitchFontOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxFixedPitchFontOnly.AutoSize = true;
-            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(84, 294);
-            this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
-            this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
-            this.checkBoxFixedPitchFontOnly.TabIndex = 17;
-            this.checkBoxFixedPitchFontOnly.Text = "Fixed pitch font only";
-            this.checkBoxFixedPitchFontOnly.UseVisualStyleBackColor = true;
-            // 
             // buttonSuspend
             // 
             this.buttonSuspend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSuspend.Location = new System.Drawing.Point(6, 259);
+            this.buttonSuspend.Location = new System.Drawing.Point(6, 184);
             this.buttonSuspend.Name = "buttonSuspend";
             this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
             this.buttonSuspend.TabIndex = 16;
@@ -304,41 +277,17 @@
             this.buttonSuspend.UseVisualStyleBackColor = true;
             this.buttonSuspend.Click += new System.EventHandler(this.buttonSuspend_Click);
             // 
-            // checkBoxReverseScreen
-            // 
-            this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxReverseScreen.AutoSize = true;
-            this.checkBoxReverseScreen.Location = new System.Drawing.Point(113, 271);
-            this.checkBoxReverseScreen.Name = "checkBoxReverseScreen";
-            this.checkBoxReverseScreen.Size = new System.Drawing.Size(101, 17);
-            this.checkBoxReverseScreen.TabIndex = 14;
-            this.checkBoxReverseScreen.Text = "Reverse screen";
-            this.checkBoxReverseScreen.UseVisualStyleBackColor = true;
-            this.checkBoxReverseScreen.CheckedChanged += new System.EventHandler(this.checkBoxReverseScreen_CheckedChanged);
-            // 
             // checkBoxConnectOnStartup
             // 
             this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxConnectOnStartup.AutoSize = true;
-            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 294);
+            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 217);
             this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
             this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
             this.checkBoxConnectOnStartup.TabIndex = 13;
             this.checkBoxConnectOnStartup.Text = "Connect on stratup ";
             this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
             this.checkBoxConnectOnStartup.CheckedChanged += new System.EventHandler(this.checkBoxConnectOnStartup_CheckedChanged);
-            // 
-            // checkBoxShowBorders
-            // 
-            this.checkBoxShowBorders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxShowBorders.AutoSize = true;
-            this.checkBoxShowBorders.Location = new System.Drawing.Point(84, 271);
-            this.checkBoxShowBorders.Name = "checkBoxShowBorders";
-            this.checkBoxShowBorders.Size = new System.Drawing.Size(91, 17);
-            this.checkBoxShowBorders.TabIndex = 11;
-            this.checkBoxShowBorders.Text = "Show borders";
-            this.checkBoxShowBorders.UseVisualStyleBackColor = true;
-            this.checkBoxShowBorders.CheckedChanged += new System.EventHandler(this.checkBoxShowBorders_CheckedChanged);
             // 
             // trackBarBrightness
             // 
@@ -348,7 +297,7 @@
             this.trackBarBrightness.Location = new System.Drawing.Point(544, 9);
             this.trackBarBrightness.Name = "trackBarBrightness";
             this.trackBarBrightness.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarBrightness.Size = new System.Drawing.Size(45, 305);
+            this.trackBarBrightness.Size = new System.Drawing.Size(45, 225);
             this.trackBarBrightness.TabIndex = 10;
             this.trackBarBrightness.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.trackBarBrightness.Scroll += new System.EventHandler(this.trackBarBrightness_Scroll);
@@ -396,7 +345,7 @@
             // buttonCapture
             // 
             this.buttonCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCapture.Location = new System.Drawing.Point(6, 288);
+            this.buttonCapture.Location = new System.Drawing.Point(6, 213);
             this.buttonCapture.Name = "buttonCapture";
             this.buttonCapture.Size = new System.Drawing.Size(75, 23);
             this.buttonCapture.TabIndex = 5;
@@ -404,10 +353,46 @@
             this.buttonCapture.UseVisualStyleBackColor = true;
             this.buttonCapture.Click += new System.EventHandler(this.buttonCapture_Click);
             // 
+            // labelWarning
+            // 
+            this.labelWarning.AutoSize = true;
+            this.labelWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWarning.ForeColor = System.Drawing.Color.Red;
+            this.labelWarning.Location = new System.Drawing.Point(9, 9);
+            this.labelWarning.Name = "labelWarning";
+            this.labelWarning.Size = new System.Drawing.Size(80, 16);
+            this.labelWarning.TabIndex = 18;
+            this.labelWarning.Text = "WARNING";
+            this.labelWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelWarning.Visible = false;
+            // 
+            // checkBoxFixedPitchFontOnly
+            // 
+            this.checkBoxFixedPitchFontOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxFixedPitchFontOnly.AutoSize = true;
+            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(87, 217);
+            this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
+            this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
+            this.checkBoxFixedPitchFontOnly.TabIndex = 17;
+            this.checkBoxFixedPitchFontOnly.Text = "Fixed pitch font only";
+            this.checkBoxFixedPitchFontOnly.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxShowBorders
+            // 
+            this.checkBoxShowBorders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxShowBorders.AutoSize = true;
+            this.checkBoxShowBorders.Location = new System.Drawing.Point(485, 29);
+            this.checkBoxShowBorders.Name = "checkBoxShowBorders";
+            this.checkBoxShowBorders.Size = new System.Drawing.Size(91, 17);
+            this.checkBoxShowBorders.TabIndex = 11;
+            this.checkBoxShowBorders.Text = "Show borders";
+            this.checkBoxShowBorders.UseVisualStyleBackColor = true;
+            this.checkBoxShowBorders.CheckedChanged += new System.EventHandler(this.checkBoxShowBorders_CheckedChanged);
+            // 
             // buttonFont
             // 
             this.buttonFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonFont.Location = new System.Drawing.Point(3, 288);
+            this.buttonFont.Location = new System.Drawing.Point(6, 213);
             this.buttonFont.Name = "buttonFont";
             this.buttonFont.Size = new System.Drawing.Size(75, 23);
             this.buttonFont.TabIndex = 0;
@@ -426,7 +411,7 @@
             this.tabControl.Location = new System.Drawing.Point(12, 139);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(600, 343);
+            this.tabControl.Size = new System.Drawing.Size(600, 268);
             this.tabControl.TabIndex = 0;
             // 
             // tabPageDesign
@@ -435,46 +420,17 @@
             this.tabPageDesign.Controls.Add(this.checkBoxFixedPitchFontOnly);
             this.tabPageDesign.Controls.Add(this.buttonAddColumn);
             this.tabPageDesign.Controls.Add(this.buttonFont);
+            this.tabPageDesign.Controls.Add(this.checkBoxReverseScreen);
             this.tabPageDesign.Controls.Add(this.buttonRemoveRow);
             this.tabPageDesign.Controls.Add(this.buttonAddRow);
             this.tabPageDesign.Controls.Add(this.checkBoxShowBorders);
             this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
             this.tabPageDesign.Name = "tabPageDesign";
             this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDesign.Size = new System.Drawing.Size(592, 317);
+            this.tabPageDesign.Size = new System.Drawing.Size(592, 242);
             this.tabPageDesign.TabIndex = 3;
             this.tabPageDesign.Text = "Design";
             this.tabPageDesign.UseVisualStyleBackColor = true;
-            // 
-            // buttonAddRow
-            // 
-            this.buttonAddRow.Location = new System.Drawing.Point(7, 7);
-            this.buttonAddRow.Name = "buttonAddRow";
-            this.buttonAddRow.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddRow.TabIndex = 0;
-            this.buttonAddRow.Text = "Add row";
-            this.buttonAddRow.UseVisualStyleBackColor = true;
-            this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
-            // 
-            // buttonRemoveRow
-            // 
-            this.buttonRemoveRow.Location = new System.Drawing.Point(7, 37);
-            this.buttonRemoveRow.Name = "buttonRemoveRow";
-            this.buttonRemoveRow.Size = new System.Drawing.Size(75, 23);
-            this.buttonRemoveRow.TabIndex = 1;
-            this.buttonRemoveRow.Text = "Remove row";
-            this.buttonRemoveRow.UseVisualStyleBackColor = true;
-            this.buttonRemoveRow.Click += new System.EventHandler(this.buttonRemoveRow_Click);
-            // 
-            // buttonAddColumn
-            // 
-            this.buttonAddColumn.Location = new System.Drawing.Point(89, 7);
-            this.buttonAddColumn.Name = "buttonAddColumn";
-            this.buttonAddColumn.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddColumn.TabIndex = 2;
-            this.buttonAddColumn.Text = "Add column";
-            this.buttonAddColumn.UseVisualStyleBackColor = true;
-            this.buttonAddColumn.Click += new System.EventHandler(this.buttonAddColumn_Click);
             // 
             // buttonRemoveColumn
             // 
@@ -486,12 +442,42 @@
             this.buttonRemoveColumn.UseVisualStyleBackColor = true;
             this.buttonRemoveColumn.Click += new System.EventHandler(this.buttonRemoveColumn_Click);
             // 
+            // buttonAddColumn
+            // 
+            this.buttonAddColumn.Location = new System.Drawing.Point(89, 7);
+            this.buttonAddColumn.Name = "buttonAddColumn";
+            this.buttonAddColumn.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddColumn.TabIndex = 2;
+            this.buttonAddColumn.Text = "Add column";
+            this.buttonAddColumn.UseVisualStyleBackColor = true;
+            this.buttonAddColumn.Click += new System.EventHandler(this.buttonAddColumn_Click);
+            // 
+            // buttonRemoveRow
+            // 
+            this.buttonRemoveRow.Location = new System.Drawing.Point(7, 37);
+            this.buttonRemoveRow.Name = "buttonRemoveRow";
+            this.buttonRemoveRow.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveRow.TabIndex = 1;
+            this.buttonRemoveRow.Text = "Remove row";
+            this.buttonRemoveRow.UseVisualStyleBackColor = true;
+            this.buttonRemoveRow.Click += new System.EventHandler(this.buttonRemoveRow_Click);
+            // 
+            // buttonAddRow
+            // 
+            this.buttonAddRow.Location = new System.Drawing.Point(7, 7);
+            this.buttonAddRow.Name = "buttonAddRow";
+            this.buttonAddRow.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddRow.TabIndex = 0;
+            this.buttonAddRow.Text = "Add row";
+            this.buttonAddRow.UseVisualStyleBackColor = true;
+            this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
+            // 
             // marqueeLabelTop
             // 
             this.marqueeLabelTop.AutoEllipsis = true;
             this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
             this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -9);
             this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelTop.Name = "marqueeLabelTop";
             this.marqueeLabelTop.OwnTimer = false;
@@ -507,7 +493,7 @@
             // 
             this.marqueeLabelBottom.AutoEllipsis = true;
             this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -19);
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 2);
             this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelBottom.Name = "marqueeLabelBottom";
             this.marqueeLabelBottom.OwnTimer = false;
@@ -519,11 +505,23 @@
             this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
+            // checkBoxReverseScreen
+            // 
+            this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxReverseScreen.AutoSize = true;
+            this.checkBoxReverseScreen.Location = new System.Drawing.Point(485, 6);
+            this.checkBoxReverseScreen.Name = "checkBoxReverseScreen";
+            this.checkBoxReverseScreen.Size = new System.Drawing.Size(101, 17);
+            this.checkBoxReverseScreen.TabIndex = 14;
+            this.checkBoxReverseScreen.Text = "Reverse screen";
+            this.checkBoxReverseScreen.UseVisualStyleBackColor = true;
+            this.checkBoxReverseScreen.CheckedChanged += new System.EventHandler(this.checkBoxReverseScreen_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 517);
+            this.ClientSize = new System.Drawing.Size(624, 442);
             this.Controls.Add(this.labelWarning);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.tabControl);
@@ -568,7 +566,6 @@
         private System.Windows.Forms.TabPage tabPageDisplay;
         private System.Windows.Forms.CheckBox checkBoxFixedPitchFontOnly;
         private System.Windows.Forms.Button buttonSuspend;
-        private System.Windows.Forms.CheckBox checkBoxReverseScreen;
         private System.Windows.Forms.CheckBox checkBoxConnectOnStartup;
         private System.Windows.Forms.CheckBox checkBoxShowBorders;
         private System.Windows.Forms.TrackBar trackBarBrightness;
@@ -587,6 +584,7 @@
         private System.Windows.Forms.Button buttonAddColumn;
         private System.Windows.Forms.Button buttonRemoveRow;
         private System.Windows.Forms.Button buttonAddRow;
+        private System.Windows.Forms.CheckBox checkBoxReverseScreen;
     }
 }
 
