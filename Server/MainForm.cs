@@ -479,8 +479,8 @@ namespace SharpDisplayManager
         //Delegates are used for our thread safe method
         public delegate void AddClientDelegate(string aSessionId, IDisplayServiceCallback aCallback);
         public delegate void RemoveClientDelegate(string aSessionId);
-        public delegate void SetTextDelegate(string SessionId, int aLineIndex, string aText);
-        public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<string> aTexts);
+        public delegate void SetTextDelegate(string SessionId, TextField aTextField);
+        public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<TextField> aTextFields);
         public delegate void SetClientNameDelegate(string aSessionId, string aName);
 
 
@@ -546,13 +546,13 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aLineIndex"></param>
         /// <param name="aText"></param>
-        public void SetTextThreadSafe(string aSessionId, int aLineIndex, string aText)
+        public void SetTextThreadSafe(string aSessionId, TextField aTextField)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 SetTextDelegate d = new SetTextDelegate(SetTextThreadSafe);
-                this.Invoke(d, new object[] { aSessionId, aLineIndex, aText });
+                this.Invoke(d, new object[] { aSessionId, aTextField });
             }
             else
             {
@@ -560,21 +560,24 @@ namespace SharpDisplayManager
                 if (client != null)
                 {
                     //Make sure all our texts are in place
-                    while (client.Texts.Count < (aLineIndex + 1))
+                    while (client.Texts.Count < (aTextField.Index + 1))
                     {
-                        client.Texts.Add("");
+                        //Add a text field with proper index
+                        client.Texts.Add(new TextField(client.Texts.Count));
                     }
-                    client.Texts[aLineIndex] = aText;
+                    client.Texts[aTextField.Index] = aTextField;
 
                     //We are in the proper thread
                     //Only support two lines for now
-                    if (aLineIndex == 0)
+                    if (aTextField.Index == 0)
                     {
-                        marqueeLabelTop.Text = aText;
+                        marqueeLabelTop.Text = aTextField.Text;
+                        marqueeLabelTop.TextAlign = aTextField.Alignment;
                     }
-                    else if (aLineIndex == 1)
+                    else if (aTextField.Index == 1)
                     {
-                        marqueeLabelBottom.Text = aText;
+                        marqueeLabelBottom.Text = aTextField.Text;
+                        marqueeLabelBottom.TextAlign = aTextField.Alignment;
                     }
 
 
@@ -587,44 +590,46 @@ namespace SharpDisplayManager
         ///
         /// </summary>
         /// <param name="aTexts"></param>
-        public void SetTextsThreadSafe(string aSessionId, System.Collections.Generic.IList<string> aTexts)
+        public void SetTextsThreadSafe(string aSessionId, System.Collections.Generic.IList<TextField> aTextFields)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
                 SetTextsDelegate d = new SetTextsDelegate(SetTextsThreadSafe);
-                this.Invoke(d, new object[] { aSessionId, aTexts });
+                this.Invoke(d, new object[] { aSessionId, aTextFields });
             }
             else
             {
+                //We are in the proper thread
                 ClientData client = iClients[aSessionId];
                 if (client != null)
                 {
-                    //Populate our client with the given texts
+                    //Populate our client with the given text fields
                     int j = 0;
-                    foreach (string text in aTexts)
+                    foreach (TextField textField in aTextFields)
                     {
                         if (client.Texts.Count < (j + 1))
                         {
-                            client.Texts.Add(text);
+                            client.Texts.Add(textField);
                         }
                         else
                         {
-                            client.Texts[j]=text;
+                            client.Texts[j] = textField;
                         }
                         j++;
-                    }
-                    //We are in the proper thread
+                    }                    
                     //Only support two lines for now
-                    for (int i = 0; i < aTexts.Count; i++)
+                    for (int i = 0; i < aTextFields.Count; i++)
                     {
-                        if (i == 0)
+                        if (aTextFields[i].Index == 0)
                         {
-                            marqueeLabelTop.Text = aTexts[i];
+                            marqueeLabelTop.Text = aTextFields[i].Text;
+                            marqueeLabelTop.TextAlign = aTextFields[i].Alignment;
                         }
-                        else if (i == 1)
+                        else if (aTextFields[i].Index == 1)
                         {
-                            marqueeLabelBottom.Text = aTexts[i];
+                            marqueeLabelBottom.Text = aTextFields[i].Text;
+                            marqueeLabelBottom.TextAlign = aTextFields[i].Alignment;
                         }
                     }
 
@@ -714,9 +719,9 @@ namespace SharpDisplayManager
                     TreeNode textsRoot = new TreeNode("Text");
                     node.Nodes.Add(textsRoot);
                     //For each text add a new entry
-                    foreach (string text in aClient.Texts)
+                    foreach (TextField field in aClient.Texts)
                     {
-                        textsRoot.Nodes.Add(new TreeNode(text));
+                        textsRoot.Nodes.Add(new TreeNode(field.Text));
                     }
                 }
 
@@ -790,13 +795,13 @@ namespace SharpDisplayManager
         {
             SessionId = aSessionId;
             Name = "";
-            Texts = new List<string>();
+            Texts = new List<TextField>();
             Callback = aCallback;
         }
 
         public string SessionId { get; set; }
         public string Name { get; set; }
-        public List<string> Texts { get; set; }
+        public List<TextField> Texts { get; set; }
         public IDisplayServiceCallback Callback { get; set; }
     }
 }

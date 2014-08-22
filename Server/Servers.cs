@@ -40,15 +40,15 @@ namespace SharpDisplayManager
         }
         
         //From IDisplayService
-        public void SetTexts(System.Collections.Generic.IList<string> aTexts)
+        public void SetTexts(System.Collections.Generic.IList<TextField> aTextFields)
         {
-            Program.iMainForm.SetTextsThreadSafe(SessionId, aTexts);
+            Program.iMainForm.SetTextsThreadSafe(SessionId, aTextFields);
         }
 
         //
-        public void SetText(int aLineIndex, string aText)
+        public void SetText(TextField aTextField)
         {
-            Program.iMainForm.SetTextThreadSafe(SessionId, aLineIndex, aText);
+            Program.iMainForm.SetTextThreadSafe(SessionId, aTextField);
         }
 
         //

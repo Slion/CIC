@@ -70,14 +70,14 @@ namespace SharpDisplayClient
             Channel.SetName(aClientName);
         }
 
-        public void SetText(int aLineIndex, string aText)
+        public void SetText(TextField aTextField)
         {
-            Channel.SetText(aLineIndex, aText);
+            Channel.SetText(aTextField);
         }
 
-        public void SetTexts(System.Collections.Generic.IList<string> aTexts)
+        public void SetTexts(System.Collections.Generic.IList<TextField> aTextFields)
         {
-            Channel.SetTexts(aTexts);
+            Channel.SetTexts(aTextFields);
         }
 
         public int ClientCount()
