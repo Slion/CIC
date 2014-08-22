@@ -20,7 +20,6 @@ namespace SharpDisplayManager
         private SizeF iTextSize;
         private SizeF iSeparatorSize;
         private SizeF iScrollSize;
-        private ContentAlignment iRequestedContentAlignment;
 
         [Category("Appearance")]
         [Description("Separator in our scrolling loop.")]
@@ -84,7 +83,6 @@ namespace SharpDisplayManager
             PixelsLeft = 0;
             CurrentPosition = 0;
             iBrush = new SolidBrush(ForeColor);
-            iRequestedContentAlignment = TextAlign;
 
             //Following is needed if we ever switch from Label to Control base class.
             //Without it you get some pretty nasty flicker
@@ -225,8 +223,6 @@ namespace SharpDisplayManager
             CurrentPosition = 0;
             LastTickTime = DateTime.Now;
             PixelsLeft = 0;
-            //Reset text align
-            //TextAlign = iRequestedContentAlignment;
 
             //For all string measurements and drawing issues refer to the following article:
             // http://stackoverflow.com/questions/1203087/why-is-graphics-measurestring-returning-a-higher-than-expected-number
@@ -246,19 +242,9 @@ namespace SharpDisplayManager
             if (NeedToScroll())
             {
                 //Always align left when scrolling
-                //Somehow draw string still takes into our control alignment so we need to set it too
-                //ContentAlignment original = TextAlign;
-                TextAlign = ContentAlignment.MiddleLeft;
-                //Make sure our original text alignment remain the same even though we override it when scrolling
-                //iRequestedContentAlignment = original;
-                //iStringFormat will get updated in OnTextAlignChanged
-                //StringFormat.Alignment = StringAlignment.Near;
+                iStringFormat.Alignment = StringAlignment.Near;
             }
-            else
-            {
-                //We don't need to scroll so make sure the desired alignment is used
-                TextAlign = iRequestedContentAlignment;
-            }
+
         }
 
         protected override void OnTextChanged(EventArgs e)
@@ -277,13 +263,13 @@ namespace SharpDisplayManager
 
         protected override void OnTextAlignChanged(EventArgs e)
         {
-            iRequestedContentAlignment = TextAlign;
+            iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
             if (NeedToScroll())
             {
                 //Always align left when scrolling to avoid bugs
-                TextAlign = ContentAlignment.MiddleLeft;
+                iStringFormat.Alignment = StringAlignment.Near;
             }
-            iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
+
             Invalidate();
             //
             base.OnTextAlignChanged(e);
