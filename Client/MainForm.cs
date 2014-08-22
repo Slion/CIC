@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Diagnostics;
+using SharpDisplayInterface;
 
 
 namespace SharpDisplayClient
@@ -18,18 +19,16 @@ namespace SharpDisplayClient
     {
         Client iClient;
         Callback iCallback;
+        ContentAlignment Alignment;
+        TextField iTextFieldTop;
 
         public MainForm()
         {
             InitializeComponent();
+            Alignment = ContentAlignment.MiddleLeft;
+            iTextFieldTop = new TextField(0);
         }
 
-        private void buttonSetText_Click(object sender, EventArgs e)
-        {
-            //iClient.SetText(0,"Top");
-            //iClient.SetText(1, "Bottom");
-            iClient.SetTexts(new string[] { textBoxTop.Text, textBoxBottom.Text });
-        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -109,6 +108,47 @@ namespace SharpDisplayClient
         public bool IsClientReady()
         {
             return (iClient != null && iClient.State == CommunicationState.Opened);
+        }
+
+        private void buttonAlignLeft_Click(object sender, EventArgs e)
+        {
+            Alignment = ContentAlignment.MiddleLeft;
+            textBoxTop.TextAlign = HorizontalAlignment.Left;
+            textBoxBottom.TextAlign = HorizontalAlignment.Left;
+        }
+
+        private void buttonAlignCenter_Click(object sender, EventArgs e)
+        {
+            Alignment = ContentAlignment.MiddleCenter;
+            textBoxTop.TextAlign = HorizontalAlignment.Center;
+            textBoxBottom.TextAlign = HorizontalAlignment.Center;
+        }
+
+        private void buttonAlignRight_Click(object sender, EventArgs e)
+        {
+            Alignment = ContentAlignment.MiddleRight;
+            textBoxTop.TextAlign = HorizontalAlignment.Right;
+            textBoxBottom.TextAlign = HorizontalAlignment.Right;
+        }
+
+        private void buttonSetTopText_Click(object sender, EventArgs e)
+        {
+            //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
+            iTextFieldTop.Text = textBoxTop.Text;
+            iClient.SetText(iTextFieldTop);
+        }
+
+        private void buttonSetText_Click(object sender, EventArgs e)
+        {
+            //iClient.SetText(0,"Top");
+            //iClient.SetText(1, "Bottom");
+            //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
+
+            iClient.SetTexts(new TextField[]
+            { 
+                new TextField(0, textBoxTop.Text, Alignment),
+                new TextField(1, textBoxBottom.Text, Alignment)
+            });
         }
     }
 }

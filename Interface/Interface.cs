@@ -5,11 +5,40 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using System.Collections;
+using System.Drawing;
+using System.Runtime.Serialization;
 
 
 namespace SharpDisplayInterface
 {
-    
+    [DataContract]
+    public class TextField
+    {
+        public TextField()
+        {
+            Index = 0;
+            Text = "";
+            Alignment = ContentAlignment.MiddleLeft;
+        }
+
+        public TextField(int aIndex, string aText = "", ContentAlignment aAlignment = ContentAlignment.MiddleLeft)
+        {
+            Index = aIndex;
+            Text = aText;
+            Alignment = aAlignment;
+        }
+
+        [DataMember]
+        public int Index { get; set; }
+
+        [DataMember]
+        public string Text { get; set; }
+
+        [DataMember]
+        public ContentAlignment Alignment { get; set; }
+    }
+
+
     [ServiceContract(   CallbackContract = typeof(IDisplayServiceCallback),
                         SessionMode = SessionMode.Required)]
     public interface IDisplayService
@@ -28,19 +57,16 @@ namespace SharpDisplayInterface
         /// Put the given text in the given field on your display.
         /// Fields are often just lines of text.
         /// </summary>
-        /// <param name="aFieldIndex"></param>
-        /// <param name="aText"></param>
+        /// <param name="aTextFieldIndex"></param>
         [OperationContract(IsOneWay = true)]
-        void SetText(int aFieldIndex, string aText);
+        void SetText(TextField aTextField);
 
         /// <summary>
         /// Allows a client to set multiple text fields at once.
-        /// First text in the list is set into field index 0.
-        /// Last text in the list is set into field index N-1.
         /// </summary>
         /// <param name="aTexts"></param>
         [OperationContract(IsOneWay = true)]
-        void SetTexts(System.Collections.Generic.IList<string> aTexts);
+        void SetTexts(System.Collections.Generic.IList<TextField> aTextFields);
 
         /// <summary>
         /// Provides the number of clients currently connected
