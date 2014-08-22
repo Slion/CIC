@@ -760,6 +760,23 @@ namespace SharpDisplayManager
             }
         }
 
+        private void buttonAlignLeft_Click(object sender, EventArgs e)
+        {
+            marqueeLabelTop.TextAlign = ContentAlignment.MiddleLeft;
+            marqueeLabelBottom.TextAlign = ContentAlignment.MiddleLeft;
+        }
+
+        private void buttonAlignCenter_Click(object sender, EventArgs e)
+        {
+            marqueeLabelTop.TextAlign = ContentAlignment.MiddleCenter;
+            marqueeLabelBottom.TextAlign = ContentAlignment.MiddleCenter;
+        }
+
+        private void buttonAlignRight_Click(object sender, EventArgs e)
+        {
+            marqueeLabelTop.TextAlign = ContentAlignment.MiddleRight;
+            marqueeLabelBottom.TextAlign = ContentAlignment.MiddleRight;
+        }
 
     }
 
