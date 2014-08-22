@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.panelDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
+            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -57,13 +59,14 @@
             this.buttonFont = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageDesign = new System.Windows.Forms.TabPage();
+            this.buttonAlignRight = new System.Windows.Forms.Button();
+            this.buttonAlignCenter = new System.Windows.Forms.Button();
+            this.buttonAlignLeft = new System.Windows.Forms.Button();
             this.buttonRemoveColumn = new System.Windows.Forms.Button();
             this.buttonAddColumn = new System.Windows.Forms.Button();
+            this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.buttonRemoveRow = new System.Windows.Forms.Button();
             this.buttonAddRow = new System.Windows.Forms.Button();
-            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
-            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
-            this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -159,6 +162,39 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 5;
+            // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Separator = "|";
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 30);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Separator = "|";
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
             // timer
             // 
@@ -416,6 +452,9 @@
             // 
             // tabPageDesign
             // 
+            this.tabPageDesign.Controls.Add(this.buttonAlignRight);
+            this.tabPageDesign.Controls.Add(this.buttonAlignCenter);
+            this.tabPageDesign.Controls.Add(this.buttonAlignLeft);
             this.tabPageDesign.Controls.Add(this.buttonRemoveColumn);
             this.tabPageDesign.Controls.Add(this.checkBoxFixedPitchFontOnly);
             this.tabPageDesign.Controls.Add(this.buttonAddColumn);
@@ -431,6 +470,36 @@
             this.tabPageDesign.TabIndex = 3;
             this.tabPageDesign.Text = "Design";
             this.tabPageDesign.UseVisualStyleBackColor = true;
+            // 
+            // buttonAlignRight
+            // 
+            this.buttonAlignRight.Location = new System.Drawing.Point(171, 105);
+            this.buttonAlignRight.Name = "buttonAlignRight";
+            this.buttonAlignRight.Size = new System.Drawing.Size(75, 23);
+            this.buttonAlignRight.TabIndex = 20;
+            this.buttonAlignRight.Text = "Align Right";
+            this.buttonAlignRight.UseVisualStyleBackColor = true;
+            this.buttonAlignRight.Click += new System.EventHandler(this.buttonAlignRight_Click);
+            // 
+            // buttonAlignCenter
+            // 
+            this.buttonAlignCenter.Location = new System.Drawing.Point(89, 106);
+            this.buttonAlignCenter.Name = "buttonAlignCenter";
+            this.buttonAlignCenter.Size = new System.Drawing.Size(75, 23);
+            this.buttonAlignCenter.TabIndex = 19;
+            this.buttonAlignCenter.Text = "Align Center";
+            this.buttonAlignCenter.UseVisualStyleBackColor = true;
+            this.buttonAlignCenter.Click += new System.EventHandler(this.buttonAlignCenter_Click);
+            // 
+            // buttonAlignLeft
+            // 
+            this.buttonAlignLeft.Location = new System.Drawing.Point(7, 106);
+            this.buttonAlignLeft.Name = "buttonAlignLeft";
+            this.buttonAlignLeft.Size = new System.Drawing.Size(75, 23);
+            this.buttonAlignLeft.TabIndex = 18;
+            this.buttonAlignLeft.Text = "Align Left";
+            this.buttonAlignLeft.UseVisualStyleBackColor = true;
+            this.buttonAlignLeft.Click += new System.EventHandler(this.buttonAlignLeft_Click);
             // 
             // buttonRemoveColumn
             // 
@@ -452,6 +521,18 @@
             this.buttonAddColumn.UseVisualStyleBackColor = true;
             this.buttonAddColumn.Click += new System.EventHandler(this.buttonAddColumn_Click);
             // 
+            // checkBoxReverseScreen
+            // 
+            this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxReverseScreen.AutoSize = true;
+            this.checkBoxReverseScreen.Location = new System.Drawing.Point(485, 6);
+            this.checkBoxReverseScreen.Name = "checkBoxReverseScreen";
+            this.checkBoxReverseScreen.Size = new System.Drawing.Size(101, 17);
+            this.checkBoxReverseScreen.TabIndex = 14;
+            this.checkBoxReverseScreen.Text = "Reverse screen";
+            this.checkBoxReverseScreen.UseVisualStyleBackColor = true;
+            this.checkBoxReverseScreen.CheckedChanged += new System.EventHandler(this.checkBoxReverseScreen_CheckedChanged);
+            // 
             // buttonRemoveRow
             // 
             this.buttonRemoveRow.Location = new System.Drawing.Point(7, 37);
@@ -471,51 +552,6 @@
             this.buttonAddRow.Text = "Add row";
             this.buttonAddRow.UseVisualStyleBackColor = true;
             this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
-            // 
-            // marqueeLabelTop
-            // 
-            this.marqueeLabelTop.AutoEllipsis = true;
-            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -9);
-            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelTop.Name = "marqueeLabelTop";
-            this.marqueeLabelTop.OwnTimer = false;
-            this.marqueeLabelTop.PixelsPerSecond = 64;
-            this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 1);
-            this.marqueeLabelTop.TabIndex = 2;
-            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelTop.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabelBottom
-            // 
-            this.marqueeLabelBottom.AutoEllipsis = true;
-            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 2);
-            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
-            this.marqueeLabelBottom.OwnTimer = false;
-            this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = "|";
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
-            this.marqueeLabelBottom.TabIndex = 3;
-            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
-            // 
-            // checkBoxReverseScreen
-            // 
-            this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBoxReverseScreen.AutoSize = true;
-            this.checkBoxReverseScreen.Location = new System.Drawing.Point(485, 6);
-            this.checkBoxReverseScreen.Name = "checkBoxReverseScreen";
-            this.checkBoxReverseScreen.Size = new System.Drawing.Size(101, 17);
-            this.checkBoxReverseScreen.TabIndex = 14;
-            this.checkBoxReverseScreen.Text = "Reverse screen";
-            this.checkBoxReverseScreen.UseVisualStyleBackColor = true;
-            this.checkBoxReverseScreen.CheckedChanged += new System.EventHandler(this.checkBoxReverseScreen_CheckedChanged);
             // 
             // MainForm
             // 
@@ -585,6 +621,9 @@
         private System.Windows.Forms.Button buttonRemoveRow;
         private System.Windows.Forms.Button buttonAddRow;
         private System.Windows.Forms.CheckBox checkBoxReverseScreen;
+        private System.Windows.Forms.Button buttonAlignRight;
+        private System.Windows.Forms.Button buttonAlignCenter;
+        private System.Windows.Forms.Button buttonAlignLeft;
     }
 }
 

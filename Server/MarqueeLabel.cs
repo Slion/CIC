@@ -20,7 +20,7 @@ namespace SharpDisplayManager
         private SizeF iTextSize;
         private SizeF iSeparatorSize;
         private SizeF iScrollSize;
-        //private ContentAlignment iRequestedContentAlignment;
+        private ContentAlignment iRequestedContentAlignment;
 
         [Category("Appearance")]
         [Description("Separator in our scrolling loop.")]
@@ -84,13 +84,13 @@ namespace SharpDisplayManager
             PixelsLeft = 0;
             CurrentPosition = 0;
             iBrush = new SolidBrush(ForeColor);
-            //iRequestedContentAlignment = TextAlign;
+            iRequestedContentAlignment = TextAlign;
 
-            //Following is needed if we ever switch from Label to Control base class. 
+            //Following is needed if we ever switch from Label to Control base class.
             //Without it you get some pretty nasty flicker
             //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             //SetStyle(ControlStyles.UserPaint, true);
-            //SetStyle(ControlStyles.AllPaintingInWmPaint, true); 
+            //SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             //SetStyle(ControlStyles.DoubleBuffer, true);
         }
 
@@ -161,8 +161,7 @@ namespace SharpDisplayManager
 
         private StringFormat GetStringFormatFromContentAllignment(ContentAlignment ca)
         {
-            StringFormat format = new StringFormat();
-            format = StringFormat.GenericTypographic;
+            StringFormat format = new StringFormat(StringFormat.GenericTypographic);
             switch (ca)
             {
                 case ContentAlignment.TopCenter:
@@ -251,9 +250,14 @@ namespace SharpDisplayManager
                 //ContentAlignment original = TextAlign;
                 TextAlign = ContentAlignment.MiddleLeft;
                 //Make sure our original text alignment remain the same even though we override it when scrolling
-                //iRequestedContentAlignment = original; 
+                //iRequestedContentAlignment = original;
                 //iStringFormat will get updated in OnTextAlignChanged
-                //iStringFormat.Alignment = StringAlignment.Near;
+                //StringFormat.Alignment = StringAlignment.Near;
+            }
+            else
+            {
+                //We don't need to scroll so make sure the desired alignment is used
+                TextAlign = iRequestedContentAlignment;
             }
         }
 
@@ -273,10 +277,16 @@ namespace SharpDisplayManager
 
         protected override void OnTextAlignChanged(EventArgs e)
         {
+            iRequestedContentAlignment = TextAlign;
+            if (NeedToScroll())
+            {
+                //Always align left when scrolling to avoid bugs
+                TextAlign = ContentAlignment.MiddleLeft;
+            }
             iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
-            //iRequestedContentAlignment = TextAlign;
+            Invalidate();
+            //
             base.OnTextAlignChanged(e);
-
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -287,7 +297,7 @@ namespace SharpDisplayManager
             {
                 //Draw it all in a single call would take kerning into account
                 //e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
-                //e.Graphics.DrawString(Text + Separator + Text, Font, iBrush, ClientRectangle, iStringFormat);
+                //e.Graphics.DrawString(Text + Separator + Text, Font, iBrush, ClientRectangle, StringFormat);
 
                 //Doing separate draw operation allows us not to take kerning into account between separator and string
                 //Draw the first one
