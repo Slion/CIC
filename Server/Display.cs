@@ -8,6 +8,9 @@ using System.Runtime.InteropServices;
 
 namespace SharpDisplayManager
 {
+    /// <summary>
+    /// Provide access to our display hardware through MiniDisplay API.
+    /// </summary>
     class Display
     {
 
@@ -87,17 +90,17 @@ namespace SharpDisplayManager
 
         public void RequestPowerSupplyStatus()
         {
-            MiniDisplayRequestPowerSupplyStatus(iDevice);
+            MiniDisplayRequest(iDevice, TMiniDisplayRequest.EMiniDisplayRequestPowerSupplyStatus);
         }
 
         public void RequestDeviceId()
         {
-            MiniDisplayRequestDeviceId(iDevice);
+            MiniDisplayRequest(iDevice, TMiniDisplayRequest.EMiniDisplayRequestDeviceId);
         }
 
         public void RequestFirmwareRevision()
         {
-            MiniDisplayRequestFirmwareRevision(iDevice);
+            MiniDisplayRequest(iDevice, TMiniDisplayRequest.EMiniDisplayRequestFirmwareRevision);
         }
 
         public bool PowerSupplyStatus()
@@ -229,13 +232,7 @@ namespace SharpDisplayManager
         public static extern bool MiniDisplayPowerSupplyStatus(IntPtr aDevice);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayRequestDeviceId(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayRequestFirmwareRevision(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayRequestPowerSupplyStatus(IntPtr aDevice);
+        public static extern void MiniDisplayRequest(IntPtr aDevice, TMiniDisplayRequest aRequest);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern TMiniDisplayRequest MiniDisplayAttemptRequestCompletion(IntPtr aDevice);
