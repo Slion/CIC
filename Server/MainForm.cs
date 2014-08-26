@@ -68,6 +68,7 @@ namespace SharpDisplayManager
             {
                 iDisplay.Open(Display.TMiniDisplayType.EMiniDisplayAutoDetect);
                 UpdateStatus();
+                iDisplay.RequestPowerSupplyStatus();
             }
         }
 
