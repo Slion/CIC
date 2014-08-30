@@ -49,6 +49,8 @@ namespace SharpDisplayManager
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
             checkBoxReverseScreen.Checked = Properties.Settings.Default.DisplayReverseScreen;
             comboBoxDisplayType.SelectedIndex = Properties.Settings.Default.DisplayType;
+            timer.Interval = Properties.Settings.Default.TimerInterval;
+            maskedTextBoxTimerInterval.Text = Properties.Settings.Default.TimerInterval.ToString();
             //
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             //We have a bug when drawing minimized and reusing our bitmap
@@ -264,7 +266,7 @@ namespace SharpDisplayManager
             }
 
             //Compute instant FPS
-            toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " FPS";
+            toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " + (1000/timer.Interval).ToString() + " FPS";
 
             LastTickTime = NewTickTime;
 
@@ -799,6 +801,17 @@ namespace SharpDisplayManager
             Properties.Settings.Default.DisplayType = comboBoxDisplayType.SelectedIndex;
             Properties.Settings.Default.Save();
             OpenDisplayConnection();
+        }
+
+
+        private void maskedTextBoxTimerInterval_TextChanged(object sender, EventArgs e)
+        {
+            if (maskedTextBoxTimerInterval.Text != "")
+            {
+                timer.Interval = Convert.ToInt32(maskedTextBoxTimerInterval.Text);
+                Properties.Settings.Default.TimerInterval = timer.Interval;
+                Properties.Settings.Default.Save();
+            }
         }
 
     }
