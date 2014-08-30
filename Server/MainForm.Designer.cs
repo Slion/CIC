@@ -45,6 +45,7 @@
             this.buttonStartClient = new System.Windows.Forms.Button();
             this.treeViewClients = new System.Windows.Forms.TreeView();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
+            this.comboBoxDisplayType = new System.Windows.Forms.ComboBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
             this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
             this.trackBarBrightness = new System.Windows.Forms.TrackBar();
@@ -286,6 +287,7 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.comboBoxDisplayType);
             this.tabPageDisplay.Controls.Add(this.buttonSuspend);
             this.tabPageDisplay.Controls.Add(this.checkBoxConnectOnStartup);
             this.tabPageDisplay.Controls.Add(this.trackBarBrightness);
@@ -301,6 +303,20 @@
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxDisplayType
+            // 
+            this.comboBoxDisplayType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDisplayType.FormattingEnabled = true;
+            this.comboBoxDisplayType.Items.AddRange(new object[] {
+            "Auto Detect",
+            "Futaba GP1212A01A",
+            "Futaba GP1212A02A"});
+            this.comboBoxDisplayType.Location = new System.Drawing.Point(187, 9);
+            this.comboBoxDisplayType.Name = "comboBoxDisplayType";
+            this.comboBoxDisplayType.Size = new System.Drawing.Size(181, 21);
+            this.comboBoxDisplayType.TabIndex = 17;
+            this.comboBoxDisplayType.SelectedIndexChanged += new System.EventHandler(this.comboBoxDisplayType_SelectedIndexChanged);
             // 
             // buttonSuspend
             // 
@@ -624,6 +640,7 @@
         private System.Windows.Forms.Button buttonAlignRight;
         private System.Windows.Forms.Button buttonAlignCenter;
         private System.Windows.Forms.Button buttonAlignLeft;
+        private System.Windows.Forms.ComboBox comboBoxDisplayType;
     }
 }
 

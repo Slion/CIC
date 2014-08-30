@@ -5,13 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 //
 using System.Runtime.InteropServices;
+//using System.Runtime.Serialization;
 
 namespace SharpDisplayManager
 {
+
     /// <summary>
     /// Provide access to our display hardware through MiniDisplay API.
     /// </summary>
-    class Display
+    public class Display
     {
 
         //Constructor
@@ -163,10 +165,14 @@ namespace SharpDisplayManager
         //Our display device handle
         IntPtr iDevice;
 
+
+        //[Serializable]
         public enum TMiniDisplayType
         {
             EMiniDisplayAutoDetect, /*Not yet implemented*/
+            //[EnumMember(Value = "EMiniDisplayFutabaGP1212A01")]
             EMiniDisplayFutabaGP1212A01,
+            //[EnumMember(Value = "EMiniDisplayFutabaGP1212A01")]
             EMiniDisplayFutabaGP1212A02
         };
 
