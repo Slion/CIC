@@ -82,5 +82,17 @@ namespace SharpDisplayManager.Properties {
                 this["DisplayReverseScreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int DisplayType {
+            get {
+                return ((int)(this["DisplayType"]));
+            }
+            set {
+                this["DisplayType"] = value;
+            }
+        }
     }
 }

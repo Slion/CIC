@@ -48,6 +48,7 @@ namespace SharpDisplayManager
             checkBoxShowBorders.Checked = Properties.Settings.Default.DisplayShowBorders;
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
             checkBoxReverseScreen.Checked = Properties.Settings.Default.DisplayReverseScreen;
+            comboBoxDisplayType.SelectedIndex = Properties.Settings.Default.DisplayType;
             //
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             //We have a bug when drawing minimized and reusing our bitmap
@@ -66,9 +67,7 @@ namespace SharpDisplayManager
 
             if (Properties.Settings.Default.DisplayConnectOnStartup)
             {
-                iDisplay.Open(Display.TMiniDisplayType.EMiniDisplayAutoDetect);
-                UpdateStatus();
-                iDisplay.RequestPowerSupplyStatus();
+                OpenDisplayConnection();
             }
         }
 
@@ -271,9 +270,11 @@ namespace SharpDisplayManager
 
         }
 
-        private void buttonOpen_Click(object sender, EventArgs e)
+        private void OpenDisplayConnection()
         {
-            if (iDisplay.Open(Display.TMiniDisplayType.EMiniDisplayAutoDetect))
+            CloseDisplayConnection();
+
+            if (iDisplay.Open((Display.TMiniDisplayType)Properties.Settings.Default.DisplayType))
             {
                 UpdateStatus();
                 iDisplay.RequestPowerSupplyStatus();
@@ -283,13 +284,22 @@ namespace SharpDisplayManager
                 UpdateStatus();
                 toolStripStatusLabelConnect.Text = "Connection error";
             }
+        }
 
+        private void CloseDisplayConnection()
+        {
+            iDisplay.Close();
+            UpdateStatus();
+        }
+
+        private void buttonOpen_Click(object sender, EventArgs e)
+        {
+            OpenDisplayConnection();
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            iDisplay.Close();
-            UpdateStatus();
+            CloseDisplayConnection();
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -782,6 +792,13 @@ namespace SharpDisplayManager
         {
             marqueeLabelTop.TextAlign = ContentAlignment.MiddleRight;
             marqueeLabelBottom.TextAlign = ContentAlignment.MiddleRight;
+        }
+
+        private void comboBoxDisplayType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DisplayType = comboBoxDisplayType.SelectedIndex;
+            Properties.Settings.Default.Save();
+            OpenDisplayConnection();
         }
 
     }
