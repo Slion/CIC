@@ -31,8 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panelDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
-            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -45,6 +43,7 @@
             this.buttonStartClient = new System.Windows.Forms.Button();
             this.treeViewClients = new System.Windows.Forms.TreeView();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
+            this.maskedTextBoxTimerInterval = new System.Windows.Forms.MaskedTextBox();
             this.comboBoxDisplayType = new System.Windows.Forms.ComboBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
             this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
@@ -68,6 +67,9 @@
             this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.buttonRemoveRow = new System.Windows.Forms.Button();
             this.buttonAddRow = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
+            this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -164,39 +166,6 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 5;
             // 
-            // marqueeLabelTop
-            // 
-            this.marqueeLabelTop.AutoEllipsis = true;
-            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
-            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
-            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelTop.Name = "marqueeLabelTop";
-            this.marqueeLabelTop.OwnTimer = false;
-            this.marqueeLabelTop.PixelsPerSecond = 64;
-            this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 30);
-            this.marqueeLabelTop.TabIndex = 2;
-            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelTop.UseCompatibleTextRendering = true;
-            // 
-            // marqueeLabelBottom
-            // 
-            this.marqueeLabelBottom.AutoEllipsis = true;
-            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
-            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
-            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
-            this.marqueeLabelBottom.OwnTimer = false;
-            this.marqueeLabelBottom.PixelsPerSecond = 64;
-            this.marqueeLabelBottom.Separator = "|";
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
-            this.marqueeLabelBottom.TabIndex = 3;
-            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
-            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
-            // 
             // timer
             // 
             this.timer.Enabled = true;
@@ -287,6 +256,8 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.label1);
+            this.tabPageDisplay.Controls.Add(this.maskedTextBoxTimerInterval);
             this.tabPageDisplay.Controls.Add(this.comboBoxDisplayType);
             this.tabPageDisplay.Controls.Add(this.buttonSuspend);
             this.tabPageDisplay.Controls.Add(this.checkBoxConnectOnStartup);
@@ -303,6 +274,16 @@
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
+            // 
+            // maskedTextBoxTimerInterval
+            // 
+            this.maskedTextBoxTimerInterval.Location = new System.Drawing.Point(288, 42);
+            this.maskedTextBoxTimerInterval.Mask = "000";
+            this.maskedTextBoxTimerInterval.Name = "maskedTextBoxTimerInterval";
+            this.maskedTextBoxTimerInterval.PromptChar = ' ';
+            this.maskedTextBoxTimerInterval.Size = new System.Drawing.Size(24, 20);
+            this.maskedTextBoxTimerInterval.TabIndex = 18;
+            this.maskedTextBoxTimerInterval.TextChanged += new System.EventHandler(this.maskedTextBoxTimerInterval_TextChanged);
             // 
             // comboBoxDisplayType
             // 
@@ -569,6 +550,48 @@
             this.buttonAddRow.UseVisualStyleBackColor = true;
             this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(184, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Timer interval (ms) :";
+            // 
+            // marqueeLabelTop
+            // 
+            this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
+            this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -9);
+            this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelTop.Name = "marqueeLabelTop";
+            this.marqueeLabelTop.OwnTimer = false;
+            this.marqueeLabelTop.PixelsPerSecond = 64;
+            this.marqueeLabelTop.Separator = "|";
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 1);
+            this.marqueeLabelTop.TabIndex = 2;
+            this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelTop.UseCompatibleTextRendering = true;
+            // 
+            // marqueeLabelBottom
+            // 
+            this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 2);
+            this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
+            this.marqueeLabelBottom.Name = "marqueeLabelBottom";
+            this.marqueeLabelBottom.OwnTimer = false;
+            this.marqueeLabelBottom.PixelsPerSecond = 64;
+            this.marqueeLabelBottom.Separator = "|";
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 20);
+            this.marqueeLabelBottom.TabIndex = 3;
+            this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
+            this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.marqueeLabelBottom.UseCompatibleTextRendering = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -641,6 +664,8 @@
         private System.Windows.Forms.Button buttonAlignCenter;
         private System.Windows.Forms.Button buttonAlignLeft;
         private System.Windows.Forms.ComboBox comboBoxDisplayType;
+        private System.Windows.Forms.MaskedTextBox maskedTextBoxTimerInterval;
+        private System.Windows.Forms.Label label1;
     }
 }
 
