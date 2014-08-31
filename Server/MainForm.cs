@@ -319,19 +319,19 @@ namespace SharpDisplayManager
         /// <summary>
         /// CDS stands for Current Display Settings
         /// </summary>
-        private DisplaySettingsEntry cds
+        private DisplaySettings cds
         {
             get
             {
-                DisplaySettings settings = Properties.Settings.Default.DisplaySettings;
+                DisplaysSettings settings = Properties.Settings.Default.DisplaySettings;
 
                 //Make sure all our settings have been created
                 while (settings.Displays.Count <= Properties.Settings.Default.CurrentDisplayIndex)
                 {
-                    settings.Displays.Add(new DisplaySettingsEntry());
+                    settings.Displays.Add(new DisplaySettings());
                 }
 
-                DisplaySettingsEntry displaySettings = settings.Displays[Properties.Settings.Default.CurrentDisplayIndex];
+                DisplaySettings displaySettings = settings.Displays[Properties.Settings.Default.CurrentDisplayIndex];
                 return displaySettings;
             }
         }
