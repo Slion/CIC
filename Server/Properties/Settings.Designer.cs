@@ -37,9 +37,9 @@ namespace SharpDisplayManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::SharpDisplayManager.DisplaySettings DisplaySettings {
+        public global::SharpDisplayManager.DisplaysSettings DisplaySettings {
             get {
-                return ((global::SharpDisplayManager.DisplaySettings)(this["DisplaySettings"]));
+                return ((global::SharpDisplayManager.DisplaysSettings)(this["DisplaySettings"]));
             }
             set {
                 this["DisplaySettings"] = value;

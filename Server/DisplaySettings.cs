@@ -13,12 +13,12 @@ using System.Drawing;
 namespace SharpDisplayManager
 {
     /// <summary>
-    /// Display settings a the specified hardware type
+    /// Display settings for the specified hardware type
     /// </summary>
     [DataContract]
-    public class DisplaySettingsEntry
+    public class DisplaySettings
     {
-        public DisplaySettingsEntry()
+        public DisplaySettings()
         {
             Brightness = 1;
             DisplayType = 0;
@@ -31,6 +31,9 @@ namespace SharpDisplayManager
         [DataMember]
         public int Brightness { get; set; }
 
+        /// <summary>
+        /// See Display.TMiniDisplayType
+        /// </summary>
         [DataMember]
         public int DisplayType { get; set; }
 
@@ -64,11 +67,14 @@ namespace SharpDisplayManager
     };
 
 
+    /// <summary>
+    /// Contain settings for each of our display type. 
+    /// </summary>
     [TypeConverter(typeof(DisplaySettingsConverter))]
     [DataContract]
-    public class DisplaySettings
+    public class DisplaysSettings
     {
-        public DisplaySettings()
+        public DisplaysSettings()
         {
             Init();
         }
@@ -77,7 +83,7 @@ namespace SharpDisplayManager
         {
             if (Displays == null)
             {
-                Displays = new List<DisplaySettingsEntry>();
+                Displays = new List<DisplaySettings>();
             }
         }
 
@@ -85,13 +91,13 @@ namespace SharpDisplayManager
         //public int CurrentSettingsIndex { get; set; }
 
         [DataMember]
-        public List<DisplaySettingsEntry> Displays { get; set; }
+        public List<DisplaySettings> Displays { get; set; }
 
         public override string ToString()
         {
             //Save settings into JSON string
             MemoryStream stream = new MemoryStream();
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(DisplaySettings));
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(DisplaysSettings));
             ser.WriteObject(stream, this);
             // convert stream to string
             stream.Position = 0;
@@ -119,8 +125,8 @@ namespace SharpDisplayManager
                 //Load settings form JSON string
                 byte[] byteArray = Encoding.UTF8.GetBytes(stringValue);
                 MemoryStream stream = new MemoryStream(byteArray);
-                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(DisplaySettings));
-                DisplaySettings settings = (DisplaySettings)ser.ReadObject(stream);
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(DisplaysSettings));
+                DisplaysSettings settings = (DisplaysSettings)ser.ReadObject(stream);
                 settings.Init();
                 return settings;
             }
