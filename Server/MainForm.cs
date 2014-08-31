@@ -384,6 +384,17 @@ namespace SharpDisplayManager
                     buttonPowerOn.Enabled = false;
                     buttonPowerOff.Enabled = false;
                 }
+
+                if (iDisplay.SupportClock())
+                {
+                    buttonShowClock.Enabled = true;
+                    buttonHideClock.Enabled = true;
+                }
+                else
+                {
+                    buttonShowClock.Enabled = false;
+                    buttonHideClock.Enabled = false;
+                }
             }
             else
             {
@@ -394,6 +405,8 @@ namespace SharpDisplayManager
                 trackBarBrightness.Enabled = false;
                 buttonPowerOn.Enabled = false;
                 buttonPowerOff.Enabled = false;
+                buttonShowClock.Enabled = false;
+                buttonHideClock.Enabled = false;
                 toolStripStatusLabelConnect.Text = "Disconnected";
                 toolStripStatusLabelPower.Text = "N/A";
             }
@@ -881,6 +894,16 @@ namespace SharpDisplayManager
         private void buttonPowerOff_Click(object sender, EventArgs e)
         {
             iDisplay.PowerOff();
+        }
+
+        private void buttonShowClock_Click(object sender, EventArgs e)
+        {
+            iDisplay.ShowClock();
+        }
+
+        private void buttonHideClock_Click(object sender, EventArgs e)
+        {
+            iDisplay.HideClock();
         }
 
     }
