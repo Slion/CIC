@@ -25,42 +25,6 @@ namespace SharpDisplayManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int DisplayBrightness {
-            get {
-                return ((int)(this["DisplayBrightness"]));
-            }
-            set {
-                this["DisplayBrightness"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Microsoft Sans Serif, 9.75pt")]
-        public global::System.Drawing.Font DisplayFont {
-            get {
-                return ((global::System.Drawing.Font)(this["DisplayFont"]));
-            }
-            set {
-                this["DisplayFont"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisplayShowBorders {
-            get {
-                return ((bool)(this["DisplayShowBorders"]));
-            }
-            set {
-                this["DisplayShowBorders"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool DisplayConnectOnStartup {
             get {
@@ -73,37 +37,24 @@ namespace SharpDisplayManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisplayReverseScreen {
+        public global::SharpDisplayManager.DisplaySettings DisplaySettings {
             get {
-                return ((bool)(this["DisplayReverseScreen"]));
+                return ((global::SharpDisplayManager.DisplaySettings)(this["DisplaySettings"]));
             }
             set {
-                this["DisplayReverseScreen"] = value;
+                this["DisplaySettings"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int DisplayType {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CurrentDisplayIndex {
             get {
-                return ((int)(this["DisplayType"]));
+                return ((int)(this["CurrentDisplayIndex"]));
             }
             set {
-                this["DisplayType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int TimerInterval {
-            get {
-                return ((int)(this["TimerInterval"]));
-            }
-            set {
-                this["TimerInterval"] = value;
+                this["CurrentDisplayIndex"] = value;
             }
         }
     }

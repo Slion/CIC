@@ -41,16 +41,7 @@ namespace SharpDisplayManager
 
             InitializeComponent();
             UpdateStatus();
-
-            //Load settings
-            marqueeLabelTop.Font = Properties.Settings.Default.DisplayFont;
-            marqueeLabelBottom.Font = Properties.Settings.Default.DisplayFont;
-            checkBoxShowBorders.Checked = Properties.Settings.Default.DisplayShowBorders;
-            checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
-            checkBoxReverseScreen.Checked = Properties.Settings.Default.DisplayReverseScreen;
-            comboBoxDisplayType.SelectedIndex = Properties.Settings.Default.DisplayType;
-            timer.Interval = Properties.Settings.Default.TimerInterval;
-            maskedTextBoxTimerInterval.Text = Properties.Settings.Default.TimerInterval.ToString();
+            
             //
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             //We have a bug when drawing minimized and reusing our bitmap
@@ -102,7 +93,7 @@ namespace SharpDisplayManager
                 //MessageBox.Show("Ok");
                 marqueeLabelTop.Font = fontDialog.Font;
                 marqueeLabelBottom.Font = fontDialog.Font;
-                Properties.Settings.Default.DisplayFont = fontDialog.Font;
+                cds.Font = fontDialog.Font;
                 Properties.Settings.Default.Save();
                 //
                 CheckFontHeight();
@@ -235,7 +226,7 @@ namespace SharpDisplayManager
                 CoordinateTranslationDelegate screenX;
                 CoordinateTranslationDelegate screenY;
 
-                if (Properties.Settings.Default.DisplayReverseScreen)
+                if (cds.ReverseScreen)
                 {
                     screenX = ScreenReversedX;
                     screenY = ScreenReversedY;
@@ -276,7 +267,7 @@ namespace SharpDisplayManager
         {
             CloseDisplayConnection();
 
-            if (iDisplay.Open((Display.TMiniDisplayType)Properties.Settings.Default.DisplayType))
+            if (iDisplay.Open((Display.TMiniDisplayType)cds.DisplayType))
             {
                 UpdateStatus();
                 iDisplay.RequestPowerSupplyStatus();
@@ -318,28 +309,62 @@ namespace SharpDisplayManager
 
         private void trackBarBrightness_Scroll(object sender, EventArgs e)
         {
-            Properties.Settings.Default.DisplayBrightness = trackBarBrightness.Value;
+            cds.Brightness = trackBarBrightness.Value;
             Properties.Settings.Default.Save();
             iDisplay.SetBrightness(trackBarBrightness.Value);
 
         }
 
+
+        /// <summary>
+        /// CDS stands for Current Display Settings
+        /// </summary>
+        private DisplaySettingsEntry cds
+        {
+            get
+            {
+                DisplaySettings settings = Properties.Settings.Default.DisplaySettings;
+
+                //Make sure all our settings have been created
+                while (settings.Displays.Count <= Properties.Settings.Default.CurrentDisplayIndex)
+                {
+                    settings.Displays.Add(new DisplaySettingsEntry());
+                }
+
+                DisplaySettingsEntry displaySettings = settings.Displays[Properties.Settings.Default.CurrentDisplayIndex];
+                return displaySettings;
+            }
+        }
+
         private void UpdateStatus()
         {
+            //Synchronize UI with settings
+            //Load settings
+            marqueeLabelTop.Font = cds.Font;
+            marqueeLabelBottom.Font = cds.Font;
+            checkBoxShowBorders.Checked = cds.ShowBorders;
+            checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
+            checkBoxReverseScreen.Checked = cds.ReverseScreen;
+            comboBoxDisplayType.SelectedIndex = cds.DisplayType;
+            timer.Interval = cds.TimerInterval;
+            maskedTextBoxTimerInterval.Text = cds.TimerInterval.ToString();
+
+
             if (iDisplay.IsOpen())
             {
+                //Only setup brightness if display is open
+                trackBarBrightness.Minimum = iDisplay.MinBrightness();
+                trackBarBrightness.Maximum = iDisplay.MaxBrightness();
+                trackBarBrightness.Value = cds.Brightness;
+                trackBarBrightness.LargeChange = Math.Max(1, (iDisplay.MaxBrightness() - iDisplay.MinBrightness()) / 5);
+                trackBarBrightness.SmallChange = 1;
+                iDisplay.SetBrightness(cds.Brightness);
+                //
                 buttonFill.Enabled = true;
                 buttonClear.Enabled = true;
                 buttonOpen.Enabled = false;
                 buttonClose.Enabled = true;
                 trackBarBrightness.Enabled = true;
-                trackBarBrightness.Minimum = iDisplay.MinBrightness();
-                trackBarBrightness.Maximum = iDisplay.MaxBrightness();
-                trackBarBrightness.Value = Properties.Settings.Default.DisplayBrightness;
-                trackBarBrightness.LargeChange = Math.Max(1,(iDisplay.MaxBrightness() - iDisplay.MinBrightness())/5);
-                trackBarBrightness.SmallChange = 1;
-                iDisplay.SetBrightness(Properties.Settings.Default.DisplayBrightness);
-
                 toolStripStatusLabelConnect.Text = "Connected - " + iDisplay.Vendor() + " - " + iDisplay.Product();
                 //+ " - " + iDisplay.SerialNumber();
             }
@@ -351,6 +376,7 @@ namespace SharpDisplayManager
                 buttonClose.Enabled = false;
                 trackBarBrightness.Enabled = false;
                 toolStripStatusLabelConnect.Text = "Disconnected";
+                toolStripStatusLabelPower.Text = "N/A";
             }
         }
 
@@ -360,7 +386,7 @@ namespace SharpDisplayManager
         {
             //Save our show borders setting
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
-            Properties.Settings.Default.DisplayShowBorders = checkBoxShowBorders.Checked;
+            cds.ShowBorders = checkBoxShowBorders.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -374,7 +400,7 @@ namespace SharpDisplayManager
         private void checkBoxReverseScreen_CheckedChanged(object sender, EventArgs e)
         {
             //Save our reverse screen setting
-            Properties.Settings.Default.DisplayReverseScreen = checkBoxReverseScreen.Checked;
+            cds.ReverseScreen = checkBoxReverseScreen.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -798,7 +824,8 @@ namespace SharpDisplayManager
 
         private void comboBoxDisplayType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.DisplayType = comboBoxDisplayType.SelectedIndex;
+            Properties.Settings.Default.CurrentDisplayIndex = comboBoxDisplayType.SelectedIndex;
+            cds.DisplayType = comboBoxDisplayType.SelectedIndex;
             Properties.Settings.Default.Save();
             OpenDisplayConnection();
         }
@@ -809,7 +836,7 @@ namespace SharpDisplayManager
             if (maskedTextBoxTimerInterval.Text != "")
             {
                 timer.Interval = Convert.ToInt32(maskedTextBoxTimerInterval.Text);
-                Properties.Settings.Default.TimerInterval = timer.Interval;
+                cds.TimerInterval = timer.Interval;
                 Properties.Settings.Default.Save();
             }
         }
