@@ -147,6 +147,12 @@ namespace SharpDisplayManager
             {
                 switch (iDisplay.AttemptRequestCompletion())
                 {
+                    case Display.TMiniDisplayRequest.EMiniDisplayRequestFirmwareRevision:
+                        toolStripStatusLabelConnect.Text += " v" + iDisplay.FirmwareRevision();
+                        //Issue next request then
+                        iDisplay.RequestPowerSupplyStatus();
+                        break;
+
                     case Display.TMiniDisplayRequest.EMiniDisplayRequestPowerSupplyStatus:
                         if (iDisplay.PowerSupplyStatus())
                         {
@@ -162,12 +168,6 @@ namespace SharpDisplayManager
 
                     case Display.TMiniDisplayRequest.EMiniDisplayRequestDeviceId:
                         toolStripStatusLabelConnect.Text += " - " + iDisplay.DeviceId();
-                        //Issue next request then
-                        iDisplay.RequestFirmwareRevision();
-                        break;
-
-                    case Display.TMiniDisplayRequest.EMiniDisplayRequestFirmwareRevision:
-                        toolStripStatusLabelConnect.Text += " v" + iDisplay.FirmwareRevision();
                         //No more request to issue
                         break;
                 }
@@ -270,7 +270,7 @@ namespace SharpDisplayManager
             if (iDisplay.Open((Display.TMiniDisplayType)cds.DisplayType))
             {
                 UpdateStatus();
-                iDisplay.RequestPowerSupplyStatus();
+                iDisplay.RequestFirmwareRevision();
             }
             else
             {
@@ -324,6 +324,12 @@ namespace SharpDisplayManager
             get
             {
                 DisplaysSettings settings = Properties.Settings.Default.DisplaySettings;
+                if (settings == null)
+                {
+                    settings = new DisplaysSettings();
+                    settings.Init();
+                    Properties.Settings.Default.DisplaySettings = settings;
+                }
 
                 //Make sure all our settings have been created
                 while (settings.Displays.Count <= Properties.Settings.Default.CurrentDisplayIndex)
@@ -827,7 +833,14 @@ namespace SharpDisplayManager
             Properties.Settings.Default.CurrentDisplayIndex = comboBoxDisplayType.SelectedIndex;
             cds.DisplayType = comboBoxDisplayType.SelectedIndex;
             Properties.Settings.Default.Save();
-            OpenDisplayConnection();
+            if (iDisplay.IsOpen())
+            {
+                OpenDisplayConnection();
+            }
+            else
+            {
+                UpdateStatus();
+            }
         }
 
 
@@ -835,9 +848,14 @@ namespace SharpDisplayManager
         {
             if (maskedTextBoxTimerInterval.Text != "")
             {
-                timer.Interval = Convert.ToInt32(maskedTextBoxTimerInterval.Text);
-                cds.TimerInterval = timer.Interval;
-                Properties.Settings.Default.Save();
+                int interval = Convert.ToInt32(maskedTextBoxTimerInterval.Text);
+
+                if (interval > 0)
+                {
+                    timer.Interval = interval;
+                    cds.TimerInterval = timer.Interval;
+                    Properties.Settings.Default.Save();
+                }
             }
         }
 
