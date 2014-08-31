@@ -105,6 +105,21 @@ namespace SharpDisplayManager
             MiniDisplayRequest(iDevice, TMiniDisplayRequest.EMiniDisplayRequestFirmwareRevision);
         }
 
+        public void PowerOn()
+        {
+            MiniDisplayPowerOn(iDevice);
+        }
+
+        public void PowerOff()
+        {
+            MiniDisplayPowerOff(iDevice);
+        }
+
+        public bool SupportPowerOnOff()
+        {
+            return MiniDisplaySupportPowerOnOff(iDevice);
+        }
+
         public bool PowerSupplyStatus()
         {
             bool res = MiniDisplayPowerSupplyStatus(iDevice);
@@ -249,6 +264,15 @@ namespace SharpDisplayManager
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern void MiniDisplayCancelRequest(IntPtr aDevice);
 
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayPowerOn(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayPowerOff(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool MiniDisplaySupportPowerOnOff(IntPtr aDevice);
 
     }
 }

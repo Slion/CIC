@@ -373,6 +373,17 @@ namespace SharpDisplayManager
                 trackBarBrightness.Enabled = true;
                 toolStripStatusLabelConnect.Text = "Connected - " + iDisplay.Vendor() + " - " + iDisplay.Product();
                 //+ " - " + iDisplay.SerialNumber();
+
+                if (iDisplay.SupportPowerOnOff())
+                {
+                    buttonPowerOn.Enabled = true;
+                    buttonPowerOff.Enabled = true;
+                }
+                else
+                {
+                    buttonPowerOn.Enabled = false;
+                    buttonPowerOff.Enabled = false;
+                }
             }
             else
             {
@@ -381,6 +392,8 @@ namespace SharpDisplayManager
                 buttonOpen.Enabled = true;
                 buttonClose.Enabled = false;
                 trackBarBrightness.Enabled = false;
+                buttonPowerOn.Enabled = false;
+                buttonPowerOff.Enabled = false;
                 toolStripStatusLabelConnect.Text = "Disconnected";
                 toolStripStatusLabelPower.Text = "N/A";
             }
@@ -500,10 +513,11 @@ namespace SharpDisplayManager
 
         private void buttonSuspend_Click(object sender, EventArgs e)
         {
+            LastTickTime = DateTime.Now; //Reset timer to prevent jump
             timer.Enabled = !timer.Enabled;
             if (!timer.Enabled)
             {
-                buttonSuspend.Text = "Suspend";
+                buttonSuspend.Text = "Run";
             }
             else
             {
@@ -857,6 +871,16 @@ namespace SharpDisplayManager
                     Properties.Settings.Default.Save();
                 }
             }
+        }
+
+        private void buttonPowerOn_Click(object sender, EventArgs e)
+        {
+            iDisplay.PowerOn();
+        }
+
+        private void buttonPowerOff_Click(object sender, EventArgs e)
+        {
+            iDisplay.PowerOff();
         }
 
     }
