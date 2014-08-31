@@ -72,6 +72,8 @@
             this.buttonAddRow = new System.Windows.Forms.Button();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
+            this.buttonHideClock = new System.Windows.Forms.Button();
+            this.buttonShowClock = new System.Windows.Forms.Button();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -292,6 +294,8 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.buttonShowClock);
+            this.tabPageDisplay.Controls.Add(this.buttonHideClock);
             this.tabPageDisplay.Controls.Add(this.buttonPowerOff);
             this.tabPageDisplay.Controls.Add(this.buttonPowerOn);
             this.tabPageDisplay.Controls.Add(this.label1);
@@ -622,13 +626,13 @@
             this.marqueeLabelTop.AutoEllipsis = true;
             this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
             this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -187);
             this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelTop.Name = "marqueeLabelTop";
             this.marqueeLabelTop.OwnTimer = false;
             this.marqueeLabelTop.PixelsPerSecond = 64;
             this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 1);
+            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 20);
             this.marqueeLabelTop.TabIndex = 2;
             this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
             this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -638,7 +642,7 @@
             // 
             this.marqueeLabelBottom.AutoEllipsis = true;
             this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -19);
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -61);
             this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelBottom.Name = "marqueeLabelBottom";
             this.marqueeLabelBottom.OwnTimer = false;
@@ -649,6 +653,26 @@
             this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
             this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.marqueeLabelBottom.UseCompatibleTextRendering = true;
+            // 
+            // buttonHideClock
+            // 
+            this.buttonHideClock.Location = new System.Drawing.Point(293, 153);
+            this.buttonHideClock.Name = "buttonHideClock";
+            this.buttonHideClock.Size = new System.Drawing.Size(75, 23);
+            this.buttonHideClock.TabIndex = 22;
+            this.buttonHideClock.Text = "Hide Clock";
+            this.buttonHideClock.UseVisualStyleBackColor = true;
+            this.buttonHideClock.Click += new System.EventHandler(this.buttonHideClock_Click);
+            // 
+            // buttonShowClock
+            // 
+            this.buttonShowClock.Location = new System.Drawing.Point(293, 124);
+            this.buttonShowClock.Name = "buttonShowClock";
+            this.buttonShowClock.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowClock.TabIndex = 23;
+            this.buttonShowClock.Text = "Show Clock";
+            this.buttonShowClock.UseVisualStyleBackColor = true;
+            this.buttonShowClock.Click += new System.EventHandler(this.buttonShowClock_Click);
             // 
             // MainForm
             // 
@@ -726,6 +750,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonPowerOff;
         private System.Windows.Forms.Button buttonPowerOn;
+        private System.Windows.Forms.Button buttonShowClock;
+        private System.Windows.Forms.Button buttonHideClock;
     }
 }
 

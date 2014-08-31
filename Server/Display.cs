@@ -120,6 +120,21 @@ namespace SharpDisplayManager
             return MiniDisplaySupportPowerOnOff(iDevice);
         }
 
+        public void ShowClock()
+        {
+            MiniDisplayShowClock(iDevice);
+        }
+
+        public void HideClock()
+        {
+            MiniDisplayHideClock(iDevice);
+        }
+
+        public bool SupportClock()
+        {
+            return MiniDisplaySupportClock(iDevice);
+        }
+
         public bool PowerSupplyStatus()
         {
             bool res = MiniDisplayPowerSupplyStatus(iDevice);
@@ -273,6 +288,17 @@ namespace SharpDisplayManager
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool MiniDisplaySupportPowerOnOff(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayShowClock(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MiniDisplayHideClock(IntPtr aDevice);
+
+        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool MiniDisplaySupportClock(IntPtr aDevice);
+
 
     }
 }
