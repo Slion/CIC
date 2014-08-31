@@ -43,6 +43,9 @@
             this.buttonStartClient = new System.Windows.Forms.Button();
             this.treeViewClients = new System.Windows.Forms.TreeView();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
+            this.buttonPowerOff = new System.Windows.Forms.Button();
+            this.buttonPowerOn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.maskedTextBoxTimerInterval = new System.Windows.Forms.MaskedTextBox();
             this.comboBoxDisplayType = new System.Windows.Forms.ComboBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
@@ -67,7 +70,6 @@
             this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.buttonRemoveRow = new System.Windows.Forms.Button();
             this.buttonAddRow = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.panelDisplay.SuspendLayout();
@@ -107,6 +109,40 @@
             this.tableLayoutPanel.RowCount = 2;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -256,6 +292,8 @@
             // 
             // tabPageDisplay
             // 
+            this.tabPageDisplay.Controls.Add(this.buttonPowerOff);
+            this.tabPageDisplay.Controls.Add(this.buttonPowerOn);
             this.tabPageDisplay.Controls.Add(this.label1);
             this.tabPageDisplay.Controls.Add(this.maskedTextBoxTimerInterval);
             this.tabPageDisplay.Controls.Add(this.comboBoxDisplayType);
@@ -274,6 +312,35 @@
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
+            // 
+            // buttonPowerOff
+            // 
+            this.buttonPowerOff.Location = new System.Drawing.Point(293, 211);
+            this.buttonPowerOff.Name = "buttonPowerOff";
+            this.buttonPowerOff.Size = new System.Drawing.Size(75, 23);
+            this.buttonPowerOff.TabIndex = 21;
+            this.buttonPowerOff.Text = "OFF";
+            this.buttonPowerOff.UseVisualStyleBackColor = true;
+            this.buttonPowerOff.Click += new System.EventHandler(this.buttonPowerOff_Click);
+            // 
+            // buttonPowerOn
+            // 
+            this.buttonPowerOn.Location = new System.Drawing.Point(293, 182);
+            this.buttonPowerOn.Name = "buttonPowerOn";
+            this.buttonPowerOn.Size = new System.Drawing.Size(75, 23);
+            this.buttonPowerOn.TabIndex = 20;
+            this.buttonPowerOn.Text = "ON";
+            this.buttonPowerOn.UseVisualStyleBackColor = true;
+            this.buttonPowerOn.Click += new System.EventHandler(this.buttonPowerOn_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(184, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Timer interval (ms) :";
             // 
             // maskedTextBoxTimerInterval
             // 
@@ -306,7 +373,7 @@
             this.buttonSuspend.Name = "buttonSuspend";
             this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
             this.buttonSuspend.TabIndex = 16;
-            this.buttonSuspend.Text = "Suspend";
+            this.buttonSuspend.Text = "Pause";
             this.buttonSuspend.UseVisualStyleBackColor = true;
             this.buttonSuspend.Click += new System.EventHandler(this.buttonSuspend_Click);
             // 
@@ -550,21 +617,12 @@
             this.buttonAddRow.UseVisualStyleBackColor = true;
             this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(184, 45);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "Timer interval (ms) :";
-            // 
             // marqueeLabelTop
             // 
             this.marqueeLabelTop.AutoEllipsis = true;
             this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
             this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelTop.Location = new System.Drawing.Point(1, -9);
+            this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
             this.marqueeLabelTop.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelTop.Name = "marqueeLabelTop";
             this.marqueeLabelTop.OwnTimer = false;
@@ -580,7 +638,7 @@
             // 
             this.marqueeLabelBottom.AutoEllipsis = true;
             this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 2);
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, -19);
             this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelBottom.Name = "marqueeLabelBottom";
             this.marqueeLabelBottom.OwnTimer = false;
@@ -666,6 +724,8 @@
         private System.Windows.Forms.ComboBox comboBoxDisplayType;
         private System.Windows.Forms.MaskedTextBox maskedTextBoxTimerInterval;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonPowerOff;
+        private System.Windows.Forms.Button buttonPowerOn;
     }
 }
 
