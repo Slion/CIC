@@ -41,9 +41,6 @@ namespace SharpDisplayManager
 
             InitializeComponent();
             UpdateStatus();
-            
-            //
-            tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             //We have a bug when drawing minimized and reusing our bitmap
             iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
@@ -52,11 +49,6 @@ namespace SharpDisplayManager
         private void MainForm_Load(object sender, EventArgs e)
         {
             StartServer();
-
-            //
-            CheckFontHeight();
-            //
-
 
             if (Properties.Settings.Default.DisplayConnectOnStartup)
             {
@@ -105,6 +97,20 @@ namespace SharpDisplayManager
         /// </summary>
         void CheckFontHeight()
         {
+            //Show font height and width
+            labelFontHeight.Text = "Font height: " + cds.Font.Height;
+            float charWidth = IsFixedWidth(cds.Font);
+            if (charWidth == 0.0f)
+            {
+                labelFontWidth.Visible = false;
+            }
+            else
+            {
+                labelFontWidth.Visible = true;
+                labelFontWidth.Text = "Font width: " + charWidth;
+            }
+
+            //Now check font height and show a warning if needed.
             if (marqueeLabelBottom.Font.Height > marqueeLabelBottom.Height)
             {
                 labelWarning.Text = "WARNING: Selected font is too height by " + (marqueeLabelBottom.Font.Height - marqueeLabelBottom.Height) + " pixels!";
@@ -342,13 +348,41 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// Check if the given font has a fixed character pitch.
+        /// </summary>
+        /// <param name="ft"></param>
+        /// <returns>0.0f if this is not a monospace font, otherwise returns the character width.</returns>
+        public float IsFixedWidth(Font ft)
+        {
+            Graphics g = CreateGraphics();
+            char[] charSizes = new char[] { 'i', 'a', 'Z', '%', '#', 'a', 'B', 'l', 'm', ',', '.' };
+            float charWidth = g.MeasureString("I", ft, Int32.MaxValue, StringFormat.GenericTypographic).Width;
+
+            bool fixedWidth = true;
+
+            foreach (char c in charSizes)
+                if (g.MeasureString(c.ToString(), ft, Int32.MaxValue, StringFormat.GenericTypographic).Width != charWidth)
+                    fixedWidth = false;
+
+            if (fixedWidth)
+            {
+                return charWidth;
+            }
+
+            return 0.0f;
+        }
+
         private void UpdateStatus()
         {
             //Synchronize UI with settings
             //Load settings
+
+            checkBoxShowBorders.Checked = cds.ShowBorders;
+            tableLayoutPanel.CellBorderStyle = (cds.ShowBorders ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             marqueeLabelTop.Font = cds.Font;
             marqueeLabelBottom.Font = cds.Font;
-            checkBoxShowBorders.Checked = cds.ShowBorders;
+            CheckFontHeight();
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
             comboBoxDisplayType.SelectedIndex = cds.DisplayType;
@@ -689,7 +723,7 @@ namespace SharpDisplayManager
                             client.Texts[j] = textField;
                         }
                         j++;
-                    }                    
+                    }
                     //Only support two lines for now
                     for (int i = 0; i < aTextFields.Count; i++)
                     {
