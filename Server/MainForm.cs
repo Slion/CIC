@@ -43,6 +43,8 @@ namespace SharpDisplayManager
             //We have a bug when drawing minimized and reusing our bitmap
             iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
+            //
+            //this.tableLayoutPanel.CellPaint += new TableLayoutCellPaintEventHandler(tableLayoutPanel_CellPaint);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -52,6 +54,31 @@ namespace SharpDisplayManager
             if (Properties.Settings.Default.DisplayConnectOnStartup)
             {
                 OpenDisplayConnection();
+            }
+        }
+
+        //Testing that stuff
+        private void tableLayoutPanel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        {
+            var panel = sender as TableLayoutPanel;
+            //e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            var rectangle = e.CellBounds;
+            using (var pen = new Pen(Color.Black, 1))
+            {
+                pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Center;
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+
+                if (e.Row == (panel.RowCount - 1))
+                {
+                    rectangle.Height -= 1;
+                }
+
+                if (e.Column == (panel.ColumnCount - 1))
+                {
+                    rectangle.Width -= 1;
+                }
+
+                e.Graphics.DrawRectangle(pen, rectangle);
             }
         }
 
@@ -180,8 +207,19 @@ namespace SharpDisplayManager
         }
 
 
-        public delegate int CoordinateTranslationDelegate(System.Drawing.Bitmap aBmp, int aInt);
+        public delegate uint ColorProcessingDelegate(uint aPixel);
 
+        public static uint ColorUntouched(uint aPixel)
+        {
+            return aPixel;
+        }
+
+        public static uint ColorInversed(uint aPixel)
+        {
+            return ~aPixel;
+        }
+
+        public delegate int CoordinateTranslationDelegate(System.Drawing.Bitmap aBmp, int aInt);
 
         public static int ScreenReversedX(System.Drawing.Bitmap aBmp, int aX)
         {
@@ -226,6 +264,19 @@ namespace SharpDisplayManager
                 tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
                 //iBmp.Save("D:\\capture.png");
 
+
+                //Select our pixel processing routine
+                ColorProcessingDelegate colorFx;
+
+                if (cds.InverseColors)
+                {
+                    colorFx = ColorInversed;
+                }
+                else
+                {
+                    colorFx = ColorUntouched;
+                }
+
                 //Select proper coordinate translation functions
                 //We used delegate/function pointer to support reverse screen without doing an extra test on each pixels
                 CoordinateTranslationDelegate screenX;
@@ -250,9 +301,12 @@ namespace SharpDisplayManager
                         unchecked
                         {
                             uint color = (uint)iBmp.GetPixel(i, j).ToArgb();
+                            //Apply color effects
+                            color = colorFx(color);
                             //For some reason when the app is minimized in the task bar only the alpha of our color is set.
                             //Thus that strange test for rendering to work both when the app is in the task bar and when it isn't.
-                            iDisplay.SetPixel(screenX(iBmp, i), screenY(iBmp, j), Convert.ToInt32(!(color != 0xFF000000)));
+                            //iDisplay.SetPixel(screenX(iBmp, i), screenY(iBmp, j), Convert.ToInt32(!(color != 0xFF000000)));
+                            iDisplay.SetPixel(screenX(iBmp, i), screenY(iBmp, j), color);
                         }
                     }
                 }
@@ -384,6 +438,7 @@ namespace SharpDisplayManager
             CheckFontHeight();
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
+            checkBoxInverseColors.Checked = cds.InverseColors;
             comboBoxDisplayType.SelectedIndex = cds.DisplayType;
             timer.Interval = cds.TimerInterval;
             maskedTextBoxTimerInterval.Text = cds.TimerInterval.ToString();
@@ -453,6 +508,7 @@ namespace SharpDisplayManager
             tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             cds.ShowBorders = checkBoxShowBorders.Checked;
             Properties.Settings.Default.Save();
+            CheckFontHeight();
         }
 
         private void checkBoxConnectOnStartup_CheckedChanged(object sender, EventArgs e)
@@ -466,6 +522,13 @@ namespace SharpDisplayManager
         {
             //Save our reverse screen setting
             cds.ReverseScreen = checkBoxReverseScreen.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBoxInverseColors_CheckedChanged(object sender, EventArgs e)
+        {
+            //Save our inverse colors setting
+            cds.InverseColors = checkBoxInverseColors.Checked;
             Properties.Settings.Default.Save();
         }
 

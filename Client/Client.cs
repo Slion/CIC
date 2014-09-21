@@ -60,8 +60,8 @@ namespace SharpDisplayClient
         public string Name { get; set; }
         public string SessionId { get { return InnerChannel.SessionId; } }
 
-        public Client(InstanceContext callbackInstance)
-            : base(callbackInstance, new NetTcpBinding(SecurityMode.None, true), new EndpointAddress("net.tcp://localhost:8001/DisplayService"))
+        public Client(ICallback aCallback)
+            : base(new InstanceContext(aCallback), new NetTcpBinding(SecurityMode.None, true), new EndpointAddress("net.tcp://localhost:8001/DisplayService"))
         { }
 
         public void SetName(string aClientName)
@@ -83,6 +83,11 @@ namespace SharpDisplayClient
         public int ClientCount()
         {
             return Channel.ClientCount();
+        }
+
+        public bool IsReady()
+        {
+            return State == CommunicationState.Opened;
         }
     }
 }
