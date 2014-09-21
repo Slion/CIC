@@ -19,8 +19,16 @@ using SharpDisplay;
 
 namespace SharpDisplayManager
 {
+    //Types declarations
+    public delegate uint ColorProcessingDelegate(int aX, int aY, uint aPixel);
+    public delegate int CoordinateTranslationDelegate(System.Drawing.Bitmap aBmp, int aInt);
+
+    /// <summary>
+    /// Our Display manager main form
+    /// </summary>
     public partial class MainForm : Form
     {
+
         DateTime LastTickTime;
         Display iDisplay;
         System.Drawing.Bitmap iBmp;
@@ -31,6 +39,9 @@ namespace SharpDisplayManager
         /// </summary>
         public Dictionary<string, ClientData> iClients;
         public bool iClosing;
+        ColorProcessingDelegate iColorFx;
+        CoordinateTranslationDelegate iScreenX;
+        CoordinateTranslationDelegate iScreenY;
 
         public MainForm()
         {
@@ -206,20 +217,38 @@ namespace SharpDisplayManager
             }
         }
 
+        public static uint ColorWhiteIsOn(int aX, int aY, uint aPixel)
+        {
+            if ((aPixel & 0x00FFFFFF) == 0x00FFFFFF)
+            {
+                return 0xFFFFFFFF;
+            }
+            return 0x00000000;
+        }
 
-        public delegate uint ColorProcessingDelegate(uint aPixel);
-
-        public static uint ColorUntouched(uint aPixel)
+        public static uint ColorUntouched(int aX, int aY, uint aPixel)
         {
             return aPixel;
         }
 
-        public static uint ColorInversed(uint aPixel)
+        public static uint ColorInversed(int aX, int aY, uint aPixel)
         {
             return ~aPixel;
         }
 
-        public delegate int CoordinateTranslationDelegate(System.Drawing.Bitmap aBmp, int aInt);
+        public static uint ColorChessboard(int aX, int aY, uint aPixel)
+        {
+            if ((aX % 2 == 0) && (aY % 2 == 0))
+            {
+                return ~aPixel;
+            }
+            else if ((aX % 2 != 0) && (aY % 2 != 0))
+            {
+                return ~aPixel;
+            }
+            return 0x00000000;
+        }
+
 
         public static int ScreenReversedX(System.Drawing.Bitmap aBmp, int aX)
         {
@@ -241,6 +270,36 @@ namespace SharpDisplayManager
             return aY;
         }
 
+        /// <summary>
+        /// Select proper pixel delegates according to our current settings.
+        /// </summary>
+        private void SetupPixelDelegates()
+        {
+            //Select our pixel processing routine                
+            if (cds.InverseColors)
+            {
+                //iColorFx = ColorChessboard;
+                iColorFx = ColorInversed;
+            }
+            else
+            {
+                iColorFx = ColorWhiteIsOn;
+            }
+
+            //Select proper coordinate translation functions
+            //We used delegate/function pointer to support reverse screen without doing an extra test on each pixels
+            if (cds.ReverseScreen)
+            {
+                iScreenX = ScreenReversedX;
+                iScreenY = ScreenReversedY;
+            }
+            else
+            {
+                iScreenX = ScreenX;
+                iScreenY = ScreenY;
+            }
+
+        }
 
         //This is our timer tick responsible to perform our render
         private void timer_Tick(object sender, EventArgs e)
@@ -264,35 +323,6 @@ namespace SharpDisplayManager
                 tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
                 //iBmp.Save("D:\\capture.png");
 
-
-                //Select our pixel processing routine
-                ColorProcessingDelegate colorFx;
-
-                if (cds.InverseColors)
-                {
-                    colorFx = ColorInversed;
-                }
-                else
-                {
-                    colorFx = ColorUntouched;
-                }
-
-                //Select proper coordinate translation functions
-                //We used delegate/function pointer to support reverse screen without doing an extra test on each pixels
-                CoordinateTranslationDelegate screenX;
-                CoordinateTranslationDelegate screenY;
-
-                if (cds.ReverseScreen)
-                {
-                    screenX = ScreenReversedX;
-                    screenY = ScreenReversedY;
-                }
-                else
-                {
-                    screenX = ScreenX;
-                    screenY = ScreenY;
-                }
-
                 //Send it to our display
                 for (int i = 0; i < iBmp.Width; i++)
                 {
@@ -300,13 +330,15 @@ namespace SharpDisplayManager
                     {
                         unchecked
                         {
+                            //Get our processed pixel coordinates
+                            int x = iScreenX(iBmp, i);
+                            int y = iScreenY(iBmp, j);
+                            //Get pixel color
                             uint color = (uint)iBmp.GetPixel(i, j).ToArgb();
                             //Apply color effects
-                            color = colorFx(color);
-                            //For some reason when the app is minimized in the task bar only the alpha of our color is set.
-                            //Thus that strange test for rendering to work both when the app is in the task bar and when it isn't.
-                            //iDisplay.SetPixel(screenX(iBmp, i), screenY(iBmp, j), Convert.ToInt32(!(color != 0xFF000000)));
-                            iDisplay.SetPixel(screenX(iBmp, i), screenY(iBmp, j), color);
+                            color = iColorFx(x,y,color);
+                            //Now set our pixel
+                            iDisplay.SetPixel(x, y, color);
                         }
                     }
                 }
@@ -430,7 +462,6 @@ namespace SharpDisplayManager
         {
             //Synchronize UI with settings
             //Load settings
-
             checkBoxShowBorders.Checked = cds.ShowBorders;
             tableLayoutPanel.CellBorderStyle = (cds.ShowBorders ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             marqueeLabelTop.Font = cds.Font;
@@ -442,7 +473,8 @@ namespace SharpDisplayManager
             comboBoxDisplayType.SelectedIndex = cds.DisplayType;
             timer.Interval = cds.TimerInterval;
             maskedTextBoxTimerInterval.Text = cds.TimerInterval.ToString();
-
+            //
+            SetupPixelDelegates();
 
             if (iDisplay.IsOpen())
             {
@@ -523,6 +555,7 @@ namespace SharpDisplayManager
             //Save our reverse screen setting
             cds.ReverseScreen = checkBoxReverseScreen.Checked;
             Properties.Settings.Default.Save();
+            SetupPixelDelegates();
         }
 
         private void checkBoxInverseColors_CheckedChanged(object sender, EventArgs e)
@@ -530,6 +563,7 @@ namespace SharpDisplayManager
             //Save our inverse colors setting
             cds.InverseColors = checkBoxInverseColors.Checked;
             Properties.Settings.Default.Save();
+            SetupPixelDelegates();
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
