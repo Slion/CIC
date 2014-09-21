@@ -24,6 +24,7 @@ namespace SharpDisplayManager
             DisplayType = 0;
             TimerInterval = 150;
             ReverseScreen = false;
+            InverseColors = true;
             ShowBorders = false;
             FontName = "Microsoft Sans Serif, 9.75pt";
         }
@@ -42,6 +43,9 @@ namespace SharpDisplayManager
 
         [DataMember]
         public bool ReverseScreen { get; set; }
+
+        [DataMember]
+        public bool InverseColors { get; set; }
 
         [DataMember]
         public bool ShowBorders { get; set; }

@@ -85,7 +85,7 @@ namespace SharpDisplayManager
             return MiniDisplayHeightInPixels(iDevice);
         }
 
-        public void SetPixel(int aX, int aY, int aValue)
+        public void SetPixel(int aX, int aY, uint aValue)
         {
             MiniDisplaySetPixel(iDevice,aX,aY,aValue);
         }
@@ -246,7 +246,7 @@ namespace SharpDisplayManager
         public static extern int MiniDisplayHeightInPixels(IntPtr aDevice);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int MiniDisplaySetPixel(IntPtr aDevice, int aX, int aY, int aValue);
+        public static extern int MiniDisplaySetPixel(IntPtr aDevice, int aX, int aY, uint aValue);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr MiniDisplayVendor(IntPtr aDevice);

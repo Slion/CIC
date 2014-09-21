@@ -33,9 +33,7 @@ namespace SharpDisplayClient
         private void MainForm_Load(object sender, EventArgs e)
         {
             iCallback = new Callback(this);
-            //Instance context is then managed by our client class
-            InstanceContext instanceContext = new InstanceContext(iCallback);
-            iClient = new Client(instanceContext);
+            iClient = new Client(iCallback);
 
             //Connect using unique name
             //string name = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt");
