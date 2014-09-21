@@ -1,4 +1,8 @@
-﻿using System;
+﻿//
+// Define a public API for both SharpDisplay client and server to use.
+//
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +15,9 @@ using System.Runtime.Serialization;
 
 namespace SharpDisplay
 {
+    /// <summary>
+    /// TextField can be send to our server to be displayed on the screen.
+    /// </summary>
     [DataContract]
     public class TextField
     {
@@ -38,7 +45,12 @@ namespace SharpDisplay
         public ContentAlignment Alignment { get; set; }
     }
 
-
+    /// <summary>
+    /// Define our SharpDisplay service.
+    /// Clients and servers must implement it to communicate with one another.
+    /// Through this service clients can send requests to a server.
+    /// Through this service a server session can receive requests from a client.
+    /// </summary>
     [ServiceContract(   CallbackContract = typeof(ICallback), SessionMode = SessionMode.Required)]
     public interface IService
     {
@@ -76,7 +88,9 @@ namespace SharpDisplay
 
     }
 
-
+    /// <summary>
+    /// SharDisplay callback provides a means for a server to notify its clients.
+    /// </summary>
     public interface ICallback
     {
         [OperationContract(IsOneWay = true)]
