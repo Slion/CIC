@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Runtime.Serialization;
 
 
-namespace SharpDisplayInterface
+namespace SharpDisplay
 {
     [DataContract]
     public class TextField
@@ -39,9 +39,8 @@ namespace SharpDisplayInterface
     }
 
 
-    [ServiceContract(   CallbackContract = typeof(IDisplayServiceCallback),
-                        SessionMode = SessionMode.Required)]
-    public interface IDisplayService
+    [ServiceContract(   CallbackContract = typeof(ICallback), SessionMode = SessionMode.Required)]
+    public interface IService
     {
         /// <summary>
         /// Set the name of this client.
@@ -78,7 +77,7 @@ namespace SharpDisplayInterface
     }
 
 
-    public interface IDisplayServiceCallback
+    public interface ICallback
     {
         [OperationContract(IsOneWay = true)]
         void OnConnected();

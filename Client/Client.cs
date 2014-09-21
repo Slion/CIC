@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SharpDisplayInterface;
+using SharpDisplay;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -15,7 +15,7 @@ namespace SharpDisplayClient
     ///
     /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
-    public class Callback : IDisplayServiceCallback, IDisposable
+    public class Callback : ICallback, IDisposable
     {
         private MainForm MainForm { get; set; }
 
@@ -55,7 +55,7 @@ namespace SharpDisplayClient
     ///
     /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
-    public class Client : DuplexClientBase<IDisplayService>
+    public class Client : DuplexClientBase<IService>
     {
         public string Name { get; set; }
         public string SessionId { get { return InnerChannel.SessionId; } }

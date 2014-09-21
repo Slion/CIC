@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Diagnostics;
-using SharpDisplayInterface;
+using SharpDisplay;
 
 
 namespace SharpDisplayClient

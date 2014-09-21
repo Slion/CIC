@@ -14,9 +14,8 @@ using System.ServiceModel;
 using System.Threading;
 using System.Diagnostics;
 //
-using SharpDisplayInterface;
 using SharpDisplayClient;
-
+using SharpDisplay;
 
 namespace SharpDisplayManager
 {
@@ -490,11 +489,11 @@ namespace SharpDisplayManager
         {
             iServiceHost = new ServiceHost
                 (
-                    typeof(DisplayServer),
+                    typeof(Session),
                     new Uri[] { new Uri("net.tcp://localhost:8001/") }
                 );
 
-            iServiceHost.AddServiceEndpoint(typeof(IDisplayService), new NetTcpBinding(SecurityMode.None,true), "DisplayService");
+            iServiceHost.AddServiceEndpoint(typeof(IService), new NetTcpBinding(SecurityMode.None, true), "DisplayService");
             iServiceHost.Open();
         }
 
@@ -583,7 +582,7 @@ namespace SharpDisplayManager
         }
 
         //Delegates are used for our thread safe method
-        public delegate void AddClientDelegate(string aSessionId, IDisplayServiceCallback aCallback);
+        public delegate void AddClientDelegate(string aSessionId, ICallback aCallback);
         public delegate void RemoveClientDelegate(string aSessionId);
         public delegate void SetTextDelegate(string SessionId, TextField aTextField);
         public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<TextField> aTextFields);
@@ -595,7 +594,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aSessionId"></param>
         /// <param name="aCallback"></param>
-        public void AddClientThreadSafe(string aSessionId, IDisplayServiceCallback aCallback)
+        public void AddClientThreadSafe(string aSessionId, ICallback aCallback)
         {
             if (this.InvokeRequired)
             {
@@ -948,7 +947,7 @@ namespace SharpDisplayManager
     /// </summary>
     public class ClientData
     {
-        public ClientData(string aSessionId, IDisplayServiceCallback aCallback)
+        public ClientData(string aSessionId, ICallback aCallback)
         {
             SessionId = aSessionId;
             Name = "";
@@ -959,6 +958,6 @@ namespace SharpDisplayManager
         public string SessionId { get; set; }
         public string Name { get; set; }
         public List<TextField> Texts { get; set; }
-        public IDisplayServiceCallback Callback { get; set; }
+        public ICallback Callback { get; set; }
     }
 }
