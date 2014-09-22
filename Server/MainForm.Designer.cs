@@ -102,24 +102,27 @@
             this.tableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel.ColumnCount = 1;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.Controls.Add(this.marqueeLabelTop, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.marqueeLabelBottom, 0, 1);
+            this.tableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 2;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
             this.tableLayoutPanel.TabIndex = 5;
             // 
             // marqueeLabelTop
             // 
             this.marqueeLabelTop.AutoEllipsis = true;
+            this.marqueeLabelTop.AutoSize = true;
             this.marqueeLabelTop.BackColor = System.Drawing.Color.Transparent;
             this.marqueeLabelTop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.marqueeLabelTop.Location = new System.Drawing.Point(1, 1);
@@ -137,6 +140,7 @@
             // marqueeLabelBottom
             // 
             this.marqueeLabelBottom.AutoEllipsis = true;
+            this.marqueeLabelBottom.AutoSize = true;
             this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
             this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
@@ -637,6 +641,7 @@
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.panelDisplay.ResumeLayout(false);
             this.tableLayoutPanel.ResumeLayout(false);
+            this.tableLayoutPanel.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabPageClients.ResumeLayout(false);
