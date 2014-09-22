@@ -70,6 +70,12 @@ namespace SharpDisplayClient
             Channel.SetName(aClientName);
         }
 
+
+        public void SetLayout(TableLayout aLayout)
+        {
+            Channel.SetLayout(aLayout);
+        }
+
         public void SetText(TextField aTextField)
         {
             Channel.SetText(aTextField);

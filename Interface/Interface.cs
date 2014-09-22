@@ -19,7 +19,57 @@ namespace SharpDisplay
     /// TextField can be send to our server to be displayed on the screen.
     /// </summary>
     [DataContract]
-    public class TextField
+    public class TableLayout
+    {
+        public TableLayout()
+        {
+            ColumnCount = 0;
+            RowCount = 0;
+            //Alignment = ContentAlignment.MiddleLeft;
+        }
+
+        public TableLayout(int aColumnCount, int aRowCount)
+        {
+            ColumnCount = aColumnCount;
+            RowCount = aRowCount;
+        }
+
+        [DataMember]
+        public int ColumnCount { get; set; }
+
+        [DataMember]
+        public int RowCount { get; set; }
+
+        [DataMember]
+        public List<DataField> Cells { get; set; }
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DataContract]
+    public class DataField
+    {
+        [DataMember]
+        public int Column { get; set; }
+
+        [DataMember]
+        public int Row { get; set; }
+
+        [DataMember]
+        public int ColumnSpan { get; set; }
+
+        [DataMember]
+        public int RowSpan { get; set; }
+
+    }
+
+
+    /// <summary>
+    /// TextField can be send to our server to be displayed on the screen.
+    /// </summary>
+    [DataContract]
+    public class TextField : DataField
     {
         public TextField()
         {
@@ -63,6 +113,13 @@ namespace SharpDisplay
         /// <param name="aClientName"></param>
         [OperationContract(IsOneWay = true)]
         void SetName(string aClientName);
+
+
+        /// <summary>
+        /// </summary>
+        /// <param name="aLayout"></param>
+        [OperationContract(IsOneWay = true)]
+        void SetLayout(TableLayout aLayout);
 
         /// <summary>
         /// Put the given text in the given field on your display.

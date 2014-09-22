@@ -13,9 +13,9 @@ namespace SharpDisplay
     /// Implement our display services.
     /// Each client connection has such a session object server side.
     /// </summary>
-    [ServiceBehavior(   
+    [ServiceBehavior(
                         ConcurrencyMode = ConcurrencyMode.Multiple,
-                        InstanceContextMode = InstanceContextMode.PerSession                       
+                        InstanceContextMode = InstanceContextMode.PerSession
                     )]
     class Session : IService, IDisposable
     {
@@ -38,18 +38,6 @@ namespace SharpDisplay
             Trace.TraceInformation("Server session closing.");
             SharpDisplayManager.Program.iMainForm.RemoveClientThreadSafe(SessionId);
         }
-        
-        //From IDisplayService
-        public void SetTexts(System.Collections.Generic.IList<TextField> aTextFields)
-        {
-            SharpDisplayManager.Program.iMainForm.SetTextsThreadSafe(SessionId, aTextFields);
-        }
-
-        //
-        public void SetText(TextField aTextField)
-        {
-            SharpDisplayManager.Program.iMainForm.SetTextThreadSafe(SessionId, aTextField);
-        }
 
         //
         public void SetName(string aClientName)
@@ -66,13 +54,31 @@ namespace SharpDisplay
             //callback.OnConnected();
         }
 
+        public void SetLayout(TableLayout aLayout)
+        {
+            SharpDisplayManager.Program.iMainForm.SetClientLayoutThreadSafe(SessionId, aLayout);
+        }
+
+        //From IDisplayService
+        public void SetTexts(System.Collections.Generic.IList<TextField> aTextFields)
+        {
+            SharpDisplayManager.Program.iMainForm.SetTextsThreadSafe(SessionId, aTextFields);
+        }
+
+        //
+        public void SetText(TextField aTextField)
+        {
+            SharpDisplayManager.Program.iMainForm.SetTextThreadSafe(SessionId, aTextField);
+        }
+
+
         ///
         public int ClientCount()
         {
             return SharpDisplayManager.Program.iMainForm.iClients.Count;
         }
 
-        
+
 
     }
 
