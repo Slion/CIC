@@ -932,7 +932,7 @@ namespace SharpDisplayManager
         {
             if (tableLayoutPanel.RowCount < 6)
             {
-                CreateMarqueeForCell(0, tableLayoutPanel.RowCount);
+                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount + 1);
                 CheckFontHeight();
             }
         }
@@ -941,9 +941,7 @@ namespace SharpDisplayManager
         {
             if (tableLayoutPanel.RowCount > 1)
             {
-                tableLayoutPanel.RowStyles.RemoveAt(tableLayoutPanel.RowCount-1);
-                tableLayoutPanel.Controls.RemoveAt(tableLayoutPanel.RowCount-1);
-                tableLayoutPanel.RowCount--;
+                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount - 1);
                 CheckFontHeight();
             }
 
@@ -963,43 +961,70 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// Create the specified cell in our table layout and add a marquee label to it.
+        /// Empty and recreate our table layout with the given number of columns and rows.
+        /// Sizes of rows and columns are uniform.
         /// </summary>
         /// <param name="aColumn"></param>
         /// <param name="aRow"></param>
-        private void CreateMarqueeForCell(int aColumn, int aRow)
+        private void RecreateTableLayoutPanel(int aColumn, int aRow)
         {
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            MarqueeLabel control = new SharpDisplayManager.MarqueeLabel();
-            control.AutoEllipsis = true;
-            control.AutoSize = true;
-            control.BackColor = System.Drawing.Color.Transparent;
-            control.Dock = System.Windows.Forms.DockStyle.Fill;
-            control.Location = new System.Drawing.Point(1, 1);
-            control.Margin = new System.Windows.Forms.Padding(0);
-            control.Name = "marqueeLabelCol" + aColumn + "Row" + aRow;
-            control.OwnTimer = false;
-            control.PixelsPerSecond = 64;
-            control.Separator = "|";
-            //control.Size = new System.Drawing.Size(254, 30);
-            //control.TabIndex = 2;
-            control.Font = cds.Font;
-            control.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-            control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            control.UseCompatibleTextRendering = true;
-            //
-            tableLayoutPanel.RowCount++;
-            tableLayoutPanel.Controls.Add(control, aColumn, aRow);
+            tableLayoutPanel.Controls.Clear();
+            tableLayoutPanel.RowStyles.Clear();
+            tableLayoutPanel.ColumnStyles.Clear();
+            tableLayoutPanel.RowCount = 0;
+            tableLayoutPanel.ColumnCount = 0;
 
-            UpdateTableLayoutRowStyles();
+            while (tableLayoutPanel.RowCount < aRow)
+            {
+                tableLayoutPanel.RowCount++;
+            }
 
+            while (tableLayoutPanel.ColumnCount < aColumn)
+            {
+                tableLayoutPanel.ColumnCount++;
+            }
+
+            for (int i = 0; i < tableLayoutPanel.ColumnCount; i++)
+            {
+                //Create our column styles
+                this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100 / tableLayoutPanel.ColumnCount));
+
+                for (int j = 0; j < tableLayoutPanel.RowCount; j++)
+                {
+                    if (i == 0)
+                    {
+                        //Create our row styles
+                        this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100 / tableLayoutPanel.RowCount));
+                    }
+
+                    MarqueeLabel control = new SharpDisplayManager.MarqueeLabel();
+                    control.AutoEllipsis = true;
+                    control.AutoSize = true;
+                    control.BackColor = System.Drawing.Color.Transparent;
+                    control.Dock = System.Windows.Forms.DockStyle.Fill;
+                    control.Location = new System.Drawing.Point(1, 1);
+                    control.Margin = new System.Windows.Forms.Padding(0);
+                    control.Name = "marqueeLabelCol" + aColumn + "Row" + aRow;
+                    control.OwnTimer = false;
+                    control.PixelsPerSecond = 64;
+                    control.Separator = "|";
+                    //control.Size = new System.Drawing.Size(254, 30);
+                    //control.TabIndex = 2;
+                    control.Font = cds.Font;
+                    control.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+                    control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                    control.UseCompatibleTextRendering = true;
+                    //
+                    tableLayoutPanel.Controls.Add(control, i, j);
+                }
+            }
         }
 
         private void buttonAddColumn_Click(object sender, EventArgs e)
         {
             if (tableLayoutPanel.ColumnCount < 8)
             {
-                tableLayoutPanel.ColumnCount++;
+                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount + 1, tableLayoutPanel.RowCount);
                 //CheckFontHeight();
             }
         }
@@ -1008,7 +1033,7 @@ namespace SharpDisplayManager
         {
             if (tableLayoutPanel.ColumnCount > 1)
             {
-                tableLayoutPanel.ColumnCount--;
+                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount - 1, tableLayoutPanel.RowCount);
                 //CheckFontHeight();
             }
         }
