@@ -11,10 +11,14 @@ using System.ServiceModel;
 using System.Collections;
 using System.Drawing;
 using System.Runtime.Serialization;
+using System.Windows.Forms;
 
 
 namespace SharpDisplay
 {
+
+
+
     /// <summary>
     /// TextField can be send to our server to be displayed on the screen.
     /// </summary>
@@ -23,25 +27,36 @@ namespace SharpDisplay
     {
         public TableLayout()
         {
-            ColumnCount = 0;
-            RowCount = 0;
-            //Alignment = ContentAlignment.MiddleLeft;
+            Columns = new List<ColumnStyle>();
+            Rows = new List<RowStyle>();
+            Cells = new List<DataField>();
         }
 
         public TableLayout(int aColumnCount, int aRowCount)
         {
-            ColumnCount = aColumnCount;
-            RowCount = aRowCount;
+            Columns = new List<ColumnStyle>();
+            Rows = new List<RowStyle>();
+
+            for (int i = 0; i < aColumnCount; i++)
+            {
+                Columns.Add(new ColumnStyle(SizeType.Percent, 100 / aColumnCount));
+            }
+
+            for (int i = 0; i < aRowCount; i++)
+            {
+                Rows.Add(new RowStyle(SizeType.Percent, 100 / aRowCount));
+            }
         }
 
         [DataMember]
-        public int ColumnCount { get; set; }
-
-        [DataMember]
-        public int RowCount { get; set; }
-
-        [DataMember]
         public List<DataField> Cells { get; set; }
+
+        [DataMember]
+        public List<ColumnStyle> Columns { get; set; }
+
+        [DataMember]
+        public List<RowStyle> Rows { get; set; }
+
     }
 
     /// <summary>
