@@ -275,7 +275,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void SetupPixelDelegates()
         {
-            //Select our pixel processing routine                
+            //Select our pixel processing routine
             if (cds.InverseColors)
             {
                 //iColorFx = ColorChessboard;
