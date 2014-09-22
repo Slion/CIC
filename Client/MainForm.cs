@@ -49,12 +49,12 @@ namespace SharpDisplayClient
         }
 
 
-       
+
         public delegate void CloseConnectionDelegate();
         public delegate void CloseDelegate();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void CloseConnectionThreadSafe()
         {
@@ -80,7 +80,7 @@ namespace SharpDisplayClient
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void CloseThreadSafe()
         {
@@ -133,6 +133,7 @@ namespace SharpDisplayClient
         {
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
             iTextFieldTop.Text = textBoxTop.Text;
+            iTextFieldTop.Alignment = Alignment;
             iClient.SetText(iTextFieldTop);
         }
 
@@ -143,7 +144,7 @@ namespace SharpDisplayClient
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
 
             iClient.SetTexts(new TextField[]
-            { 
+            {
                 new TextField(0, textBoxTop.Text, Alignment),
                 new TextField(1, textBoxBottom.Text, Alignment)
             });

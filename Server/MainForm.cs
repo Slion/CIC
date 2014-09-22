@@ -99,7 +99,8 @@ namespace SharpDisplayManager
             //fontDialog.ShowColor = true;
             //fontDialog.ShowApply = true;
             fontDialog.ShowEffects = true;
-            fontDialog.Font = marqueeLabelTop.Font;
+            MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[0];
+            fontDialog.Font = label.Font;
 
             fontDialog.FixedPitchOnly = checkBoxFixedPitchFontOnly.Checked;
 
@@ -120,8 +121,10 @@ namespace SharpDisplayManager
                 //MsgBox.Show("MessageBox MsgBox", "MsgBox caption");
 
                 //MessageBox.Show("Ok");
-                marqueeLabelTop.Font = fontDialog.Font;
-                marqueeLabelBottom.Font = fontDialog.Font;
+                foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+                {
+                    ctrl.Font = fontDialog.Font;
+                }
                 cds.Font = fontDialog.Font;
                 Properties.Settings.Default.Save();
                 //
@@ -148,9 +151,10 @@ namespace SharpDisplayManager
             }
 
             //Now check font height and show a warning if needed.
-            if (marqueeLabelBottom.Font.Height > marqueeLabelBottom.Height)
+            MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[0];
+            if (label.Font.Height > label.Height)
             {
-                labelWarning.Text = "WARNING: Selected font is too height by " + (marqueeLabelBottom.Font.Height - marqueeLabelBottom.Height) + " pixels!";
+                labelWarning.Text = "WARNING: Selected font is too height by " + (label.Font.Height - label.Height) + " pixels!";
                 labelWarning.Visible = true;
             }
             else
@@ -167,7 +171,7 @@ namespace SharpDisplayManager
             //Bitmap bmpToSave = new Bitmap(bmp);
             bmp.Save("D:\\capture.png");
 
-            marqueeLabelTop.Text = "Sweet";
+            ((MarqueeLabel)tableLayoutPanel.Controls[0]).Text = "Captured";
 
             /*
             string outputFileName = "d:\\capture.png";
@@ -307,8 +311,12 @@ namespace SharpDisplayManager
             //Update our animations
             DateTime NewTickTime = DateTime.Now;
 
-            marqueeLabelTop.UpdateAnimation(LastTickTime, NewTickTime);
-            marqueeLabelBottom.UpdateAnimation(LastTickTime, NewTickTime);
+            //Update animation for all our marquees
+            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+            {
+                ctrl.UpdateAnimation(LastTickTime, NewTickTime);
+            }
+
 
             //Update our display
             if (iDisplay.IsOpen())
@@ -464,8 +472,13 @@ namespace SharpDisplayManager
             //Load settings
             checkBoxShowBorders.Checked = cds.ShowBorders;
             tableLayoutPanel.CellBorderStyle = (cds.ShowBorders ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
-            marqueeLabelTop.Font = cds.Font;
-            marqueeLabelBottom.Font = cds.Font;
+
+            //Set the proper font to each of our labels
+            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+            {
+                ctrl.Font = cds.Font;
+            }
+
             CheckFontHeight();
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
@@ -770,19 +783,10 @@ namespace SharpDisplayManager
                     client.Texts[aTextField.Index] = aTextField;
 
                     //We are in the proper thread
-                    //Only support two lines for now
-                    if (aTextField.Index == 0)
-                    {
-                        marqueeLabelTop.Text = aTextField.Text;
-                        marqueeLabelTop.TextAlign = aTextField.Alignment;
-                    }
-                    else if (aTextField.Index == 1)
-                    {
-                        marqueeLabelBottom.Text = aTextField.Text;
-                        marqueeLabelBottom.TextAlign = aTextField.Alignment;
-                    }
-
-
+                    MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aTextField.Index];
+                    label.Text = aTextField.Text;
+                    label.TextAlign = aTextField.Alignment;
+                    //
                     UpdateClientTreeViewNode(client);
                 }
             }
@@ -823,16 +827,9 @@ namespace SharpDisplayManager
                     //Only support two lines for now
                     for (int i = 0; i < aTextFields.Count; i++)
                     {
-                        if (aTextFields[i].Index == 0)
-                        {
-                            marqueeLabelTop.Text = aTextFields[i].Text;
-                            marqueeLabelTop.TextAlign = aTextFields[i].Alignment;
-                        }
-                        else if (aTextFields[i].Index == 1)
-                        {
-                            marqueeLabelBottom.Text = aTextFields[i].Text;
-                            marqueeLabelBottom.TextAlign = aTextFields[i].Alignment;
-                        }
+                        MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aTextFields[i].Index];
+                        label.Text = aTextFields[i].Text;
+                        label.TextAlign = aTextFields[i].Alignment;
                     }
 
 
@@ -935,7 +932,7 @@ namespace SharpDisplayManager
         {
             if (tableLayoutPanel.RowCount < 6)
             {
-                tableLayoutPanel.RowCount++;
+                CreateMarqueeForCell(0, tableLayoutPanel.RowCount);
                 CheckFontHeight();
             }
         }
@@ -944,9 +941,58 @@ namespace SharpDisplayManager
         {
             if (tableLayoutPanel.RowCount > 1)
             {
+                tableLayoutPanel.RowStyles.RemoveAt(tableLayoutPanel.RowCount-1);
+                tableLayoutPanel.Controls.RemoveAt(tableLayoutPanel.RowCount-1);
                 tableLayoutPanel.RowCount--;
                 CheckFontHeight();
             }
+
+            UpdateTableLayoutRowStyles();
+        }
+
+        /// <summary>
+        /// Update our table layout row styles to make sure each rows have similar height
+        /// </summary>
+        private void UpdateTableLayoutRowStyles()
+        {
+            foreach (RowStyle rowStyle in tableLayoutPanel.RowStyles)
+            {
+                rowStyle.SizeType = SizeType.Percent;
+                rowStyle.Height = 100 / tableLayoutPanel.RowCount;
+            }
+        }
+
+        /// <summary>
+        /// Create the specified cell in our table layout and add a marquee label to it.
+        /// </summary>
+        /// <param name="aColumn"></param>
+        /// <param name="aRow"></param>
+        private void CreateMarqueeForCell(int aColumn, int aRow)
+        {
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
+            MarqueeLabel control = new SharpDisplayManager.MarqueeLabel();
+            control.AutoEllipsis = true;
+            control.AutoSize = true;
+            control.BackColor = System.Drawing.Color.Transparent;
+            control.Dock = System.Windows.Forms.DockStyle.Fill;
+            control.Location = new System.Drawing.Point(1, 1);
+            control.Margin = new System.Windows.Forms.Padding(0);
+            control.Name = "marqueeLabelCol" + aColumn + "Row" + aRow;
+            control.OwnTimer = false;
+            control.PixelsPerSecond = 64;
+            control.Separator = "|";
+            //control.Size = new System.Drawing.Size(254, 30);
+            //control.TabIndex = 2;
+            control.Font = cds.Font;
+            control.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
+            control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            control.UseCompatibleTextRendering = true;
+            //
+            tableLayoutPanel.RowCount++;
+            tableLayoutPanel.Controls.Add(control, aColumn, aRow);
+
+            UpdateTableLayoutRowStyles();
+
         }
 
         private void buttonAddColumn_Click(object sender, EventArgs e)
@@ -969,20 +1015,26 @@ namespace SharpDisplayManager
 
         private void buttonAlignLeft_Click(object sender, EventArgs e)
         {
-            marqueeLabelTop.TextAlign = ContentAlignment.MiddleLeft;
-            marqueeLabelBottom.TextAlign = ContentAlignment.MiddleLeft;
+            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+            {
+                ctrl.TextAlign = ContentAlignment.MiddleLeft;
+            }
         }
 
         private void buttonAlignCenter_Click(object sender, EventArgs e)
         {
-            marqueeLabelTop.TextAlign = ContentAlignment.MiddleCenter;
-            marqueeLabelBottom.TextAlign = ContentAlignment.MiddleCenter;
+            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+            {
+                ctrl.TextAlign = ContentAlignment.MiddleCenter;
+            }
         }
 
         private void buttonAlignRight_Click(object sender, EventArgs e)
         {
-            marqueeLabelTop.TextAlign = ContentAlignment.MiddleRight;
-            marqueeLabelBottom.TextAlign = ContentAlignment.MiddleRight;
+            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+            {
+                ctrl.TextAlign = ContentAlignment.MiddleRight;
+            }
         }
 
         private void comboBoxDisplayType_SelectedIndexChanged(object sender, EventArgs e)
@@ -1035,7 +1087,6 @@ namespace SharpDisplayManager
         {
             iDisplay.HideClock();
         }
-
     }
 
     /// <summary>
