@@ -149,5 +149,11 @@ namespace SharpDisplayClient
                 new TextField(1, textBoxBottom.Text, Alignment)
             });
         }
+
+        private void buttonLayoutUpdate_Click(object sender, EventArgs e)
+        {
+            TableLayout layout = new TableLayout(2,2);
+            iClient.SetLayout(layout);
+        }
     }
 }

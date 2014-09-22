@@ -22,6 +22,14 @@ namespace SharpDisplayManager
     //Types declarations
     public delegate uint ColorProcessingDelegate(int aX, int aY, uint aPixel);
     public delegate int CoordinateTranslationDelegate(System.Drawing.Bitmap aBmp, int aInt);
+    //Delegates are used for our thread safe method
+    public delegate void AddClientDelegate(string aSessionId, ICallback aCallback);
+    public delegate void RemoveClientDelegate(string aSessionId);
+    public delegate void SetTextDelegate(string SessionId, TextField aTextField);
+    public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
+    public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<TextField> aTextFields);
+    public delegate void SetClientNameDelegate(string aSessionId, string aName);
+
 
     /// <summary>
     /// Our Display manager main form
@@ -691,13 +699,6 @@ namespace SharpDisplayManager
 
         }
 
-        //Delegates are used for our thread safe method
-        public delegate void AddClientDelegate(string aSessionId, ICallback aCallback);
-        public delegate void RemoveClientDelegate(string aSessionId);
-        public delegate void SetTextDelegate(string SessionId, TextField aTextField);
-        public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<TextField> aTextFields);
-        public delegate void SetClientNameDelegate(string aSessionId, string aName);
-
 
         /// <summary>
         ///
@@ -752,6 +753,32 @@ namespace SharpDisplayManager
                     //Just resume our close operation
                     iClosing = false;
                     Close();
+                }
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        /// <param name="aTextField"></param>
+        public void SetClientLayoutThreadSafe(string aSessionId, TableLayout aLayout)
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                SetLayoutDelegate d = new SetLayoutDelegate(SetClientLayoutThreadSafe);
+                this.Invoke(d, new object[] { aSessionId, aLayout });
+            }
+            else
+            {
+                ClientData client = iClients[aSessionId];
+                if (client != null)
+                {
+                    client.Layout = aLayout;
+                    UpdateTableLayoutPanel(client.Layout.ColumnCount, client.Layout.RowCount);
+                    //
+                    UpdateClientTreeViewNode(client);
                 }
             }
         }
@@ -932,8 +959,7 @@ namespace SharpDisplayManager
         {
             if (tableLayoutPanel.RowCount < 6)
             {
-                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount + 1);
-                CheckFontHeight();
+                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount + 1);
             }
         }
 
@@ -941,12 +967,28 @@ namespace SharpDisplayManager
         {
             if (tableLayoutPanel.RowCount > 1)
             {
-                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount - 1);
-                CheckFontHeight();
+                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount - 1);
             }
 
             UpdateTableLayoutRowStyles();
         }
+
+        private void buttonAddColumn_Click(object sender, EventArgs e)
+        {
+            if (tableLayoutPanel.ColumnCount < 8)
+            {
+                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount + 1, tableLayoutPanel.RowCount);
+            }
+        }
+
+        private void buttonRemoveColumn_Click(object sender, EventArgs e)
+        {
+            if (tableLayoutPanel.ColumnCount > 1)
+            {
+                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount - 1, tableLayoutPanel.RowCount);
+            }
+        }
+
 
         /// <summary>
         /// Update our table layout row styles to make sure each rows have similar height
@@ -966,7 +1008,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aColumn"></param>
         /// <param name="aRow"></param>
-        private void RecreateTableLayoutPanel(int aColumn, int aRow)
+        private void UpdateTableLayoutPanel(int aColumn, int aRow)
         {
             tableLayoutPanel.Controls.Clear();
             tableLayoutPanel.RowStyles.Clear();
@@ -1018,24 +1060,8 @@ namespace SharpDisplayManager
                     tableLayoutPanel.Controls.Add(control, i, j);
                 }
             }
-        }
 
-        private void buttonAddColumn_Click(object sender, EventArgs e)
-        {
-            if (tableLayoutPanel.ColumnCount < 8)
-            {
-                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount + 1, tableLayoutPanel.RowCount);
-                //CheckFontHeight();
-            }
-        }
-
-        private void buttonRemoveColumn_Click(object sender, EventArgs e)
-        {
-            if (tableLayoutPanel.ColumnCount > 1)
-            {
-                RecreateTableLayoutPanel(tableLayoutPanel.ColumnCount - 1, tableLayoutPanel.RowCount);
-                //CheckFontHeight();
-            }
+            CheckFontHeight();
         }
 
         private void buttonAlignLeft_Click(object sender, EventArgs e)
@@ -1125,12 +1151,14 @@ namespace SharpDisplayManager
             SessionId = aSessionId;
             Name = "";
             Texts = new List<TextField>();
+            Layout = new TableLayout(1, 2); //Default to one column and two rows
             Callback = aCallback;
         }
 
         public string SessionId { get; set; }
         public string Name { get; set; }
         public List<TextField> Texts { get; set; }
+        public TableLayout Layout { get; set; }
         public ICallback Callback { get; set; }
     }
 }

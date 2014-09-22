@@ -35,6 +35,7 @@
             this.buttonAlignCenter = new System.Windows.Forms.Button();
             this.buttonAlignLeft = new System.Windows.Forms.Button();
             this.buttonSetTopText = new System.Windows.Forms.Button();
+            this.buttonLayoutUpdate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSetText
@@ -101,11 +102,22 @@
             this.buttonSetTopText.UseVisualStyleBackColor = true;
             this.buttonSetTopText.Click += new System.EventHandler(this.buttonSetTopText_Click);
             // 
+            // buttonLayoutUpdate
+            // 
+            this.buttonLayoutUpdate.Location = new System.Drawing.Point(176, 131);
+            this.buttonLayoutUpdate.Name = "buttonLayoutUpdate";
+            this.buttonLayoutUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonLayoutUpdate.TabIndex = 25;
+            this.buttonLayoutUpdate.Text = "Layout 2x2";
+            this.buttonLayoutUpdate.UseVisualStyleBackColor = true;
+            this.buttonLayoutUpdate.Click += new System.EventHandler(this.buttonLayoutUpdate_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 252);
+            this.Controls.Add(this.buttonLayoutUpdate);
             this.Controls.Add(this.buttonSetTopText);
             this.Controls.Add(this.buttonAlignRight);
             this.Controls.Add(this.buttonAlignCenter);
@@ -131,6 +143,7 @@
         private System.Windows.Forms.Button buttonAlignCenter;
         private System.Windows.Forms.Button buttonAlignLeft;
         private System.Windows.Forms.Button buttonSetTopText;
+        private System.Windows.Forms.Button buttonLayoutUpdate;
     }
 }
 
