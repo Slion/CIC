@@ -776,7 +776,7 @@ namespace SharpDisplayManager
                 if (client != null)
                 {
                     client.Layout = aLayout;
-                    UpdateTableLayoutPanel(client.Layout.ColumnCount, client.Layout.RowCount);
+                    UpdateTableLayoutPanel(client.Layout);
                     //
                     UpdateClientTreeViewNode(client);
                 }
@@ -1063,6 +1063,68 @@ namespace SharpDisplayManager
 
             CheckFontHeight();
         }
+
+
+        /// <summary>
+        /// Update our display table layout.
+        /// </summary>
+        /// <param name="aLayout"></param>
+        private void UpdateTableLayoutPanel(TableLayout aLayout)
+        {
+            tableLayoutPanel.Controls.Clear();
+            tableLayoutPanel.RowStyles.Clear();
+            tableLayoutPanel.ColumnStyles.Clear();
+            tableLayoutPanel.RowCount = 0;
+            tableLayoutPanel.ColumnCount = 0;
+
+            while (tableLayoutPanel.RowCount < aLayout.Rows.Count)
+            {
+                tableLayoutPanel.RowCount++;
+            }
+
+            while (tableLayoutPanel.ColumnCount < aLayout.Columns.Count)
+            {
+                tableLayoutPanel.ColumnCount++;
+            }
+
+            for (int i = 0; i < tableLayoutPanel.ColumnCount; i++)
+            {
+                //Create our column styles
+                this.tableLayoutPanel.ColumnStyles.Add(aLayout.Columns[i]);
+
+                for (int j = 0; j < tableLayoutPanel.RowCount; j++)
+                {
+                    if (i == 0)
+                    {
+                        //Create our row styles
+                        this.tableLayoutPanel.RowStyles.Add(aLayout.Rows[j]);
+                    }
+
+                    MarqueeLabel control = new SharpDisplayManager.MarqueeLabel();
+                    control.AutoEllipsis = true;
+                    control.AutoSize = true;
+                    control.BackColor = System.Drawing.Color.Transparent;
+                    control.Dock = System.Windows.Forms.DockStyle.Fill;
+                    control.Location = new System.Drawing.Point(1, 1);
+                    control.Margin = new System.Windows.Forms.Padding(0);
+                    control.Name = "marqueeLabelCol" + aLayout.Columns.Count + "Row" + aLayout.Rows.Count;
+                    control.OwnTimer = false;
+                    control.PixelsPerSecond = 64;
+                    control.Separator = "|";
+                    //control.Size = new System.Drawing.Size(254, 30);
+                    //control.TabIndex = 2;
+                    control.Font = cds.Font;
+                    control.Text = "ABCDEFGHIJKLMNOPQRST[0123456789]";
+                    control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                    control.UseCompatibleTextRendering = true;
+                    //
+                    tableLayoutPanel.Controls.Add(control, i, j);
+                }
+            }
+
+            CheckFontHeight();
+        }
+
 
         private void buttonAlignLeft_Click(object sender, EventArgs e)
         {

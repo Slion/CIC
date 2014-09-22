@@ -153,6 +153,7 @@ namespace SharpDisplayClient
         private void buttonLayoutUpdate_Click(object sender, EventArgs e)
         {
             TableLayout layout = new TableLayout(2,2);
+            layout.Columns[1].Width = 25F;
             iClient.SetLayout(layout);
         }
     }
