@@ -20,7 +20,7 @@ namespace SharpDisplay
 
 
     /// <summary>
-    /// TextField can be send to our server to be displayed on the screen.
+    /// For client to specify a specific layout.
     /// </summary>
     [DataContract]
     public class TableLayout
