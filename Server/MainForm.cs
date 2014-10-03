@@ -42,17 +42,24 @@ namespace SharpDisplayManager
         System.Drawing.Bitmap iBmp;
         bool iCreateBitmap; //Workaround render to bitmap issues when minimized
         ServiceHost iServiceHost;
-        /// <summary>
-        /// Our collection of clients
-        /// </summary>
+        // Our collection of clients sorted by session id.
         public Dictionary<string, ClientData> iClients;
+        // The name of the client which informations are currently displayed.
+        public string iCurrentClientSessionId;
+        ClientData iCurrentClientData;
+        //
         public bool iClosing;
+        //Function pointer for pixel color filtering
         ColorProcessingDelegate iColorFx;
+        //Function pointer for pixel X coordinate intercept
         CoordinateTranslationDelegate iScreenX;
+        //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
 
         public MainForm()
         {
+            iCurrentClientSessionId = "";
+            iCurrentClientData = null;
             LastTickTime = DateTime.Now;
             iDisplay = new Display();
             iClients = new Dictionary<string, ClientData>();
@@ -62,8 +69,6 @@ namespace SharpDisplayManager
             //We have a bug when drawing minimized and reusing our bitmap
             iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
-            //
-            //this.tableLayoutPanel.CellPaint += new TableLayoutCellPaintEventHandler(tableLayoutPanel_CellPaint);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -76,31 +81,27 @@ namespace SharpDisplayManager
             }
         }
 
-        //Testing that stuff
-        private void tableLayoutPanel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        /// <summary>
+        /// Set our current client.
+        /// This will take care of applying our client layout and set data fields.
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        void SetCurrentClient(string aSessionId)
         {
-            var panel = sender as TableLayoutPanel;
-            //e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            var rectangle = e.CellBounds;
-            using (var pen = new Pen(Color.Black, 1))
+            if (aSessionId == iCurrentClientSessionId)
             {
-                pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Center;
-                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-
-                if (e.Row == (panel.RowCount - 1))
-                {
-                    rectangle.Height -= 1;
-                }
-
-                if (e.Column == (panel.ColumnCount - 1))
-                {
-                    rectangle.Width -= 1;
-                }
-
-                e.Graphics.DrawRectangle(pen, rectangle);
+                //Given client is already the current one.
+                //Don't bother changing anything then.
+                return;
             }
-        }
 
+            //Set current client ID.
+            iCurrentClientSessionId = aSessionId;
+            //Fetch and set current client data.
+            iCurrentClientData = iClients[aSessionId];
+            //Apply layout and set data fields.
+            UpdateTableLayoutPanel(iCurrentClientData);
+        }
 
         private void buttonFont_Click(object sender, EventArgs e)
         {
@@ -430,12 +431,12 @@ namespace SharpDisplayManager
         {
             get
             {
-                DisplaysSettings settings = Properties.Settings.Default.DisplaySettings;
+                DisplaysSettings settings = Properties.Settings.Default.DisplaysSettings;
                 if (settings == null)
                 {
                     settings = new DisplaysSettings();
                     settings.Init();
-                    Properties.Settings.Default.DisplaySettings = settings;
+                    Properties.Settings.Default.DisplaysSettings = settings;
                 }
 
                 //Make sure all our settings have been created
@@ -776,7 +777,7 @@ namespace SharpDisplayManager
                 if (client != null)
                 {
                     client.Layout = aLayout;
-                    UpdateTableLayoutPanel(client.Layout);
+                    UpdateTableLayoutPanel(client);
                     //
                     UpdateClientTreeViewNode(client);
                 }
@@ -788,16 +789,17 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aLineIndex"></param>
         /// <param name="aText"></param>
-        public void SetTextThreadSafe(string aSessionId, TextField aTextField)
+        public void SetClientTextThreadSafe(string aSessionId, TextField aTextField)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetTextDelegate d = new SetTextDelegate(SetTextThreadSafe);
+                SetTextDelegate d = new SetTextDelegate(SetClientTextThreadSafe);
                 this.Invoke(d, new object[] { aSessionId, aTextField });
             }
             else
             {
+                SetCurrentClient(aSessionId);
                 ClientData client = iClients[aSessionId];
                 if (client != null)
                 {
@@ -823,16 +825,17 @@ namespace SharpDisplayManager
         ///
         /// </summary>
         /// <param name="aTexts"></param>
-        public void SetTextsThreadSafe(string aSessionId, System.Collections.Generic.IList<TextField> aTextFields)
+        public void SetClientTextsThreadSafe(string aSessionId, System.Collections.Generic.IList<TextField> aTextFields)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetTextsDelegate d = new SetTextsDelegate(SetTextsThreadSafe);
+                SetTextsDelegate d = new SetTextsDelegate(SetClientTextsThreadSafe);
                 this.Invoke(d, new object[] { aSessionId, aTextFields });
             }
             else
             {
+                SetCurrentClient(aSessionId);
                 //We are in the proper thread
                 ClientData client = iClients[aSessionId];
                 if (client != null)
@@ -851,7 +854,7 @@ namespace SharpDisplayManager
                         }
                         j++;
                     }
-                    //Only support two lines for now
+                    //Put each our text fields in a label control
                     for (int i = 0; i < aTextFields.Count; i++)
                     {
                         MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aTextFields[i].Index];
@@ -1069,20 +1072,22 @@ namespace SharpDisplayManager
         /// Update our display table layout.
         /// </summary>
         /// <param name="aLayout"></param>
-        private void UpdateTableLayoutPanel(TableLayout aLayout)
+        private void UpdateTableLayoutPanel(ClientData aClient)
         {
+            TableLayout layout = aClient.Layout;
+            
             tableLayoutPanel.Controls.Clear();
             tableLayoutPanel.RowStyles.Clear();
             tableLayoutPanel.ColumnStyles.Clear();
             tableLayoutPanel.RowCount = 0;
             tableLayoutPanel.ColumnCount = 0;
 
-            while (tableLayoutPanel.RowCount < aLayout.Rows.Count)
+            while (tableLayoutPanel.RowCount < layout.Rows.Count)
             {
                 tableLayoutPanel.RowCount++;
             }
 
-            while (tableLayoutPanel.ColumnCount < aLayout.Columns.Count)
+            while (tableLayoutPanel.ColumnCount < layout.Columns.Count)
             {
                 tableLayoutPanel.ColumnCount++;
             }
@@ -1090,14 +1095,14 @@ namespace SharpDisplayManager
             for (int i = 0; i < tableLayoutPanel.ColumnCount; i++)
             {
                 //Create our column styles
-                this.tableLayoutPanel.ColumnStyles.Add(aLayout.Columns[i]);
+                this.tableLayoutPanel.ColumnStyles.Add(layout.Columns[i]);
 
                 for (int j = 0; j < tableLayoutPanel.RowCount; j++)
                 {
                     if (i == 0)
                     {
                         //Create our row styles
-                        this.tableLayoutPanel.RowStyles.Add(aLayout.Rows[j]);
+                        this.tableLayoutPanel.RowStyles.Add(layout.Rows[j]);
                     }
 
                     MarqueeLabel control = new SharpDisplayManager.MarqueeLabel();
@@ -1107,14 +1112,20 @@ namespace SharpDisplayManager
                     control.Dock = System.Windows.Forms.DockStyle.Fill;
                     control.Location = new System.Drawing.Point(1, 1);
                     control.Margin = new System.Windows.Forms.Padding(0);
-                    control.Name = "marqueeLabelCol" + aLayout.Columns.Count + "Row" + aLayout.Rows.Count;
+                    control.Name = "marqueeLabelCol" + layout.Columns.Count + "Row" + layout.Rows.Count;
                     control.OwnTimer = false;
                     control.PixelsPerSecond = 64;
                     control.Separator = "|";
                     //control.Size = new System.Drawing.Size(254, 30);
                     //control.TabIndex = 2;
                     control.Font = cds.Font;
-                    control.Text = "ABCDEFGHIJKLMNOPQRST[0123456789]";
+                    control.Text = "";
+                    //If we already have a text for that field
+                    if (aClient.Texts.Count > tableLayoutPanel.Controls.Count)
+                    {
+                        control.Text = aClient.Texts[tableLayoutPanel.Controls.Count].Text;
+                    }
+                    
                     control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
                     control.UseCompatibleTextRendering = true;
                     //

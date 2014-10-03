@@ -62,13 +62,13 @@ namespace SharpDisplay
         //From IDisplayService
         public void SetTexts(System.Collections.Generic.IList<TextField> aTextFields)
         {
-            SharpDisplayManager.Program.iMainForm.SetTextsThreadSafe(SessionId, aTextFields);
+            SharpDisplayManager.Program.iMainForm.SetClientTextsThreadSafe(SessionId, aTextFields);
         }
 
         //
         public void SetText(TextField aTextField)
         {
-            SharpDisplayManager.Program.iMainForm.SetTextThreadSafe(SessionId, aTextField);
+            SharpDisplayManager.Program.iMainForm.SetClientTextThreadSafe(SessionId, aTextField);
         }
 
 

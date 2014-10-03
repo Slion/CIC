@@ -5,11 +5,14 @@
     <Setting Name="DisplayConnectOnStartup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DisplaySettings" Type="SharpDisplayManager.DisplaySettings" Scope="User">
+    <Setting Name="DisplaysSettings" Type="SharpDisplayManager.DisplaysSettings" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CurrentDisplayIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CycleClients" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

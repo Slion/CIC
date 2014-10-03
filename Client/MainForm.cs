@@ -152,8 +152,11 @@ namespace SharpDisplayClient
 
         private void buttonLayoutUpdate_Click(object sender, EventArgs e)
         {
+            //Define a 2 by 2 layout
             TableLayout layout = new TableLayout(2,2);
+            //Second column only takes up 25%
             layout.Columns[1].Width = 25F;
+            //Send layout to server
             iClient.SetLayout(layout);
         }
     }

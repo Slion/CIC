@@ -56,7 +56,6 @@ namespace SharpDisplay
 
         [DataMember]
         public List<RowStyle> Rows { get; set; }
-
     }
 
     /// <summary>
@@ -128,7 +127,6 @@ namespace SharpDisplay
         /// <param name="aClientName"></param>
         [OperationContract(IsOneWay = true)]
         void SetName(string aClientName);
-
 
         /// <summary>
         /// </summary>
