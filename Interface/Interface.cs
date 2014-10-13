@@ -64,6 +64,16 @@ namespace SharpDisplay
     [DataContract]
     public class DataField
     {
+        public DataField()
+        {
+            Index = 0;
+            ColumnSpan = 1;
+            RowSpan = 1;
+        }
+
+        [DataMember]
+        public int Index { get; set; }
+
         [DataMember]
         public int Column { get; set; }
 
@@ -100,13 +110,30 @@ namespace SharpDisplay
         }
 
         [DataMember]
-        public int Index { get; set; }
-
-        [DataMember]
         public string Text { get; set; }
 
         [DataMember]
         public ContentAlignment Alignment { get; set; }
+    }
+
+    /// <summary>
+    /// TextField can be send to our server to be displayed on the screen.
+    /// </summary>
+    [DataContract]
+    public class BitmapField : DataField
+    {
+        public BitmapField()
+        {
+        }
+
+        public BitmapField(int aIndex, Bitmap aBitmap)
+        {
+            Index = aIndex;
+            Bitmap = aBitmap;
+        }
+
+        [DataMember]
+        public Bitmap Bitmap { get; set; }
     }
 
     /// <summary>
