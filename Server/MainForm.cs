@@ -1196,54 +1196,16 @@ namespace SharpDisplayManager
                         this.tableLayoutPanel.RowStyles.Add(layout.Rows[j]);
                     }
 
-
-                    MarqueeLabel label = new SharpDisplayManager.MarqueeLabel();
-                    label.AutoEllipsis = true;
-                    label.AutoSize = true;
-                    label.BackColor = System.Drawing.Color.Transparent;
-                    label.Dock = System.Windows.Forms.DockStyle.Fill;
-                    label.Location = new System.Drawing.Point(1, 1);
-                    label.Margin = new System.Windows.Forms.Padding(0);
-                    label.Name = "marqueeLabelCol" + layout.Columns.Count + "Row" + layout.Rows.Count;
-                    label.OwnTimer = false;
-                    label.PixelsPerSecond = 64;
-                    label.Separator = "|";
-                    //control.Size = new System.Drawing.Size(254, 30);
-                    //control.TabIndex = 2;
-                    label.Font = cds.Font;
-                    label.Text = "";
-                    label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-                    label.UseCompatibleTextRendering = true;
-
-                    Control control = label;
-                    //If we already have a text for that field
-                    if (aClient.Fields.Count > tableLayoutPanel.Controls.Count)
+                    //Check if a client field already exists for that cell
+                    if (aClient.Fields.Count <= tableLayoutPanel.Controls.Count)
                     {
-                        DataField field = aClient.Fields[tableLayoutPanel.Controls.Count];
-                        if (field is TextField)
-                        {
-                            TextField textField = (TextField)field;
-                            control.Text = textField.Text;
-                        }
-                        else if (field is BitmapField)
-                        {
-                            //Create picture box
-                            PictureBox pictue = new PictureBox();
-                            pictue.AutoSize = true;
-                            pictue.BackColor = System.Drawing.Color.Transparent;
-                            pictue.Dock = System.Windows.Forms.DockStyle.Fill;
-                            pictue.Location = new System.Drawing.Point(1, 1);
-                            pictue.Margin = new System.Windows.Forms.Padding(0);
-                            pictue.Name = "pictureBox" + layout.Columns.Count + "Row" + layout.Rows.Count;
-                            //Set our image
-                            BitmapField bitmapField = (BitmapField)field;
-                            pictue.Image = bitmapField.Bitmap;
-                            //
-                            control = pictue;
-                        }
+                        //No client field specified, create a text field by default
+                        aClient.Fields.Add(new TextField(aClient.Fields.Count));
                     }
 
-                    //
+                    //Create a control corresponding to the field specified for that cell
+                    Control control = CreateControlForDataField(aClient.Fields[tableLayoutPanel.Controls.Count]);
+                    //Add newly created control to our table layout at the specified row and column
                     tableLayoutPanel.Controls.Add(control, i, j);
                 }
             }
@@ -1255,7 +1217,7 @@ namespace SharpDisplayManager
         /// Not used yet.
         /// </summary>
         /// <param name="aField"></param>
-        private void CreateControlForDataField(DataField aField)
+        private Control CreateControlForDataField(DataField aField)
         {
             Control control=null;
             if (aField is TextField)
@@ -1299,6 +1261,7 @@ namespace SharpDisplayManager
                 control = picture;
             }
 
+            return control;
         }
 
 
