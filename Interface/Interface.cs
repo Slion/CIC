@@ -16,9 +16,6 @@ using System.Windows.Forms;
 
 namespace SharpDisplay
 {
-
-
-
     /// <summary>
     /// For client to specify a specific layout.
     /// </summary>
@@ -175,6 +172,14 @@ namespace SharpDisplay
         /// <param name="aTexts"></param>
         [OperationContract(IsOneWay = true)]
         void SetTexts(System.Collections.Generic.IList<TextField> aTextFields);
+
+        /// <summary>
+        /// Put the given bitmap in the given field on your display.
+        /// Fields are often just lines of text.
+        /// </summary>
+        /// <param name="aBitmapField"></param>
+        [OperationContract(IsOneWay = true)]
+        void SetBitmap(BitmapField aBitmapField);
 
         /// <summary>
         /// Provides the number of clients currently connected

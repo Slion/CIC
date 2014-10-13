@@ -159,5 +159,23 @@ namespace SharpDisplayClient
             //Send layout to server
             iClient.SetLayout(layout);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Bitmap bitmap = new Bitmap(60,60);
+            Pen blackPen = new Pen(Color.Black, 3);
+
+            int x1 = 0;
+            int y1 = 0;
+            int x2 = 60;
+            int y2 = 60;
+            // Draw line to screen.
+            using (var graphics = Graphics.FromImage(bitmap))
+            {
+                graphics.DrawLine(blackPen, x1, y1, x2, y2);
+            }
+
+            iClient.SetBitmap(new BitmapField(0, bitmap));
+        }
     }
 }

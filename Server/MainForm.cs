@@ -26,6 +26,7 @@ namespace SharpDisplayManager
     public delegate void AddClientDelegate(string aSessionId, ICallback aCallback);
     public delegate void RemoveClientDelegate(string aSessionId);
     public delegate void SetTextDelegate(string SessionId, TextField aTextField);
+    public delegate void SetBitmapDelegate(string SessionId, BitmapField aTextField);
     public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
     public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<TextField> aTextFields);
     public delegate void SetClientNameDelegate(string aSessionId, string aName);
@@ -787,8 +788,8 @@ namespace SharpDisplayManager
         /// <summary>
         ///
         /// </summary>
-        /// <param name="aLineIndex"></param>
-        /// <param name="aText"></param>
+        /// <param name="aSessionId"></param>
+        /// <param name="aTextField"></param>
         public void SetClientTextThreadSafe(string aSessionId, TextField aTextField)
         {
             if (this.InvokeRequired)
@@ -804,12 +805,12 @@ namespace SharpDisplayManager
                 if (client != null)
                 {
                     //Make sure all our texts are in place
-                    while (client.Texts.Count < (aTextField.Index + 1))
+                    while (client.Fields.Count < (aTextField.Index + 1))
                     {
                         //Add a text field with proper index
-                        client.Texts.Add(new TextField(client.Texts.Count));
+                        client.Fields.Add(new TextField(client.Fields.Count));
                     }
-                    client.Texts[aTextField.Index] = aTextField;
+                    client.Fields[aTextField.Index] = aTextField;
 
                     //We are in the proper thread
                     MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aTextField.Index];
@@ -844,13 +845,13 @@ namespace SharpDisplayManager
                     int j = 0;
                     foreach (TextField textField in aTextFields)
                     {
-                        if (client.Texts.Count < (j + 1))
+                        if (client.Fields.Count < (j + 1))
                         {
-                            client.Texts.Add(textField);
+                            client.Fields.Add(textField);
                         }
                         else
                         {
-                            client.Texts[j] = textField;
+                            client.Fields[j] = textField;
                         }
                         j++;
                     }
@@ -867,6 +868,44 @@ namespace SharpDisplayManager
                 }
             }
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        /// <param name="aTextField"></param>
+        public void SetClientBitmapThreadSafe(string aSessionId, BitmapField aBitmapField)
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                SetBitmapDelegate d = new SetBitmapDelegate(SetClientBitmapThreadSafe);
+                this.Invoke(d, new object[] { aSessionId, aBitmapField });
+            }
+            else
+            {
+                SetCurrentClient(aSessionId);
+                ClientData client = iClients[aSessionId];
+                if (client != null)
+                {
+                    //Make sure all our texts are in place
+                    while (client.Fields.Count < (aBitmapField.Index + 1))
+                    {
+                        //Add a text field with proper index
+                        client.Fields.Add(new TextField(client.Fields.Count));
+                    }
+
+                    client.Fields[aBitmapField.Index] = aBitmapField;
+
+                    //We are in the proper thread
+                    MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aBitmapField.Index];
+                    label.Text = "Bitmap";
+                    //
+                    UpdateClientTreeViewNode(client);
+                }
+            }
+        }
+
 
 
         /// <summary>
@@ -942,15 +981,27 @@ namespace SharpDisplayManager
                     node.Text = aClient.SessionId;
                 }
 
-                if (aClient.Texts.Count > 0)
+                if (aClient.Fields.Count > 0)
                 {
                     //Create root node for our texts
                     TreeNode textsRoot = new TreeNode("Text");
                     node.Nodes.Add(textsRoot);
                     //For each text add a new entry
-                    foreach (TextField field in aClient.Texts)
+                    foreach (DataField field in aClient.Fields)
                     {
-                        textsRoot.Nodes.Add(new TreeNode(field.Text));
+                        if (field is TextField)
+                        {
+                            TextField textField = (TextField)field;
+                            textsRoot.Nodes.Add(new TreeNode(textField.Text));
+                        }
+                        else if (field is BitmapField)
+                        {
+                            textsRoot.Nodes.Add(new TreeNode("[Bitmap Field]"));
+                        }
+                        else
+                        {
+                            textsRoot.Nodes.Add(new TreeNode("[Unknown Field Type]"));
+                        }                        
                     }
                 }
 
@@ -1121,9 +1172,14 @@ namespace SharpDisplayManager
                     control.Font = cds.Font;
                     control.Text = "";
                     //If we already have a text for that field
-                    if (aClient.Texts.Count > tableLayoutPanel.Controls.Count)
+                    if (aClient.Fields.Count > tableLayoutPanel.Controls.Count)
                     {
-                        control.Text = aClient.Texts[tableLayoutPanel.Controls.Count].Text;
+                        DataField field = aClient.Fields[tableLayoutPanel.Controls.Count];
+                        if (field is TextField)
+                        {
+                            TextField textField = (TextField)field;
+                            control.Text = textField.Text;
+                        }
                     }
                     
                     control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1223,14 +1279,14 @@ namespace SharpDisplayManager
         {
             SessionId = aSessionId;
             Name = "";
-            Texts = new List<TextField>();
+            Fields = new List<DataField>();
             Layout = new TableLayout(1, 2); //Default to one column and two rows
             Callback = aCallback;
         }
 
         public string SessionId { get; set; }
         public string Name { get; set; }
-        public List<TextField> Texts { get; set; }
+        public List<DataField> Fields { get; set; }
         public TableLayout Layout { get; set; }
         public ICallback Callback { get; set; }
     }
