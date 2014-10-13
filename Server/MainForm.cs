@@ -160,9 +160,19 @@ namespace SharpDisplayManager
                 labelFontWidth.Text = "Font width: " + charWidth;
             }
 
+            MarqueeLabel label = null;            
+            //Get the first label control we can find
+            foreach (Control ctrl in tableLayoutPanel.Controls)
+            {
+                if (ctrl is MarqueeLabel)
+                {
+                    label = (MarqueeLabel)ctrl;
+                    break;
+                }
+            }
+
             //Now check font height and show a warning if needed.
-            MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[0];
-            if (label.Font.Height > label.Height)
+            if (label != null && label.Font.Height > label.Height)
             {
                 labelWarning.Text = "WARNING: Selected font is too height by " + (label.Font.Height - label.Height) + " pixels!";
                 labelWarning.Visible = true;
@@ -322,9 +332,12 @@ namespace SharpDisplayManager
             DateTime NewTickTime = DateTime.Now;
 
             //Update animation for all our marquees
-            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+            foreach (Control ctrl in tableLayoutPanel.Controls)
             {
-                ctrl.UpdateAnimation(LastTickTime, NewTickTime);
+                if (ctrl is MarqueeLabel)
+                {
+                    ((MarqueeLabel)ctrl).UpdateAnimation(LastTickTime, NewTickTime);
+                }
             }
 
 
@@ -813,9 +826,17 @@ namespace SharpDisplayManager
                     client.Fields[aTextField.Index] = aTextField;
 
                     //We are in the proper thread
-                    MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aTextField.Index];
-                    label.Text = aTextField.Text;
-                    label.TextAlign = aTextField.Alignment;
+                    if (tableLayoutPanel.Controls[aTextField.Index] is MarqueeLabel)
+                    {
+                        MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aTextField.Index];
+                        label.Text = aTextField.Text;
+                        label.TextAlign = aTextField.Alignment;
+                    }
+                    else
+                    {
+                        //Wrong control type, re-create them all
+                        UpdateTableLayoutPanel(iCurrentClientData);
+                    }
                     //
                     UpdateClientTreeViewNode(client);
                 }
@@ -856,11 +877,22 @@ namespace SharpDisplayManager
                         j++;
                     }
                     //Put each our text fields in a label control
-                    for (int i = 0; i < aTextFields.Count; i++)
+                    foreach (TextField field in aTextFields)
                     {
-                        MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aTextFields[i].Index];
-                        label.Text = aTextFields[i].Text;
-                        label.TextAlign = aTextFields[i].Alignment;
+                        if (tableLayoutPanel.Controls[field.Index] is MarqueeLabel)
+                        {
+                            //Proper control type just update the text
+                            MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[field.Index];
+                            label.Text = field.Text;
+                            label.TextAlign = field.Alignment;
+                        }
+                        else
+                        {
+                            //Wrong control for the given field
+                            //Update our layout thus re-creating our controls
+                            UpdateTableLayoutPanel(iCurrentClientData);
+                            break; //No need to keep on looping layout update will take care of everything
+                        }
                     }
 
 
@@ -898,8 +930,16 @@ namespace SharpDisplayManager
                     client.Fields[aBitmapField.Index] = aBitmapField;
 
                     //We are in the proper thread
-                    MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aBitmapField.Index];
-                    label.Text = "Bitmap";
+                    if (tableLayoutPanel.Controls[aBitmapField.Index] is PictureBox)
+                    {
+                        PictureBox pictureBox = (PictureBox)tableLayoutPanel.Controls[aBitmapField.Index];
+                        pictureBox.Image = aBitmapField.Bitmap;
+                    }
+                    else
+                    {
+                        //Wrong control type re-create them all
+                        UpdateTableLayoutPanel(iCurrentClientData);
+                    }
                     //
                     UpdateClientTreeViewNode(client);
                 }
@@ -1156,21 +1196,26 @@ namespace SharpDisplayManager
                         this.tableLayoutPanel.RowStyles.Add(layout.Rows[j]);
                     }
 
-                    MarqueeLabel control = new SharpDisplayManager.MarqueeLabel();
-                    control.AutoEllipsis = true;
-                    control.AutoSize = true;
-                    control.BackColor = System.Drawing.Color.Transparent;
-                    control.Dock = System.Windows.Forms.DockStyle.Fill;
-                    control.Location = new System.Drawing.Point(1, 1);
-                    control.Margin = new System.Windows.Forms.Padding(0);
-                    control.Name = "marqueeLabelCol" + layout.Columns.Count + "Row" + layout.Rows.Count;
-                    control.OwnTimer = false;
-                    control.PixelsPerSecond = 64;
-                    control.Separator = "|";
+
+                    MarqueeLabel label = new SharpDisplayManager.MarqueeLabel();
+                    label.AutoEllipsis = true;
+                    label.AutoSize = true;
+                    label.BackColor = System.Drawing.Color.Transparent;
+                    label.Dock = System.Windows.Forms.DockStyle.Fill;
+                    label.Location = new System.Drawing.Point(1, 1);
+                    label.Margin = new System.Windows.Forms.Padding(0);
+                    label.Name = "marqueeLabelCol" + layout.Columns.Count + "Row" + layout.Rows.Count;
+                    label.OwnTimer = false;
+                    label.PixelsPerSecond = 64;
+                    label.Separator = "|";
                     //control.Size = new System.Drawing.Size(254, 30);
                     //control.TabIndex = 2;
-                    control.Font = cds.Font;
-                    control.Text = "";
+                    label.Font = cds.Font;
+                    label.Text = "";
+                    label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                    label.UseCompatibleTextRendering = true;
+
+                    Control control = label;
                     //If we already have a text for that field
                     if (aClient.Fields.Count > tableLayoutPanel.Controls.Count)
                     {
@@ -1180,16 +1225,80 @@ namespace SharpDisplayManager
                             TextField textField = (TextField)field;
                             control.Text = textField.Text;
                         }
+                        else if (field is BitmapField)
+                        {
+                            //Create picture box
+                            PictureBox pictue = new PictureBox();
+                            pictue.AutoSize = true;
+                            pictue.BackColor = System.Drawing.Color.Transparent;
+                            pictue.Dock = System.Windows.Forms.DockStyle.Fill;
+                            pictue.Location = new System.Drawing.Point(1, 1);
+                            pictue.Margin = new System.Windows.Forms.Padding(0);
+                            pictue.Name = "pictureBox" + layout.Columns.Count + "Row" + layout.Rows.Count;
+                            //Set our image
+                            BitmapField bitmapField = (BitmapField)field;
+                            pictue.Image = bitmapField.Bitmap;
+                            //
+                            control = pictue;
+                        }
                     }
-                    
-                    control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-                    control.UseCompatibleTextRendering = true;
+
                     //
                     tableLayoutPanel.Controls.Add(control, i, j);
                 }
             }
 
             CheckFontHeight();
+        }
+
+        /// <summary>
+        /// Not used yet.
+        /// </summary>
+        /// <param name="aField"></param>
+        private void CreateControlForDataField(DataField aField)
+        {
+            Control control=null;
+            if (aField is TextField)
+            {
+                MarqueeLabel label = new SharpDisplayManager.MarqueeLabel();
+                label.AutoEllipsis = true;
+                label.AutoSize = true;
+                label.BackColor = System.Drawing.Color.Transparent;
+                label.Dock = System.Windows.Forms.DockStyle.Fill;
+                label.Location = new System.Drawing.Point(1, 1);
+                label.Margin = new System.Windows.Forms.Padding(0);
+                label.Name = "marqueeLabel" + aField.Index;
+                label.OwnTimer = false;
+                label.PixelsPerSecond = 64;
+                label.Separator = "|";
+                //control.Size = new System.Drawing.Size(254, 30);
+                //control.TabIndex = 2;
+                label.Font = cds.Font;
+
+                label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                label.UseCompatibleTextRendering = true;
+                TextField textField = (TextField)aField;
+                label.Text = textField.Text;
+                //
+                control = label;
+            }
+            else if (aField is BitmapField)
+            {
+                //Create picture box
+                PictureBox picture = new PictureBox();
+                picture.AutoSize = true;
+                picture.BackColor = System.Drawing.Color.Transparent;
+                picture.Dock = System.Windows.Forms.DockStyle.Fill;
+                picture.Location = new System.Drawing.Point(1, 1);
+                picture.Margin = new System.Windows.Forms.Padding(0);
+                picture.Name = "pictureBox" + aField;
+                //Set our image
+                BitmapField bitmapField = (BitmapField)aField;
+                picture.Image = bitmapField.Bitmap;
+                //
+                control = picture;
+            }
+
         }
 
 
