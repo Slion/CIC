@@ -86,6 +86,11 @@ namespace SharpDisplayClient
             Channel.SetTexts(aTextFields);
         }
 
+        public void SetBitmap(BitmapField aBitmapField)
+        {
+            Channel.SetBitmap(aBitmapField);
+        }
+
         public int ClientCount()
         {
             return Channel.ClientCount();

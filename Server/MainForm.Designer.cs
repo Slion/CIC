@@ -77,6 +77,7 @@
             this.buttonAddRow = new System.Windows.Forms.Button();
             this.labelFontWidth = new System.Windows.Forms.Label();
             this.labelFontHeight = new System.Windows.Forms.Label();
+            this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -85,6 +86,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPageDesign.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).BeginInit();
             this.SuspendLayout();
             // 
             // panelDisplay
@@ -622,11 +624,20 @@
             this.labelFontHeight.TabIndex = 20;
             this.labelFontHeight.Text = "Font height";
             // 
+            // pictureBoxDemo
+            // 
+            this.pictureBoxDemo.Location = new System.Drawing.Point(478, 54);
+            this.pictureBoxDemo.Name = "pictureBoxDemo";
+            this.pictureBoxDemo.Size = new System.Drawing.Size(100, 50);
+            this.pictureBoxDemo.TabIndex = 21;
+            this.pictureBoxDemo.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
+            this.Controls.Add(this.pictureBoxDemo);
             this.Controls.Add(this.labelFontHeight);
             this.Controls.Add(this.labelFontWidth);
             this.Controls.Add(this.labelWarning);
@@ -651,6 +662,7 @@
             this.tabControl.ResumeLayout(false);
             this.tabPageDesign.ResumeLayout(false);
             this.tabPageDesign.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -706,6 +718,7 @@
         private System.Windows.Forms.Label labelFontWidth;
         private System.Windows.Forms.Label labelFontHeight;
         private System.Windows.Forms.CheckBox checkBoxInverseColors;
+        private System.Windows.Forms.PictureBox pictureBoxDemo;
     }
 }
 

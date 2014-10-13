@@ -71,6 +71,11 @@ namespace SharpDisplay
             SharpDisplayManager.Program.iMainForm.SetClientTextThreadSafe(SessionId, aTextField);
         }
 
+        //
+        public void SetBitmap(BitmapField aBitmapField)
+        {
+            SharpDisplayManager.Program.iMainForm.SetClientBitmapThreadSafe(SessionId, aBitmapField);
+        }
 
         ///
         public int ClientCount()
