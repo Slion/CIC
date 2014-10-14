@@ -177,7 +177,48 @@ namespace SharpDisplayClient
                 graphics.DrawLine(blackPen, x1, y2, x2, y1);
             }
 
-            iClient.SetBitmap(new BitmapField(0, bitmap));
+            BitmapField field = new BitmapField(0, bitmap);
+            field.ColumnSpan = 2;
+            iClient.SetBitmap(field);
+        }
+
+        private void buttonLayoutUpdatWithSpan_Click(object sender, EventArgs e)
+        {
+            //Define a 2 by 2 layout
+            TableLayout layout = new TableLayout(2, 2);
+            //Second column only takes up 25%
+            layout.Columns[0].Width = 25F;
+            layout.Columns[1].Width = 75F;
+            //Send layout to server
+            iClient.SetLayout(layout);
+
+            //Set a bitmap for our first field
+            int x1 = 0;
+            int y1 = 0;
+            int x2 = 64;
+            int y2 = 64;
+
+            Bitmap bitmap = new Bitmap(x2, y2);
+            Pen blackPen = new Pen(Color.Black, 3);
+
+            // Draw line to screen.
+            using (var graphics = Graphics.FromImage(bitmap))
+            {
+                graphics.DrawLine(blackPen, x1, y1, x2, y2);
+                graphics.DrawLine(blackPen, x1, y2, x2, y1);
+            }
+
+            BitmapField field = new BitmapField(0, bitmap);
+            field.RowSpan = 2;
+            iClient.SetBitmap(field);
+
+            //Set texts
+            iClient.SetTexts(new TextField[]
+            {
+                new TextField(1, textBoxTop.Text, Alignment),
+                new TextField(2, textBoxBottom.Text, Alignment)
+            });
+
         }
     }
 }
