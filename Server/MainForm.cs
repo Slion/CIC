@@ -160,7 +160,7 @@ namespace SharpDisplayManager
                 labelFontWidth.Text = "Font width: " + charWidth;
             }
 
-            MarqueeLabel label = null;            
+            MarqueeLabel label = null;
             //Get the first label control we can find
             foreach (Control ctrl in tableLayoutPanel.Controls)
             {
@@ -863,18 +863,15 @@ namespace SharpDisplayManager
                 if (client != null)
                 {
                     //Populate our client with the given text fields
-                    int j = 0;
                     foreach (TextField textField in aTextFields)
                     {
-                        if (client.Fields.Count < (j + 1))
+                        //Make sure all our texts are in place
+                        while (client.Fields.Count < (textField.Index + 1))
                         {
-                            client.Fields.Add(textField);
+                            //Add a text field with proper index
+                            client.Fields.Add(new TextField(client.Fields.Count));
                         }
-                        else
-                        {
-                            client.Fields[j] = textField;
-                        }
-                        j++;
+                        client.Fields[textField.Index] = textField;
                     }
                     //Put each our text fields in a label control
                     foreach (TextField field in aTextFields)
@@ -1024,7 +1021,7 @@ namespace SharpDisplayManager
                 if (aClient.Fields.Count > 0)
                 {
                     //Create root node for our texts
-                    TreeNode textsRoot = new TreeNode("Text");
+                    TreeNode textsRoot = new TreeNode("Fields");
                     node.Nodes.Add(textsRoot);
                     //For each text add a new entry
                     foreach (DataField field in aClient.Fields)
@@ -1032,16 +1029,16 @@ namespace SharpDisplayManager
                         if (field is TextField)
                         {
                             TextField textField = (TextField)field;
-                            textsRoot.Nodes.Add(new TreeNode(textField.Text));
+                            textsRoot.Nodes.Add(new TreeNode("[Text]" + textField.Text));
                         }
                         else if (field is BitmapField)
                         {
-                            textsRoot.Nodes.Add(new TreeNode("[Bitmap Field]"));
+                            textsRoot.Nodes.Add(new TreeNode("[Bitmap]"));
                         }
                         else
                         {
-                            textsRoot.Nodes.Add(new TreeNode("[Unknown Field Type]"));
-                        }                        
+                            textsRoot.Nodes.Add(new TreeNode("[Unknown]"));
+                        }
                     }
                 }
 
@@ -1096,6 +1093,7 @@ namespace SharpDisplayManager
             }
         }
 
+        /// DEPRECATED
         /// <summary>
         /// Empty and recreate our table layout with the given number of columns and rows.
         /// Sizes of rows and columns are uniform.
@@ -1166,7 +1164,8 @@ namespace SharpDisplayManager
         private void UpdateTableLayoutPanel(ClientData aClient)
         {
             TableLayout layout = aClient.Layout;
-            
+            int fieldCount = 0;
+
             tableLayoutPanel.Controls.Clear();
             tableLayoutPanel.RowStyles.Clear();
             tableLayoutPanel.ColumnStyles.Clear();
@@ -1196,6 +1195,17 @@ namespace SharpDisplayManager
                         this.tableLayoutPanel.RowStyles.Add(layout.Rows[j]);
                     }
 
+                    //Check if we already have a control
+                    Control existingControl = tableLayoutPanel.GetControlFromPosition(i,j);
+                    if (existingControl!=null)
+                    {
+                        //We already have a control in that cell as a results of row/col spanning
+                        //Move on to next cell then
+                        continue;
+                    }
+
+                    fieldCount++;
+
                     //Check if a client field already exists for that cell
                     if (aClient.Fields.Count <= tableLayoutPanel.Controls.Count)
                     {
@@ -1204,17 +1214,30 @@ namespace SharpDisplayManager
                     }
 
                     //Create a control corresponding to the field specified for that cell
-                    Control control = CreateControlForDataField(aClient.Fields[tableLayoutPanel.Controls.Count]);
+                    DataField field = aClient.Fields[tableLayoutPanel.Controls.Count];
+                    Control control = CreateControlForDataField(field);
+
                     //Add newly created control to our table layout at the specified row and column
                     tableLayoutPanel.Controls.Add(control, i, j);
+                    //Make sure we specify row and column span for that new control
+                    tableLayoutPanel.SetRowSpan(control,field.RowSpan);
+                    tableLayoutPanel.SetColumnSpan(control, field.ColumnSpan);
                 }
+            }
+
+            //
+            while (aClient.Fields.Count > fieldCount)
+            {
+                //We have too much fields for this layout
+                //Just discard them until we get there
+                aClient.Fields.RemoveAt(aClient.Fields.Count-1);
             }
 
             CheckFontHeight();
         }
 
         /// <summary>
-        /// Not used yet.
+        /// Check our type of data field and create corresponding control
         /// </summary>
         /// <param name="aField"></param>
         private Control CreateControlForDataField(DataField aField)
