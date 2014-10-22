@@ -182,12 +182,21 @@ namespace SharpDisplayClient
             iClient.SetBitmap(field);
         }
 
-        private void buttonLayoutUpdatWithSpan_Click(object sender, EventArgs e)
+        private void buttonBitmapLayout_Click(object sender, EventArgs e)
+        {
+            SetLayoutWithBitmap();
+        }
+
+        /// <summary>
+        /// Define a layout with a bitmap field on the left and two lines of text on the right.
+        /// </summary>
+        private void SetLayoutWithBitmap()
         {
             //Define a 2 by 2 layout
             TableLayout layout = new TableLayout(2, 2);
-            //Second column only takes up 25%
+            //First column only takes 25%
             layout.Columns[0].Width = 25F;
+            //Second column takes up 75% 
             layout.Columns[1].Width = 75F;
             //Send layout to server
             iClient.SetLayout(layout);
@@ -208,8 +217,11 @@ namespace SharpDisplayClient
                 graphics.DrawLine(blackPen, x1, y2, x2, y1);
             }
 
+            //Create a bitmap field from the bitmap we just created
             BitmapField field = new BitmapField(0, bitmap);
+            //We want our bitmap field to span across two rows
             field.RowSpan = 2;
+            //Send it to our server
             iClient.SetBitmap(field);
 
             //Set texts

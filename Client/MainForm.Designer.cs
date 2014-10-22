@@ -37,7 +37,7 @@
             this.buttonSetTopText = new System.Windows.Forms.Button();
             this.buttonLayoutUpdate = new System.Windows.Forms.Button();
             this.buttonSetBitmap = new System.Windows.Forms.Button();
-            this.buttonLayoutUpdatWithSpan = new System.Windows.Forms.Button();
+            this.buttonBitmapLayout = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSetText
@@ -124,22 +124,22 @@
             this.buttonSetBitmap.UseVisualStyleBackColor = true;
             this.buttonSetBitmap.Click += new System.EventHandler(this.buttonSetBitmap_Click);
             // 
-            // buttonLayoutUpdatWithSpan
+            // buttonBitmapLayout
             // 
-            this.buttonLayoutUpdatWithSpan.Location = new System.Drawing.Point(176, 189);
-            this.buttonLayoutUpdatWithSpan.Name = "buttonLayoutUpdatWithSpan";
-            this.buttonLayoutUpdatWithSpan.Size = new System.Drawing.Size(75, 23);
-            this.buttonLayoutUpdatWithSpan.TabIndex = 27;
-            this.buttonLayoutUpdatWithSpan.Text = "Layout span";
-            this.buttonLayoutUpdatWithSpan.UseVisualStyleBackColor = true;
-            this.buttonLayoutUpdatWithSpan.Click += new System.EventHandler(this.buttonLayoutUpdatWithSpan_Click);
+            this.buttonBitmapLayout.Location = new System.Drawing.Point(176, 189);
+            this.buttonBitmapLayout.Name = "buttonBitmapLayout";
+            this.buttonBitmapLayout.Size = new System.Drawing.Size(75, 35);
+            this.buttonBitmapLayout.TabIndex = 27;
+            this.buttonBitmapLayout.Text = "Bitmap Layout";
+            this.buttonBitmapLayout.UseVisualStyleBackColor = true;
+            this.buttonBitmapLayout.Click += new System.EventHandler(this.buttonBitmapLayout_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 252);
-            this.Controls.Add(this.buttonLayoutUpdatWithSpan);
+            this.Controls.Add(this.buttonBitmapLayout);
             this.Controls.Add(this.buttonSetBitmap);
             this.Controls.Add(this.buttonLayoutUpdate);
             this.Controls.Add(this.buttonSetTopText);
@@ -169,7 +169,7 @@
         private System.Windows.Forms.Button buttonSetTopText;
         private System.Windows.Forms.Button buttonLayoutUpdate;
         private System.Windows.Forms.Button buttonSetBitmap;
-        private System.Windows.Forms.Button buttonLayoutUpdatWithSpan;
+        private System.Windows.Forms.Button buttonBitmapLayout;
     }
 }
 
