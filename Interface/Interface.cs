@@ -66,8 +66,39 @@ namespace SharpDisplay
             Index = 0;
             ColumnSpan = 1;
             RowSpan = 1;
+            //Text
+            Text = "";
+            Alignment = ContentAlignment.MiddleLeft;
+            //Bitmap
+            Bitmap = null;
         }
 
+        //Text constructor
+        public DataField(int aIndex, string aText = "", ContentAlignment aAlignment = ContentAlignment.MiddleLeft)
+        {
+            ColumnSpan = 1;
+            RowSpan = 1;
+            Index = aIndex;
+            Text = aText;
+            Alignment = aAlignment;
+            //
+            Bitmap = null;
+        }
+
+        //Bitmap constructor
+        public DataField(int aIndex, Bitmap aBitmap)
+        {
+            ColumnSpan = 1;
+            RowSpan = 1;
+            Index = aIndex;
+            Bitmap = aBitmap;
+            //Text
+            Text = "";
+            Alignment = ContentAlignment.MiddleLeft;
+        }
+
+
+        //Generic layout properties
         [DataMember]
         public int Index { get; set; }
 
@@ -82,55 +113,21 @@ namespace SharpDisplay
 
         [DataMember]
         public int RowSpan { get; set; }
-
-    }
-
-
-    /// <summary>
-    /// TextField can be send to our server to be displayed on the screen.
-    /// </summary>
-    [DataContract]
-    public class TextField : DataField
-    {
-        public TextField()
-        {
-            Index = 0;
-            Text = "";
-            Alignment = ContentAlignment.MiddleLeft;
-        }
-
-        public TextField(int aIndex, string aText = "", ContentAlignment aAlignment = ContentAlignment.MiddleLeft)
-        {
-            Index = aIndex;
-            Text = aText;
-            Alignment = aAlignment;
-        }
-
+        
+        //Text properties
         [DataMember]
         public string Text { get; set; }
 
         [DataMember]
         public ContentAlignment Alignment { get; set; }
-    }
 
-    /// <summary>
-    /// TextField can be send to our server to be displayed on the screen.
-    /// </summary>
-    [DataContract]
-    public class BitmapField : DataField
-    {
-        public BitmapField()
-        {
-        }
-
-        public BitmapField(int aIndex, Bitmap aBitmap)
-        {
-            Index = aIndex;
-            Bitmap = aBitmap;
-        }
-
+        //Bitmap properties
         [DataMember]
         public Bitmap Bitmap { get; set; }
+
+        //
+        public bool HasBitmap { get{ return Bitmap!=null;} }
+
     }
 
     /// <summary>
@@ -164,14 +161,14 @@ namespace SharpDisplay
         /// </summary>
         /// <param name="aTextFieldIndex"></param>
         [OperationContract(IsOneWay = true)]
-        void SetText(TextField aTextField);
+        void SetText(DataField aField);
 
         /// <summary>
         /// Allows a client to set multiple text fields at once.
         /// </summary>
         /// <param name="aTexts"></param>
         [OperationContract(IsOneWay = true)]
-        void SetTexts(System.Collections.Generic.IList<TextField> aTextFields);
+        void SetTexts(System.Collections.Generic.IList<DataField> aFields);
 
         /// <summary>
         /// Put the given bitmap in the given field on your display.
@@ -179,7 +176,7 @@ namespace SharpDisplay
         /// </summary>
         /// <param name="aBitmapField"></param>
         [OperationContract(IsOneWay = true)]
-        void SetBitmap(BitmapField aBitmapField);
+        void SetBitmap(DataField aBitmapField);
 
         /// <summary>
         /// Provides the number of clients currently connected

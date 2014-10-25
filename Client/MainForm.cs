@@ -20,13 +20,13 @@ namespace SharpDisplayClient
         Client iClient;
         Callback iCallback;
         ContentAlignment Alignment;
-        TextField iTextFieldTop;
+        DataField iTextFieldTop;
 
         public MainForm()
         {
             InitializeComponent();
             Alignment = ContentAlignment.MiddleLeft;
-            iTextFieldTop = new TextField(0);
+            iTextFieldTop = new DataField(0);
         }
 
 
@@ -143,10 +143,10 @@ namespace SharpDisplayClient
             //iClient.SetText(1, "Bottom");
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
 
-            iClient.SetTexts(new TextField[]
+            iClient.SetTexts(new DataField[]
             {
-                new TextField(0, textBoxTop.Text, Alignment),
-                new TextField(1, textBoxBottom.Text, Alignment)
+                new DataField(0, textBoxTop.Text, Alignment),
+                new DataField(1, textBoxBottom.Text, Alignment)
             });
         }
 
@@ -177,7 +177,7 @@ namespace SharpDisplayClient
                 graphics.DrawLine(blackPen, x1, y2, x2, y1);
             }
 
-            BitmapField field = new BitmapField(0, bitmap);
+            DataField field = new DataField(0, bitmap);
             field.ColumnSpan = 2;
             iClient.SetBitmap(field);
         }
@@ -218,17 +218,17 @@ namespace SharpDisplayClient
             }
 
             //Create a bitmap field from the bitmap we just created
-            BitmapField field = new BitmapField(0, bitmap);
+            DataField field = new DataField(0, bitmap);
             //We want our bitmap field to span across two rows
             field.RowSpan = 2;
             //Send it to our server
             iClient.SetBitmap(field);
 
             //Set texts
-            iClient.SetTexts(new TextField[]
+            iClient.SetTexts(new DataField[]
             {
-                new TextField(1, textBoxTop.Text, Alignment),
-                new TextField(2, textBoxBottom.Text, Alignment)
+                new DataField(1, textBoxTop.Text, Alignment),
+                new DataField(2, textBoxBottom.Text, Alignment)
             });
 
         }
