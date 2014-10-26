@@ -134,7 +134,7 @@ namespace SharpDisplayClient
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
             iTextFieldTop.Text = textBoxTop.Text;
             iTextFieldTop.Alignment = Alignment;
-            iClient.SetText(iTextFieldTop);
+            iClient.SetField(iTextFieldTop);
         }
 
         private void buttonSetText_Click(object sender, EventArgs e)
@@ -143,7 +143,7 @@ namespace SharpDisplayClient
             //iClient.SetText(1, "Bottom");
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
 
-            iClient.SetTexts(new DataField[]
+            iClient.SetFields(new DataField[]
             {
                 new DataField(0, textBoxTop.Text, Alignment),
                 new DataField(1, textBoxBottom.Text, Alignment)
@@ -179,7 +179,7 @@ namespace SharpDisplayClient
 
             DataField field = new DataField(0, bitmap);
             field.ColumnSpan = 2;
-            iClient.SetBitmap(field);
+            iClient.SetField(field);
         }
 
         private void buttonBitmapLayout_Click(object sender, EventArgs e)
@@ -221,12 +221,11 @@ namespace SharpDisplayClient
             DataField field = new DataField(0, bitmap);
             //We want our bitmap field to span across two rows
             field.RowSpan = 2;
-            //Send it to our server
-            iClient.SetBitmap(field);
 
             //Set texts
-            iClient.SetTexts(new DataField[]
+            iClient.SetFields(new DataField[]
             {
+                field,
                 new DataField(1, textBoxTop.Text, Alignment),
                 new DataField(2, textBoxBottom.Text, Alignment)
             });

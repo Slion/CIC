@@ -26,9 +26,8 @@ namespace SharpDisplayManager
     public delegate void AddClientDelegate(string aSessionId, ICallback aCallback);
     public delegate void RemoveClientDelegate(string aSessionId);
     public delegate void SetTextDelegate(string SessionId, DataField aField);
-    public delegate void SetBitmapDelegate(string SessionId, DataField aField);
     public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
-    public delegate void SetTextsDelegate(string SessionId, System.Collections.Generic.IList<DataField> aFields);
+    public delegate void SetFieldsDelegate(string SessionId, System.Collections.Generic.IList<DataField> aFields);
     public delegate void SetClientNameDelegate(string aSessionId, string aName);
 
 
@@ -803,43 +802,74 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aSessionId"></param>
         /// <param name="aField"></param>
-        public void SetClientTextThreadSafe(string aSessionId, DataField aField)
+        public void SetClientFieldThreadSafe(string aSessionId, DataField aField)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetTextDelegate d = new SetTextDelegate(SetClientTextThreadSafe);
+                SetTextDelegate d = new SetTextDelegate(SetClientFieldThreadSafe);
                 this.Invoke(d, new object[] { aSessionId, aField });
             }
             else
             {
-                SetCurrentClient(aSessionId);
-                ClientData client = iClients[aSessionId];
-                if (client != null)
-                {
-                    //Make sure all our texts are in place
-                    while (client.Fields.Count < (aField.Index + 1))
-                    {
-                        //Add a text field with proper index
-                        client.Fields.Add(new DataField(client.Fields.Count));
-                    }
-                    client.Fields[aField.Index] = aField;
+                //We are in the proper thread
+                //Call the non-thread-safe variant
+                SetClientField(aSessionId, aField);
+            }
+        }
 
-                    //We are in the proper thread
-                    if (tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        /// <param name="aField"></param>
+        private void SetClientField(string aSessionId, DataField aField)
+        {            
+            SetCurrentClient(aSessionId);
+            ClientData client = iClients[aSessionId];
+            if (client != null)
+            {
+                //Make sure all our fields are in place
+                while (client.Fields.Count < (aField.Index + 1))
+                {
+                    //Add a text field with proper index
+                    client.Fields.Add(new DataField(client.Fields.Count));
+                }
+
+                if (client.Fields[aField.Index].IsSameLayout(aField))
+                {
+                    //Same layout just update our field
+                    client.Fields[aField.Index] = aField;
+                    //
+                    if (aField.IsText && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
                     {
+                        //Text field control already in place, just change the text
                         MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aField.Index];
                         label.Text = aField.Text;
                         label.TextAlign = aField.Alignment;
                     }
+                    else if (aField.IsBitmap && tableLayoutPanel.Controls[aField.Index] is PictureBox)
+                    {
+                        //Bitmap field control already in place just change the bitmap
+                        PictureBox pictureBox = (PictureBox)tableLayoutPanel.Controls[aField.Index];
+                        pictureBox.Image = aField.Bitmap;
+                    }
                     else
                     {
+                        //The requested control in our layout it not of the correct type
                         //Wrong control type, re-create them all
                         UpdateTableLayoutPanel(iCurrentClientData);
                     }
-                    //
-                    UpdateClientTreeViewNode(client);
                 }
+                else
+                {
+                    //Different layout, need to rebuild it
+                    client.Fields[aField.Index] = aField;
+                    UpdateTableLayoutPanel(iCurrentClientData);
+                }
+
+                //
+                UpdateClientTreeViewNode(client);
             }
         }
 
@@ -847,102 +877,23 @@ namespace SharpDisplayManager
         ///
         /// </summary>
         /// <param name="aTexts"></param>
-        public void SetClientTextsThreadSafe(string aSessionId, System.Collections.Generic.IList<DataField> aFields)
+        public void SetClientFieldsThreadSafe(string aSessionId, System.Collections.Generic.IList<DataField> aFields)
         {
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetTextsDelegate d = new SetTextsDelegate(SetClientTextsThreadSafe);
+                SetFieldsDelegate d = new SetFieldsDelegate(SetClientFieldsThreadSafe);
                 this.Invoke(d, new object[] { aSessionId, aFields });
             }
             else
             {
-                SetCurrentClient(aSessionId);
-                //We are in the proper thread
-                ClientData client = iClients[aSessionId];
-                if (client != null)
+                //Put each our text fields in a label control
+                foreach (DataField field in aFields)
                 {
-                    //Populate our client with the given text fields
-                    foreach (DataField field in aFields)
-                    {
-                        //Make sure all our texts are in place
-                        while (client.Fields.Count < (field.Index + 1))
-                        {
-                            //Add a text field with proper index
-                            client.Fields.Add(new DataField(client.Fields.Count));
-                        }
-                        client.Fields[field.Index] = field;
-                    }
-                    //Put each our text fields in a label control
-                    foreach (DataField field in aFields)
-                    {
-                        if (tableLayoutPanel.Controls[field.Index] is MarqueeLabel)
-                        {
-                            //Proper control type just update the text
-                            MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[field.Index];
-                            label.Text = field.Text;
-                            label.TextAlign = field.Alignment;
-                        }
-                        else
-                        {
-                            //Wrong control for the given field
-                            //Update our layout thus re-creating our controls
-                            UpdateTableLayoutPanel(iCurrentClientData);
-                            break; //No need to keep on looping layout update will take care of everything
-                        }
-                    }
-
-                    UpdateClientTreeViewNode(client);
+                    SetClientField(aSessionId, field);
                 }
             }
         }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="aSessionId"></param>
-        /// <param name="aTextField"></param>
-        public void SetClientBitmapThreadSafe(string aSessionId, DataField aField)
-        {
-            if (this.InvokeRequired)
-            {
-                //Not in the proper thread, invoke ourselves
-                SetBitmapDelegate d = new SetBitmapDelegate(SetClientBitmapThreadSafe);
-                this.Invoke(d, new object[] { aSessionId, aField });
-            }
-            else
-            {
-                SetCurrentClient(aSessionId);
-                ClientData client = iClients[aSessionId];
-                if (client != null)
-                {
-                    //Make sure all our texts are in place
-                    while (client.Fields.Count < (aField.Index + 1))
-                    {
-                        //Add a text field with proper index
-                        client.Fields.Add(new DataField(client.Fields.Count));
-                    }
-
-                    client.Fields[aField.Index] = aField;
-
-                    //We are in the proper thread
-                    if (tableLayoutPanel.Controls[aField.Index] is PictureBox)
-                    {
-                        PictureBox pictureBox = (PictureBox)tableLayoutPanel.Controls[aField.Index];
-                        pictureBox.Image = aField.Bitmap;
-                    }
-                    else
-                    {
-                        //Wrong control type re-create them all
-                        UpdateTableLayoutPanel(iCurrentClientData);
-                    }
-                    //
-                    UpdateClientTreeViewNode(client);
-                }
-            }
-        }
-
-
 
         /// <summary>
         ///
@@ -1025,7 +976,7 @@ namespace SharpDisplayManager
                     //For each text add a new entry
                     foreach (DataField field in aClient.Fields)
                     {
-                        if (!field.HasBitmap)
+                        if (!field.IsBitmap)
                         {
                             DataField textField = (DataField)field;
                             textsRoot.Nodes.Add(new TreeNode("[Text]" + textField.Text));
@@ -1238,7 +1189,7 @@ namespace SharpDisplayManager
         private Control CreateControlForDataField(DataField aField)
         {
             Control control=null;
-            if (!aField.HasBitmap)
+            if (!aField.IsBitmap)
             {
                 MarqueeLabel label = new SharpDisplayManager.MarqueeLabel();
                 label.AutoEllipsis = true;

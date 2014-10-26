@@ -59,22 +59,16 @@ namespace SharpDisplay
             SharpDisplayManager.Program.iMainForm.SetClientLayoutThreadSafe(SessionId, aLayout);
         }
 
+        //
+        public void SetField(DataField aField)
+        {
+            SharpDisplayManager.Program.iMainForm.SetClientFieldThreadSafe(SessionId, aField);
+        }
+
         //From IDisplayService
-        public void SetTexts(System.Collections.Generic.IList<DataField> aFields)
+        public void SetFields(System.Collections.Generic.IList<DataField> aFields)
         {
-            SharpDisplayManager.Program.iMainForm.SetClientTextsThreadSafe(SessionId, aFields);
-        }
-
-        //
-        public void SetText(DataField aField)
-        {
-            SharpDisplayManager.Program.iMainForm.SetClientTextThreadSafe(SessionId, aField);
-        }
-
-        //
-        public void SetBitmap(DataField aField)
-        {
-            SharpDisplayManager.Program.iMainForm.SetClientBitmapThreadSafe(SessionId, aField);
+            SharpDisplayManager.Program.iMainForm.SetClientFieldsThreadSafe(SessionId, aFields);
         }
 
         ///

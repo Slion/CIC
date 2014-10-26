@@ -76,19 +76,14 @@ namespace SharpDisplayClient
             Channel.SetLayout(aLayout);
         }
 
-        public void SetText(DataField aField)
+        public void SetField(DataField aField)
         {
-            Channel.SetText(aField);
+            Channel.SetField(aField);
         }
 
-        public void SetTexts(System.Collections.Generic.IList<DataField> aFields)
+        public void SetFields(System.Collections.Generic.IList<DataField> aFields)
         {
-            Channel.SetTexts(aFields);
-        }
-
-        public void SetBitmap(DataField aField)
-        {
-            Channel.SetBitmap(aField);
+            Channel.SetFields(aFields);
         }
 
         public int ClientCount()
