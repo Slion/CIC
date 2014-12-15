@@ -101,4 +101,98 @@ namespace SharpDisplayClient
             return State == CommunicationState.Opened;
         }
     }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    public class DisplayClient
+    {
+        Client iClient;
+        Callback iCallback;
+        private MainForm MainForm { get; set; }
+
+        public string Name { get; set; }
+        public string SessionId { get { return iClient.SessionId; } }
+
+        public DisplayClient(MainForm aMainForm)
+        {
+            MainForm = aMainForm;
+            Name = "";
+        }
+
+        public void Open()
+        {
+            iCallback = new Callback(MainForm);
+            iClient = new Client(iCallback);
+            if (Name != "")
+            {
+                iClient.SetName(Name);
+            }
+        }
+
+        public void Close()
+        {
+            iClient.Close();
+            iClient = null;
+            iCallback.Dispose();
+            iCallback = null;
+        }
+
+        public bool IsReady()
+        {
+            return (iClient != null && iCallback != null && iClient.IsReady());
+        }
+
+        public void CheckConnection()
+        {
+            if (!IsReady())
+            {
+                Open();
+            }
+        }
+
+        public void SetName(string aClientName)
+        {
+            Name = aClientName;
+            CheckConnection();
+            iClient.SetName(aClientName);
+        }
+
+
+        public void SetLayout(TableLayout aLayout)
+        {
+            CheckConnection();
+            iClient.SetLayout(aLayout);
+        }
+
+        public void SetText(DataField aField)
+        {
+            CheckConnection();
+            iClient.SetText(aField);
+        }
+
+        public void SetTexts(System.Collections.Generic.IList<DataField> aFields)
+        {
+            CheckConnection();
+            iClient.SetTexts(aFields);
+        }
+
+        public void SetBitmap(DataField aField)
+        {
+            CheckConnection();
+            iClient.SetBitmap(aField);
+        }
+
+        public int ClientCount()
+        {
+            CheckConnection();
+            return iClient.ClientCount();
+        }
+
+
+
+    }
+
+
 }
