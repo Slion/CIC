@@ -69,9 +69,10 @@ namespace SharpDisplayClient
                 //We are in the proper thread
                 if (IsClientReady())
                 {
-                    Trace.TraceInformation("Closing client: " + iClient.SessionId);
+                    string sessionId = iClient.SessionId;
+                    Trace.TraceInformation("Closing client: " + sessionId);
                     iClient.Close();
-                    Trace.TraceInformation("Closed client: " + iClient.SessionId);
+                    Trace.TraceInformation("Closed client: " + sessionId);
                 }
 
                 iClient = null;
@@ -133,7 +134,7 @@ namespace SharpDisplayClient
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
             iTextFieldTop.Text = textBoxTop.Text;
             iTextFieldTop.Alignment = Alignment;
-            iClient.SetText(iTextFieldTop);
+            iClient.SetField(iTextFieldTop);
         }
 
         private void buttonSetText_Click(object sender, EventArgs e)
@@ -142,7 +143,7 @@ namespace SharpDisplayClient
             //iClient.SetText(1, "Bottom");
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
 
-            iClient.SetTexts(new DataField[]
+            iClient.SetFields(new DataField[]
             {
                 new DataField(0, textBoxTop.Text, Alignment),
                 new DataField(1, textBoxBottom.Text, Alignment)
@@ -178,7 +179,7 @@ namespace SharpDisplayClient
 
             DataField field = new DataField(0, bitmap);
             field.ColumnSpan = 2;
-            iClient.SetBitmap(field);
+            iClient.SetField(field);
         }
 
         private void buttonBitmapLayout_Click(object sender, EventArgs e)
@@ -221,10 +222,11 @@ namespace SharpDisplayClient
             //We want our bitmap field to span across two rows
             field.RowSpan = 2;
             //Send it to our server
-            iClient.SetBitmap(field);
+            //TODO: Check why first run not working when sending with the rest of our fields?
+            iClient.SetField(field);
 
             //Set texts
-            iClient.SetTexts(new DataField[]
+            iClient.SetFields(new DataField[]
             {
                 new DataField(1, textBoxTop.Text, Alignment),
                 new DataField(2, textBoxBottom.Text, Alignment)

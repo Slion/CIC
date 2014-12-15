@@ -57,7 +57,6 @@ namespace SharpDisplayClient
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Client : DuplexClientBase<IService>
     {
-        public string Name { get; set; }
         public string SessionId { get { return InnerChannel.SessionId; } }
 
         public Client(ICallback aCallback)
@@ -66,29 +65,22 @@ namespace SharpDisplayClient
 
         public void SetName(string aClientName)
         {
-            Name = aClientName;
             Channel.SetName(aClientName);
         }
-
 
         public void SetLayout(TableLayout aLayout)
         {
             Channel.SetLayout(aLayout);
         }
 
-        public void SetText(DataField aField)
+        public void SetField(DataField aField)
         {
-            Channel.SetText(aField);
+            Channel.SetField(aField);
         }
 
-        public void SetTexts(System.Collections.Generic.IList<DataField> aFields)
+        public void SetFields(System.Collections.Generic.IList<DataField> aFields)
         {
-            Channel.SetTexts(aFields);
-        }
-
-        public void SetBitmap(DataField aField)
-        {
-            Channel.SetBitmap(aField);
+            Channel.SetFields(aFields);
         }
 
         public int ClientCount()
@@ -98,7 +90,7 @@ namespace SharpDisplayClient
 
         public bool IsReady()
         {
-            return State == CommunicationState.Opened;
+            return State == CommunicationState.Opened || State == CommunicationState.Created;
         }
     }
 
@@ -112,23 +104,23 @@ namespace SharpDisplayClient
         Callback iCallback;
         private MainForm MainForm { get; set; }
 
-        public string Name { get; set; }
         public string SessionId { get { return iClient.SessionId; } }
+        public string Name { get; private set; }
+        private TableLayout Layout { get; set; }
+        private System.Collections.Generic.IList<DataField> Fields { get; set; }
+
 
         public DisplayClient(MainForm aMainForm)
         {
             MainForm = aMainForm;
             Name = "";
+            Fields = new DataField[]{};
         }
 
         public void Open()
         {
             iCallback = new Callback(MainForm);
             iClient = new Client(iCallback);
-            if (Name != "")
-            {
-                iClient.SetName(Name);
-            }
         }
 
         public void Close()
@@ -148,7 +140,17 @@ namespace SharpDisplayClient
         {
             if (!IsReady())
             {
+                //Try to reconnect
                 Open();
+
+                //On reconnect there is a bunch of properties we need to set
+                if (Name != "")
+                {
+                    iClient.SetName(Name);
+                }
+
+                SetLayout(Layout);
+                SetFields(Fields);
             }
         }
 
@@ -162,27 +164,38 @@ namespace SharpDisplayClient
 
         public void SetLayout(TableLayout aLayout)
         {
+            Layout = aLayout;
             CheckConnection();
             iClient.SetLayout(aLayout);
         }
 
-        public void SetText(DataField aField)
+
+        public void SetField(DataField aField)
         {
+            //TODO: Create fields if not present
+            int i = 0;
+            foreach (DataField field in Fields)
+            {
+                if (field.Index == aField.Index)
+                {
+                    //Update our field then
+                    Fields[i] = aField;
+                    break;
+                }
+                i++;
+            }
+
             CheckConnection();
-            iClient.SetText(aField);
+            iClient.SetField(aField);
         }
 
-        public void SetTexts(System.Collections.Generic.IList<DataField> aFields)
+        public void SetFields(System.Collections.Generic.IList<DataField> aFields)
         {
+            Fields = aFields;
             CheckConnection();
-            iClient.SetTexts(aFields);
+            iClient.SetFields(aFields);
         }
 
-        public void SetBitmap(DataField aField)
-        {
-            CheckConnection();
-            iClient.SetBitmap(aField);
-        }
 
         public int ClientCount()
         {
