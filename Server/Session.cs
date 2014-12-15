@@ -60,22 +60,25 @@ namespace SharpDisplay
         }
 
         //From IDisplayService
-        public void SetTexts(System.Collections.Generic.IList<DataField> aFields)
+        public void SetFields(System.Collections.Generic.IList<DataField> aFields)
         {
             SharpDisplayManager.Program.iMainForm.SetClientTextsThreadSafe(SessionId, aFields);
         }
 
         //
-        public void SetText(DataField aField)
+        public void SetField(DataField aField)
         {
-            SharpDisplayManager.Program.iMainForm.SetClientTextThreadSafe(SessionId, aField);
+            if (aField.HasBitmap)
+            {
+                SharpDisplayManager.Program.iMainForm.SetClientBitmapThreadSafe(SessionId, aField);
+            }
+            else
+            {
+                SharpDisplayManager.Program.iMainForm.SetClientTextThreadSafe(SessionId, aField);
+            }
+
         }
 
-        //
-        public void SetBitmap(DataField aField)
-        {
-            SharpDisplayManager.Program.iMainForm.SetClientBitmapThreadSafe(SessionId, aField);
-        }
 
         ///
         public int ClientCount()

@@ -113,7 +113,7 @@ namespace SharpDisplay
 
         [DataMember]
         public int RowSpan { get; set; }
-        
+
         //Text properties
         [DataMember]
         public string Text { get; set; }
@@ -161,22 +161,14 @@ namespace SharpDisplay
         /// </summary>
         /// <param name="aTextFieldIndex"></param>
         [OperationContract(IsOneWay = true)]
-        void SetText(DataField aField);
+        void SetField(DataField aField);
 
         /// <summary>
         /// Allows a client to set multiple text fields at once.
         /// </summary>
         /// <param name="aTexts"></param>
         [OperationContract(IsOneWay = true)]
-        void SetTexts(System.Collections.Generic.IList<DataField> aFields);
-
-        /// <summary>
-        /// Put the given bitmap in the given field on your display.
-        /// Fields are often just lines of text.
-        /// </summary>
-        /// <param name="aBitmapField"></param>
-        [OperationContract(IsOneWay = true)]
-        void SetBitmap(DataField aBitmapField);
+        void SetFields(System.Collections.Generic.IList<DataField> aFields);
 
         /// <summary>
         /// Provides the number of clients currently connected
