@@ -17,8 +17,8 @@ namespace SharpDisplayClient
 {
     public partial class MainForm : Form
     {
-        Client iClient;
-        Callback iCallback;
+        DisplayClient iClient;
+
         ContentAlignment Alignment;
         DataField iTextFieldTop;
 
@@ -32,8 +32,8 @@ namespace SharpDisplayClient
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            iCallback = new Callback(this);
-            iClient = new Client(iCallback);
+            iClient = new DisplayClient(this);
+            iClient.Open();
 
             //Connect using unique name
             //string name = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt");
@@ -75,7 +75,6 @@ namespace SharpDisplayClient
                 }
 
                 iClient = null;
-                iCallback = null;
             }
         }
 
@@ -105,7 +104,7 @@ namespace SharpDisplayClient
 
         public bool IsClientReady()
         {
-            return (iClient != null && iClient.State == CommunicationState.Opened);
+            return (iClient != null && iClient.IsReady());
         }
 
         private void buttonAlignLeft_Click(object sender, EventArgs e)
@@ -196,7 +195,7 @@ namespace SharpDisplayClient
             TableLayout layout = new TableLayout(2, 2);
             //First column only takes 25%
             layout.Columns[0].Width = 25F;
-            //Second column takes up 75% 
+            //Second column takes up 75%
             layout.Columns[1].Width = 75F;
             //Send layout to server
             iClient.SetLayout(layout);
