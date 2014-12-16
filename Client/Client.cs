@@ -96,14 +96,16 @@ namespace SharpDisplayClient
 
 
     /// <summary>
-    ///
+    /// Handle connection with our Sharp Display Server.
+    /// If the connection is faulted it will attempt to restart it.
     /// </summary>
     public class DisplayClient
     {
-        Client iClient;
-        Callback iCallback;
-        private MainForm MainForm { get; set; }
+        private Client iClient;
+        private Callback iCallback;
+        private bool resetingConnection = false;
 
+        private MainForm MainForm { get; set; }
         public string SessionId { get { return iClient.SessionId; } }
         public string Name { get; private set; }
         private TableLayout Layout { get; set; }
@@ -117,12 +119,18 @@ namespace SharpDisplayClient
             Fields = new DataField[]{};
         }
 
+        /// <summary>
+        /// Initialize our server connection.
+        /// </summary>
         public void Open()
         {
             iCallback = new Callback(MainForm);
             iClient = new Client(iCallback);
         }
 
+        /// <summary>
+        /// Terminate our server connection.
+        /// </summary>
         public void Close()
         {
             iClient.Close();
@@ -131,26 +139,45 @@ namespace SharpDisplayClient
             iCallback = null;
         }
 
+        /// <summary>
+        /// Tells whether a server connection is available.
+        /// </summary>
+        /// <returns>True if a server connection is available. False otherwise.</returns>
         public bool IsReady()
         {
             return (iClient != null && iCallback != null && iClient.IsReady());
         }
 
+        /// <summary>
+        /// Check if our server connection is available and attempt reset it if it isn't.
+        /// This is notably dealing with timed out connections.
+        /// </summary>
         public void CheckConnection()
         {
-            if (!IsReady())
+            if (!IsReady() && !resetingConnection)
             {
                 //Try to reconnect
                 Open();
 
-                //On reconnect there is a bunch of properties we need to set
-                if (Name != "")
-                {
-                    iClient.SetName(Name);
-                }
+                //Avoid stack overflow in case of persisting failure
+                resetingConnection = true;
 
-                SetLayout(Layout);
-                SetFields(Fields);
+                try
+                {
+                    //On reconnect there is a bunch of properties we need to reset
+                    if (Name != "")
+                    {
+                        iClient.SetName(Name);
+                    }
+
+                    SetLayout(Layout);
+                    SetFields(Fields);
+                }
+                finally
+                {
+                    //Make sure our this state does not get out of sync
+                    resetingConnection = true;
+                }
             }
         }
 

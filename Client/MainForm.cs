@@ -143,6 +143,11 @@ namespace SharpDisplayClient
             //iClient.SetText(1, "Bottom");
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
 
+            //Set one column two lines layout
+            TableLayout layout = new TableLayout(1, 2);
+            iClient.SetLayout(layout);
+
+            //Set our fields
             iClient.SetFields(new DataField[]
             {
                 new DataField(0, textBoxTop.Text, Alignment),
