@@ -139,16 +139,12 @@ namespace SharpDisplayClient
 
         private void buttonSetText_Click(object sender, EventArgs e)
         {
-            //iClient.SetText(0,"Top");
-            //iClient.SetText(1, "Bottom");
-            //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
-
             //Set one column two lines layout
             TableLayout layout = new TableLayout(1, 2);
             iClient.SetLayout(layout);
 
             //Set our fields
-            iClient.SetFields(new DataField[]
+            iClient.CreateFields(new DataField[]
             {
                 new DataField(0, textBoxTop.Text, Alignment),
                 new DataField(1, textBoxBottom.Text, Alignment)
@@ -183,7 +179,7 @@ namespace SharpDisplayClient
             }
 
             DataField field = new DataField(0, bitmap);
-            field.ColumnSpan = 2;
+            //field.ColumnSpan = 2;
             iClient.SetField(field);
         }
 
@@ -228,7 +224,7 @@ namespace SharpDisplayClient
             field.RowSpan = 2;
 
             //Set texts
-            iClient.SetFields(new DataField[]
+            iClient.CreateFields(new DataField[]
             {
                 field,
                 new DataField(1, textBoxTop.Text, Alignment),
@@ -282,7 +278,7 @@ namespace SharpDisplayClient
 
 
             //Set texts
-            iClient.SetFields(new DataField[]
+            iClient.CreateFields(new DataField[]
             {
                 textFieldTop,
                 indicator1,
@@ -291,6 +287,22 @@ namespace SharpDisplayClient
                 indicator3,
                 indicator4
             });
+
+        }
+
+        private void buttonUpdateTexts_Click(object sender, EventArgs e)
+        {
+
+            bool res = iClient.SetFields(new DataField[]
+            {
+                new DataField(0, textBoxTop.Text, Alignment),
+                new DataField(1, textBoxBottom.Text, Alignment)
+            });
+
+            if (!res)
+            {
+                MessageBox.Show("Create you fields first", "Field update error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
     }
