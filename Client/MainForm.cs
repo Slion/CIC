@@ -226,7 +226,6 @@ namespace SharpDisplayClient
             DataField field = new DataField(0, bitmap);
             //We want our bitmap field to span across two rows
             field.RowSpan = 2;
-            iClient.SetField(field);
 
             //Set texts
             iClient.SetFields(new DataField[]
@@ -234,6 +233,63 @@ namespace SharpDisplayClient
                 field,
                 new DataField(1, textBoxTop.Text, Alignment),
                 new DataField(2, textBoxBottom.Text, Alignment)
+            });
+
+        }
+
+        private void buttonIndicatorsLayout_Click(object sender, EventArgs e)
+        {
+            //Define a 2 by 4 layout
+            TableLayout layout = new TableLayout(2, 4);
+            //First column
+            layout.Columns[0].Width = 87.5F;
+            //Second column
+            layout.Columns[1].Width = 12.5F;
+            //Send layout to server
+            iClient.SetLayout(layout);
+
+            //Create a bitmap for our indicators field
+            int x1 = 0;
+            int y1 = 0;
+            int x2 = 32;
+            int y2 = 16;
+
+            Bitmap bitmap = new Bitmap(x2, y2);
+            Pen blackPen = new Pen(Color.Black, 3);
+
+            // Draw line to screen.
+            using (var graphics = Graphics.FromImage(bitmap))
+            {
+                graphics.DrawLine(blackPen, x1, y1, x2, y2);
+                graphics.DrawLine(blackPen, x1, y2, x2, y1);
+            }
+
+            //Create a bitmap field from the bitmap we just created
+            DataField indicator1 = new DataField(2, bitmap);
+            //Create a bitmap field from the bitmap we just created
+            DataField indicator2 = new DataField(3, bitmap);
+            //Create a bitmap field from the bitmap we just created
+            DataField indicator3 = new DataField(4, bitmap);
+            //Create a bitmap field from the bitmap we just created
+            DataField indicator4 = new DataField(5, bitmap);
+
+            //
+            DataField textFieldTop = new DataField(0, textBoxTop.Text, Alignment);
+            textFieldTop.RowSpan = 2;
+
+            DataField textFieldBottom = new DataField(1, textBoxBottom.Text, Alignment);
+            textFieldBottom.RowSpan = 2;
+
+
+            //Set texts
+            iClient.SetFields(new DataField[]
+            {
+                textFieldTop,
+                indicator1,
+                indicator2,
+                textFieldBottom,
+                indicator3,
+                indicator4
             });
 
         }

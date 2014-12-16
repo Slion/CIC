@@ -38,6 +38,7 @@
             this.buttonLayoutUpdate = new System.Windows.Forms.Button();
             this.buttonSetBitmap = new System.Windows.Forms.Button();
             this.buttonBitmapLayout = new System.Windows.Forms.Button();
+            this.buttonIndicatorsLayout = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSetText
@@ -134,11 +135,22 @@
             this.buttonBitmapLayout.UseVisualStyleBackColor = true;
             this.buttonBitmapLayout.Click += new System.EventHandler(this.buttonBitmapLayout_Click);
             // 
+            // buttonIndicatorsLayout
+            // 
+            this.buttonIndicatorsLayout.Location = new System.Drawing.Point(94, 189);
+            this.buttonIndicatorsLayout.Name = "buttonIndicatorsLayout";
+            this.buttonIndicatorsLayout.Size = new System.Drawing.Size(75, 35);
+            this.buttonIndicatorsLayout.TabIndex = 28;
+            this.buttonIndicatorsLayout.Text = "Indicators Layout ";
+            this.buttonIndicatorsLayout.UseVisualStyleBackColor = true;
+            this.buttonIndicatorsLayout.Click += new System.EventHandler(this.buttonIndicatorsLayout_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 252);
+            this.Controls.Add(this.buttonIndicatorsLayout);
             this.Controls.Add(this.buttonBitmapLayout);
             this.Controls.Add(this.buttonSetBitmap);
             this.Controls.Add(this.buttonLayoutUpdate);
@@ -170,6 +182,7 @@
         private System.Windows.Forms.Button buttonLayoutUpdate;
         private System.Windows.Forms.Button buttonSetBitmap;
         private System.Windows.Forms.Button buttonBitmapLayout;
+        private System.Windows.Forms.Button buttonIndicatorsLayout;
     }
 }
 
