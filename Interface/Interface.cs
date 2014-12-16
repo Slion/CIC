@@ -201,6 +201,4 @@ namespace SharpDisplay
         void OnCloseOrder();
     }
 
-
-
 }
