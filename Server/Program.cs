@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace SharpDisplayManager
+{
+    static class Program
+    {
+        //WARNING: This is assuming we have a single instance of our program.
+        //That is what we want but we should enforce it somehow.
+        public static MainForm iMainForm;
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            iMainForm = new MainForm();
+            Application.Run(iMainForm);
+        }
+    }
+}
