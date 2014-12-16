@@ -829,11 +829,14 @@ namespace SharpDisplayManager
             ClientData client = iClients[aSessionId];
             if (client != null)
             {
+                bool somethingChanged = false;
+
                 //Make sure all our fields are in place
                 while (client.Fields.Count < (aField.Index + 1))
                 {
                     //Add a text field with proper index
                     client.Fields.Add(new DataField(client.Fields.Count));
+                    somethingChanged = true;
                 }
 
                 if (client.Fields[aField.Index].IsSameLayout(aField))
@@ -842,20 +845,23 @@ namespace SharpDisplayManager
                     client.Fields[aField.Index] = aField;
                     //
                     if (aField.IsText && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
-                    {
+                    {                        
                         //Text field control already in place, just change the text
                         MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aField.Index];
+                        somethingChanged = (label.Text != aField.Text || label.TextAlign != aField.Alignment);
                         label.Text = aField.Text;
                         label.TextAlign = aField.Alignment;
                     }
                     else if (aField.IsBitmap && tableLayoutPanel.Controls[aField.Index] is PictureBox)
                     {
+                        somethingChanged = true; //TODO: Bitmap comp or should we leave that to clients?
                         //Bitmap field control already in place just change the bitmap
                         PictureBox pictureBox = (PictureBox)tableLayoutPanel.Controls[aField.Index];
                         pictureBox.Image = aField.Bitmap;
                     }
                     else
                     {
+                        somethingChanged = true;
                         //The requested control in our layout it not of the correct type
                         //Wrong control type, re-create them all
                         UpdateTableLayoutPanel(iCurrentClientData);
@@ -863,13 +869,17 @@ namespace SharpDisplayManager
                 }
                 else
                 {
+                    somethingChanged = true;
                     //Different layout, need to rebuild it
                     client.Fields[aField.Index] = aField;
                     UpdateTableLayoutPanel(iCurrentClientData);
                 }
 
                 //
-                UpdateClientTreeViewNode(client);
+                if (somethingChanged)
+                {
+                    UpdateClientTreeViewNode(client);
+                }
             }
         }
 
