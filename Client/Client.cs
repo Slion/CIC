@@ -171,7 +171,7 @@ namespace SharpDisplayClient
                     }
 
                     SetLayout(Layout);
-                    SetFields(Fields);
+                    iClient.SetFields(Fields);
                 }
                 finally
                 {
@@ -196,33 +196,84 @@ namespace SharpDisplayClient
             iClient.SetLayout(aLayout);
         }
 
-
-        public void SetField(DataField aField)
+        /// <summary>
+        /// Set the specified field.
+        /// </summary>
+        /// <param name="aField"></param>
+        /// <returns>True if the specified field was set client side. False means you need to redefine all your fields using CreateFields.</returns>
+        public bool SetField(DataField aField)
         {
-            //TODO: Create fields if not present
             int i = 0;
+            bool fieldFound = false;
             foreach (DataField field in Fields)
             {
                 if (field.Index == aField.Index)
                 {
                     //Update our field then
                     Fields[i] = aField;
+                    fieldFound = true;
                     break;
                 }
                 i++;
             }
 
+            if (!fieldFound)
+            {
+                //Field not found, make to use SetFields with all your fields at least once after setting your layout.
+                return false;
+            }
+
             CheckConnection();
             iClient.SetField(aField);
+            return true;
         }
 
-        public void SetFields(System.Collections.Generic.IList<DataField> aFields)
+        /// <summary>
+        /// Use this function when updating existing fields.
+        /// </summary>
+        /// <param name="aFields"></param>
+        public bool SetFields(System.Collections.Generic.IList<DataField> aFields)
+        {
+            int fieldFoundCount = 0;
+            foreach (DataField fieldUpdate in aFields)
+            {
+                int i = 0;
+                foreach (DataField existingField in Fields)
+                {
+                    if (existingField.Index == fieldUpdate.Index)
+                    {
+                        //Update our field then
+                        Fields[i] = fieldUpdate;
+                        fieldFoundCount++;
+                        //Move on to the next field
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            //
+            if (fieldFoundCount!=aFields.Count)
+            {
+                //Field not found, make sure to use SetFields with all your fields at least once after setting your layout.
+                return false;
+            }
+
+            CheckConnection();
+            iClient.SetFields(aFields);
+            return true;
+        }
+
+        /// <summary>
+        /// Use this function when creating your fields.
+        /// </summary>
+        /// <param name="aFields"></param>
+        public void CreateFields(System.Collections.Generic.IList<DataField> aFields)
         {
             Fields = aFields;
             CheckConnection();
             iClient.SetFields(aFields);
         }
-
 
         public int ClientCount()
         {
