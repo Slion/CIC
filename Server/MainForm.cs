@@ -25,9 +25,9 @@ namespace SharpDisplayManager
     //Delegates are used for our thread safe method
     public delegate void AddClientDelegate(string aSessionId, ICallback aCallback);
     public delegate void RemoveClientDelegate(string aSessionId);
-    public delegate void SetTextDelegate(string SessionId, DataField aField);
-    public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
+    public delegate void SetFieldDelegate(string SessionId, DataField aField);
     public delegate void SetFieldsDelegate(string SessionId, System.Collections.Generic.IList<DataField> aFields);
+    public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
     public delegate void SetClientNameDelegate(string aSessionId, string aName);
 
 
@@ -807,7 +807,7 @@ namespace SharpDisplayManager
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetTextDelegate d = new SetTextDelegate(SetClientFieldThreadSafe);
+                SetFieldDelegate d = new SetFieldDelegate(SetClientFieldThreadSafe);
                 this.Invoke(d, new object[] { aSessionId, aField });
             }
             else
@@ -819,12 +819,12 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="aSessionId"></param>
         /// <param name="aField"></param>
         private void SetClientField(string aSessionId, DataField aField)
-        {            
+        {
             SetCurrentClient(aSessionId);
             ClientData client = iClients[aSessionId];
             if (client != null)
@@ -845,7 +845,7 @@ namespace SharpDisplayManager
                     client.Fields[aField.Index] = aField;
                     //
                     if (aField.IsText && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
-                    {                        
+                    {
                         //Text field control already in place, just change the text
                         MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aField.Index];
                         somethingChanged = (label.Text != aField.Text || label.TextAlign != aField.Alignment);
