@@ -134,7 +134,14 @@ namespace SharpDisplayClient
             //TextField top = new TextField(0, textBoxTop.Text, ContentAlignment.MiddleLeft);
             iTextFieldTop.Text = textBoxTop.Text;
             iTextFieldTop.Alignment = Alignment;
-            iClient.SetField(iTextFieldTop);
+            bool res = iClient.SetField(iTextFieldTop);
+
+            if (!res)
+            {
+                MessageBox.Show("Create you fields first", "Field update error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
         }
 
         private void buttonSetText_Click(object sender, EventArgs e)
