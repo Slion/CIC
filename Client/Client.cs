@@ -57,7 +57,6 @@ namespace SharpDisplayClient
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Client : DuplexClientBase<IService>
     {
-        public string Name { get; set; }
         public string SessionId { get { return InnerChannel.SessionId; } }
 
         public Client(ICallback aCallback)
@@ -66,10 +65,8 @@ namespace SharpDisplayClient
 
         public void SetName(string aClientName)
         {
-            Name = aClientName;
             Channel.SetName(aClientName);
         }
-
 
         public void SetLayout(TableLayout aLayout)
         {
@@ -93,7 +90,122 @@ namespace SharpDisplayClient
 
         public bool IsReady()
         {
-            return State == CommunicationState.Opened;
+            return State == CommunicationState.Opened || State == CommunicationState.Created;
         }
     }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    public class DisplayClient
+    {
+        Client iClient;
+        Callback iCallback;
+        private MainForm MainForm { get; set; }
+
+        public string SessionId { get { return iClient.SessionId; } }
+        public string Name { get; private set; }
+        private TableLayout Layout { get; set; }
+        private System.Collections.Generic.IList<DataField> Fields { get; set; }
+
+
+        public DisplayClient(MainForm aMainForm)
+        {
+            MainForm = aMainForm;
+            Name = "";
+            Fields = new DataField[]{};
+        }
+
+        public void Open()
+        {
+            iCallback = new Callback(MainForm);
+            iClient = new Client(iCallback);
+        }
+
+        public void Close()
+        {
+            iClient.Close();
+            iClient = null;
+            iCallback.Dispose();
+            iCallback = null;
+        }
+
+        public bool IsReady()
+        {
+            return (iClient != null && iCallback != null && iClient.IsReady());
+        }
+
+        public void CheckConnection()
+        {
+            if (!IsReady())
+            {
+                //Try to reconnect
+                Open();
+
+                //On reconnect there is a bunch of properties we need to set
+                if (Name != "")
+                {
+                    iClient.SetName(Name);
+                }
+
+                SetLayout(Layout);
+                SetFields(Fields);
+            }
+        }
+
+        public void SetName(string aClientName)
+        {
+            Name = aClientName;
+            CheckConnection();
+            iClient.SetName(aClientName);
+        }
+
+
+        public void SetLayout(TableLayout aLayout)
+        {
+            Layout = aLayout;
+            CheckConnection();
+            iClient.SetLayout(aLayout);
+        }
+
+
+        public void SetField(DataField aField)
+        {
+            //TODO: Create fields if not present
+            int i = 0;
+            foreach (DataField field in Fields)
+            {
+                if (field.Index == aField.Index)
+                {
+                    //Update our field then
+                    Fields[i] = aField;
+                    break;
+                }
+                i++;
+            }
+
+            CheckConnection();
+            iClient.SetField(aField);
+        }
+
+        public void SetFields(System.Collections.Generic.IList<DataField> aFields)
+        {
+            Fields = aFields;
+            CheckConnection();
+            iClient.SetFields(aFields);
+        }
+
+
+        public int ClientCount()
+        {
+            CheckConnection();
+            return iClient.ClientCount();
+        }
+
+
+
+    }
+
+
 }

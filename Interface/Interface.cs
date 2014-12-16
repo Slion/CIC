@@ -113,7 +113,7 @@ namespace SharpDisplay
 
         [DataMember]
         public int RowSpan { get; set; }
-        
+
         //Text properties
         [DataMember]
         public string Text { get; set; }
