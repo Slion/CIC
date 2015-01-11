@@ -16,11 +16,23 @@ namespace SharpDisplayManager
         /// </summary>
         [STAThread]
         static void Main()
-        {
+        {	
+			Application.ApplicationExit += new EventHandler(OnApplicationExit);
+			//
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             iMainForm = new MainForm();
             Application.Run(iMainForm);
         }
+
+		/// <summary>
+		/// Occurs after form closing.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		static private void OnApplicationExit(object sender, EventArgs e)
+		{
+
+		}
     }
 }
