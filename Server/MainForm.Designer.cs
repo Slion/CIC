@@ -79,6 +79,8 @@
             this.labelFontWidth = new System.Windows.Forms.Label();
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
+            this.tabPageApp = new System.Windows.Forms.TabPage();
+            this.buttonUpdate = new System.Windows.Forms.Button();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -88,6 +90,7 @@
             this.tabControl.SuspendLayout();
             this.tabPageDesign.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).BeginInit();
+            this.tabPageApp.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelDisplay
@@ -485,6 +488,7 @@
             this.tabControl.Controls.Add(this.tabPageDisplay);
             this.tabControl.Controls.Add(this.tabPageClients);
             this.tabControl.Controls.Add(this.tabPageDesign);
+            this.tabControl.Controls.Add(this.tabPageApp);
             this.tabControl.Location = new System.Drawing.Point(12, 139);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -633,6 +637,27 @@
             this.pictureBoxDemo.TabIndex = 21;
             this.pictureBoxDemo.TabStop = false;
             // 
+            // tabPageApp
+            // 
+            this.tabPageApp.Controls.Add(this.buttonUpdate);
+            this.tabPageApp.Location = new System.Drawing.Point(4, 22);
+            this.tabPageApp.Name = "tabPageApp";
+            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageApp.Size = new System.Drawing.Size(592, 242);
+            this.tabPageApp.TabIndex = 4;
+            this.tabPageApp.Text = "Application";
+            this.tabPageApp.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.Location = new System.Drawing.Point(6, 213);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdate.TabIndex = 0;
+            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -665,6 +690,7 @@
             this.tabPageDesign.ResumeLayout(false);
             this.tabPageDesign.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).EndInit();
+            this.tabPageApp.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -721,6 +747,8 @@
         private System.Windows.Forms.Label labelFontHeight;
         private System.Windows.Forms.CheckBox checkBoxInverseColors;
         private System.Windows.Forms.PictureBox pictureBoxDemo;
+        private System.Windows.Forms.TabPage tabPageApp;
+        private System.Windows.Forms.Button buttonUpdate;
     }
 }
 
