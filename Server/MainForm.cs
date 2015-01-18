@@ -57,6 +57,9 @@ namespace SharpDisplayManager
         //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
 
+		//
+		private StartupManager iStartupManager;
+
         public MainForm()
         {
             iCurrentClientSessionId = "";
@@ -64,6 +67,7 @@ namespace SharpDisplayManager
             LastTickTime = DateTime.Now;
             iDisplay = new Display();
             iClients = new Dictionary<string, ClientData>();
+			iStartupManager = new StartupManager();
 
             InitializeComponent();
             UpdateStatus();
@@ -89,6 +93,9 @@ namespace SharpDisplayManager
             {
                 OpenDisplayConnection();
             }
+
+			//
+			checkBoxAutoStart.Checked=iStartupManager.Startup;
         }
 
         /// <summary>
@@ -1405,6 +1412,11 @@ namespace SharpDisplayManager
 				}
             }
         }
+
+		private void checkBoxAutoStart_CheckedChanged(object sender, EventArgs e)
+		{
+			iStartupManager.Startup = checkBoxAutoStart.Checked;
+		}
     }
 
     /// <summary>
