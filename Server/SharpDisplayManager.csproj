@@ -92,7 +92,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>vfd.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\vfd.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>SharpDisplayManager.Program</StartupObject>
@@ -134,6 +134,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MarqueeLabel.cs" />
+    <Compile Include="NotifyIconAdv.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressForm.cs">
       <SubType>Form</SubType>
@@ -214,7 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MiniDisplay.dll" />
-    <Content Include="vfd.ico" />
+    <EmbeddedResource Include="Resources\vfd.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

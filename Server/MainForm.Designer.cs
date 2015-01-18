@@ -77,6 +77,8 @@
 			this.buttonRemoveRow = new System.Windows.Forms.Button();
 			this.buttonAddRow = new System.Windows.Forms.Button();
 			this.tabPageApp = new System.Windows.Forms.TabPage();
+			this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
+			this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
 			this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
 			this.buttonUpdate = new System.Windows.Forms.Button();
 			this.labelFontWidth = new System.Windows.Forms.Label();
@@ -614,6 +616,8 @@
 			// 
 			// tabPageApp
 			// 
+			this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
+			this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
 			this.tabPageApp.Controls.Add(this.checkBoxAutoStart);
 			this.tabPageApp.Controls.Add(this.buttonUpdate);
 			this.tabPageApp.Location = new System.Drawing.Point(4, 22);
@@ -624,15 +628,39 @@
 			this.tabPageApp.Text = "Application";
 			this.tabPageApp.UseVisualStyleBackColor = true;
 			// 
+			// checkBoxStartMinimized
+			// 
+			this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxStartMinimized.AutoSize = true;
+			this.checkBoxStartMinimized.Location = new System.Drawing.Point(8, 144);
+			this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
+			this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
+			this.checkBoxStartMinimized.TabIndex = 16;
+			this.checkBoxStartMinimized.Text = "Start minimized";
+			this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
+			this.checkBoxStartMinimized.CheckedChanged += new System.EventHandler(this.checkBoxStartMinimized_CheckedChanged);
+			// 
+			// checkBoxMinimizeToTray
+			// 
+			this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxMinimizeToTray.AutoSize = true;
+			this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(8, 167);
+			this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
+			this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
+			this.checkBoxMinimizeToTray.TabIndex = 15;
+			this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
+			this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
+			this.checkBoxMinimizeToTray.CheckedChanged += new System.EventHandler(this.checkBoxMinimizeToTray_CheckedChanged);
+			// 
 			// checkBoxAutoStart
 			// 
 			this.checkBoxAutoStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.checkBoxAutoStart.AutoSize = true;
 			this.checkBoxAutoStart.Location = new System.Drawing.Point(8, 190);
 			this.checkBoxAutoStart.Name = "checkBoxAutoStart";
-			this.checkBoxAutoStart.Size = new System.Drawing.Size(73, 17);
+			this.checkBoxAutoStart.Size = new System.Drawing.Size(143, 17);
 			this.checkBoxAutoStart.TabIndex = 14;
-			this.checkBoxAutoStart.Text = "Auto Start";
+			this.checkBoxAutoStart.Text = "Run on Windows startup";
 			this.checkBoxAutoStart.UseVisualStyleBackColor = true;
 			this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
 			// 
@@ -690,6 +718,7 @@
 			this.Text = "Sharp Display Manager";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.panelDisplay.ResumeLayout(false);
 			this.tableLayoutPanel.ResumeLayout(false);
@@ -765,6 +794,8 @@
         private System.Windows.Forms.TabPage tabPageApp;
         private System.Windows.Forms.Button buttonUpdate;
 		private System.Windows.Forms.CheckBox checkBoxAutoStart;
+		private System.Windows.Forms.CheckBox checkBoxStartMinimized;
+		private System.Windows.Forms.CheckBox checkBoxMinimizeToTray;
     }
 }
 
