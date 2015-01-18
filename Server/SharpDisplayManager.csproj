@@ -27,10 +27,11 @@
     <SupportUrl>http://publish.slions.net/SharpDisplayManager/</SupportUrl>
     <ProductName>Sharp Display Manager</ProductName>
     <PublisherName>Slions</PublisherName>
+    <SuiteName>Sharp Display Manager</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>15</ApplicationRevision>
+    <ApplicationRevision>20</ApplicationRevision>
     <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
