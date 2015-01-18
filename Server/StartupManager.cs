@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
 using System.Windows.Forms;
+using System.Deployment.Application;
 
 namespace SharpDisplayManager
 {
@@ -115,7 +116,7 @@ namespace SharpDisplayManager
 						{
 							string value = (string)key.GetValue("SharpDisplayManager");
 							if (value != null)
-								startup = value == Application.ExecutablePath;
+								startup = value == LaunchCommand;
 						}
 					}
 					isAvailable = true;
@@ -182,10 +183,23 @@ namespace SharpDisplayManager
 			catch (IOException) { }
 		}
 
+		string LaunchCommand
+		{
+			get
+			{	
+				//Executable path won't launch ClickOnce Application with deployment enabled.
+				//return Application.ExecutablePath;
+				//Instead we need to launch the application using the .appref-ms shortcut.
+				//That shortcut is located at <programs>\<publisher>\<suite>\<product>.appref-ms
+				return string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "\\", "Slions", "\\", "Sharp Display Manager" , "\\" ,"Sharp Display Manager", ".appref-ms");
+			}
+		}
+
 		private void CreateRegistryRun()
 		{
 			RegistryKey key = Registry.CurrentUser.CreateSubKey(REGISTRY_RUN);
-			key.SetValue("SharpDisplayManager", Application.ExecutablePath);
+			//Rather than the executable name we pass in the ClickOnce shortcut to make sure we launch with deployment support
+			key.SetValue("SharpDisplayManager", LaunchCommand);
 		}
 
 		private void DeleteRegistryRun()
