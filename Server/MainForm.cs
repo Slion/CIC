@@ -124,9 +124,7 @@ namespace SharpDisplayManager
 
 #if !DEBUG
 			//When not debugging we want the screen to be empty until a client takes over 
-			tableLayoutPanel.Controls.Clear();
-			tableLayoutPanel.RowStyles.Clear();
-			tableLayoutPanel.ColumnStyles.Clear();
+			ClearLayout();
 #endif
         }
 
@@ -821,7 +819,22 @@ namespace SharpDisplayManager
                     Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(client, false)[0]);
                 }
             }
+
+			if (iClients.Count==0)
+			{
+				ClearLayout();
+			}
         }
+
+		/// <summary>
+		/// Just remove all our fields.
+		/// </summary>
+		private void ClearLayout()
+		{
+			tableLayoutPanel.Controls.Clear();
+			tableLayoutPanel.RowStyles.Clear();
+			tableLayoutPanel.ColumnStyles.Clear();
+		}
 
         private void buttonStartClient_Click(object sender, EventArgs e)
         {
@@ -901,14 +914,20 @@ namespace SharpDisplayManager
                     Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0]);
                 }
 
-                if (iClosing && iClients.Count == 0)
-                {
-                    //We were closing our form
-                    //All clients are now closed
-                    //Just resume our close operation
-                    iClosing = false;
-                    Close();
-                }
+				if (iClients.Count == 0)
+				{
+					//Clear our screen when last client disconnects
+					ClearLayout();
+
+					if (iClosing)
+					{
+						//We were closing our form
+						//All clients are now closed
+						//Just resume our close operation
+						iClosing = false;
+						Close();
+					}
+				}
             }
         }
 
