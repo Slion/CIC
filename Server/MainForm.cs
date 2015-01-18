@@ -119,13 +119,7 @@ namespace SharpDisplayManager
 
 
 			//Setup notification icon
-			iNotifyIcon.Icon = GetIcon("vfd.ico");
-			iNotifyIcon.Text = "Sharp Display Manager";
-			iNotifyIcon.Visible = true;
-			iNotifyIcon.DoubleClick += delegate(object obj, EventArgs args)
-			{
-				SysTrayHideShow();
-			};
+			SetupTrayIcon();
 
 			// To make sure start up with minimize to tray works
 			if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
@@ -133,6 +127,45 @@ namespace SharpDisplayManager
 				Visible = false;
 			}
         }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private void SetupTrayIcon()
+		{
+			iNotifyIcon.Icon = GetIcon("vfd.ico");
+			iNotifyIcon.Text = "Sharp Display Manager";
+			iNotifyIcon.Visible = true;
+
+			//Double click toggles visibility - typically brings up the application
+			iNotifyIcon.DoubleClick += delegate(object obj, EventArgs args)
+			{
+				SysTrayHideShow();
+			};
+
+			//Adding a context menu, useful to be able to exit the application
+			ContextMenu contextMenu = new ContextMenu();
+			//Context menu item to toggle visibility
+			MenuItem hideShowItem = new MenuItem("Hide/Show");
+			hideShowItem.Click += delegate(object obj, EventArgs args)
+			{
+				SysTrayHideShow();
+			};
+			contextMenu.MenuItems.Add(hideShowItem);
+
+			//Context menu item separator
+			contextMenu.MenuItems.Add(new MenuItem("-"));
+
+			//Context menu exit item
+			MenuItem exitItem = new MenuItem("Exit");
+			exitItem.Click += delegate(object obj, EventArgs args)
+			{
+				Application.Exit();
+			};
+			contextMenu.MenuItems.Add(exitItem);
+
+			iNotifyIcon.ContextMenu = contextMenu;
+		}
 
 		/// <summary>
 		/// Access icons from embedded resources.
