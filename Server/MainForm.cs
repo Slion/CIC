@@ -14,6 +14,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Diagnostics;
 using System.Deployment.Application;
+using System.Reflection;
 //
 using SharpDisplayClient;
 using SharpDisplay;
@@ -57,8 +58,15 @@ namespace SharpDisplayManager
         //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
 
-		//
+		/// <summary>
+		/// Manage run when Windows startup option
+		/// </summary>
 		private StartupManager iStartupManager;
+
+		/// <summary>
+		/// System tray icon.
+		/// </summary>
+		private NotifyIconAdv iNotifyIcon;
 
         public MainForm()
         {
@@ -68,14 +76,26 @@ namespace SharpDisplayManager
             iDisplay = new Display();
             iClients = new Dictionary<string, ClientData>();
 			iStartupManager = new StartupManager();
+			iNotifyIcon = new NotifyIconAdv();
 
             InitializeComponent();
             UpdateStatus();
             //We have a bug when drawing minimized and reusing our bitmap
             iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
+
+			if (Properties.Settings.Default.StartMinimized)
+			{
+				WindowState = FormWindowState.Minimized;
+			}
+
         }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
 			if (ApplicationDeployment.IsNetworkDeployed)
@@ -94,9 +114,52 @@ namespace SharpDisplayManager
                 OpenDisplayConnection();
             }
 
-			//
+			//Check if "run on Windows startup" is enabled
 			checkBoxAutoStart.Checked=iStartupManager.Startup;
+
+
+			//Setup notification icon
+			iNotifyIcon.Icon = GetIcon("vfd.ico");
+			iNotifyIcon.Text = "Sharp Display Manager";
+			iNotifyIcon.Visible = true;
+			iNotifyIcon.DoubleClick += delegate(object obj, EventArgs args)
+			{
+				SysTrayHideShow();
+			};
+
+			// To make sure start up with minimize to tray works
+			if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
+			{
+				Visible = false;
+			}
         }
+
+		/// <summary>
+		/// Access icons from embedded resources.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		public static Icon GetIcon(string name)
+		{
+			name = "SharpDisplayManager.Resources." + name;
+
+			string[] names =
+			  Assembly.GetExecutingAssembly().GetManifestResourceNames();
+			for (int i = 0; i < names.Length; i++)
+			{
+				if (names[i].Replace('\\', '.') == name)
+				{
+					using (Stream stream = Assembly.GetExecutingAssembly().
+					  GetManifestResourceStream(names[i]))
+					{
+						return new Icon(stream);
+					}
+				}
+			}
+
+			return null;
+		}
+
 
         /// <summary>
         /// Set our current client.
@@ -520,6 +583,8 @@ namespace SharpDisplayManager
 
             CheckFontHeight();
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
+			checkBoxMinimizeToTray.Checked = Properties.Settings.Default.MinimizeToTray;
+			checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
             checkBoxInverseColors.Checked = cds.InverseColors;
             comboBoxDisplayType.SelectedIndex = cds.DisplayType;
@@ -601,6 +666,27 @@ namespace SharpDisplayManager
             Properties.Settings.Default.DisplayConnectOnStartup = checkBoxConnectOnStartup.Checked;
             Properties.Settings.Default.Save();
         }
+
+		private void checkBoxMinimizeToTray_CheckedChanged(object sender, EventArgs e)
+		{
+			//Save our "Minimize to tray" setting
+			Properties.Settings.Default.MinimizeToTray = checkBoxMinimizeToTray.Checked;
+			Properties.Settings.Default.Save();
+
+		}
+
+		private void checkBoxStartMinimized_CheckedChanged(object sender, EventArgs e)
+		{
+			//Save our "Start minimized" setting
+			Properties.Settings.Default.StartMinimized = checkBoxStartMinimized.Checked;
+			Properties.Settings.Default.Save();
+		}
+
+		private void checkBoxAutoStart_CheckedChanged(object sender, EventArgs e)
+		{
+			iStartupManager.Startup = checkBoxAutoStart.Checked;
+		}
+
 
         private void checkBoxReverseScreen_CheckedChanged(object sender, EventArgs e)
         {
@@ -1413,10 +1499,37 @@ namespace SharpDisplayManager
             }
         }
 
-		private void checkBoxAutoStart_CheckedChanged(object sender, EventArgs e)
+
+		/// <summary>
+		/// Used to 
+		/// </summary>
+		private void SysTrayHideShow()
 		{
-			iStartupManager.Startup = checkBoxAutoStart.Checked;
+			Visible = !Visible;
+			if (Visible)
+			{
+				Activate();
+				WindowState = FormWindowState.Normal;
+			}
 		}
+
+		/// <summary>
+		/// Use to handle minimize events.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void MainForm_SizeChanged(object sender, EventArgs e)
+		{
+			if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
+			{
+				if (Visible)
+				{
+					SysTrayHideShow();
+				}
+			}
+			
+		}
+
     }
 
     /// <summary>
