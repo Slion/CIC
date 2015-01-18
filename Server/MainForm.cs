@@ -38,7 +38,6 @@ namespace SharpDisplayManager
     /// </summary>
     public partial class MainForm : Form
     {
-
         DateTime LastTickTime;
         Display iDisplay;
         System.Drawing.Bitmap iBmp;
@@ -114,10 +113,6 @@ namespace SharpDisplayManager
                 OpenDisplayConnection();
             }
 
-			//Check if "run on Windows startup" is enabled
-			checkBoxAutoStart.Checked=iStartupManager.Startup;
-
-
 			//Setup notification icon
 			SetupTrayIcon();
 
@@ -126,6 +121,13 @@ namespace SharpDisplayManager
 			{
 				Visible = false;
 			}
+
+#if !DEBUG
+			//When not debugging we want the screen to be empty until a client takes over 
+			tableLayoutPanel.Controls.Clear();
+			tableLayoutPanel.RowStyles.Clear();
+			tableLayoutPanel.ColumnStyles.Clear();
+#endif
         }
 
 		/// <summary>
@@ -615,6 +617,9 @@ namespace SharpDisplayManager
             }
 
             CheckFontHeight();
+			//Check if "run on Windows startup" is enabled
+			checkBoxAutoStart.Checked = iStartupManager.Startup;
+			//
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
 			checkBoxMinimizeToTray.Checked = Properties.Settings.Default.MinimizeToTray;
 			checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
