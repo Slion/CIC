@@ -91,7 +91,7 @@ namespace SharpDisplayManager
         }
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -123,13 +123,13 @@ namespace SharpDisplayManager
 			}
 
 #if !DEBUG
-			//When not debugging we want the screen to be empty until a client takes over 
+			//When not debugging we want the screen to be empty until a client takes over
 			ClearLayout();
 #endif
         }
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		private void SetupTrayIcon()
 		{
@@ -221,8 +221,7 @@ namespace SharpDisplayManager
             //fontDialog.ShowColor = true;
             //fontDialog.ShowApply = true;
             fontDialog.ShowEffects = true;
-            MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[0];
-            fontDialog.Font = label.Font;
+            fontDialog.Font = cds.Font;
 
             fontDialog.FixedPitchOnly = checkBoxFixedPitchFontOnly.Checked;
 
@@ -239,14 +238,16 @@ namespace SharpDisplayManager
             //if (fontDialog.ShowDialog(this) != DialogResult.Cancel)
             if (DlgBox.ShowDialog(fontDialog) != DialogResult.Cancel)
             {
-
-                //MsgBox.Show("MessageBox MsgBox", "MsgBox caption");
-
-                //MessageBox.Show("Ok");
-                foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+                //Set the fonts to all our labels in our layout
+                foreach (Control ctrl in tableLayoutPanel.Controls)
                 {
-                    ctrl.Font = fontDialog.Font;
+                    if (ctrl is MarqueeLabel)
+                    {
+                        ((MarqueeLabel)ctrl).Font = fontDialog.Font;
+                    }
                 }
+
+                //Save font settings
                 cds.Font = fontDialog.Font;
                 Properties.Settings.Default.Save();
                 //
@@ -1558,7 +1559,7 @@ namespace SharpDisplayManager
 
 
 		/// <summary>
-		/// Used to 
+		/// Used to
 		/// </summary>
 		private void SysTrayHideShow()
 		{
@@ -1584,7 +1585,7 @@ namespace SharpDisplayManager
 					SysTrayHideShow();
 				}
 			}
-			
+
 		}
 
     }
