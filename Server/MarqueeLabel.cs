@@ -20,6 +20,7 @@ namespace SharpDisplayManager
         private SizeF iTextSize;
         private SizeF iSeparatorSize;
         private SizeF iScrollSize;
+        private Font iFontInUse;
 
         [Category("Appearance")]
         [Description("Separator in our scrolling loop.")]
@@ -34,6 +35,20 @@ namespace SharpDisplayManager
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int PixelsPerSecond { get; set; }
+
+        [Category("Behavior")]
+        [Description("Should we scale down our font to try fit our text without scrolling.")]
+        [DefaultValue(false)]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool ScaleToFit { get; set; }
+
+        [Category("Behavior")]
+        [Description("Minimum size of our font allowed when scaling is enabled.")]
+        [DefaultValue(15)]
+        [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public float MinFontSize { get; set; }
 
         [Category("Behavior")]
         [Description("Use an internal or an external timer.")]
@@ -83,6 +98,10 @@ namespace SharpDisplayManager
             PixelsLeft = 0;
             CurrentPosition = 0;
             iBrush = new SolidBrush(ForeColor);
+            MinFontSize = 15;
+            ScaleToFit = true;
+            //Just clone our font
+            iFontInUse = new Font(Font, Font.Style);
 
             //Following is needed if we ever switch from Label to Control base class.
             //Without it you get some pretty nasty flicker
@@ -217,38 +236,64 @@ namespace SharpDisplayManager
         }
 
 
-        private void HandleTextSizeChange()
+        private void ComputeSizes()
         {
-            //Reset our timer whenever our text changes
-            CurrentPosition = 0;
-            LastTickTime = DateTime.Now;
-            PixelsLeft = 0;
-
             //For all string measurements and drawing issues refer to the following article:
             // http://stackoverflow.com/questions/1203087/why-is-graphics-measurestring-returning-a-higher-than-expected-number
             //Update text size according to text and font
             Graphics g = this.CreateGraphics();
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             iStringFormat = GetStringFormatFromContentAllignment(TextAlign);
-            iTextSize = g.MeasureString(Text, Font, Int32.MaxValue, iStringFormat);
-            iSeparatorSize = g.MeasureString(Separator, Font, Int32.MaxValue, iStringFormat);
+            iTextSize = g.MeasureString(Text, iFontInUse, Int32.MaxValue, iStringFormat);
+            iSeparatorSize = g.MeasureString(Separator, iFontInUse, Int32.MaxValue, iStringFormat);
             //Scroll width is the width of our text and our separator without taking kerning into account since
             //both text and separator are drawn independently from each other.
             iScrollSize.Width = iSeparatorSize.Width + iTextSize.Width;
             iScrollSize.Height = Math.Max(iSeparatorSize.Height, iTextSize.Height); //Not relevant for now
-            //We don't want scroll with to take kerning into account so we don't use the following
+            //We don't want scroll width to take kerning into account so we don't use the following
             //iScrollSize = g.MeasureString(Text + Separator, Font, Int32.MaxValue, iStringFormat);
+        }
+
+        private void HandleTextSizeChange()
+        {
+            ComputeSizes();
 
             if (NeedToScroll())
             {
-                //Always align left when scrolling
-                iStringFormat.Alignment = StringAlignment.Near;
+                if (ScaleToFit && iFontInUse.SizeInPoints > MinFontSize)
+                {
+                    //Try scaling down
+                    iFontInUse = new Font(Font.FontFamily, iFontInUse.SizeInPoints - 1, Font.Style);
+                    //Recurse until we are done
+                    HandleTextSizeChange();
+                }
+                else
+                {
+                    if (ScaleToFit)
+                    {
+                        //Our minimum font size still needs scrolling
+                        //Reset our font then
+                        iFontInUse = new Font(Font,Font.Style);
+                        ComputeSizes();
+                    }
+
+                    //Scrolling is ok or needed
+                    //Always align left when scrolling
+                    iStringFormat.Alignment = StringAlignment.Near;
+                }
             }
 
+            //Reset our timer whenever our text changes
+            CurrentPosition = 0;
+            PixelsLeft = 0;
+            LastTickTime = DateTime.Now;
         }
 
         protected override void OnTextChanged(EventArgs e)
         {
+            //Just clone our font
+            iFontInUse = new Font(Font, Font.Style);
+
             HandleTextSizeChange();
 
             base.OnTextChanged(e);
@@ -256,9 +301,22 @@ namespace SharpDisplayManager
 
         protected override void OnFontChanged(EventArgs e)
         {
+            //Just clone our font
+            iFontInUse = new Font(Font,Font.Style);
+
             HandleTextSizeChange();
 
             base.OnFontChanged(e);
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            //Just clone our font
+            iFontInUse = new Font(Font, Font.Style);
+
+            HandleTextSizeChange();
+
+            base.OnSizeChanged(e);
         }
 
         protected override void OnTextAlignChanged(EventArgs e)
@@ -288,17 +346,17 @@ namespace SharpDisplayManager
                 //Doing separate draw operation allows us not to take kerning into account between separator and string
                 //Draw the first one
                 e.Graphics.TranslateTransform(-(float)CurrentPosition, 0);
-                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                e.Graphics.DrawString(Text, iFontInUse, iBrush, ClientRectangle, iStringFormat);
                 //Draw separator
                 e.Graphics.TranslateTransform(iTextSize.Width, 0);
-                e.Graphics.DrawString(Separator, Font, iBrush, ClientRectangle, iStringFormat);
+                e.Graphics.DrawString(Separator, iFontInUse, iBrush, ClientRectangle, iStringFormat);
                 //Draw the last one
                 e.Graphics.TranslateTransform(iSeparatorSize.Width, 0);
-                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                e.Graphics.DrawString(Text, iFontInUse, iBrush, ClientRectangle, iStringFormat);
             }
             else
             {
-                e.Graphics.DrawString(Text, Font, iBrush, ClientRectangle, iStringFormat);
+                e.Graphics.DrawString(Text, iFontInUse, iBrush, ClientRectangle, iStringFormat);
             }
 
 

@@ -624,9 +624,14 @@ namespace SharpDisplayManager
 			checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
             checkBoxInverseColors.Checked = cds.InverseColors;
+            checkBoxScaleToFit.Checked = cds.ScaleToFit;
+            maskedTextBoxMinFontSize.Enabled = cds.ScaleToFit;
+            labelMinFontSize.Enabled = cds.ScaleToFit;
+            maskedTextBoxMinFontSize.Text = cds.MinFontSize.ToString();
             comboBoxDisplayType.SelectedIndex = cds.DisplayType;
             timer.Interval = cds.TimerInterval;
             maskedTextBoxTimerInterval.Text = cds.TimerInterval.ToString();
+            textBoxScrollLoopSeparator.Text = cds.Separator;
             //
             SetupPixelDelegates();
 
@@ -739,6 +744,16 @@ namespace SharpDisplayManager
             cds.InverseColors = checkBoxInverseColors.Checked;
             Properties.Settings.Default.Save();
             SetupPixelDelegates();
+        }
+
+        private void checkBoxScaleToFit_CheckedChanged(object sender, EventArgs e)
+        {
+            //Save our scale to fit setting
+            cds.ScaleToFit = checkBoxScaleToFit.Checked;
+            Properties.Settings.Default.Save();
+            //
+            labelMinFontSize.Enabled = cds.ScaleToFit;
+            maskedTextBoxMinFontSize.Enabled = cds.ScaleToFit;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -1258,7 +1273,9 @@ namespace SharpDisplayManager
                     control.Name = "marqueeLabelCol" + aColumn + "Row" + aRow;
                     control.OwnTimer = false;
                     control.PixelsPerSecond = 64;
-                    control.Separator = "|";
+                    control.Separator = cds.Separator;
+                    control.MinFontSize = cds.MinFontSize;
+                    control.ScaleToFit = cds.ScaleToFit;
                     //control.Size = new System.Drawing.Size(254, 30);
                     //control.TabIndex = 2;
                     control.Font = cds.Font;
@@ -1372,7 +1389,9 @@ namespace SharpDisplayManager
                 label.Name = "marqueeLabel" + aField.Index;
                 label.OwnTimer = false;
                 label.PixelsPerSecond = 64;
-                label.Separator = "|";
+                label.Separator = cds.Separator;
+                label.MinFontSize = cds.MinFontSize;
+                label.ScaleToFit = cds.ScaleToFit;
                 //control.Size = new System.Drawing.Size(254, 30);
                 //control.TabIndex = 2;
                 label.Font = cds.Font;
@@ -1442,7 +1461,6 @@ namespace SharpDisplayManager
             }
         }
 
-
         private void maskedTextBoxTimerInterval_TextChanged(object sender, EventArgs e)
         {
             if (maskedTextBoxTimerInterval.Text != "")
@@ -1456,6 +1474,28 @@ namespace SharpDisplayManager
                     Properties.Settings.Default.Save();
                 }
             }
+        }
+
+        private void maskedTextBoxMinFontSize_TextChanged(object sender, EventArgs e)
+        {
+            if (maskedTextBoxMinFontSize.Text != "")
+            {
+                int minFontSize = Convert.ToInt32(maskedTextBoxMinFontSize.Text);
+
+                if (minFontSize > 0)
+                {
+                    //TODO: re-create layout? update our fields?
+                    cds.MinFontSize = minFontSize;
+                    Properties.Settings.Default.Save();
+                }
+            }
+        }
+
+        private void textBoxScrollLoopSeparator_TextChanged(object sender, EventArgs e)
+        {
+            //TODO: re-create layout? update our fields?
+            cds.Separator = textBoxScrollLoopSeparator.Text;
+            Properties.Settings.Default.Save();
         }
 
         private void buttonPowerOn_Click(object sender, EventArgs e)
@@ -1587,6 +1627,9 @@ namespace SharpDisplayManager
 			}
 
 		}
+
+
+
 
     }
 
