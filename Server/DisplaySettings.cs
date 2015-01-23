@@ -27,6 +27,9 @@ namespace SharpDisplayManager
             InverseColors = true;
             ShowBorders = false;
             FontName = "Microsoft Sans Serif, 9.75pt";
+            ScaleToFit = true;
+            MinFontSize = 15.0f;
+            Separator = "    ";
         }
 
         [DataMember]
@@ -51,6 +54,15 @@ namespace SharpDisplayManager
         public bool ShowBorders { get; set; }
 
         [DataMember]
+        public bool ScaleToFit { get; set; }
+
+        [DataMember]
+        public float MinFontSize { get; set; }
+
+        [DataMember]
+        public string Separator { get; set; }
+
+        [DataMember]
         public string FontName { get; set; }
 
         public Font Font
@@ -72,7 +84,7 @@ namespace SharpDisplayManager
 
 
     /// <summary>
-    /// Contain settings for each of our display type. 
+    /// Contain settings for each of our display type.
     /// </summary>
     [TypeConverter(typeof(DisplaySettingsConverter))]
     [DataContract]
@@ -125,7 +137,7 @@ namespace SharpDisplayManager
         {
             string stringValue = value as string;
             if (stringValue != null)
-            {   
+            {
                 //Load settings form JSON string
                 byte[] byteArray = Encoding.UTF8.GetBytes(stringValue);
                 MemoryStream stream = new MemoryStream(byteArray);
