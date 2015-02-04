@@ -72,17 +72,29 @@ namespace SharpDisplayManager
             iCurrentClientSessionId = "";
             iCurrentClientData = null;
             LastTickTime = DateTime.Now;
+			//Instantiate our display and register for events notifications
             iDisplay = new Display();
-            iClients = new Dictionary<string, ClientData>();
+			iDisplay.OnOpened += OnDisplayOpened;
+			iDisplay.OnClosed += OnDisplayClosed;
+			//
+			iClients = new Dictionary<string, ClientData>();
 			iStartupManager = new StartupManager();
 			iNotifyIcon = new NotifyIconAdv();
 
+			//Have our designer initialize its controls
             InitializeComponent();
+
+			//Populate device types
+			PopulateDeviceTypes();
+
+			//Initial status update 
             UpdateStatus();
+
             //We have a bug when drawing minimized and reusing our bitmap
             iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
 
+			//Minimize our window if desired
 			if (Properties.Settings.Default.StartMinimized)
 			{
 				WindowState = FormWindowState.Minimized;
@@ -91,28 +103,58 @@ namespace SharpDisplayManager
         }
 
 		/// <summary>
+		/// Called when our display is opened.
+		/// </summary>
+		/// <param name="aDisplay"></param>
+		private void OnDisplayOpened(Display aDisplay)
+		{
+			//Our display was just opened, update our UI
+			UpdateStatus();
+			//Initiate asynchronous request
+			iDisplay.RequestFirmwareRevision();
+		}
+
+		/// <summary>
+		/// Called when our display is closed.
+		/// </summary>
+		/// <param name="aDisplay"></param>
+		private void OnDisplayClosed(Display aDisplay)
+		{
+			//Our display was just closed, update our UI consequently
+			UpdateStatus();
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private void PopulateDeviceTypes()
+		{
+			int count = Display.TypeCount();
+
+			for (int i=0; i<count; i++)
+			{
+				comboBoxDisplayType.Items.Add(Display.TypeName((Display.TMiniDisplayType)i));
+			}			
+		}
+
+		/// <summary>
 		///
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+			//Check if we are running a Click Once deployed application
 			if (ApplicationDeployment.IsNetworkDeployed)
 			{
+				//This is a proper Click Once installation, fetch and show our version number
 				this.Text += " - v" + ApplicationDeployment.CurrentDeployment.CurrentVersion;
 			}
 			else
 			{
+				//Not a proper Click Once installation, assuming development build then
 				this.Text += " - development";
 			}
-
-            StartServer();
-
-			//Open display connection on start-up if needed
-            if (Properties.Settings.Default.DisplayConnectOnStartup)
-            {
-                OpenDisplayConnection();
-            }
 
 			//Setup notification icon
 			SetupTrayIcon();
@@ -127,6 +169,15 @@ namespace SharpDisplayManager
 			//When not debugging we want the screen to be empty until a client takes over
 			ClearLayout();
 #endif
+
+			//Open display connection on start-up if needed
+			if (Properties.Settings.Default.DisplayConnectOnStartup)
+			{
+				OpenDisplayConnection();
+			}
+
+			//Start our server so that we can get client requests
+			StartServer();
         }
 
 		/// <summary>
@@ -506,22 +557,17 @@ namespace SharpDisplayManager
         {
             CloseDisplayConnection();
 
-            if (iDisplay.Open((Display.TMiniDisplayType)cds.DisplayType))
-            {
-                UpdateStatus();
-                iDisplay.RequestFirmwareRevision();
-            }
-            else
-            {
-                UpdateStatus();
-                toolStripStatusLabelConnect.Text = "Connection error";
+            if (!iDisplay.Open((Display.TMiniDisplayType)cds.DisplayType))
+            {   
+				UpdateStatus();               
+				toolStripStatusLabelConnect.Text = "Connection error";
             }
         }
 
         private void CloseDisplayConnection()
         {
+			//Status will be updated upon receiving the closed event
             iDisplay.Close();
-            UpdateStatus();
         }
 
         private void buttonOpen_Click(object sender, EventArgs e)

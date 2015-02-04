@@ -357,10 +357,6 @@
             // 
             this.comboBoxDisplayType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDisplayType.FormattingEnabled = true;
-            this.comboBoxDisplayType.Items.AddRange(new object[] {
-            "Auto Detect",
-            "Futaba GP1212A01A",
-            "Futaba GP1212A02A"});
             this.comboBoxDisplayType.Location = new System.Drawing.Point(187, 9);
             this.comboBoxDisplayType.Name = "comboBoxDisplayType";
             this.comboBoxDisplayType.Size = new System.Drawing.Size(181, 21);
