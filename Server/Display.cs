@@ -10,11 +10,33 @@ using System.Runtime.InteropServices;
 namespace SharpDisplayManager
 {
 
+
     /// <summary>
     /// Provide access to our display hardware through MiniDisplay API.
     /// </summary>
     public class Display
     {
+		public delegate void OnOpenedHandler(Display aDisplay);
+		public event OnOpenedHandler OnOpened;
+
+		public delegate void OnClosedHandler(Display aDisplay);
+		public event OnClosedHandler OnClosed;
+
+		//Our display device handle
+		IntPtr iDevice;
+
+		//static functions
+		public static int TypeCount()
+		{
+			return MiniDisplayTypeCount();
+		}
+
+		public static string TypeName(TMiniDisplayType aType)
+		{
+			IntPtr ptr = MiniDisplayTypeName(aType);
+			string str = Marshal.PtrToStringUni(ptr);
+			return str;
+		}
 
         //Constructor
         public Display()
@@ -25,17 +47,36 @@ namespace SharpDisplayManager
         //
         public bool Open(TMiniDisplayType aType)
         {
-            if (iDevice == IntPtr.Zero)
-            {
-                iDevice = MiniDisplayOpen(aType);
-            }
-            return iDevice != IntPtr.Zero;
+			if (IsOpen())
+			{
+				//Already open return an error
+				return false;
+			}
+
+            iDevice = MiniDisplayOpen(aType);
+
+            bool success = iDevice != IntPtr.Zero;
+			if (success)
+			{
+				//Broadcast opened event
+				OnOpened(this);
+			}
+
+			return success;
         }
 
         public void Close()
         {
+			if (!IsOpen())
+			{
+				//Pointless
+				return;
+			}
+
             MiniDisplayClose(iDevice);
             iDevice = IntPtr.Zero;
+			//Broadcast closed event
+			OnClosed(this);
         }
 
         public bool IsOpen()
@@ -192,10 +233,6 @@ namespace SharpDisplayManager
             return str;
         }
 
-        //Our display device handle
-        IntPtr iDevice;
-
-
         //[Serializable]
         public enum TMiniDisplayType
         {
@@ -220,6 +257,12 @@ namespace SharpDisplayManager
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern void MiniDisplayClose(IntPtr aDevice);
+
+		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int MiniDisplayTypeCount();
+
+		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+		public static extern IntPtr MiniDisplayTypeName(TMiniDisplayType aType);
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern void MiniDisplayClear(IntPtr aDevice);
