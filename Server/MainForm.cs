@@ -108,6 +108,7 @@ namespace SharpDisplayManager
 
             StartServer();
 
+			//Open display connection on start-up if needed
             if (Properties.Settings.Default.DisplayConnectOnStartup)
             {
                 OpenDisplayConnection();
@@ -498,6 +499,9 @@ namespace SharpDisplayManager
 
         }
 
+		/// <summary>
+		/// Attempt to establish connection with our display hardware.
+		/// </summary>
         private void OpenDisplayConnection()
         {
             CloseDisplayConnection();
@@ -602,9 +606,11 @@ namespace SharpDisplayManager
             return 0.0f;
         }
 
+		/// <summary>
+		/// Synchronize UI with settings
+		/// </summary>
         private void UpdateStatus()
-        {
-            //Synchronize UI with settings
+        {            
             //Load settings
             checkBoxShowBorders.Checked = cds.ShowBorders;
             tableLayoutPanel.CellBorderStyle = (cds.ShowBorders ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
@@ -637,6 +643,14 @@ namespace SharpDisplayManager
 
             if (iDisplay.IsOpen())
             {
+				//We have a display connection
+				//Reflect that in our UI
+
+				//Set our screen size
+				tableLayoutPanel.Width = iDisplay.WidthInPixels();
+				tableLayoutPanel.Height = iDisplay.HeightInPixels();
+				tableLayoutPanel.Enabled = true;
+
                 //Only setup brightness if display is open
                 trackBarBrightness.Minimum = iDisplay.MinBrightness();
                 trackBarBrightness.Maximum = iDisplay.MaxBrightness();
@@ -677,6 +691,9 @@ namespace SharpDisplayManager
             }
             else
             {
+				//Display is connection not available
+				//Reflect that in our UI
+				tableLayoutPanel.Enabled = false;
                 buttonFill.Enabled = false;
                 buttonClear.Enabled = false;
                 buttonOpen.Enabled = true;
@@ -1446,11 +1463,20 @@ namespace SharpDisplayManager
             }
         }
 
+		/// <summary>
+		/// Called when the user selected a new display type.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void comboBoxDisplayType_SelectedIndexChanged(object sender, EventArgs e)
         {
+			//Store the selected display type in our settings
             Properties.Settings.Default.CurrentDisplayIndex = comboBoxDisplayType.SelectedIndex;
             cds.DisplayType = comboBoxDisplayType.SelectedIndex;
             Properties.Settings.Default.Save();
+
+			//Try re-opening the display connection if we were already connected.
+			//Otherwise just update our status to reflect display type change.
             if (iDisplay.IsOpen())
             {
                 OpenDisplayConnection();
