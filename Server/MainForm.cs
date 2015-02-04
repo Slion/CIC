@@ -108,6 +108,14 @@ namespace SharpDisplayManager
 		/// <param name="aDisplay"></param>
 		private void OnDisplayOpened(Display aDisplay)
 		{
+			//Set our screen size now that our display is connected
+			//Our panelDisplay is the container of our tableLayoutPanel
+			//tableLayoutPanel will resize itself to fit the client size of our panelDisplay
+			//panelDisplay needs an extra 2 pixels for borders on each sides
+			//tableLayoutPanel will eventually be the exact size of our display
+			Size size = new Size(iDisplay.WidthInPixels() + 2, iDisplay.HeightInPixels() + 2);
+			panelDisplay.Size = size;
+
 			//Our display was just opened, update our UI
 			UpdateStatus();
 			//Initiate asynchronous request
@@ -692,18 +700,29 @@ namespace SharpDisplayManager
 				//We have a display connection
 				//Reflect that in our UI
 
-				//Set our screen size
-				tableLayoutPanel.Width = iDisplay.WidthInPixels();
-				tableLayoutPanel.Height = iDisplay.HeightInPixels();
 				tableLayoutPanel.Enabled = true;
+				panelDisplay.Enabled = true;
 
                 //Only setup brightness if display is open
                 trackBarBrightness.Minimum = iDisplay.MinBrightness();
                 trackBarBrightness.Maximum = iDisplay.MaxBrightness();
-                trackBarBrightness.Value = cds.Brightness;
+				if (cds.Brightness < iDisplay.MinBrightness() || cds.Brightness > iDisplay.MaxBrightness())
+				{
+					//Brightness out of range, this can occur when using auto-detect
+					//Use max brightness instead
+					trackBarBrightness.Value = iDisplay.MaxBrightness();
+					iDisplay.SetBrightness(iDisplay.MaxBrightness());
+				}
+				else
+				{
+					trackBarBrightness.Value = cds.Brightness;
+					iDisplay.SetBrightness(cds.Brightness);
+				}
+
+				//Try compute the steps to something that makes sense
                 trackBarBrightness.LargeChange = Math.Max(1, (iDisplay.MaxBrightness() - iDisplay.MinBrightness()) / 5);
                 trackBarBrightness.SmallChange = 1;
-                iDisplay.SetBrightness(cds.Brightness);
+                
                 //
                 buttonFill.Enabled = true;
                 buttonClear.Enabled = true;
@@ -740,6 +759,7 @@ namespace SharpDisplayManager
 				//Display is connection not available
 				//Reflect that in our UI
 				tableLayoutPanel.Enabled = false;
+				panelDisplay.Enabled = false;
                 buttonFill.Enabled = false;
                 buttonClear.Enabled = false;
                 buttonOpen.Enabled = true;
@@ -831,6 +851,7 @@ namespace SharpDisplayManager
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+			CloseDisplayConnection();
             StopServer();
             e.Cancel = iClosing;
         }
@@ -1700,8 +1721,17 @@ namespace SharpDisplayManager
 
 		}
 
-
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void tableLayoutPanel_SizeChanged(object sender, EventArgs e)
+		{
+			//Our table layout size has changed which means our display size has changed.
+			//We need to re-create our bitmap.
+			iCreateBitmap = true;
+		}
 
     }
 
