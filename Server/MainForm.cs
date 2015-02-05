@@ -166,6 +166,12 @@ namespace SharpDisplayManager
 			UpdateStatus();
 			//Initiate asynchronous request
 			iDisplay.RequestFirmwareRevision();
+
+#if DEBUG
+			//Testing icon in debug, no arm done if icon not supported
+			iDisplay.SetIconRecording(0, 1);
+#endif
+
 		}
 
 		/// <summary>

@@ -347,5 +347,18 @@ namespace SharpDisplayClient
             }
 
         }
+
+		private void buttonLayoutOneTextField_Click(object sender, EventArgs e)
+		{
+			//Set one column two lines layout
+			TableLayout layout = new TableLayout(1, 1);
+			iClient.SetLayout(layout);
+
+			//Set our fields
+			iClient.CreateFields(new DataField[]
+            {
+                new DataField(0, textBoxTop.Text, Alignment)
+            });
+		}
     }
 }
