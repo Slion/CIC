@@ -103,6 +103,52 @@ namespace SharpDisplayManager
         }
 
 		/// <summary>
+		///
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+			//Check if we are running a Click Once deployed application
+			if (ApplicationDeployment.IsNetworkDeployed)
+			{
+				//This is a proper Click Once installation, fetch and show our version number
+				this.Text += " - v" + ApplicationDeployment.CurrentDeployment.CurrentVersion;
+			}
+			else
+			{
+				//Not a proper Click Once installation, assuming development build then
+				this.Text += " - development";
+			}
+
+			//Setup notification icon
+			SetupTrayIcon();
+
+			// To make sure start up with minimize to tray works
+			if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
+			{
+				Visible = false;
+			}
+
+#if !DEBUG
+			//When not debugging we want the screen to be empty until a client takes over
+			ClearLayout();
+#else
+			//When developing we want at least one client for testing
+			StartNewClient("abcdefghijklmnopqrst-0123456789","ABCDEFGHIJKLMNOPQRST-0123456789");
+#endif
+
+			//Open display connection on start-up if needed
+			if (Properties.Settings.Default.DisplayConnectOnStartup)
+			{
+				OpenDisplayConnection();
+			}
+
+			//Start our server so that we can get client requests
+			StartServer();
+        }
+
+		/// <summary>
 		/// Called when our display is opened.
 		/// </summary>
 		/// <param name="aDisplay"></param>
@@ -139,54 +185,11 @@ namespace SharpDisplayManager
 		{
 			int count = Display.TypeCount();
 
-			for (int i=0; i<count; i++)
+			for (int i = 0; i < count; i++)
 			{
 				comboBoxDisplayType.Items.Add(Display.TypeName((Display.TMiniDisplayType)i));
-			}			
+			}
 		}
-
-		/// <summary>
-		///
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-			//Check if we are running a Click Once deployed application
-			if (ApplicationDeployment.IsNetworkDeployed)
-			{
-				//This is a proper Click Once installation, fetch and show our version number
-				this.Text += " - v" + ApplicationDeployment.CurrentDeployment.CurrentVersion;
-			}
-			else
-			{
-				//Not a proper Click Once installation, assuming development build then
-				this.Text += " - development";
-			}
-
-			//Setup notification icon
-			SetupTrayIcon();
-
-			// To make sure start up with minimize to tray works
-			if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
-			{
-				Visible = false;
-			}
-
-#if !DEBUG
-			//When not debugging we want the screen to be empty until a client takes over
-			ClearLayout();
-#endif
-
-			//Open display connection on start-up if needed
-			if (Properties.Settings.Default.DisplayConnectOnStartup)
-			{
-				OpenDisplayConnection();
-			}
-
-			//Start our server so that we can get client requests
-			StartServer();
-        }
 
 		/// <summary>
 		///
@@ -688,6 +691,7 @@ namespace SharpDisplayManager
             maskedTextBoxMinFontSize.Enabled = cds.ScaleToFit;
             labelMinFontSize.Enabled = cds.ScaleToFit;
             maskedTextBoxMinFontSize.Text = cds.MinFontSize.ToString();
+			maskedTextBoxScrollingSpeed.Text = cds.ScrollingSpeedInPixelsPerSecond.ToString();
             comboBoxDisplayType.SelectedIndex = cds.DisplayType;
             timer.Interval = cds.TimerInterval;
             maskedTextBoxTimerInterval.Text = cds.TimerInterval.ToString();
@@ -772,6 +776,7 @@ namespace SharpDisplayManager
                 toolStripStatusLabelConnect.Text = "Disconnected";
                 toolStripStatusLabelPower.Text = "N/A";
             }
+
         }
 
 
@@ -936,11 +941,20 @@ namespace SharpDisplayManager
 			tableLayoutPanel.ColumnStyles.Clear();
 		}
 
+		/// <summary>
+		/// Just launch a demo client.
+		/// </summary>
+		private void StartNewClient(string aTopText = "", string aBottomText = "")
+		{
+			Thread clientThread = new Thread(SharpDisplayClient.Program.MainWithParams);
+			SharpDisplayClient.StartParams myParams = new SharpDisplayClient.StartParams(new Point(this.Right, this.Top),aTopText,aBottomText);
+			clientThread.Start(myParams);
+			BringToFront();
+		}
+
         private void buttonStartClient_Click(object sender, EventArgs e)
         {
-            Thread clientThread = new Thread(SharpDisplayClient.Program.Main);
-            clientThread.Start();
-            BringToFront();
+			StartNewClient();
         }
 
         private void buttonSuspend_Click(object sender, EventArgs e)
@@ -1381,6 +1395,13 @@ namespace SharpDisplayManager
         /// <param name="aLayout"></param>
         private void UpdateTableLayoutPanel(ClientData aClient)
         {
+			if (aClient == null)
+			{
+				//Just drop it
+				return;
+			}
+
+
             TableLayout layout = aClient.Layout;
             int fieldCount = 0;
 
@@ -1472,7 +1493,7 @@ namespace SharpDisplayManager
                 label.Margin = new System.Windows.Forms.Padding(0);
                 label.Name = "marqueeLabel" + aField.Index;
                 label.OwnTimer = false;
-                label.PixelsPerSecond = 64;
+                label.PixelsPerSecond = cds.ScrollingSpeedInPixelsPerSecond;
                 label.Separator = cds.Separator;
                 label.MinFontSize = cds.MinFontSize;
                 label.ScaleToFit = cds.ScaleToFit;
@@ -1480,7 +1501,7 @@ namespace SharpDisplayManager
                 //control.TabIndex = 2;
                 label.Font = cds.Font;
 
-                label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+				label.TextAlign = aField.Alignment;
                 label.UseCompatibleTextRendering = true;
                 label.Text = aField.Text;
                 //
@@ -1577,12 +1598,30 @@ namespace SharpDisplayManager
 
                 if (minFontSize > 0)
                 {
-                    //TODO: re-create layout? update our fields?
                     cds.MinFontSize = minFontSize;
                     Properties.Settings.Default.Save();
+					//We need to recreate our layout for that change to take effect
+					UpdateTableLayoutPanel(iCurrentClientData);
                 }
             }
         }
+
+
+		private void maskedTextBoxScrollingSpeed_TextChanged(object sender, EventArgs e)
+		{
+			if (maskedTextBoxScrollingSpeed.Text != "")
+			{
+				int scrollingSpeed = Convert.ToInt32(maskedTextBoxScrollingSpeed.Text);
+
+				if (scrollingSpeed > 0)
+				{
+					cds.ScrollingSpeedInPixelsPerSecond = scrollingSpeed;
+					Properties.Settings.Default.Save();
+					//We need to recreate our layout for that change to take effect
+					UpdateTableLayoutPanel(iCurrentClientData);
+				}
+			}
+		}
 
         private void textBoxScrollLoopSeparator_TextChanged(object sender, EventArgs e)
         {
