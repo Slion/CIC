@@ -17,11 +17,18 @@ namespace SharpDisplayClient
 {
     public partial class MainForm : Form
     {
-        DisplayClient iClient;
+		public StartParams Params { get; set; }
 
+		//
+        DisplayClient iClient;
+		//
         ContentAlignment Alignment;
         DataField iTextFieldTop;
 
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -29,7 +36,11 @@ namespace SharpDisplayClient
             iTextFieldTop = new DataField(0);
         }
 
-
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
             iClient = new DisplayClient(this);
@@ -45,6 +56,24 @@ namespace SharpDisplayClient
             //
             textBoxTop.Text = iClient.Name;
             textBoxBottom.Text = iClient.SessionId;
+
+			if (Params != null)
+			{
+				//Parameters where specified use them
+				if (Params.TopText != "")
+				{
+					textBoxTop.Text = Params.TopText;
+				}
+
+				if (Params.BottomText != "")
+				{
+					textBoxBottom.Text = Params.BottomText;
+				}
+
+				Location = Params.Location;
+				//
+				SetBasicLayoutAndText();
+			}
 
         }
 
@@ -146,17 +175,23 @@ namespace SharpDisplayClient
 
         private void buttonSetText_Click(object sender, EventArgs e)
         {
-            //Set one column two lines layout
-            TableLayout layout = new TableLayout(1, 2);
-            iClient.SetLayout(layout);
+			SetBasicLayoutAndText();
+        }
 
-            //Set our fields
-            iClient.CreateFields(new DataField[]
+		void SetBasicLayoutAndText()
+		{
+			//Set one column two lines layout
+			TableLayout layout = new TableLayout(1, 2);
+			iClient.SetLayout(layout);
+
+			//Set our fields
+			iClient.CreateFields(new DataField[]
             {
                 new DataField(0, textBoxTop.Text, Alignment),
                 new DataField(1, textBoxBottom.Text, Alignment)
             });
-        }
+
+		}
 
         private void buttonLayoutUpdate_Click(object sender, EventArgs e)
         {

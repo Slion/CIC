@@ -98,6 +98,8 @@
 			this.labelFontWidth = new System.Windows.Forms.Label();
 			this.labelFontHeight = new System.Windows.Forms.Label();
 			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
+			this.maskedTextBoxScrollingSpeed = new System.Windows.Forms.MaskedTextBox();
+			this.labelScrollingSpeed = new System.Windows.Forms.Label();
 			this.panelDisplay.SuspendLayout();
 			this.tableLayoutPanel.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -515,6 +517,8 @@
 			// 
 			// tabPageDesign
 			// 
+			this.tabPageDesign.Controls.Add(this.labelScrollingSpeed);
+			this.tabPageDesign.Controls.Add(this.maskedTextBoxScrollingSpeed);
 			this.tabPageDesign.Controls.Add(this.labelScrollLoopSeparator);
 			this.tabPageDesign.Controls.Add(this.textBoxScrollLoopSeparator);
 			this.tabPageDesign.Controls.Add(this.labelMinFontSize);
@@ -543,7 +547,7 @@
 			// labelScrollLoopSeparator
 			// 
 			this.labelScrollLoopSeparator.AutoSize = true;
-			this.labelScrollLoopSeparator.Location = new System.Drawing.Point(84, 145);
+			this.labelScrollLoopSeparator.Location = new System.Drawing.Point(90, 145);
 			this.labelScrollLoopSeparator.Name = "labelScrollLoopSeparator";
 			this.labelScrollLoopSeparator.Size = new System.Drawing.Size(109, 13);
 			this.labelScrollLoopSeparator.TabIndex = 26;
@@ -768,6 +772,25 @@
 			this.pictureBoxDemo.TabIndex = 21;
 			this.pictureBoxDemo.TabStop = false;
 			// 
+			// maskedTextBoxScrollingSpeed
+			// 
+			this.maskedTextBoxScrollingSpeed.Location = new System.Drawing.Point(205, 116);
+			this.maskedTextBoxScrollingSpeed.Mask = "000";
+			this.maskedTextBoxScrollingSpeed.Name = "maskedTextBoxScrollingSpeed";
+			this.maskedTextBoxScrollingSpeed.PromptChar = ' ';
+			this.maskedTextBoxScrollingSpeed.Size = new System.Drawing.Size(24, 20);
+			this.maskedTextBoxScrollingSpeed.TabIndex = 27;
+			this.maskedTextBoxScrollingSpeed.TextChanged += new System.EventHandler(this.maskedTextBoxScrollingSpeed_TextChanged);
+			// 
+			// labelScrollingSpeed
+			// 
+			this.labelScrollingSpeed.AutoSize = true;
+			this.labelScrollingSpeed.Location = new System.Drawing.Point(84, 119);
+			this.labelScrollingSpeed.Name = "labelScrollingSpeed";
+			this.labelScrollingSpeed.Size = new System.Drawing.Size(115, 13);
+			this.labelScrollingSpeed.TabIndex = 28;
+			this.labelScrollingSpeed.Text = "Scrolling speed (px/s) :";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -869,6 +892,8 @@
         private System.Windows.Forms.Label labelMinFontSize;
         private System.Windows.Forms.Label labelScrollLoopSeparator;
         private System.Windows.Forms.TextBox textBoxScrollLoopSeparator;
+		private System.Windows.Forms.Label labelScrollingSpeed;
+		private System.Windows.Forms.MaskedTextBox maskedTextBoxScrollingSpeed;
     }
 }
 

@@ -29,7 +29,8 @@ namespace SharpDisplayManager
             FontName = "Microsoft Sans Serif, 9.75pt";
             ScaleToFit = true;
             MinFontSize = 15.0f;
-            Separator = "    ";
+            Separator = "   ";
+			ScrollingSpeedInPixelsPerSecond = 64;
         }
 
         [DataMember]
@@ -43,6 +44,9 @@ namespace SharpDisplayManager
 
         [DataMember]
         public int TimerInterval { get; set; }
+
+		[DataMember]
+		public int ScrollingSpeedInPixelsPerSecond { get; set; }
 
         [DataMember]
         public bool ReverseScreen { get; set; }
