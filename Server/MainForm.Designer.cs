@@ -76,20 +76,15 @@
 			this.buttonFont = new System.Windows.Forms.Button();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPageDesign = new System.Windows.Forms.TabPage();
+			this.labelScrollingSpeed = new System.Windows.Forms.Label();
+			this.maskedTextBoxScrollingSpeed = new System.Windows.Forms.MaskedTextBox();
 			this.labelScrollLoopSeparator = new System.Windows.Forms.Label();
 			this.textBoxScrollLoopSeparator = new System.Windows.Forms.TextBox();
 			this.labelMinFontSize = new System.Windows.Forms.Label();
 			this.maskedTextBoxMinFontSize = new System.Windows.Forms.MaskedTextBox();
 			this.checkBoxScaleToFit = new System.Windows.Forms.CheckBox();
 			this.checkBoxInverseColors = new System.Windows.Forms.CheckBox();
-			this.buttonAlignRight = new System.Windows.Forms.Button();
-			this.buttonAlignCenter = new System.Windows.Forms.Button();
-			this.buttonAlignLeft = new System.Windows.Forms.Button();
-			this.buttonRemoveColumn = new System.Windows.Forms.Button();
-			this.buttonAddColumn = new System.Windows.Forms.Button();
 			this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
-			this.buttonRemoveRow = new System.Windows.Forms.Button();
-			this.buttonAddRow = new System.Windows.Forms.Button();
 			this.tabPageApp = new System.Windows.Forms.TabPage();
 			this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
 			this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
@@ -98,8 +93,7 @@
 			this.labelFontWidth = new System.Windows.Forms.Label();
 			this.labelFontHeight = new System.Windows.Forms.Label();
 			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
-			this.maskedTextBoxScrollingSpeed = new System.Windows.Forms.MaskedTextBox();
-			this.labelScrollingSpeed = new System.Windows.Forms.Label();
+			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.panelDisplay.SuspendLayout();
 			this.tableLayoutPanel.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -400,6 +394,7 @@
 			this.trackBarBrightness.Size = new System.Drawing.Size(45, 225);
 			this.trackBarBrightness.TabIndex = 10;
 			this.trackBarBrightness.TickStyle = System.Windows.Forms.TickStyle.Both;
+			this.toolTip.SetToolTip(this.trackBarBrightness, "Brightness adjustment");
 			this.trackBarBrightness.Scroll += new System.EventHandler(this.trackBarBrightness_Scroll);
 			// 
 			// buttonFill
@@ -525,16 +520,9 @@
 			this.tabPageDesign.Controls.Add(this.maskedTextBoxMinFontSize);
 			this.tabPageDesign.Controls.Add(this.checkBoxScaleToFit);
 			this.tabPageDesign.Controls.Add(this.checkBoxInverseColors);
-			this.tabPageDesign.Controls.Add(this.buttonAlignRight);
-			this.tabPageDesign.Controls.Add(this.buttonAlignCenter);
-			this.tabPageDesign.Controls.Add(this.buttonAlignLeft);
-			this.tabPageDesign.Controls.Add(this.buttonRemoveColumn);
 			this.tabPageDesign.Controls.Add(this.checkBoxFixedPitchFontOnly);
-			this.tabPageDesign.Controls.Add(this.buttonAddColumn);
 			this.tabPageDesign.Controls.Add(this.buttonFont);
 			this.tabPageDesign.Controls.Add(this.checkBoxReverseScreen);
-			this.tabPageDesign.Controls.Add(this.buttonRemoveRow);
-			this.tabPageDesign.Controls.Add(this.buttonAddRow);
 			this.tabPageDesign.Controls.Add(this.checkBoxShowBorders);
 			this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
 			this.tabPageDesign.Name = "tabPageDesign";
@@ -543,6 +531,25 @@
 			this.tabPageDesign.TabIndex = 3;
 			this.tabPageDesign.Text = "Design";
 			this.tabPageDesign.UseVisualStyleBackColor = true;
+			// 
+			// labelScrollingSpeed
+			// 
+			this.labelScrollingSpeed.AutoSize = true;
+			this.labelScrollingSpeed.Location = new System.Drawing.Point(84, 119);
+			this.labelScrollingSpeed.Name = "labelScrollingSpeed";
+			this.labelScrollingSpeed.Size = new System.Drawing.Size(115, 13);
+			this.labelScrollingSpeed.TabIndex = 28;
+			this.labelScrollingSpeed.Text = "Scrolling speed (px/s) :";
+			// 
+			// maskedTextBoxScrollingSpeed
+			// 
+			this.maskedTextBoxScrollingSpeed.Location = new System.Drawing.Point(205, 116);
+			this.maskedTextBoxScrollingSpeed.Mask = "000";
+			this.maskedTextBoxScrollingSpeed.Name = "maskedTextBoxScrollingSpeed";
+			this.maskedTextBoxScrollingSpeed.PromptChar = ' ';
+			this.maskedTextBoxScrollingSpeed.Size = new System.Drawing.Size(24, 20);
+			this.maskedTextBoxScrollingSpeed.TabIndex = 27;
+			this.maskedTextBoxScrollingSpeed.TextChanged += new System.EventHandler(this.maskedTextBoxScrollingSpeed_TextChanged);
 			// 
 			// labelScrollLoopSeparator
 			// 
@@ -564,7 +571,7 @@
 			// labelMinFontSize
 			// 
 			this.labelMinFontSize.AutoSize = true;
-			this.labelMinFontSize.Location = new System.Drawing.Point(84, 194);
+			this.labelMinFontSize.Location = new System.Drawing.Point(80, 194);
 			this.labelMinFontSize.Name = "labelMinFontSize";
 			this.labelMinFontSize.Size = new System.Drawing.Size(119, 13);
 			this.labelMinFontSize.TabIndex = 24;
@@ -604,56 +611,6 @@
 			this.checkBoxInverseColors.UseVisualStyleBackColor = true;
 			this.checkBoxInverseColors.CheckedChanged += new System.EventHandler(this.checkBoxInverseColors_CheckedChanged);
 			// 
-			// buttonAlignRight
-			// 
-			this.buttonAlignRight.Location = new System.Drawing.Point(170, 81);
-			this.buttonAlignRight.Name = "buttonAlignRight";
-			this.buttonAlignRight.Size = new System.Drawing.Size(75, 23);
-			this.buttonAlignRight.TabIndex = 20;
-			this.buttonAlignRight.Text = "Align Right";
-			this.buttonAlignRight.UseVisualStyleBackColor = true;
-			this.buttonAlignRight.Click += new System.EventHandler(this.buttonAlignRight_Click);
-			// 
-			// buttonAlignCenter
-			// 
-			this.buttonAlignCenter.Location = new System.Drawing.Point(89, 81);
-			this.buttonAlignCenter.Name = "buttonAlignCenter";
-			this.buttonAlignCenter.Size = new System.Drawing.Size(75, 23);
-			this.buttonAlignCenter.TabIndex = 19;
-			this.buttonAlignCenter.Text = "Align Center";
-			this.buttonAlignCenter.UseVisualStyleBackColor = true;
-			this.buttonAlignCenter.Click += new System.EventHandler(this.buttonAlignCenter_Click);
-			// 
-			// buttonAlignLeft
-			// 
-			this.buttonAlignLeft.Location = new System.Drawing.Point(7, 81);
-			this.buttonAlignLeft.Name = "buttonAlignLeft";
-			this.buttonAlignLeft.Size = new System.Drawing.Size(75, 23);
-			this.buttonAlignLeft.TabIndex = 18;
-			this.buttonAlignLeft.Text = "Align Left";
-			this.buttonAlignLeft.UseVisualStyleBackColor = true;
-			this.buttonAlignLeft.Click += new System.EventHandler(this.buttonAlignLeft_Click);
-			// 
-			// buttonRemoveColumn
-			// 
-			this.buttonRemoveColumn.Location = new System.Drawing.Point(88, 37);
-			this.buttonRemoveColumn.Name = "buttonRemoveColumn";
-			this.buttonRemoveColumn.Size = new System.Drawing.Size(75, 23);
-			this.buttonRemoveColumn.TabIndex = 3;
-			this.buttonRemoveColumn.Text = "Remove col.";
-			this.buttonRemoveColumn.UseVisualStyleBackColor = true;
-			this.buttonRemoveColumn.Click += new System.EventHandler(this.buttonRemoveColumn_Click);
-			// 
-			// buttonAddColumn
-			// 
-			this.buttonAddColumn.Location = new System.Drawing.Point(89, 7);
-			this.buttonAddColumn.Name = "buttonAddColumn";
-			this.buttonAddColumn.Size = new System.Drawing.Size(75, 23);
-			this.buttonAddColumn.TabIndex = 2;
-			this.buttonAddColumn.Text = "Add column";
-			this.buttonAddColumn.UseVisualStyleBackColor = true;
-			this.buttonAddColumn.Click += new System.EventHandler(this.buttonAddColumn_Click);
-			// 
 			// checkBoxReverseScreen
 			// 
 			this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -665,26 +622,6 @@
 			this.checkBoxReverseScreen.Text = "Reverse screen";
 			this.checkBoxReverseScreen.UseVisualStyleBackColor = true;
 			this.checkBoxReverseScreen.CheckedChanged += new System.EventHandler(this.checkBoxReverseScreen_CheckedChanged);
-			// 
-			// buttonRemoveRow
-			// 
-			this.buttonRemoveRow.Location = new System.Drawing.Point(7, 37);
-			this.buttonRemoveRow.Name = "buttonRemoveRow";
-			this.buttonRemoveRow.Size = new System.Drawing.Size(75, 23);
-			this.buttonRemoveRow.TabIndex = 1;
-			this.buttonRemoveRow.Text = "Remove row";
-			this.buttonRemoveRow.UseVisualStyleBackColor = true;
-			this.buttonRemoveRow.Click += new System.EventHandler(this.buttonRemoveRow_Click);
-			// 
-			// buttonAddRow
-			// 
-			this.buttonAddRow.Location = new System.Drawing.Point(7, 7);
-			this.buttonAddRow.Name = "buttonAddRow";
-			this.buttonAddRow.Size = new System.Drawing.Size(75, 23);
-			this.buttonAddRow.TabIndex = 0;
-			this.buttonAddRow.Text = "Add row";
-			this.buttonAddRow.UseVisualStyleBackColor = true;
-			this.buttonAddRow.Click += new System.EventHandler(this.buttonAddRow_Click);
 			// 
 			// tabPageApp
 			// 
@@ -772,25 +709,6 @@
 			this.pictureBoxDemo.TabIndex = 21;
 			this.pictureBoxDemo.TabStop = false;
 			// 
-			// maskedTextBoxScrollingSpeed
-			// 
-			this.maskedTextBoxScrollingSpeed.Location = new System.Drawing.Point(205, 116);
-			this.maskedTextBoxScrollingSpeed.Mask = "000";
-			this.maskedTextBoxScrollingSpeed.Name = "maskedTextBoxScrollingSpeed";
-			this.maskedTextBoxScrollingSpeed.PromptChar = ' ';
-			this.maskedTextBoxScrollingSpeed.Size = new System.Drawing.Size(24, 20);
-			this.maskedTextBoxScrollingSpeed.TabIndex = 27;
-			this.maskedTextBoxScrollingSpeed.TextChanged += new System.EventHandler(this.maskedTextBoxScrollingSpeed_TextChanged);
-			// 
-			// labelScrollingSpeed
-			// 
-			this.labelScrollingSpeed.AutoSize = true;
-			this.labelScrollingSpeed.Location = new System.Drawing.Point(84, 119);
-			this.labelScrollingSpeed.Name = "labelScrollingSpeed";
-			this.labelScrollingSpeed.Size = new System.Drawing.Size(115, 13);
-			this.labelScrollingSpeed.TabIndex = 28;
-			this.labelScrollingSpeed.Text = "Scrolling speed (px/s) :";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -862,15 +780,8 @@
         private System.Windows.Forms.Button buttonCloseClients;
         private System.Windows.Forms.Button buttonStartClient;
         private System.Windows.Forms.Label labelWarning;
-        private System.Windows.Forms.TabPage tabPageDesign;
-        private System.Windows.Forms.Button buttonRemoveColumn;
-        private System.Windows.Forms.Button buttonAddColumn;
-        private System.Windows.Forms.Button buttonRemoveRow;
-        private System.Windows.Forms.Button buttonAddRow;
-        private System.Windows.Forms.CheckBox checkBoxReverseScreen;
-        private System.Windows.Forms.Button buttonAlignRight;
-        private System.Windows.Forms.Button buttonAlignCenter;
-        private System.Windows.Forms.Button buttonAlignLeft;
+		private System.Windows.Forms.TabPage tabPageDesign;
+		private System.Windows.Forms.CheckBox checkBoxReverseScreen;
         private System.Windows.Forms.ComboBox comboBoxDisplayType;
         private System.Windows.Forms.MaskedTextBox maskedTextBoxTimerInterval;
         private System.Windows.Forms.Label labelTimerInterval;
@@ -894,6 +805,7 @@
         private System.Windows.Forms.TextBox textBoxScrollLoopSeparator;
 		private System.Windows.Forms.Label labelScrollingSpeed;
 		private System.Windows.Forms.MaskedTextBox maskedTextBoxScrollingSpeed;
+		private System.Windows.Forms.ToolTip toolTip;
     }
 }
 

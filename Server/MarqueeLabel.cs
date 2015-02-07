@@ -21,13 +21,28 @@ namespace SharpDisplayManager
         private SizeF iSeparatorSize;
         private SizeF iScrollSize;
         private Font iFontInUse;
+		private string iSeparator;
 
         [Category("Appearance")]
         [Description("Separator in our scrolling loop.")]
         [DefaultValue(" | ")]
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public string Separator { get; set; }
+        public string Separator
+		{
+			get
+			{
+				return iSeparator;
+			}
+			set
+			{
+				if (value != Separator)
+				{
+					iSeparator = value;
+					OnTextChanged(EventArgs.Empty);
+				}
+			}
+		}
 
         [Category("Behavior")]
         [Description("How fast is our text scrolling, in pixels per second.")]

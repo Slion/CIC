@@ -170,7 +170,7 @@ namespace SharpDisplayManager
 #if DEBUG
 			//Testing icon in debug, no arm done if icon not supported
 			//iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconRecording, 0, 1);
-			iDisplay.SetAllIconsStatus(1);
+			iDisplay.SetAllIconsStatus(2);
 #endif
 
 		}
@@ -1283,41 +1283,6 @@ namespace SharpDisplayManager
             }
         }
 
-        private void buttonAddRow_Click(object sender, EventArgs e)
-        {
-            if (tableLayoutPanel.RowCount < 6)
-            {
-                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount + 1);
-            }
-        }
-
-        private void buttonRemoveRow_Click(object sender, EventArgs e)
-        {
-            if (tableLayoutPanel.RowCount > 1)
-            {
-                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount, tableLayoutPanel.RowCount - 1);
-            }
-
-            UpdateTableLayoutRowStyles();
-        }
-
-        private void buttonAddColumn_Click(object sender, EventArgs e)
-        {
-            if (tableLayoutPanel.ColumnCount < 8)
-            {
-                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount + 1, tableLayoutPanel.RowCount);
-            }
-        }
-
-        private void buttonRemoveColumn_Click(object sender, EventArgs e)
-        {
-            if (tableLayoutPanel.ColumnCount > 1)
-            {
-                UpdateTableLayoutPanel(tableLayoutPanel.ColumnCount - 1, tableLayoutPanel.RowCount);
-            }
-        }
-
-
         /// <summary>
         /// Update our table layout row styles to make sure each rows have similar height
         /// </summary>
@@ -1533,31 +1498,6 @@ namespace SharpDisplayManager
             return control;
         }
 
-
-        private void buttonAlignLeft_Click(object sender, EventArgs e)
-        {
-            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
-            {
-                ctrl.TextAlign = ContentAlignment.MiddleLeft;
-            }
-        }
-
-        private void buttonAlignCenter_Click(object sender, EventArgs e)
-        {
-            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
-            {
-                ctrl.TextAlign = ContentAlignment.MiddleCenter;
-            }
-        }
-
-        private void buttonAlignRight_Click(object sender, EventArgs e)
-        {
-            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
-            {
-                ctrl.TextAlign = ContentAlignment.MiddleRight;
-            }
-        }
-
 		/// <summary>
 		/// Called when the user selected a new display type.
 		/// </summary>
@@ -1632,9 +1572,15 @@ namespace SharpDisplayManager
 
         private void textBoxScrollLoopSeparator_TextChanged(object sender, EventArgs e)
         {
-            //TODO: re-create layout? update our fields?
             cds.Separator = textBoxScrollLoopSeparator.Text;
             Properties.Settings.Default.Save();
+
+			//Update our text fields
+			foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+			{
+				ctrl.Separator = cds.Separator;
+			}
+
         }
 
         private void buttonPowerOn_Click(object sender, EventArgs e)
