@@ -169,7 +169,8 @@ namespace SharpDisplayManager
 
 #if DEBUG
 			//Testing icon in debug, no arm done if icon not supported
-			iDisplay.SetIconRecording(0, 1);
+			//iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconRecording, 0, 1);
+			iDisplay.SetAllIconsStatus(1);
 #endif
 
 		}

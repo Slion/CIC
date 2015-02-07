@@ -203,75 +203,35 @@ namespace SharpDisplayManager
         }
 
 		//
-		public int IconEmailCount()
+		public int IconCount(TMiniDisplayIconType aIcon)
 		{
-			return MiniDisplayIconEmailCount(iDevice);
+			return MiniDisplayIconCount(iDevice,aIcon);
 		}
 
-		public void SetIconEmail(int aIndex, int aStatus)
+		public int IconStatusCount(TMiniDisplayIconType aIcon)
 		{
-			MiniDisplaySetIconEmail(iDevice, aIndex, aStatus);
+			return MiniDisplayIconStatusCount(iDevice, aIcon);
 		}
 
-		public int IconNetworkCount()
+		public void SetIconStatus(TMiniDisplayIconType aIcon, int aIndex, int aStatus)
 		{
-			return MiniDisplayIconNetworkCount(iDevice);
+			MiniDisplaySetIconStatus(iDevice, aIcon, aIndex, aStatus);
 		}
 
-		public void SetIconNetwork(int aIndex, int aStatus)
+		public void SetAllIconsStatus(int aStatus)
 		{
-			MiniDisplaySetIconNetwork(iDevice, aIndex, aStatus);
+			foreach (TMiniDisplayIconType icon in Enum.GetValues(typeof(TMiniDisplayIconType)))
+			{
+				int count=IconCount(icon);
+				for (int i = 0; i < count; i++)
+				{
+					SetIconStatus(icon,i,aStatus);
+				}
+			}
+
 		}
 
-		public int IconVolumeCount()
-		{
-			return MiniDisplayIconVolumeCount(iDevice);
-		}
 
-		public void SetIconVolume(int aIndex, int aStatus)
-		{
-			MiniDisplaySetIconVolume(iDevice, aIndex, aStatus);
-		}
-	
-		public int IconPlayCount()
-		{
-			return MiniDisplayIconPlayCount(iDevice);
-		}
-
-		public void SetIconPlay(int aIndex, int aStatus)
-		{
-			MiniDisplaySetIconPlay(iDevice, aIndex, aStatus);
-		}
-
-		public int IconPauseCount()
-		{
-			return MiniDisplayIconPauseCount(iDevice);
-		}
-
-		public void SetIconPause(int aIndex, int aStatus)
-		{
-			MiniDisplaySetIconPause(iDevice, aIndex, aStatus);
-		}
-
-		public int IconRecordingCount()
-		{
-			return MiniDisplayIconRecordingCount(iDevice);
-		}
-
-		public void SetIconRecording(int aIndex, int aStatus)
-		{
-			MiniDisplaySetIconRecording(iDevice, aIndex, aStatus);
-		}
-
-		public int IconMuteCount()
-		{
-			return MiniDisplayIconMuteCount(iDevice);
-		}
-
-		public void SetIconMute(int aIndex, int aStatus)
-		{
-			MiniDisplaySetIconMute(iDevice, aIndex, aStatus);
-		}
 
         public string Vendor()
         {
@@ -318,7 +278,9 @@ namespace SharpDisplayManager
             EMiniDisplayFutabaGP1212A02
         };
 
-
+		/// <summary>
+		/// 
+		/// </summary>
         public enum TMiniDisplayRequest
         {
             EMiniDisplayRequestNone,
@@ -326,6 +288,23 @@ namespace SharpDisplayManager
             EMiniDisplayRequestFirmwareRevision,
             EMiniDisplayRequestPowerSupplyStatus
         };
+
+			
+		/// <summary>
+		/// Define the various type of icons we support.
+		/// For binary compatibility new entries must be added at the end.
+		/// </summary>
+		public enum TMiniDisplayIconType
+		{
+			EMiniDisplayIconNetwork=0,
+			EMiniDisplayIconEmail,
+			EMiniDisplayIconMute,
+			EMiniDisplayIconVolume,
+			EMiniDisplayIconVolumeLabel,
+			EMiniDisplayIconPlay,
+			EMiniDisplayIconPause,
+			EMiniDisplayIconRecording
+		};
 
         [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr MiniDisplayOpen(TMiniDisplayType aType);
@@ -418,46 +397,13 @@ namespace SharpDisplayManager
         public static extern bool MiniDisplaySupportClock(IntPtr aDevice);
 
 		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconNetworkCount(IntPtr aDevice);
+		public static extern int MiniDisplayIconCount(IntPtr aDevice, TMiniDisplayIconType aIcon);
 
 		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconEmailCount(IntPtr aDevice);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconMuteCount(IntPtr aDevice);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconVolumeCount(IntPtr aDevice);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconPlayCount(IntPtr aDevice);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconPauseCount(IntPtr aDevice);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconRecordingCount(IntPtr aDevice);
+		public static extern int MiniDisplayIconStatusCount(IntPtr aDevice, TMiniDisplayIconType aIcon);
 		
 		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconNetwork(IntPtr aDevice, int aIndex, int aStatus);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconEmail(IntPtr aDevice, int aIndex, int aStatus);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconMute(IntPtr aDevice, int aIndex, int aStatus);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconVolume(IntPtr aDevice, int aIndex, int aStatus);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconPlay(IntPtr aDevice, int aIndex, int aStatus);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconPause(IntPtr aDevice, int aIndex, int aStatus);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconRecording(IntPtr aDevice, int aIndex, int aStatus);
+		public static extern void MiniDisplaySetIconStatus(IntPtr aDevice, TMiniDisplayIconType aIcon, int aIndex, int aStatus);
 
     }
 }
