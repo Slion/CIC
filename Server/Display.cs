@@ -231,6 +231,46 @@ namespace SharpDisplayManager
 
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="aIcon"></param>
+		/// <param name="aStatus"></param>
+		public void SetIconStatus(TMiniDisplayIconType aIcon, int aStatus)
+		{
+			int iconCount = IconCount(aIcon);
+			for (int i = 0; i < iconCount; i++)
+			{
+				SetIconStatus(aIcon, i, aStatus);
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="aIcon"></param>
+		public void SetIconOn(TMiniDisplayIconType aIcon)
+		{
+			int iconCount = IconCount(aIcon);
+			for (int i = 0; i < iconCount; i++)
+			{
+				SetIconStatus(aIcon, i, IconStatusCount(aIcon) - 1);
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="aIcon"></param>
+		public void SetIconOff(TMiniDisplayIconType aIcon)
+		{
+			int iconCount = IconCount(aIcon);
+			for (int i = 0; i < iconCount; i++)
+			{
+				SetIconStatus(aIcon, i, 0);
+			}
+		}
+
 
 
         public string Vendor()
