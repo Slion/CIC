@@ -15,6 +15,10 @@ using System.Threading;
 using System.Diagnostics;
 using System.Deployment.Application;
 using System.Reflection;
+//NAudio
+using NAudio.CoreAudioApi;
+using NAudio.CoreAudioApi.Interfaces;
+using System.Runtime.InteropServices;
 //
 using SharpDisplayClient;
 using SharpDisplay;
@@ -31,12 +35,13 @@ namespace SharpDisplayManager
     public delegate void SetFieldsDelegate(string SessionId, System.Collections.Generic.IList<DataField> aFields);
     public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
     public delegate void SetClientNameDelegate(string aSessionId, string aName);
+	public delegate void PlainUpdateDelegate();
 
 
     /// <summary>
     /// Our Display manager main form
     /// </summary>
-    public partial class MainForm : Form
+	public partial class MainForm : Form, IMMNotificationClient
     {
         DateTime LastTickTime;
         Display iDisplay;
@@ -56,6 +61,10 @@ namespace SharpDisplayManager
         CoordinateTranslationDelegate iScreenX;
         //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
+		//NAudio
+		private MMDeviceEnumerator iMultiMediaDeviceEnumerator;
+		private MMDevice iMultiMediaDevice;
+		
 
 		/// <summary>
 		/// Manage run when Windows startup option
@@ -121,6 +130,12 @@ namespace SharpDisplayManager
 				this.Text += " - development";
 			}
 
+			//NAudio
+			iMultiMediaDeviceEnumerator = new MMDeviceEnumerator();
+			iMultiMediaDeviceEnumerator.RegisterEndpointNotificationCallback(this);
+			
+			UpdateAudioDeviceAndMasterVolumeThreadSafe();
+
 			//Setup notification icon
 			SetupTrayIcon();
 
@@ -167,10 +182,13 @@ namespace SharpDisplayManager
 			//Initiate asynchronous request
 			iDisplay.RequestFirmwareRevision();
 
+			//
+			UpdateMasterVolumeThreadSafe();
+
 #if DEBUG
 			//Testing icon in debug, no arm done if icon not supported
 			//iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconRecording, 0, 1);
-			iDisplay.SetAllIconsStatus(2);
+			//iDisplay.SetAllIconsStatus(2);
 #endif
 
 		}
@@ -184,6 +202,135 @@ namespace SharpDisplayManager
 			//Our display was just closed, update our UI consequently
 			UpdateStatus();
 		}
+		
+        /// <summary>
+        /// Receive volume change notification and reflect changes on our slider.
+        /// </summary>
+        /// <param name="data"></param>
+        public void OnVolumeNotificationThreadSafe(AudioVolumeNotificationData data)
+        {
+			UpdateMasterVolumeThreadSafe();
+        }
+
+        /// <summary>
+        /// Update master volume when user moves our slider.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void trackBarMasterVolume_Scroll(object sender, EventArgs e)
+        {
+			iMultiMediaDevice.AudioEndpointVolume.MasterVolumeLevelScalar = trackBarMasterVolume.Value / 100.0f;
+        }
+
+        /// <summary>
+        /// Device State Changed
+        /// </summary>
+        public void OnDeviceStateChanged([MarshalAs(UnmanagedType.LPWStr)] string deviceId, [MarshalAs(UnmanagedType.I4)] DeviceState newState){}
+
+        /// <summary>
+        /// Device Added
+        /// </summary>
+        public void OnDeviceAdded([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId) { }
+
+        /// <summary>
+        /// Device Removed
+        /// </summary>
+        public void OnDeviceRemoved([MarshalAs(UnmanagedType.LPWStr)] string deviceId) { }
+
+        /// <summary>
+        /// Default Device Changed
+        /// </summary>
+        public void OnDefaultDeviceChanged(DataFlow flow, Role role, [MarshalAs(UnmanagedType.LPWStr)] string defaultDeviceId)
+        {
+            if (role == Role.Multimedia && flow == DataFlow.Render)
+            {
+                UpdateAudioDeviceAndMasterVolumeThreadSafe();
+            }
+        }
+
+        /// <summary>
+        /// Property Value Changed
+        /// </summary>
+        /// <param name="pwstrDeviceId"></param>
+        /// <param name="key"></param>
+        public void OnPropertyValueChanged([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId, PropertyKey key){}
+
+
+        
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private void UpdateMasterVolumeThreadSafe()
+		{
+			if (this.InvokeRequired)
+			{
+				//Not in the proper thread, invoke ourselves
+				PlainUpdateDelegate d = new PlainUpdateDelegate(UpdateMasterVolumeThreadSafe);
+				this.Invoke(d, new object[] { });
+				return;
+			}
+
+			float volumeLevelScalar = iMultiMediaDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
+			trackBarMasterVolume.Value = Convert.ToInt32(volumeLevelScalar * 100);
+
+			//TODO: Check our display device too
+			if (iDisplay.IsOpen())
+			{
+				int volumeIconCount = iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconVolume);
+				if (volumeIconCount > 0)
+				{
+					int currentVolume = Convert.ToInt32(volumeLevelScalar * volumeIconCount);
+					for (int i = 0; i < volumeIconCount; i++)
+					{
+						if (i < currentVolume)
+						{
+							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconVolume, i, 10);
+						}
+						else
+						{
+							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconVolume, i, 0);
+						}
+					}
+				}
+			}
+
+		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateAudioDeviceAndMasterVolumeThreadSafe()
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+				PlainUpdateDelegate d = new PlainUpdateDelegate(UpdateAudioDeviceAndMasterVolumeThreadSafe);
+                this.Invoke(d, new object[] { });
+                return;
+            }
+            
+            //We are in the correct thread just go ahead.
+            try
+            {                
+                //Get our master volume            
+				iMultiMediaDevice = iMultiMediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                //Show our volume in our track bar
+				UpdateMasterVolumeThreadSafe();
+
+                //Register to get volume modifications
+				iMultiMediaDevice.AudioEndpointVolume.OnVolumeNotification += OnVolumeNotificationThreadSafe;
+                //
+				trackBarMasterVolume.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception thrown in UpdateAudioDeviceAndMasterVolume");
+                Debug.WriteLine(ex.ToString());
+                //Something went wrong S/PDIF device ca throw exception I guess
+				trackBarMasterVolume.Enabled = false;
+            }
+        }
 
 		/// <summary>
 		/// 

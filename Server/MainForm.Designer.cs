@@ -90,6 +90,8 @@
 			this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
 			this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
 			this.buttonUpdate = new System.Windows.Forms.Button();
+			this.tabPageAudio = new System.Windows.Forms.TabPage();
+			this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
 			this.labelFontWidth = new System.Windows.Forms.Label();
 			this.labelFontHeight = new System.Windows.Forms.Label();
 			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
@@ -103,6 +105,8 @@
 			this.tabControl.SuspendLayout();
 			this.tabPageDesign.SuspendLayout();
 			this.tabPageApp.SuspendLayout();
+			this.tabPageAudio.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -504,6 +508,7 @@
 			this.tabControl.Controls.Add(this.tabPageClients);
 			this.tabControl.Controls.Add(this.tabPageDesign);
 			this.tabControl.Controls.Add(this.tabPageApp);
+			this.tabControl.Controls.Add(this.tabPageAudio);
 			this.tabControl.Location = new System.Drawing.Point(12, 139);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
@@ -683,6 +688,31 @@
 			this.buttonUpdate.UseVisualStyleBackColor = true;
 			this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
 			// 
+			// tabPageAudio
+			// 
+			this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
+			this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
+			this.tabPageAudio.Name = "tabPageAudio";
+			this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageAudio.Size = new System.Drawing.Size(592, 242);
+			this.tabPageAudio.TabIndex = 5;
+			this.tabPageAudio.Text = "Audio";
+			this.tabPageAudio.UseVisualStyleBackColor = true;
+			// 
+			// trackBarMasterVolume
+			// 
+			this.trackBarMasterVolume.BackColor = System.Drawing.SystemColors.Window;
+			this.trackBarMasterVolume.Location = new System.Drawing.Point(541, 6);
+			this.trackBarMasterVolume.Maximum = 100;
+			this.trackBarMasterVolume.Name = "trackBarMasterVolume";
+			this.trackBarMasterVolume.Orientation = System.Windows.Forms.Orientation.Vertical;
+			this.trackBarMasterVolume.Size = new System.Drawing.Size(45, 230);
+			this.trackBarMasterVolume.TabIndex = 0;
+			this.trackBarMasterVolume.TickFrequency = 10;
+			this.trackBarMasterVolume.TickStyle = System.Windows.Forms.TickStyle.Both;
+			this.toolTip.SetToolTip(this.trackBarMasterVolume, "Master Volume");
+			this.trackBarMasterVolume.Scroll += new System.EventHandler(this.trackBarMasterVolume_Scroll);
+			// 
 			// labelFontWidth
 			// 
 			this.labelFontWidth.AutoSize = true;
@@ -743,6 +773,9 @@
 			this.tabPageDesign.PerformLayout();
 			this.tabPageApp.ResumeLayout(false);
 			this.tabPageApp.PerformLayout();
+			this.tabPageAudio.ResumeLayout(false);
+			this.tabPageAudio.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -806,6 +839,8 @@
 		private System.Windows.Forms.Label labelScrollingSpeed;
 		private System.Windows.Forms.MaskedTextBox maskedTextBoxScrollingSpeed;
 		private System.Windows.Forms.ToolTip toolTip;
+		private System.Windows.Forms.TabPage tabPageAudio;
+		private System.Windows.Forms.TrackBar trackBarMasterVolume;
     }
 }
 
