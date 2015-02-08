@@ -91,12 +91,13 @@
 			this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
 			this.buttonUpdate = new System.Windows.Forms.Button();
 			this.tabPageAudio = new System.Windows.Forms.TabPage();
+			this.checkBoxMute = new System.Windows.Forms.CheckBox();
 			this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
 			this.labelFontWidth = new System.Windows.Forms.Label();
 			this.labelFontHeight = new System.Windows.Forms.Label();
 			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.checkBoxMute = new System.Windows.Forms.CheckBox();
+			this.checkBoxShowVolumeLabel = new System.Windows.Forms.CheckBox();
 			this.panelDisplay.SuspendLayout();
 			this.tableLayoutPanel.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -691,6 +692,7 @@
 			// 
 			// tabPageAudio
 			// 
+			this.tabPageAudio.Controls.Add(this.checkBoxShowVolumeLabel);
 			this.tabPageAudio.Controls.Add(this.checkBoxMute);
 			this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
 			this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
@@ -700,6 +702,18 @@
 			this.tabPageAudio.TabIndex = 5;
 			this.tabPageAudio.Text = "Audio";
 			this.tabPageAudio.UseVisualStyleBackColor = true;
+			// 
+			// checkBoxMute
+			// 
+			this.checkBoxMute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxMute.AutoSize = true;
+			this.checkBoxMute.Location = new System.Drawing.Point(3, 219);
+			this.checkBoxMute.Name = "checkBoxMute";
+			this.checkBoxMute.Size = new System.Drawing.Size(50, 17);
+			this.checkBoxMute.TabIndex = 17;
+			this.checkBoxMute.Text = "Mute";
+			this.checkBoxMute.UseVisualStyleBackColor = true;
+			this.checkBoxMute.CheckedChanged += new System.EventHandler(this.checkBoxMute_CheckedChanged);
 			// 
 			// trackBarMasterVolume
 			// 
@@ -741,17 +755,17 @@
 			this.pictureBoxDemo.TabIndex = 21;
 			this.pictureBoxDemo.TabStop = false;
 			// 
-			// checkBoxMute
+			// checkBoxShowVolumeLabel
 			// 
-			this.checkBoxMute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.checkBoxMute.AutoSize = true;
-			this.checkBoxMute.Location = new System.Drawing.Point(462, 219);
-			this.checkBoxMute.Name = "checkBoxMute";
-			this.checkBoxMute.Size = new System.Drawing.Size(50, 17);
-			this.checkBoxMute.TabIndex = 17;
-			this.checkBoxMute.Text = "Mute";
-			this.checkBoxMute.UseVisualStyleBackColor = true;
-			this.checkBoxMute.CheckedChanged += new System.EventHandler(this.checkBoxMute_CheckedChanged);
+			this.checkBoxShowVolumeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxShowVolumeLabel.AutoSize = true;
+			this.checkBoxShowVolumeLabel.Location = new System.Drawing.Point(3, 196);
+			this.checkBoxShowVolumeLabel.Name = "checkBoxShowVolumeLabel";
+			this.checkBoxShowVolumeLabel.Size = new System.Drawing.Size(115, 17);
+			this.checkBoxShowVolumeLabel.TabIndex = 18;
+			this.checkBoxShowVolumeLabel.Text = "Show volume label";
+			this.checkBoxShowVolumeLabel.UseVisualStyleBackColor = true;
+			this.checkBoxShowVolumeLabel.CheckedChanged += new System.EventHandler(this.checkBoxShowVolumeLabel_CheckedChanged);
 			// 
 			// MainForm
 			// 
@@ -856,6 +870,7 @@
 		private System.Windows.Forms.TabPage tabPageAudio;
 		private System.Windows.Forms.TrackBar trackBarMasterVolume;
 		private System.Windows.Forms.CheckBox checkBoxMute;
+		private System.Windows.Forms.CheckBox checkBoxShowVolumeLabel;
     }
 }
 

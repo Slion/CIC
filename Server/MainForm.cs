@@ -233,7 +233,6 @@ namespace SharpDisplayManager
 			iMultiMediaDevice.AudioEndpointVolume.Mute = checkBoxMute.Checked;
 		}
 
-
         /// <summary>
         /// Device State Changed
         /// </summary>
@@ -885,6 +884,7 @@ namespace SharpDisplayManager
 			checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
             checkBoxInverseColors.Checked = cds.InverseColors;
+			checkBoxShowVolumeLabel.Checked = cds.ShowVolumeLabel;
             checkBoxScaleToFit.Checked = cds.ScaleToFit;
             maskedTextBoxMinFontSize.Enabled = cds.ScaleToFit;
             labelMinFontSize.Enabled = cds.ScaleToFit;
@@ -955,11 +955,25 @@ namespace SharpDisplayManager
                     buttonShowClock.Enabled = false;
                     buttonHideClock.Enabled = false;
                 }
+
+				
+				//Check if Volume Label is supported. To date only MDM166AA supports that crap :)
+				checkBoxShowVolumeLabel.Enabled = iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconVolumeLabel)>0;
+
+				if (cds.ShowVolumeLabel)
+				{
+					iDisplay.SetIconOn(Display.TMiniDisplayIconType.EMiniDisplayIconVolumeLabel);
+				}
+				else
+				{
+					iDisplay.SetIconOff(Display.TMiniDisplayIconType.EMiniDisplayIconVolumeLabel);
+				}
             }
             else
             {
 				//Display is connection not available
 				//Reflect that in our UI
+				checkBoxShowVolumeLabel.Enabled = false;
 				tableLayoutPanel.Enabled = false;
 				panelDisplay.Enabled = false;
                 buttonFill.Enabled = false;
@@ -978,6 +992,17 @@ namespace SharpDisplayManager
         }
 
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void checkBoxShowVolumeLabel_CheckedChanged(object sender, EventArgs e)
+		{
+			cds.ShowVolumeLabel = checkBoxShowVolumeLabel.Checked;
+			Properties.Settings.Default.Save();
+			UpdateStatus();
+		}
 
         private void checkBoxShowBorders_CheckedChanged(object sender, EventArgs e)
         {
@@ -1915,7 +1940,6 @@ namespace SharpDisplayManager
 			//We need to re-create our bitmap.
 			iCreateBitmap = true;
 		}
-
     }
 
     /// <summary>

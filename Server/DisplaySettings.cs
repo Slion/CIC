@@ -26,12 +26,17 @@ namespace SharpDisplayManager
             ReverseScreen = false;
             InverseColors = true;
             ShowBorders = false;
+			ShowVolumeLabel = false;
             FontName = "Microsoft Sans Serif, 9.75pt";
             ScaleToFit = true;
             MinFontSize = 15.0f;
             Separator = "   ";
 			ScrollingSpeedInPixelsPerSecond = 64;
         }
+
+
+		[DataMember]
+		public bool ShowVolumeLabel { get; set; }
 
         [DataMember]
         public int Brightness { get; set; }
