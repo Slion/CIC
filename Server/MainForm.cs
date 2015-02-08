@@ -294,13 +294,25 @@ namespace SharpDisplayManager
 			{
 				int volumeIconCount = iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconVolume);
 				if (volumeIconCount > 0)
-				{
+				{					
 					int currentVolume = Convert.ToInt32(volumeLevelScalar * volumeIconCount);
+
+					bool roundedUp = currentVolume > (volumeLevelScalar * volumeIconCount);
+
 					for (int i = 0; i < volumeIconCount; i++)
 					{
 						if (i < currentVolume)
 						{
-							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconVolume, i, 10);
+							if (i == currentVolume - 1 && roundedUp)
+							{
+								//Half brightness
+								iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconVolume, i, (iDisplay.IconStatusCount(Display.TMiniDisplayIconType.EMiniDisplayIconVolume) - 1)/2);
+							}
+							else
+							{
+								//Full brightness
+								iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconVolume, i, iDisplay.IconStatusCount(Display.TMiniDisplayIconType.EMiniDisplayIconVolume) - 1);
+							}
 						}
 						else
 						{
@@ -316,7 +328,7 @@ namespace SharpDisplayManager
 					{
 						if (iMultiMediaDevice.AudioEndpointVolume.Mute)
 						{
-							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconMute, i, 10);
+							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconMute, i, iDisplay.IconStatusCount(Display.TMiniDisplayIconType.EMiniDisplayIconMute)-1);
 						}
 						else
 						{
