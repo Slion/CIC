@@ -222,6 +222,18 @@ namespace SharpDisplayManager
 			iMultiMediaDevice.AudioEndpointVolume.MasterVolumeLevelScalar = trackBarMasterVolume.Value / 100.0f;
         }
 
+
+		/// <summary>
+		/// Mute check box changed.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void checkBoxMute_CheckedChanged(object sender, EventArgs e)
+		{
+			iMultiMediaDevice.AudioEndpointVolume.Mute = checkBoxMute.Checked;
+		}
+
+
         /// <summary>
         /// Device State Changed
         /// </summary>
@@ -271,8 +283,11 @@ namespace SharpDisplayManager
 				return;
 			}
 
+			//Update volume slider
 			float volumeLevelScalar = iMultiMediaDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
 			trackBarMasterVolume.Value = Convert.ToInt32(volumeLevelScalar * 100);
+			//Update mute checkbox
+			checkBoxMute.Checked = iMultiMediaDevice.AudioEndpointVolume.Mute;
 
 			//TODO: Check our display device too
 			if (iDisplay.IsOpen())
@@ -293,6 +308,23 @@ namespace SharpDisplayManager
 						}
 					}
 				}
+
+				int muteIconCount = iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconMute);
+				if (muteIconCount > 0)
+				{
+					for (int i = 0; i < muteIconCount; i++)
+					{
+						if (iMultiMediaDevice.AudioEndpointVolume.Mute)
+						{
+							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconMute, i, 10);
+						}
+						else
+						{
+							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconMute, i, 0);
+						}
+					}
+				}
+
 			}
 
 		}
