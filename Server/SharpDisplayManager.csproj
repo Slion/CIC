@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CbtHook.cs" />
+    <Compile Include="NetworkManager.cs" />
     <Compile Include="DialogBox.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="DisplaySettings.cs" />
@@ -222,6 +223,17 @@
   <ItemGroup>
     <Content Include="MiniDisplay.dll" />
     <EmbeddedResource Include="Resources\vfd.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="NETWORKLIST">
+      <Guid>{DCB00D01-570F-4A9B-8D69-199FDBA5723B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

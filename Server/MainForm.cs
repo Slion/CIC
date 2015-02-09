@@ -19,6 +19,8 @@ using System.Reflection;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
+//Network
+using NETWORKLIST;
 //
 using SharpDisplayClient;
 using SharpDisplay;
@@ -64,6 +66,8 @@ namespace SharpDisplayManager
 		//NAudio
 		private MMDeviceEnumerator iMultiMediaDeviceEnumerator;
 		private MMDevice iMultiMediaDevice;
+		//Network
+		private NetworkManager iNetworkManager;
 		
 
 		/// <summary>
@@ -132,9 +136,13 @@ namespace SharpDisplayManager
 
 			//NAudio
 			iMultiMediaDeviceEnumerator = new MMDeviceEnumerator();
-			iMultiMediaDeviceEnumerator.RegisterEndpointNotificationCallback(this);
-			
+			iMultiMediaDeviceEnumerator.RegisterEndpointNotificationCallback(this);			
 			UpdateAudioDeviceAndMasterVolumeThreadSafe();
+
+			//Network
+			iNetworkManager = new NetworkManager();
+			iNetworkManager.OnConnectivityChanged += OnConnectivityChanged;
+			UpdateNetworkStatus();
 
 			//Setup notification icon
 			SetupTrayIcon();
@@ -182,8 +190,10 @@ namespace SharpDisplayManager
 			//Initiate asynchronous request
 			iDisplay.RequestFirmwareRevision();
 
-			//
+			//Audio
 			UpdateMasterVolumeThreadSafe();
+			//Network
+			UpdateNetworkStatus();
 
 #if DEBUG
 			//Testing icon in debug, no arm done if icon not supported
@@ -202,7 +212,25 @@ namespace SharpDisplayManager
 			//Our display was just closed, update our UI consequently
 			UpdateStatus();
 		}
-		
+
+		public void OnConnectivityChanged(NetworkManager aNetwork, NLM_CONNECTIVITY newConnectivity)
+		{
+			//Update network status
+			UpdateNetworkStatus();			
+		}
+
+		/// <summary>
+		/// Update our Network Status
+		/// </summary>
+		private void UpdateNetworkStatus()
+		{
+			if (iDisplay.IsOpen())
+			{
+				iDisplay.SetIconOnOff(Display.TMiniDisplayIconType.EMiniDisplayIconNetwork, iNetworkManager.NetworkListManager.IsConnectedToInternet);
+			}
+		}
+
+
         /// <summary>
         /// Receive volume change notification and reflect changes on our slider.
         /// </summary>
@@ -1077,6 +1105,7 @@ namespace SharpDisplayManager
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+			iNetworkManager.Dispose();
 			CloseDisplayConnection();
             StopServer();
             e.Cancel = iClosing;
