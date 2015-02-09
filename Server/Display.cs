@@ -218,6 +218,17 @@ namespace SharpDisplayManager
 			MiniDisplaySetIconStatus(iDevice, aIcon, aIndex, aStatus);
 		}
 
+		public void SetIconOn(TMiniDisplayIconType aIcon, int aIndex)
+		{
+			MiniDisplaySetIconStatus(iDevice, aIcon, aIndex, IconStatusCount(aIcon) - 1);
+		}
+
+		public void SetIconOff(TMiniDisplayIconType aIcon, int aIndex)
+		{
+			MiniDisplaySetIconStatus(iDevice, aIcon, aIndex, 0);
+		}
+
+
 		public void SetAllIconsStatus(int aStatus)
 		{
 			foreach (TMiniDisplayIconType icon in Enum.GetValues(typeof(TMiniDisplayIconType)))
@@ -353,7 +364,8 @@ namespace SharpDisplayManager
 		/// </summary>
 		public enum TMiniDisplayIconType
 		{
-			EMiniDisplayIconNetwork=0,
+			EMiniDisplayIconNetworkSignal=0,
+			EMiniDisplayIconInternet,
 			EMiniDisplayIconEmail,
 			EMiniDisplayIconMute,
 			EMiniDisplayIconVolume,
