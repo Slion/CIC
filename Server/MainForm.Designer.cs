@@ -510,8 +510,8 @@
 			this.tabControl.Controls.Add(this.tabPageDisplay);
 			this.tabControl.Controls.Add(this.tabPageClients);
 			this.tabControl.Controls.Add(this.tabPageDesign);
-			this.tabControl.Controls.Add(this.tabPageApp);
 			this.tabControl.Controls.Add(this.tabPageAudio);
+			this.tabControl.Controls.Add(this.tabPageApp);
 			this.tabControl.Location = new System.Drawing.Point(12, 139);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
