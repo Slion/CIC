@@ -219,6 +219,9 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void trackBarMasterVolume_Scroll(object sender, EventArgs e)
         {
+			//Just like Windows Volume Mixer we unmute if the volume is adjusted
+			iMultiMediaDevice.AudioEndpointVolume.Mute = false;
+			//Set volume level according to our volume slider new position
 			iMultiMediaDevice.AudioEndpointVolume.MasterVolumeLevelScalar = trackBarMasterVolume.Value / 100.0f;
         }
 
@@ -270,7 +273,8 @@ namespace SharpDisplayManager
         
 
 		/// <summary>
-		/// 
+		/// Update master volume indicators based our current system states.
+		/// This typically includes volume levels and mute status.
 		/// </summary>
 		private void UpdateMasterVolumeThreadSafe()
 		{
@@ -288,21 +292,26 @@ namespace SharpDisplayManager
 			//Update mute checkbox
 			checkBoxMute.Checked = iMultiMediaDevice.AudioEndpointVolume.Mute;
 
-			//TODO: Check our display device too
+			//If our display connection is open we need to update its icons
 			if (iDisplay.IsOpen())
 			{
+				//First take care our our volume level icons
 				int volumeIconCount = iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconVolume);
 				if (volumeIconCount > 0)
 				{					
-					int currentVolume = Convert.ToInt32(volumeLevelScalar * volumeIconCount);
-
-					bool roundedUp = currentVolume > (volumeLevelScalar * volumeIconCount);
+					//Compute current volume level from system level and the number of segments in our display volume bar.
+					//That tells us how many segments in our volume bar needs to be turned on.
+					float currentVolume = volumeLevelScalar * volumeIconCount;
+					int segmentOnCount = Convert.ToInt32(currentVolume);
+					//Check if our segment count was rounded up, this will later be used for half brightness segment
+					bool roundedUp = segmentOnCount > currentVolume;
 
 					for (int i = 0; i < volumeIconCount; i++)
 					{
-						if (i < currentVolume)
+						if (i < segmentOnCount)
 						{
-							if (i == currentVolume - 1 && roundedUp)
+							//If we are dealing with our last segment and our segment count was rounded up then we will use half brightness.
+							if (i == segmentOnCount - 1 && roundedUp)
 							{
 								//Half brightness
 								iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconVolume, i, (iDisplay.IconStatusCount(Display.TMiniDisplayIconType.EMiniDisplayIconVolume) - 1)/2);
@@ -320,22 +329,8 @@ namespace SharpDisplayManager
 					}
 				}
 
-				int muteIconCount = iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconMute);
-				if (muteIconCount > 0)
-				{
-					for (int i = 0; i < muteIconCount; i++)
-					{
-						if (iMultiMediaDevice.AudioEndpointVolume.Mute)
-						{
-							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconMute, i, iDisplay.IconStatusCount(Display.TMiniDisplayIconType.EMiniDisplayIconMute)-1);
-						}
-						else
-						{
-							iDisplay.SetIconStatus(Display.TMiniDisplayIconType.EMiniDisplayIconMute, i, 0);
-						}
-					}
-				}
-
+				//Take care our our mute icon
+				iDisplay.SetIconOnOff(Display.TMiniDisplayIconType.EMiniDisplayIconMute, iMultiMediaDevice.AudioEndpointVolume.Mute);
 			}
 
 		}
@@ -358,6 +353,9 @@ namespace SharpDisplayManager
             {                
                 //Get our master volume            
 				iMultiMediaDevice = iMultiMediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+				//Update our label
+				labelDefaultAudioDevice.Text = iMultiMediaDevice.FriendlyName;
+
                 //Show our volume in our track bar
 				UpdateMasterVolumeThreadSafe();
 
