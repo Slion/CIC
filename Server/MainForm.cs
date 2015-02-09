@@ -247,10 +247,10 @@ namespace SharpDisplayManager
 			{				
 				int iconCount=iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconNetworkSignal);
 				iLastNetworkIconIndex++;
-				iLastNetworkIconIndex = iLastNetworkIconIndex % (iconCount+1);
+				iLastNetworkIconIndex = iLastNetworkIconIndex % (iconCount*2);
 				for (int i=0;i<iconCount;i++)
 				{
-					if (i < iLastNetworkIconIndex)
+					if (i < iLastNetworkIconIndex && !(i == 0 && iLastNetworkIconIndex > 3) && !(i == 1 && iLastNetworkIconIndex > 4))
 					{
 						iDisplay.SetIconOn(Display.TMiniDisplayIconType.EMiniDisplayIconNetworkSignal,i);
 					}
