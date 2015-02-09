@@ -246,6 +246,11 @@ namespace SharpDisplayManager
 			if (iDisplay.IsOpen() && iNetworkManager.NetworkListManager.IsConnected && iUpdateCountSinceLastNetworkAnimation==0)
 			{				
 				int iconCount=iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconNetworkSignal);
+				if (iconCount <= 0)
+				{
+					//Prevents div by zero and other undefined behavior
+					return;
+				}
 				iLastNetworkIconIndex++;
 				iLastNetworkIconIndex = iLastNetworkIconIndex % (iconCount*2);
 				for (int i=0;i<iconCount;i++)
