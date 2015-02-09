@@ -226,9 +226,42 @@ namespace SharpDisplayManager
 		{
 			if (iDisplay.IsOpen())
 			{
-				iDisplay.SetIconOnOff(Display.TMiniDisplayIconType.EMiniDisplayIconNetwork, iNetworkManager.NetworkListManager.IsConnectedToInternet);
+				iDisplay.SetIconOnOff(Display.TMiniDisplayIconType.EMiniDisplayIconInternet, iNetworkManager.NetworkListManager.IsConnectedToInternet);
+				iDisplay.SetIconOnOff(Display.TMiniDisplayIconType.EMiniDisplayIconNetworkSignal, iNetworkManager.NetworkListManager.IsConnected);
 			}
 		}
+
+
+		int iLastNetworkIconIndex = 0;
+		int iUpdateCountSinceLastNetworkAnimation = 0;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private void UpdateNetworkSignal(DateTime aLastTickTime, DateTime aNewTickTime)
+		{
+			iUpdateCountSinceLastNetworkAnimation++;
+			iUpdateCountSinceLastNetworkAnimation = iUpdateCountSinceLastNetworkAnimation % 4;
+
+			if (iDisplay.IsOpen() && iNetworkManager.NetworkListManager.IsConnected && iUpdateCountSinceLastNetworkAnimation==0)
+			{				
+				int iconCount=iDisplay.IconCount(Display.TMiniDisplayIconType.EMiniDisplayIconNetworkSignal);
+				iLastNetworkIconIndex++;
+				iLastNetworkIconIndex = iLastNetworkIconIndex % (iconCount+1);
+				for (int i=0;i<iconCount;i++)
+				{
+					if (i < iLastNetworkIconIndex)
+					{
+						iDisplay.SetIconOn(Display.TMiniDisplayIconType.EMiniDisplayIconNetworkSignal,i);
+					}
+					else
+					{
+						iDisplay.SetIconOff(Display.TMiniDisplayIconType.EMiniDisplayIconNetworkSignal,i);
+					}
+				}				
+			}
+		}
+
 
 
         /// <summary>
@@ -729,6 +762,8 @@ namespace SharpDisplayManager
         {
             //Update our animations
             DateTime NewTickTime = DateTime.Now;
+
+			UpdateNetworkSignal(LastTickTime, NewTickTime);
 
             //Update animation for all our marquees
             foreach (Control ctrl in tableLayoutPanel.Controls)
