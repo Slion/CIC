@@ -91,13 +91,14 @@
 			this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
 			this.buttonUpdate = new System.Windows.Forms.Button();
 			this.tabPageAudio = new System.Windows.Forms.TabPage();
+			this.labelDefaultAudioDevice = new System.Windows.Forms.Label();
+			this.checkBoxShowVolumeLabel = new System.Windows.Forms.CheckBox();
 			this.checkBoxMute = new System.Windows.Forms.CheckBox();
 			this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
 			this.labelFontWidth = new System.Windows.Forms.Label();
 			this.labelFontHeight = new System.Windows.Forms.Label();
 			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.checkBoxShowVolumeLabel = new System.Windows.Forms.CheckBox();
 			this.panelDisplay.SuspendLayout();
 			this.tableLayoutPanel.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -692,6 +693,7 @@
 			// 
 			// tabPageAudio
 			// 
+			this.tabPageAudio.Controls.Add(this.labelDefaultAudioDevice);
 			this.tabPageAudio.Controls.Add(this.checkBoxShowVolumeLabel);
 			this.tabPageAudio.Controls.Add(this.checkBoxMute);
 			this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
@@ -702,6 +704,28 @@
 			this.tabPageAudio.TabIndex = 5;
 			this.tabPageAudio.Text = "Audio";
 			this.tabPageAudio.UseVisualStyleBackColor = true;
+			// 
+			// labelDefaultAudioDevice
+			// 
+			this.labelDefaultAudioDevice.AutoSize = true;
+			this.labelDefaultAudioDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.labelDefaultAudioDevice.Location = new System.Drawing.Point(3, 6);
+			this.labelDefaultAudioDevice.Name = "labelDefaultAudioDevice";
+			this.labelDefaultAudioDevice.Size = new System.Drawing.Size(120, 13);
+			this.labelDefaultAudioDevice.TabIndex = 19;
+			this.labelDefaultAudioDevice.Text = "Audio Device Unknown";
+			// 
+			// checkBoxShowVolumeLabel
+			// 
+			this.checkBoxShowVolumeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxShowVolumeLabel.AutoSize = true;
+			this.checkBoxShowVolumeLabel.Location = new System.Drawing.Point(3, 196);
+			this.checkBoxShowVolumeLabel.Name = "checkBoxShowVolumeLabel";
+			this.checkBoxShowVolumeLabel.Size = new System.Drawing.Size(115, 17);
+			this.checkBoxShowVolumeLabel.TabIndex = 18;
+			this.checkBoxShowVolumeLabel.Text = "Show volume label";
+			this.checkBoxShowVolumeLabel.UseVisualStyleBackColor = true;
+			this.checkBoxShowVolumeLabel.CheckedChanged += new System.EventHandler(this.checkBoxShowVolumeLabel_CheckedChanged);
 			// 
 			// checkBoxMute
 			// 
@@ -754,18 +778,6 @@
 			this.pictureBoxDemo.Size = new System.Drawing.Size(100, 50);
 			this.pictureBoxDemo.TabIndex = 21;
 			this.pictureBoxDemo.TabStop = false;
-			// 
-			// checkBoxShowVolumeLabel
-			// 
-			this.checkBoxShowVolumeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.checkBoxShowVolumeLabel.AutoSize = true;
-			this.checkBoxShowVolumeLabel.Location = new System.Drawing.Point(3, 196);
-			this.checkBoxShowVolumeLabel.Name = "checkBoxShowVolumeLabel";
-			this.checkBoxShowVolumeLabel.Size = new System.Drawing.Size(115, 17);
-			this.checkBoxShowVolumeLabel.TabIndex = 18;
-			this.checkBoxShowVolumeLabel.Text = "Show volume label";
-			this.checkBoxShowVolumeLabel.UseVisualStyleBackColor = true;
-			this.checkBoxShowVolumeLabel.CheckedChanged += new System.EventHandler(this.checkBoxShowVolumeLabel_CheckedChanged);
 			// 
 			// MainForm
 			// 
@@ -871,6 +883,7 @@
 		private System.Windows.Forms.TrackBar trackBarMasterVolume;
 		private System.Windows.Forms.CheckBox checkBoxMute;
 		private System.Windows.Forms.CheckBox checkBoxShowVolumeLabel;
+		private System.Windows.Forms.Label labelDefaultAudioDevice;
     }
 }
 

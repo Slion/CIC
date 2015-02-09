@@ -232,7 +232,7 @@ namespace SharpDisplayManager
 		}
 
 		/// <summary>
-		/// 
+		/// Set all elements of an icon to the given status.
 		/// </summary>
 		/// <param name="aIcon"></param>
 		/// <param name="aStatus"></param>
@@ -246,7 +246,24 @@ namespace SharpDisplayManager
 		}
 
 		/// <summary>
-		/// 
+		/// Set all elements of an icon to be either on or off.
+		/// </summary>
+		/// <param name="aIcon"></param>
+		/// <param name="aOn"></param>		
+		public void SetIconOnOff(TMiniDisplayIconType aIcon, bool aOn)
+		{
+			if (aOn)
+			{
+				SetIconOn(aIcon);
+			}
+			else
+			{
+				SetIconOff(aIcon);
+			}
+		}
+
+		/// <summary>
+		/// Set all elements of an icon to there maximum status.
 		/// </summary>
 		/// <param name="aIcon"></param>
 		public void SetIconOn(TMiniDisplayIconType aIcon)
@@ -259,7 +276,7 @@ namespace SharpDisplayManager
 		}
 
 		/// <summary>
-		/// 
+		/// Turn off all elements of an icon.
 		/// </summary>
 		/// <param name="aIcon"></param>
 		public void SetIconOff(TMiniDisplayIconType aIcon)
