@@ -73,10 +73,6 @@ namespace SharpDisplayManager
 				return;
 			}
 
-			//Controversially clearing our screen before closing
-			//Consider moving this up into the UI layer
-			Clear(); 
-			SwapBuffers();
 			//
             MiniDisplayClose(iDevice);
             iDevice = IntPtr.Zero;
@@ -239,7 +235,6 @@ namespace SharpDisplayManager
 					SetIconStatus(icon,i,aStatus);
 				}
 			}
-
 		}
 
 		/// <summary>

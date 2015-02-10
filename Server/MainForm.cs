@@ -57,6 +57,8 @@ namespace SharpDisplayManager
         ClientData iCurrentClientData;
         //
         public bool iClosing;
+		//
+		public bool iSkipFrameRendering;
         //Function pointer for pixel color filtering
         ColorProcessingDelegate iColorFx;
         //Function pointer for pixel X coordinate intercept
@@ -82,6 +84,8 @@ namespace SharpDisplayManager
 
         public MainForm()
         {
+			iSkipFrameRendering = false;
+			iClosing = false;
             iCurrentClientSessionId = "";
             iCurrentClientData = null;
             LastTickTime = DateTime.Now;
@@ -177,6 +181,9 @@ namespace SharpDisplayManager
 		/// <param name="aDisplay"></param>
 		private void OnDisplayOpened(Display aDisplay)
 		{
+			//Make sure we resume frame rendering
+			iSkipFrameRendering = false;
+
 			//Set our screen size now that our display is connected
 			//Our panelDisplay is the container of our tableLayoutPanel
 			//tableLayoutPanel will resize itself to fit the client size of our panelDisplay
@@ -779,42 +786,45 @@ namespace SharpDisplayManager
                 }
             }
 
-
             //Update our display
             if (iDisplay.IsOpen())
             {
                 CheckForRequestResults();
 
-                //Draw to bitmap
-                if (iCreateBitmap)
-                {
-                    iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
-                }
-                tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
-                //iBmp.Save("D:\\capture.png");
+				//Check if frame rendering is needed
+				//Typically used when showing clock
+				if (!iSkipFrameRendering)
+				{
+					//Draw to bitmap
+					if (iCreateBitmap)
+					{
+						iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+					}
+					tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
+					//iBmp.Save("D:\\capture.png");
 
-                //Send it to our display
-                for (int i = 0; i < iBmp.Width; i++)
-                {
-                    for (int j = 0; j < iBmp.Height; j++)
-                    {
-                        unchecked
-                        {
-                            //Get our processed pixel coordinates
-                            int x = iScreenX(iBmp, i);
-                            int y = iScreenY(iBmp, j);
-                            //Get pixel color
-                            uint color = (uint)iBmp.GetPixel(i, j).ToArgb();
-                            //Apply color effects
-                            color = iColorFx(x,y,color);
-                            //Now set our pixel
-                            iDisplay.SetPixel(x, y, color);
-                        }
-                    }
-                }
+					//Send it to our display
+					for (int i = 0; i < iBmp.Width; i++)
+					{
+						for (int j = 0; j < iBmp.Height; j++)
+						{
+							unchecked
+							{
+								//Get our processed pixel coordinates
+								int x = iScreenX(iBmp, i);
+								int y = iScreenY(iBmp, j);
+								//Get pixel color
+								uint color = (uint)iBmp.GetPixel(i, j).ToArgb();
+								//Apply color effects
+								color = iColorFx(x, y, color);
+								//Now set our pixel
+								iDisplay.SetPixel(x, y, color);
+							}
+						}
+					}
 
-                iDisplay.SwapBuffers();
-
+					iDisplay.SwapBuffers();
+				}
             }
 
             //Compute instant FPS
@@ -841,6 +851,21 @@ namespace SharpDisplayManager
         private void CloseDisplayConnection()
         {
 			//Status will be updated upon receiving the closed event
+
+			if (iDisplay == null || !iDisplay.IsOpen())
+			{
+				return;
+			}
+
+			//Do not clear if we gave up on rendering already.
+			//This means we will keep on displaying clock on MDM166AA for instance.
+			if (!iSkipFrameRendering)
+			{
+				iDisplay.Clear();
+				iDisplay.SwapBuffers();
+			}
+
+			iDisplay.SetAllIconsStatus(0); //Turn off all icons
             iDisplay.Close();
         }
 
@@ -1229,6 +1254,7 @@ namespace SharpDisplayManager
 			tableLayoutPanel.Controls.Clear();
 			tableLayoutPanel.RowStyles.Clear();
 			tableLayoutPanel.ColumnStyles.Clear();
+			iCurrentClientData = null;
 		}
 
 		/// <summary>
@@ -1578,72 +1604,6 @@ namespace SharpDisplayManager
             }
         }
 
-        /// DEPRECATED
-        /// <summary>
-        /// Empty and recreate our table layout with the given number of columns and rows.
-        /// Sizes of rows and columns are uniform.
-        /// </summary>
-        /// <param name="aColumn"></param>
-        /// <param name="aRow"></param>
-        private void UpdateTableLayoutPanel(int aColumn, int aRow)
-        {
-            tableLayoutPanel.Controls.Clear();
-            tableLayoutPanel.RowStyles.Clear();
-            tableLayoutPanel.ColumnStyles.Clear();
-            tableLayoutPanel.RowCount = 0;
-            tableLayoutPanel.ColumnCount = 0;
-
-            while (tableLayoutPanel.RowCount < aRow)
-            {
-                tableLayoutPanel.RowCount++;
-            }
-
-            while (tableLayoutPanel.ColumnCount < aColumn)
-            {
-                tableLayoutPanel.ColumnCount++;
-            }
-
-            for (int i = 0; i < tableLayoutPanel.ColumnCount; i++)
-            {
-                //Create our column styles
-                this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100 / tableLayoutPanel.ColumnCount));
-
-                for (int j = 0; j < tableLayoutPanel.RowCount; j++)
-                {
-                    if (i == 0)
-                    {
-                        //Create our row styles
-                        this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100 / tableLayoutPanel.RowCount));
-                    }
-
-                    MarqueeLabel control = new SharpDisplayManager.MarqueeLabel();
-                    control.AutoEllipsis = true;
-                    control.AutoSize = true;
-                    control.BackColor = System.Drawing.Color.Transparent;
-                    control.Dock = System.Windows.Forms.DockStyle.Fill;
-                    control.Location = new System.Drawing.Point(1, 1);
-                    control.Margin = new System.Windows.Forms.Padding(0);
-                    control.Name = "marqueeLabelCol" + aColumn + "Row" + aRow;
-                    control.OwnTimer = false;
-                    control.PixelsPerSecond = 64;
-                    control.Separator = cds.Separator;
-                    control.MinFontSize = cds.MinFontSize;
-                    control.ScaleToFit = cds.ScaleToFit;
-                    //control.Size = new System.Drawing.Size(254, 30);
-                    //control.TabIndex = 2;
-                    control.Font = cds.Font;
-                    control.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
-                    control.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-                    control.UseCompatibleTextRendering = true;
-                    //
-                    tableLayoutPanel.Controls.Add(control, i, j);
-                }
-            }
-
-            CheckFontHeight();
-        }
-
-
         /// <summary>
         /// Update our display table layout.
         /// </summary>
@@ -1878,12 +1838,12 @@ namespace SharpDisplayManager
 
         private void buttonShowClock_Click(object sender, EventArgs e)
         {
-            iDisplay.ShowClock();
+			ShowClock();
         }
 
         private void buttonHideClock_Click(object sender, EventArgs e)
         {
-            iDisplay.HideClock();
+			HideClock();
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
@@ -1891,6 +1851,39 @@ namespace SharpDisplayManager
             InstallUpdateSyncWithInfo();
         }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		void ShowClock()
+		{
+			if (!iDisplay.IsOpen())
+			{
+				return;
+			}
+
+			//Devices like MDM166AA don't support windowing and frame rendering must be stopped while showing our clock
+			iSkipFrameRendering = true;
+			//Clear our screen 
+			iDisplay.Clear();
+			iDisplay.SwapBuffers();
+			//Then show our clock
+			iDisplay.ShowClock();
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void HideClock()
+		{
+			if (!iDisplay.IsOpen())
+			{
+				return;
+			}
+
+			//Devices like MDM166AA don't support windowing and frame rendering must be stopped while showing our clock
+			iSkipFrameRendering = false;
+			iDisplay.HideClock();
+		}
 
         private void InstallUpdateSyncWithInfo()
         {
