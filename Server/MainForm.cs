@@ -44,6 +44,7 @@ using NETWORKLIST;
 using SharpDisplayClient;
 using SharpDisplay;
 
+
 namespace SharpDisplayManager
 {
     //Types declarations
@@ -192,6 +193,9 @@ namespace SharpDisplayManager
 
 			//Start our server so that we can get client requests
 			StartServer();
+
+			//Register for HID events
+			RegisterHidDevices();
         }
 
 		/// <summary>
