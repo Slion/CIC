@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDisplayManager", "Server\SharpDisplayManager.csproj", "{1DA8C1B3-18C5-4E74-BE4E-0B0E15FBAF49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDisplayClient", "Client\SharpDisplayClient.csproj", "{7EE64074-8CDB-4448-B40C-81B75D6B31CD}"
