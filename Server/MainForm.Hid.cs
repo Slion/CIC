@@ -20,6 +20,15 @@ namespace SharpDisplayManager
 		[DllImport("USER32.DLL")]
 		public static extern bool SetForegroundWindow(IntPtr hWnd);
 
+		[DllImport("USER32.DLL")]
+		public static extern bool BringWindowToTop(IntPtr hWnd);
+
+		[DllImport("USER32.DLL")]
+		public static extern bool IsIconic(IntPtr hWnd);
+
+		[DllImport("USER32.DLL")]
+		public static extern bool OpenIcon(IntPtr hWnd);
+
 
 		public delegate void OnHidEventDelegate(object aSender, Hid.Event aHidEvent);
 
@@ -134,6 +143,13 @@ namespace SharpDisplayManager
 					}
 					else
 					{
+						BringWindowToTop(existingProcesses[0].MainWindowHandle);
+						SetForegroundWindow(existingProcesses[0].MainWindowHandle);
+						if (IsIconic(existingProcesses[0].MainWindowHandle))
+						{
+							OpenIcon(existingProcesses[0].MainWindowHandle);
+						}
+						BringWindowToTop(existingProcesses[0].MainWindowHandle);
 						SetForegroundWindow(existingProcesses[0].MainWindowHandle);
 					}			
 				}
