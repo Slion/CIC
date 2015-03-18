@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,13 @@ using SharpLib.Win32;
 namespace SharpDisplayManager
 {
 	[System.ComponentModel.DesignerCategory("Code")]
-	public partial class MainForm: Form
+	public class MainFormHid: Form
 	{
+
+		[DllImport("USER32.DLL")]
+		public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+
 		public delegate void OnHidEventDelegate(object aSender, Hid.Event aHidEvent);
 
 		/// <summary>
@@ -22,7 +28,7 @@ namespace SharpDisplayManager
 		/// </summary>
 		private Hid.Handler iHidHandler;
 
-		void RegisterHidDevices()
+		protected void RegisterHidDevices()
 		{
 			// Register the input device to receive the commands from the
 			// remote device. See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnwmt/html/remote_control.asp
@@ -98,29 +104,43 @@ namespace SharpDisplayManager
 			else
 			{
 				//We are in the proper thread
-				//listViewEvents.Items.Insert(0, aHidEvent.ToListViewItem());
-				//toolStripStatusLabelDevice.Text = aHidEvent.Device.FriendlyName;
-
 				if (aHidEvent.Usages.Count > 0
 					&& aHidEvent.UsagePage == (ushort)Hid.UsagePage.WindowsMediaCenterRemoteControl
 					&& aHidEvent.Usages[0] == (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart)
+					//&& aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer
+					//&& aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
+
 				{
-					//Hard coding it all for now
-					// Prepare the process to run
-					ProcessStartInfo start = new ProcessStartInfo();
-					// Enter in the command line arguments, everything you would enter after the executable name itself
-					//start.Arguments = arguments; 
-					// Enter the executable to run, including the complete path
-					start.FileName = "C:\\Program Files (x86)\\Team MediaPortal\\MediaPortal\\MediaPortal.exe";
-					// Do you want to show a console window?
-					start.WindowStyle = ProcessWindowStyle.Hidden;
-					start.CreateNoWindow = true;
-					// Run the external process & wait for it to finish
-					Process proc = Process.Start(start);
+					//First check if the process we want to launch already exists
+					string procName = Path.GetFileNameWithoutExtension(Properties.Settings.Default.StartFileName);
+					Process[] existingProcesses = Process.GetProcessesByName(procName);
+					if (existingProcesses == null || existingProcesses.Length==0)
+					{
+						// Process do not exists just try to launch it
+						ProcessStartInfo start = new ProcessStartInfo();
+						// Enter in the command line arguments, everything you would enter after the executable name itself
+						//start.Arguments = arguments; 
+						// Enter the executable to run, including the complete path
+						start.FileName = Properties.Settings.Default.StartFileName;
+						start.WindowStyle = ProcessWindowStyle.Normal;
+						start.CreateNoWindow = true;
+						start.UseShellExecute = true;
+						// Run the external process & wait for it to finish
+						Process proc = Process.Start(start);
+						
+						//SL: We could have used that too
+						//Shell32.Shell shell = new Shell32.Shell();
+						//shell.ShellExecute(Properties.Settings.Default.StartFileName);
+					}
+					else
+					{
+						SetForegroundWindow(existingProcesses[0].MainWindowHandle);
+					}			
 				}
 			}
 		}
 
+		
 		protected override void WndProc(ref Message message)
 		{
 			switch (message.Msg)
@@ -134,7 +154,5 @@ namespace SharpDisplayManager
 			//Is that needed? Check the docs.
 			base.WndProc(ref message);
 		}
-
-
 	}
 }

@@ -63,7 +63,8 @@ namespace SharpDisplayManager
     /// <summary>
     /// Our Display manager main form
     /// </summary>
-	public partial class MainForm : Form, IMMNotificationClient
+	[System.ComponentModel.DesignerCategory("Form")]
+	public partial class MainForm : MainFormHid, IMMNotificationClient
     {
         DateTime LastTickTime;
         Display iDisplay;
@@ -996,6 +997,7 @@ namespace SharpDisplayManager
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
 			checkBoxMinimizeToTray.Checked = Properties.Settings.Default.MinimizeToTray;
 			checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
+			labelStartFileName.Text = Properties.Settings.Default.StartFileName;
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
             checkBoxInverseColors.Checked = cds.InverseColors;
 			checkBoxShowVolumeLabel.Checked = cds.ShowVolumeLabel;
@@ -2022,6 +2024,26 @@ namespace SharpDisplayManager
 			//Our table layout size has changed which means our display size has changed.
 			//We need to re-create our bitmap.
 			iCreateBitmap = true;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void buttonSelectFile_Click(object sender, EventArgs e)
+		{
+			//openFileDialog1.InitialDirectory = "c:\\";
+			//openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
+			//openFileDialog.FilterIndex = 1;
+			openFileDialog.RestoreDirectory = true;
+
+			if (DlgBox.ShowDialog(openFileDialog) == DialogResult.OK)
+			{
+				labelStartFileName.Text = openFileDialog.FileName;
+				Properties.Settings.Default.StartFileName = openFileDialog.FileName;
+				Properties.Settings.Default.Save();
+			}
 		}
     }
 
