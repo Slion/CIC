@@ -14,22 +14,26 @@ using SharpLib.Win32;
 namespace SharpDisplayManager
 {
 	[System.ComponentModel.DesignerCategory("Code")]
-	public class MainFormHid: Form
+	public class MainFormHid : Form
 	{
 
 		[DllImport("USER32.DLL")]
 		public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 		[DllImport("USER32.DLL")]
-		public static extern bool BringWindowToTop(IntPtr hWnd);
+		public static extern IntPtr GetForegroundWindow();
 
-		[DllImport("USER32.DLL")]
-		public static extern bool IsIconic(IntPtr hWnd);
+		[System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint = "GetWindowThreadProcessId")]
+		public static extern uint GetWindowThreadProcessId([System.Runtime.InteropServices.InAttribute()] System.IntPtr hWnd, System.IntPtr lpdwProcessId);
 
-		[DllImport("USER32.DLL")]
-		public static extern bool OpenIcon(IntPtr hWnd);
+		[System.Runtime.InteropServices.DllImportAttribute("kernel32.dll", EntryPoint = "GetCurrentThreadId")]
+		public static extern uint GetCurrentThreadId();
 
+		[System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint = "AttachThreadInput")]
+		[return: System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)]
+		public static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fAttach);
 
+		//
 		public delegate void OnHidEventDelegate(object aSender, Hid.Event aHidEvent);
 
 		/// <summary>
@@ -37,6 +41,9 @@ namespace SharpDisplayManager
 		/// </summary>
 		private Hid.Handler iHidHandler;
 
+		/// <summary>
+		/// Register HID devices so that we receive corresponding WM_INPUT messages.
+		/// </summary>
 		protected void RegisterHidDevices()
 		{
 			// Register the input device to receive the commands from the
@@ -96,6 +103,11 @@ namespace SharpDisplayManager
 			iHidHandler.OnHidEvent += HandleHidEventThreadSafe;
 		}
 
+		/// <summary>
+		/// Here we receive HID events from our HID library.
+		/// </summary>
+		/// <param name="aSender"></param>
+		/// <param name="aHidEvent"></param>
 		public void HandleHidEventThreadSafe(object aSender, SharpLib.Hid.Event aHidEvent)
 		{
 			if (aHidEvent.IsStray)
@@ -116,14 +128,13 @@ namespace SharpDisplayManager
 				if (aHidEvent.Usages.Count > 0
 					&& aHidEvent.UsagePage == (ushort)Hid.UsagePage.WindowsMediaCenterRemoteControl
 					&& aHidEvent.Usages[0] == (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart)
-					//&& aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer
-					//&& aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
-
+				//&& aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer
+				//&& aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
 				{
 					//First check if the process we want to launch already exists
 					string procName = Path.GetFileNameWithoutExtension(Properties.Settings.Default.StartFileName);
 					Process[] existingProcesses = Process.GetProcessesByName(procName);
-					if (existingProcesses == null || existingProcesses.Length==0)
+					if (existingProcesses == null || existingProcesses.Length == 0)
 					{
 						// Process do not exists just try to launch it
 						ProcessStartInfo start = new ProcessStartInfo();
@@ -136,27 +147,68 @@ namespace SharpDisplayManager
 						start.UseShellExecute = true;
 						// Run the external process & wait for it to finish
 						Process proc = Process.Start(start);
-						
+
 						//SL: We could have used that too
 						//Shell32.Shell shell = new Shell32.Shell();
 						//shell.ShellExecute(Properties.Settings.Default.StartFileName);
 					}
 					else
 					{
-						BringWindowToTop(existingProcesses[0].MainWindowHandle);
-						SetForegroundWindow(existingProcesses[0].MainWindowHandle);
-						if (IsIconic(existingProcesses[0].MainWindowHandle))
-						{
-							OpenIcon(existingProcesses[0].MainWindowHandle);
-						}
-						BringWindowToTop(existingProcesses[0].MainWindowHandle);
-						SetForegroundWindow(existingProcesses[0].MainWindowHandle);
-					}			
+						ForceForegroundWindow(existingProcesses[0].MainWindowHandle);
+					}
 				}
 			}
 		}
 
-		
+
+		/// <summary>
+		/// For the Window with the given handle to the foreground no matter what.
+		/// That works around flashing Window issues.
+		/// As seen on http://www.asyncop.com/MTnPDirEnum.aspx?treeviewPath=[o]+Open-Source\WinModules\Infrastructure\SystemAPI.cpp
+		/// </summary>
+		/// <param name="hTo"></param>
+		/// <returns></returns>
+		IntPtr ForceForegroundWindow(IntPtr hTo)
+		{
+			if (hTo == IntPtr.Zero)
+			{
+				return IntPtr.Zero;
+			}
+			IntPtr hFrom = GetForegroundWindow();
+
+			if (hFrom != IntPtr.Zero)
+			{
+				SetForegroundWindow(hTo); 
+				return IntPtr.Zero;
+			}
+			if (hTo == hFrom)
+			{
+				return IntPtr.Zero;
+			}
+
+			uint pid = GetWindowThreadProcessId(hFrom, IntPtr.Zero);
+			uint tid = GetCurrentThreadId();
+			if (tid == pid)
+			{
+				SetForegroundWindow(hTo);
+				return (hFrom);
+			}
+			if (pid != 0)
+			{
+				if (!AttachThreadInput(tid, pid, true))
+				{
+					return IntPtr.Zero;
+				}
+				SetForegroundWindow(hTo);
+				AttachThreadInput(tid, pid, false);
+			}
+			return (hFrom);
+		}
+
+		/// <summary>
+		/// We need to handle WM_INPUT.
+		/// </summary>
+		/// <param name="message"></param>
 		protected override void WndProc(ref Message message)
 		{
 			switch (message.Msg)
