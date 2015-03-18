@@ -91,6 +91,7 @@
 			this.checkBoxMute = new System.Windows.Forms.CheckBox();
 			this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
 			this.tabPageInput = new System.Windows.Forms.TabPage();
+			this.pictureBoxGreenStart = new System.Windows.Forms.PictureBox();
 			this.labelStartFileName = new System.Windows.Forms.Label();
 			this.buttonSelectFile = new System.Windows.Forms.Button();
 			this.tabPageApp = new System.Windows.Forms.TabPage();
@@ -100,9 +101,9 @@
 			this.buttonUpdate = new System.Windows.Forms.Button();
 			this.labelFontWidth = new System.Windows.Forms.Label();
 			this.labelFontHeight = new System.Windows.Forms.Label();
-			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
 			this.panelDisplay.SuspendLayout();
 			this.tableLayoutPanel.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -114,6 +115,7 @@
 			this.tabPageAudio.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).BeginInit();
 			this.tabPageInput.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).BeginInit();
 			this.tabPageApp.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).BeginInit();
 			this.SuspendLayout();
@@ -701,6 +703,7 @@
 			// 
 			// tabPageInput
 			// 
+			this.tabPageInput.Controls.Add(this.pictureBoxGreenStart);
 			this.tabPageInput.Controls.Add(this.labelStartFileName);
 			this.tabPageInput.Controls.Add(this.buttonSelectFile);
 			this.tabPageInput.Location = new System.Drawing.Point(4, 22);
@@ -711,10 +714,20 @@
 			this.tabPageInput.Text = "Input";
 			this.tabPageInput.UseVisualStyleBackColor = true;
 			// 
+			// pictureBoxGreenStart
+			// 
+			this.pictureBoxGreenStart.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxGreenStart.Image")));
+			this.pictureBoxGreenStart.Location = new System.Drawing.Point(3, 6);
+			this.pictureBoxGreenStart.Name = "pictureBoxGreenStart";
+			this.pictureBoxGreenStart.Size = new System.Drawing.Size(32, 32);
+			this.pictureBoxGreenStart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.pictureBoxGreenStart.TabIndex = 2;
+			this.pictureBoxGreenStart.TabStop = false;
+			// 
 			// labelStartFileName
 			// 
 			this.labelStartFileName.AutoSize = true;
-			this.labelStartFileName.Location = new System.Drawing.Point(37, 11);
+			this.labelStartFileName.Location = new System.Drawing.Point(72, 16);
 			this.labelStartFileName.Name = "labelStartFileName";
 			this.labelStartFileName.Size = new System.Drawing.Size(33, 13);
 			this.labelStartFileName.TabIndex = 1;
@@ -722,7 +735,7 @@
 			// 
 			// buttonSelectFile
 			// 
-			this.buttonSelectFile.Location = new System.Drawing.Point(6, 6);
+			this.buttonSelectFile.Location = new System.Drawing.Point(41, 11);
 			this.buttonSelectFile.Name = "buttonSelectFile";
 			this.buttonSelectFile.Size = new System.Drawing.Size(25, 23);
 			this.buttonSelectFile.TabIndex = 0;
@@ -808,6 +821,10 @@
 			this.labelFontHeight.TabIndex = 20;
 			this.labelFontHeight.Text = "Font height";
 			// 
+			// openFileDialog
+			// 
+			this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
+			// 
 			// pictureBoxDemo
 			// 
 			this.pictureBoxDemo.Location = new System.Drawing.Point(478, 54);
@@ -815,10 +832,6 @@
 			this.pictureBoxDemo.Size = new System.Drawing.Size(100, 50);
 			this.pictureBoxDemo.TabIndex = 21;
 			this.pictureBoxDemo.TabStop = false;
-			// 
-			// openFileDialog
-			// 
-			this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
 			// 
 			// MainForm
 			// 
@@ -857,6 +870,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).EndInit();
 			this.tabPageInput.ResumeLayout(false);
 			this.tabPageInput.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).EndInit();
 			this.tabPageApp.ResumeLayout(false);
 			this.tabPageApp.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).EndInit();
@@ -931,6 +945,7 @@
 		private System.Windows.Forms.Button buttonSelectFile;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
 		private System.Windows.Forms.Label labelStartFileName;
+		private System.Windows.Forms.PictureBox pictureBoxGreenStart;
     }
 }
 
