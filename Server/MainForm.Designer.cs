@@ -85,20 +85,24 @@
 			this.checkBoxScaleToFit = new System.Windows.Forms.CheckBox();
 			this.checkBoxInverseColors = new System.Windows.Forms.CheckBox();
 			this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
-			this.tabPageApp = new System.Windows.Forms.TabPage();
-			this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
-			this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
-			this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
-			this.buttonUpdate = new System.Windows.Forms.Button();
 			this.tabPageAudio = new System.Windows.Forms.TabPage();
 			this.labelDefaultAudioDevice = new System.Windows.Forms.Label();
 			this.checkBoxShowVolumeLabel = new System.Windows.Forms.CheckBox();
 			this.checkBoxMute = new System.Windows.Forms.CheckBox();
 			this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
+			this.tabPageInput = new System.Windows.Forms.TabPage();
+			this.labelStartFileName = new System.Windows.Forms.Label();
+			this.buttonSelectFile = new System.Windows.Forms.Button();
+			this.tabPageApp = new System.Windows.Forms.TabPage();
+			this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
+			this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
+			this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
+			this.buttonUpdate = new System.Windows.Forms.Button();
 			this.labelFontWidth = new System.Windows.Forms.Label();
 			this.labelFontHeight = new System.Windows.Forms.Label();
 			this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.panelDisplay.SuspendLayout();
 			this.tableLayoutPanel.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -107,9 +111,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackBarBrightness)).BeginInit();
 			this.tabControl.SuspendLayout();
 			this.tabPageDesign.SuspendLayout();
-			this.tabPageApp.SuspendLayout();
 			this.tabPageAudio.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).BeginInit();
+			this.tabPageInput.SuspendLayout();
+			this.tabPageApp.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -511,6 +516,7 @@
 			this.tabControl.Controls.Add(this.tabPageClients);
 			this.tabControl.Controls.Add(this.tabPageDesign);
 			this.tabControl.Controls.Add(this.tabPageAudio);
+			this.tabControl.Controls.Add(this.tabPageInput);
 			this.tabControl.Controls.Add(this.tabPageApp);
 			this.tabControl.Location = new System.Drawing.Point(12, 139);
 			this.tabControl.Name = "tabControl";
@@ -631,66 +637,6 @@
 			this.checkBoxReverseScreen.UseVisualStyleBackColor = true;
 			this.checkBoxReverseScreen.CheckedChanged += new System.EventHandler(this.checkBoxReverseScreen_CheckedChanged);
 			// 
-			// tabPageApp
-			// 
-			this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
-			this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
-			this.tabPageApp.Controls.Add(this.checkBoxAutoStart);
-			this.tabPageApp.Controls.Add(this.buttonUpdate);
-			this.tabPageApp.Location = new System.Drawing.Point(4, 22);
-			this.tabPageApp.Name = "tabPageApp";
-			this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageApp.Size = new System.Drawing.Size(592, 242);
-			this.tabPageApp.TabIndex = 4;
-			this.tabPageApp.Text = "Application";
-			this.tabPageApp.UseVisualStyleBackColor = true;
-			// 
-			// checkBoxStartMinimized
-			// 
-			this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.checkBoxStartMinimized.AutoSize = true;
-			this.checkBoxStartMinimized.Location = new System.Drawing.Point(8, 144);
-			this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
-			this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
-			this.checkBoxStartMinimized.TabIndex = 16;
-			this.checkBoxStartMinimized.Text = "Start minimized";
-			this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
-			this.checkBoxStartMinimized.CheckedChanged += new System.EventHandler(this.checkBoxStartMinimized_CheckedChanged);
-			// 
-			// checkBoxMinimizeToTray
-			// 
-			this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.checkBoxMinimizeToTray.AutoSize = true;
-			this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(8, 167);
-			this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
-			this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
-			this.checkBoxMinimizeToTray.TabIndex = 15;
-			this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
-			this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
-			this.checkBoxMinimizeToTray.CheckedChanged += new System.EventHandler(this.checkBoxMinimizeToTray_CheckedChanged);
-			// 
-			// checkBoxAutoStart
-			// 
-			this.checkBoxAutoStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.checkBoxAutoStart.AutoSize = true;
-			this.checkBoxAutoStart.Location = new System.Drawing.Point(8, 190);
-			this.checkBoxAutoStart.Name = "checkBoxAutoStart";
-			this.checkBoxAutoStart.Size = new System.Drawing.Size(143, 17);
-			this.checkBoxAutoStart.TabIndex = 14;
-			this.checkBoxAutoStart.Text = "Run on Windows startup";
-			this.checkBoxAutoStart.UseVisualStyleBackColor = true;
-			this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
-			// 
-			// buttonUpdate
-			// 
-			this.buttonUpdate.Location = new System.Drawing.Point(6, 213);
-			this.buttonUpdate.Name = "buttonUpdate";
-			this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
-			this.buttonUpdate.TabIndex = 0;
-			this.buttonUpdate.Text = "Update";
-			this.buttonUpdate.UseVisualStyleBackColor = true;
-			this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
-			// 
 			// tabPageAudio
 			// 
 			this.tabPageAudio.Controls.Add(this.labelDefaultAudioDevice);
@@ -753,6 +699,97 @@
 			this.toolTip.SetToolTip(this.trackBarMasterVolume, "Master Volume");
 			this.trackBarMasterVolume.Scroll += new System.EventHandler(this.trackBarMasterVolume_Scroll);
 			// 
+			// tabPageInput
+			// 
+			this.tabPageInput.Controls.Add(this.labelStartFileName);
+			this.tabPageInput.Controls.Add(this.buttonSelectFile);
+			this.tabPageInput.Location = new System.Drawing.Point(4, 22);
+			this.tabPageInput.Name = "tabPageInput";
+			this.tabPageInput.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageInput.Size = new System.Drawing.Size(592, 242);
+			this.tabPageInput.TabIndex = 6;
+			this.tabPageInput.Text = "Input";
+			this.tabPageInput.UseVisualStyleBackColor = true;
+			// 
+			// labelStartFileName
+			// 
+			this.labelStartFileName.AutoSize = true;
+			this.labelStartFileName.Location = new System.Drawing.Point(37, 11);
+			this.labelStartFileName.Name = "labelStartFileName";
+			this.labelStartFileName.Size = new System.Drawing.Size(33, 13);
+			this.labelStartFileName.TabIndex = 1;
+			this.labelStartFileName.Text = "None";
+			// 
+			// buttonSelectFile
+			// 
+			this.buttonSelectFile.Location = new System.Drawing.Point(6, 6);
+			this.buttonSelectFile.Name = "buttonSelectFile";
+			this.buttonSelectFile.Size = new System.Drawing.Size(25, 23);
+			this.buttonSelectFile.TabIndex = 0;
+			this.buttonSelectFile.Text = "...";
+			this.buttonSelectFile.UseVisualStyleBackColor = true;
+			this.buttonSelectFile.Click += new System.EventHandler(this.buttonSelectFile_Click);
+			// 
+			// tabPageApp
+			// 
+			this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
+			this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
+			this.tabPageApp.Controls.Add(this.checkBoxAutoStart);
+			this.tabPageApp.Controls.Add(this.buttonUpdate);
+			this.tabPageApp.Location = new System.Drawing.Point(4, 22);
+			this.tabPageApp.Name = "tabPageApp";
+			this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageApp.Size = new System.Drawing.Size(592, 242);
+			this.tabPageApp.TabIndex = 4;
+			this.tabPageApp.Text = "Application";
+			this.tabPageApp.UseVisualStyleBackColor = true;
+			// 
+			// checkBoxStartMinimized
+			// 
+			this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxStartMinimized.AutoSize = true;
+			this.checkBoxStartMinimized.Location = new System.Drawing.Point(8, 144);
+			this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
+			this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
+			this.checkBoxStartMinimized.TabIndex = 16;
+			this.checkBoxStartMinimized.Text = "Start minimized";
+			this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
+			this.checkBoxStartMinimized.CheckedChanged += new System.EventHandler(this.checkBoxStartMinimized_CheckedChanged);
+			// 
+			// checkBoxMinimizeToTray
+			// 
+			this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxMinimizeToTray.AutoSize = true;
+			this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(8, 167);
+			this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
+			this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
+			this.checkBoxMinimizeToTray.TabIndex = 15;
+			this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
+			this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
+			this.checkBoxMinimizeToTray.CheckedChanged += new System.EventHandler(this.checkBoxMinimizeToTray_CheckedChanged);
+			// 
+			// checkBoxAutoStart
+			// 
+			this.checkBoxAutoStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.checkBoxAutoStart.AutoSize = true;
+			this.checkBoxAutoStart.Location = new System.Drawing.Point(8, 190);
+			this.checkBoxAutoStart.Name = "checkBoxAutoStart";
+			this.checkBoxAutoStart.Size = new System.Drawing.Size(143, 17);
+			this.checkBoxAutoStart.TabIndex = 14;
+			this.checkBoxAutoStart.Text = "Run on Windows startup";
+			this.checkBoxAutoStart.UseVisualStyleBackColor = true;
+			this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
+			// 
+			// buttonUpdate
+			// 
+			this.buttonUpdate.Location = new System.Drawing.Point(6, 213);
+			this.buttonUpdate.Name = "buttonUpdate";
+			this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+			this.buttonUpdate.TabIndex = 0;
+			this.buttonUpdate.Text = "Update";
+			this.buttonUpdate.UseVisualStyleBackColor = true;
+			this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+			// 
 			// labelFontWidth
 			// 
 			this.labelFontWidth.AutoSize = true;
@@ -778,6 +815,10 @@
 			this.pictureBoxDemo.Size = new System.Drawing.Size(100, 50);
 			this.pictureBoxDemo.TabIndex = 21;
 			this.pictureBoxDemo.TabStop = false;
+			// 
+			// openFileDialog
+			// 
+			this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
 			// 
 			// MainForm
 			// 
@@ -811,11 +852,13 @@
 			this.tabControl.ResumeLayout(false);
 			this.tabPageDesign.ResumeLayout(false);
 			this.tabPageDesign.PerformLayout();
-			this.tabPageApp.ResumeLayout(false);
-			this.tabPageApp.PerformLayout();
 			this.tabPageAudio.ResumeLayout(false);
 			this.tabPageAudio.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).EndInit();
+			this.tabPageInput.ResumeLayout(false);
+			this.tabPageInput.PerformLayout();
+			this.tabPageApp.ResumeLayout(false);
+			this.tabPageApp.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -884,6 +927,10 @@
 		private System.Windows.Forms.CheckBox checkBoxMute;
 		private System.Windows.Forms.CheckBox checkBoxShowVolumeLabel;
 		private System.Windows.Forms.Label labelDefaultAudioDevice;
+		private System.Windows.Forms.TabPage tabPageInput;
+		private System.Windows.Forms.Button buttonSelectFile;
+		private System.Windows.Forms.OpenFileDialog openFileDialog;
+		private System.Windows.Forms.Label labelStartFileName;
     }
 }
 
