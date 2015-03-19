@@ -33,6 +33,8 @@ namespace SharpDisplayManager
 		[return: System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)]
 		public static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fAttach);
 
+		[System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint = "SwitchToThisWindow")]
+		public static extern void SwitchToThisWindow([System.Runtime.InteropServices.InAttribute()] System.IntPtr hwnd, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fUnknown);
 		//
 		public delegate void OnHidEventDelegate(object aSender, Hid.Event aHidEvent);
 
@@ -154,7 +156,8 @@ namespace SharpDisplayManager
 					}
 					else
 					{
-						ForceForegroundWindow(existingProcesses[0].MainWindowHandle);
+						//ForceForegroundWindow(existingProcesses[0].MainWindowHandle);
+						SwitchToThisWindow(existingProcesses[0].MainWindowHandle, true);
 					}
 				}
 			}
