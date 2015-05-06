@@ -26,6 +26,8 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 //using System.Runtime.Serialization;
 
+using MiniDisplayInterop;
+
 namespace SharpDisplayManager
 {
 
@@ -47,12 +49,12 @@ namespace SharpDisplayManager
 		//static functions
 		public static int TypeCount()
 		{
-			return MiniDisplayTypeCount();
+			return MiniDisplay.TypeCount();
 		}
 
-		public static string TypeName(TMiniDisplayType aType)
+		public static string TypeName(MiniDisplay.Type aType)
 		{
-			IntPtr ptr = MiniDisplayTypeName(aType);
+			IntPtr ptr = MiniDisplay.TypeName(aType);
 			string str = Marshal.PtrToStringUni(ptr);
 			return str;
 		}
@@ -64,7 +66,7 @@ namespace SharpDisplayManager
         }
 
         //
-        public bool Open(TMiniDisplayType aType)
+        public bool Open(MiniDisplay.Type aType)
         {
 			if (IsOpen())
 			{
@@ -72,7 +74,7 @@ namespace SharpDisplayManager
 				return false;
 			}
 
-            iDevice = MiniDisplayOpen(aType);
+            iDevice = MiniDisplay.Open(aType);
 
             bool success = iDevice != IntPtr.Zero;
 			if (success)
@@ -93,7 +95,7 @@ namespace SharpDisplayManager
 			}
 
 			//
-            MiniDisplayClose(iDevice);
+            MiniDisplay.Close(iDevice);
             iDevice = IntPtr.Zero;
 			//Broadcast closed event
 			OnClosed(this);
@@ -106,147 +108,147 @@ namespace SharpDisplayManager
 
         public void Clear()
         {
-            MiniDisplayClear(iDevice);
+            MiniDisplay.Clear(iDevice);
         }
 
         public void Fill()
         {
-            MiniDisplayFill(iDevice);
+            MiniDisplay.Fill(iDevice);
         }
 
         public void SwapBuffers()
         {
-            MiniDisplaySwapBuffers(iDevice);
+            MiniDisplay.SwapBuffers(iDevice);
         }
 
         public int MaxBrightness()
         {
-            return MiniDisplayMaxBrightness(iDevice);
+            return MiniDisplay.MaxBrightness(iDevice);
         }
 
         public int MinBrightness()
         {
-            return MiniDisplayMinBrightness(iDevice);
+            return MiniDisplay.MinBrightness(iDevice);
         }
 
         public void SetBrightness(int aBrightness)
         {
             if (!IsOpen()) return;
 
-            MiniDisplaySetBrightness(iDevice, aBrightness);
+            MiniDisplay.SetBrightness(iDevice, aBrightness);
         }
 
         public int WidthInPixels()
         {
-            return MiniDisplayWidthInPixels(iDevice);
+            return MiniDisplay.WidthInPixels(iDevice);
         }
 
         public int HeightInPixels()
         {
-            return MiniDisplayHeightInPixels(iDevice);
+            return MiniDisplay.HeightInPixels(iDevice);
         }
 
         public void SetPixel(int aX, int aY, uint aValue)
         {
-            MiniDisplaySetPixel(iDevice,aX,aY,aValue);
+            MiniDisplay.SetPixel(iDevice,aX,aY,aValue);
         }
 
         public void RequestPowerSupplyStatus()
         {
-            MiniDisplayRequest(iDevice, TMiniDisplayRequest.EMiniDisplayRequestPowerSupplyStatus);
+            MiniDisplay.SendRequest(iDevice, MiniDisplay.Request.PowerSupplyStatus);
         }
 
         public void RequestDeviceId()
         {
-            MiniDisplayRequest(iDevice, TMiniDisplayRequest.EMiniDisplayRequestDeviceId);
+            MiniDisplay.SendRequest(iDevice, MiniDisplay.Request.DeviceId);
         }
 
         public void RequestFirmwareRevision()
         {
-            MiniDisplayRequest(iDevice, TMiniDisplayRequest.EMiniDisplayRequestFirmwareRevision);
+            MiniDisplay.SendRequest(iDevice, MiniDisplay.Request.FirmwareRevision);
         }
 
         public void PowerOn()
         {
-            MiniDisplayPowerOn(iDevice);
+            MiniDisplay.PowerOn(iDevice);
         }
 
         public void PowerOff()
         {
-            MiniDisplayPowerOff(iDevice);
+            MiniDisplay.PowerOff(iDevice);
         }
 
         public bool SupportPowerOnOff()
         {
-            return MiniDisplaySupportPowerOnOff(iDevice);
+            return MiniDisplay.SupportPowerOnOff(iDevice);
         }
 
         public void ShowClock()
         {
-            MiniDisplayShowClock(iDevice);
+            MiniDisplay.ShowClock(iDevice);
         }
 
         public void HideClock()
         {
-            MiniDisplayHideClock(iDevice);
+            MiniDisplay.HideClock(iDevice);
         }
 
         public bool SupportClock()
         {
-            return MiniDisplaySupportClock(iDevice);
+            return MiniDisplay.SupportClock(iDevice);
         }
 
         public bool PowerSupplyStatus()
         {
-            bool res = MiniDisplayPowerSupplyStatus(iDevice);
+            bool res = MiniDisplay.PowerSupplyStatus(iDevice);
             return res;
         }
 
-        public TMiniDisplayRequest AttemptRequestCompletion()
+        public MiniDisplay.Request AttemptRequestCompletion()
         {
-            return MiniDisplayAttemptRequestCompletion(iDevice);
+            return MiniDisplay.AttemptRequestCompletion(iDevice);
         }
 
-        public TMiniDisplayRequest CurrentRequest()
+        public MiniDisplay.Request CurrentRequest()
         {
-            return MiniDisplayCurrentRequest(iDevice);
+            return MiniDisplay.CurrentRequest(iDevice);
         }
 
         public bool IsRequestPending()
         {
-            return CurrentRequest() != TMiniDisplayRequest.EMiniDisplayRequestNone;
+            return CurrentRequest() != MiniDisplay.Request.None;
         }
 
 		//
-		public int IconCount(TMiniDisplayIconType aIcon)
+		public int IconCount(MiniDisplay.IconType aIcon)
 		{
-			return MiniDisplayIconCount(iDevice,aIcon);
+			return MiniDisplay.IconCount(iDevice,aIcon);
 		}
 
-		public int IconStatusCount(TMiniDisplayIconType aIcon)
+		public int IconStatusCount(MiniDisplay.IconType aIcon)
 		{
-			return MiniDisplayIconStatusCount(iDevice, aIcon);
+			return MiniDisplay.IconStatusCount(iDevice, aIcon);
 		}
 
-		public void SetIconStatus(TMiniDisplayIconType aIcon, int aIndex, int aStatus)
+		public void SetIconStatus(MiniDisplay.IconType aIcon, int aIndex, int aStatus)
 		{
-			MiniDisplaySetIconStatus(iDevice, aIcon, aIndex, aStatus);
+			MiniDisplay.SetIconStatus(iDevice, aIcon, aIndex, aStatus);
 		}
 
-		public void SetIconOn(TMiniDisplayIconType aIcon, int aIndex)
+		public void SetIconOn(MiniDisplay.IconType aIcon, int aIndex)
 		{
-			MiniDisplaySetIconStatus(iDevice, aIcon, aIndex, IconStatusCount(aIcon) - 1);
+			MiniDisplay.SetIconStatus(iDevice, aIcon, aIndex, IconStatusCount(aIcon) - 1);
 		}
 
-		public void SetIconOff(TMiniDisplayIconType aIcon, int aIndex)
+		public void SetIconOff(MiniDisplay.IconType aIcon, int aIndex)
 		{
-			MiniDisplaySetIconStatus(iDevice, aIcon, aIndex, 0);
+			MiniDisplay.SetIconStatus(iDevice, aIcon, aIndex, 0);
 		}
 
 
 		public void SetAllIconsStatus(int aStatus)
 		{
-			foreach (TMiniDisplayIconType icon in Enum.GetValues(typeof(TMiniDisplayIconType)))
+			foreach (MiniDisplay.IconType icon in Enum.GetValues(typeof(MiniDisplay.IconType)))
 			{
 				int count=IconCount(icon);
 				for (int i = 0; i < count; i++)
@@ -261,7 +263,7 @@ namespace SharpDisplayManager
 		/// </summary>
 		/// <param name="aIcon"></param>
 		/// <param name="aStatus"></param>
-		public void SetIconStatus(TMiniDisplayIconType aIcon, int aStatus)
+		public void SetIconStatus(MiniDisplay.IconType aIcon, int aStatus)
 		{
 			int iconCount = IconCount(aIcon);
 			for (int i = 0; i < iconCount; i++)
@@ -275,7 +277,7 @@ namespace SharpDisplayManager
 		/// </summary>
 		/// <param name="aIcon"></param>
 		/// <param name="aOn"></param>		
-		public void SetIconOnOff(TMiniDisplayIconType aIcon, bool aOn)
+		public void SetIconOnOff(MiniDisplay.IconType aIcon, bool aOn)
 		{
 			if (aOn)
 			{
@@ -291,7 +293,7 @@ namespace SharpDisplayManager
 		/// Set all elements of an icon to there maximum status.
 		/// </summary>
 		/// <param name="aIcon"></param>
-		public void SetIconOn(TMiniDisplayIconType aIcon)
+		public void SetIconOn(MiniDisplay.IconType aIcon)
 		{
 			int iconCount = IconCount(aIcon);
 			for (int i = 0; i < iconCount; i++)
@@ -304,7 +306,7 @@ namespace SharpDisplayManager
 		/// Turn off all elements of an icon.
 		/// </summary>
 		/// <param name="aIcon"></param>
-		public void SetIconOff(TMiniDisplayIconType aIcon)
+		public void SetIconOff(MiniDisplay.IconType aIcon)
 		{
 			int iconCount = IconCount(aIcon);
 			for (int i = 0; i < iconCount; i++)
@@ -317,176 +319,39 @@ namespace SharpDisplayManager
 
         public string Vendor()
         {
-            IntPtr ptr = MiniDisplayVendor(iDevice);
+            IntPtr ptr = MiniDisplay.Vendor(iDevice);
             string str = Marshal.PtrToStringUni(ptr);
             return str;
         }
 
         public string Product()
         {
-            IntPtr ptr = MiniDisplayProduct(iDevice);
+            IntPtr ptr = MiniDisplay.Product(iDevice);
             string str = Marshal.PtrToStringUni(ptr);
             return str;
         }
 
         public string SerialNumber()
         {
-            IntPtr ptr = MiniDisplaySerialNumber(iDevice);
+            IntPtr ptr = MiniDisplay.SerialNumber(iDevice);
             string str = Marshal.PtrToStringUni(ptr);
             return str;
         }
 
         public string DeviceId()
         {
-            IntPtr ptr = MiniDisplayDeviceId(iDevice);
+            IntPtr ptr = MiniDisplay.DeviceId(iDevice);
             string str = Marshal.PtrToStringAnsi(ptr);
             return str;
         }
 
         public string FirmwareRevision()
         {
-            IntPtr ptr = MiniDisplayFirmwareRevision(iDevice);
+            IntPtr ptr = MiniDisplay.FirmwareRevision(iDevice);
             string str = Marshal.PtrToStringAnsi(ptr);
             return str;
         }
 
-        //[Serializable]
-        public enum TMiniDisplayType
-        {
-            EMiniDisplayAutoDetect, /*Not yet implemented*/
-            //[EnumMember(Value = "EMiniDisplayFutabaGP1212A01")]
-            EMiniDisplayFutabaGP1212A01,
-            //[EnumMember(Value = "EMiniDisplayFutabaGP1212A01")]
-            EMiniDisplayFutabaGP1212A02
-        };
-
-		/// <summary>
-		/// 
-		/// </summary>
-        public enum TMiniDisplayRequest
-        {
-            EMiniDisplayRequestNone,
-            EMiniDisplayRequestDeviceId,
-            EMiniDisplayRequestFirmwareRevision,
-            EMiniDisplayRequestPowerSupplyStatus
-        };
-
-			
-		/// <summary>
-		/// Define the various type of icons we support.
-		/// For binary compatibility new entries must be added at the end.
-		/// </summary>
-		public enum TMiniDisplayIconType
-		{
-			EMiniDisplayIconNetworkSignal=0,
-			EMiniDisplayIconInternet,
-			EMiniDisplayIconEmail,
-			EMiniDisplayIconMute,
-			EMiniDisplayIconVolume,
-			EMiniDisplayIconVolumeLabel,
-			EMiniDisplayIconPlay,
-			EMiniDisplayIconPause,
-			EMiniDisplayIconRecording
-		};
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr MiniDisplayOpen(TMiniDisplayType aType);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayClose(IntPtr aDevice);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayTypeCount();
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern IntPtr MiniDisplayTypeName(TMiniDisplayType aType);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayClear(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayFill(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplaySwapBuffers(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplaySetBrightness(IntPtr aDevice, int aBrightness);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int MiniDisplayMinBrightness(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int MiniDisplayMaxBrightness(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int MiniDisplayWidthInPixels(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int MiniDisplayHeightInPixels(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int MiniDisplaySetPixel(IntPtr aDevice, int aX, int aY, uint aValue);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr MiniDisplayVendor(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr MiniDisplayProduct(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr MiniDisplaySerialNumber(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr MiniDisplayDeviceId(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr MiniDisplayFirmwareRevision(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool MiniDisplayPowerSupplyStatus(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayRequest(IntPtr aDevice, TMiniDisplayRequest aRequest);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern TMiniDisplayRequest MiniDisplayAttemptRequestCompletion(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern TMiniDisplayRequest MiniDisplayCurrentRequest(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayCancelRequest(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayPowerOn(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayPowerOff(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool MiniDisplaySupportPowerOnOff(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayShowClock(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MiniDisplayHideClock(IntPtr aDevice);
-
-        [DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool MiniDisplaySupportClock(IntPtr aDevice);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconCount(IntPtr aDevice, TMiniDisplayIconType aIcon);
-
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int MiniDisplayIconStatusCount(IntPtr aDevice, TMiniDisplayIconType aIcon);
-		
-		[DllImport("MiniDisplay.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void MiniDisplaySetIconStatus(IntPtr aDevice, TMiniDisplayIconType aIcon, int aIndex, int aStatus);
 
     }
 }
