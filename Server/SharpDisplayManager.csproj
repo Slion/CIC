@@ -237,8 +237,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MiniDisplay.dll" />
-    <Content Include="MiniDisplay.h" />
     <EmbeddedResource Include="Resources\vfd.ico" />
   </ItemGroup>
   <ItemGroup>
