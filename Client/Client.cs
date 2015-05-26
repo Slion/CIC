@@ -31,7 +31,7 @@ using System.ServiceModel.Channels;
 namespace SharpDisplayClient
 {
     /// <summary>
-    ///
+    /// Client side Sharp Display callback implementation.
     /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Callback : ICallback, IDisposable
@@ -43,6 +43,9 @@ namespace SharpDisplayClient
             MainForm = aMainForm;
         }
 
+        /// <summary>
+        /// Not used I believe.
+        /// </summary>
         public void OnConnected()
         {
             //Debug.Assert(Thread.CurrentThread.IsThreadPoolThread);
@@ -71,7 +74,7 @@ namespace SharpDisplayClient
 
 
     /// <summary>
-    ///
+    /// Client side implementation of our Sharp Display Service.
     /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Client : DuplexClientBase<IService>
@@ -200,6 +203,12 @@ namespace SharpDisplayClient
             }
         }
 
+        /// <summary>
+        /// Set our client's name.
+        /// Client's name is typically user friendly.
+        /// It does not have to be unique.
+        /// </summary>
+        /// <param name="aClientName">Our client name.</param>
         public void SetName(string aClientName)
         {
             Name = aClientName;
@@ -207,7 +216,10 @@ namespace SharpDisplayClient
             iClient.SetName(aClientName);
         }
 
-
+        /// <summary>
+        /// Set your client fields' layout.
+        /// </summary>
+        /// <param name="aLayout">The layout to apply for this client.</param>
         public void SetLayout(TableLayout aLayout)
         {
             Layout = aLayout;
@@ -238,7 +250,7 @@ namespace SharpDisplayClient
 
             if (!fieldFound)
             {
-                //Field not found, make to use SetFields with all your fields at least once after setting your layout.
+                //Field not found, make sure to use CreateFields first after setting your layout.
                 return false;
             }
 
@@ -274,7 +286,7 @@ namespace SharpDisplayClient
             //
             if (fieldFoundCount!=aFields.Count)
             {
-                //Field not found, make sure to use SetFields with all your fields at least once after setting your layout.
+                //Field not found, make sure to use CreateFields first after setting your layout.
                 return false;
             }
 
@@ -285,6 +297,7 @@ namespace SharpDisplayClient
 
         /// <summary>
         /// Use this function when creating your fields.
+        /// This must be done at least once after setting your layout.
         /// </summary>
         /// <param name="aFields"></param>
         public void CreateFields(System.Collections.Generic.IList<DataField> aFields)
@@ -294,6 +307,10 @@ namespace SharpDisplayClient
             iClient.SetFields(aFields);
         }
 
+        /// <summary>
+        /// Provide the number of clients currently connected to our server.
+        /// </summary>
+        /// <returns>Number of clients currently connected to our server.</returns>
         public int ClientCount()
         {
             CheckConnection();

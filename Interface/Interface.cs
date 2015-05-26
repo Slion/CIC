@@ -18,6 +18,7 @@ namespace SharpDisplay
 {
     /// <summary>
     /// For client to specify a specific layout.
+    /// A table layout is sent from client to server and defines data fields layout on our display.
     /// </summary>
     [DataContract]
     public class TableLayout
@@ -26,9 +27,13 @@ namespace SharpDisplay
         {
             Columns = new List<ColumnStyle>();
             Rows = new List<RowStyle>();
-            Cells = new List<DataField>();
         }
 
+        /// <summary>
+        /// Construct our table layout.
+        /// </summary>
+        /// <param name="aColumnCount">Number of column in our table.</param>
+        /// <param name="aRowCount">Number of rows in our table.</param>
         public TableLayout(int aColumnCount, int aRowCount)
         {
             Columns = new List<ColumnStyle>();
@@ -46,9 +51,6 @@ namespace SharpDisplay
         }
 
         [DataMember]
-        public List<DataField> Cells { get; set; }
-
-        [DataMember]
         public List<ColumnStyle> Columns { get; set; }
 
         [DataMember]
@@ -56,7 +58,8 @@ namespace SharpDisplay
     }
 
     /// <summary>
-    ///
+    /// Define a data field on our display.
+    /// Data field can be either text or bitmap.
     /// </summary>
     [DataContract]
     public class DataField

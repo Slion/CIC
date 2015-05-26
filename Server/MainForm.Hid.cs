@@ -13,6 +13,9 @@ using SharpLib.Win32;
 
 namespace SharpDisplayManager
 {
+    /// <summary>
+    /// Implement handling of HID input reports notably to be able to launch an application using the Green Start button from IR remotes.
+    /// </summary>
     [System.ComponentModel.DesignerCategory("Code")]
     public class MainFormHid : Form
     {
