@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CbtHook.cs" />
+    <Compile Include="ClientData.cs" />
     <Compile Include="MainForm.Hid.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
