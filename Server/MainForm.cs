@@ -555,7 +555,7 @@ namespace SharpDisplayManager
         /// This will take care of applying our client layout and set data fields.
         /// </summary>
         /// <param name="aSessionId"></param>
-        void SetCurrentClient(string aSessionId)
+        void SetCurrentClient(string aSessionId, bool aForce=false)
         {
             if (aSessionId == iCurrentClientSessionId)
             {
@@ -564,8 +564,20 @@ namespace SharpDisplayManager
                 return;
             }
 
+
+            //Check when was the last time we switched to that client
+            double lastSwitchToClientSecondsAgo = (DateTime.Now - iClients[aSessionId].LastSwitchTime).TotalSeconds;
+            //TODO: put that hard coded delay in settings
+            if (!aForce && (lastSwitchToClientSecondsAgo < 10))
+            {
+                //Don't switch clients too often
+                return;
+            }
+
             //Set current client ID.
             iCurrentClientSessionId = aSessionId;
+            //Set the time we last switched to that client
+            iClients[aSessionId].LastSwitchTime = DateTime.Now;
             //Fetch and set current client data.
             iCurrentClientData = iClients[aSessionId];
             //Apply layout and set data fields.
@@ -1320,7 +1332,20 @@ namespace SharpDisplayManager
 
         private void treeViewClients_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            //Root node must have at least one child
+            if (e.Node.Nodes.Count == 0)
+            {
+                return;
+            }
 
+            //If the selected node is the root node of a client then switch to it
+            string sessionId=e.Node.Nodes[0].Text; //First child of a root node is the sessionId
+            if (iClients.ContainsKey(sessionId)) //Check that's actually what we are looking at
+            {
+                //We have a valid session just switch to that client
+                SetCurrentClient(sessionId,true);
+            }
+            
         }
 
 
@@ -1405,8 +1430,8 @@ namespace SharpDisplayManager
                 ClientData client = iClients[aSessionId];
                 if (client != null)
                 {
+                    //Set our client layout then
                     client.Layout = aLayout;
-                    UpdateTableLayoutPanel(client);
                     //
                     UpdateClientTreeViewNode(client);
                 }
@@ -1440,63 +1465,69 @@ namespace SharpDisplayManager
         /// <param name="aSessionId"></param>
         /// <param name="aField"></param>
         private void SetClientField(string aSessionId, DataField aField)
-        {
-            SetCurrentClient(aSessionId);
+        {   
+            //TODO: should check if the field actually changed?
+
             ClientData client = iClients[aSessionId];
-            if (client != null)
+            bool layoutChanged = false;
+
+            //Make sure all our fields are in place
+            while (client.Fields.Count < (aField.Index + 1))
             {
-                bool somethingChanged = false;
+                //Add a text field with proper index
+                client.Fields.Add(new DataField(client.Fields.Count));
+                layoutChanged = true;
+            }
 
-                //Make sure all our fields are in place
-                while (client.Fields.Count < (aField.Index + 1))
+            if (client.Fields[aField.Index].IsSameLayout(aField))
+            {
+                //Same layout just update our field
+                client.Fields[aField.Index] = aField;
+                //If we are updating a field in our current client we need to update it in our panel
+                if (aSessionId == iCurrentClientSessionId)
                 {
-                    //Add a text field with proper index
-                    client.Fields.Add(new DataField(client.Fields.Count));
-                    somethingChanged = true;
-                }
-
-                if (client.Fields[aField.Index].IsSameLayout(aField))
-                {
-                    //Same layout just update our field
-                    client.Fields[aField.Index] = aField;
-                    //
-                    if (aField.IsText && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
+                    if (aField.IsText && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
                     {
                         //Text field control already in place, just change the text
                         MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aField.Index];
-                        somethingChanged = (label.Text != aField.Text || label.TextAlign != aField.Alignment);
+                        layoutChanged = (label.Text != aField.Text || label.TextAlign != aField.Alignment);
                         label.Text = aField.Text;
                         label.TextAlign = aField.Alignment;
                     }
-                    else if (aField.IsBitmap && tableLayoutPanel.Controls[aField.Index] is PictureBox)
+                    else if (aField.IsBitmap && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is PictureBox)
                     {
-                        somethingChanged = true; //TODO: Bitmap comp or should we leave that to clients?
+                        layoutChanged = true; //TODO: Bitmap comp or should we leave that to clients?
                         //Bitmap field control already in place just change the bitmap
                         PictureBox pictureBox = (PictureBox)tableLayoutPanel.Controls[aField.Index];
                         pictureBox.Image = aField.Bitmap;
                     }
                     else
                     {
-                        somethingChanged = true;
-                        //The requested control in our layout it not of the correct type
-                        //Wrong control type, re-create them all
-                        UpdateTableLayoutPanel(iCurrentClientData);
+                        layoutChanged = true;
                     }
                 }
-                else
+            }
+            else
+            {
+                layoutChanged = true;
+                //Different layout, need to rebuild it
+                client.Fields[aField.Index] = aField;
+            }
+
+            //
+            if (layoutChanged)
+            {
+                UpdateClientTreeViewNode(client);
+                //Our layout has changed, if we are already the current client we need to update our panel
+                if (aSessionId == iCurrentClientSessionId)
                 {
-                    somethingChanged = true;
-                    //Different layout, need to rebuild it
-                    client.Fields[aField.Index] = aField;
+                    //Apply layout and set data fields.
                     UpdateTableLayoutPanel(iCurrentClientData);
                 }
-
-                //
-                if (somethingChanged)
-                {
-                    UpdateClientTreeViewNode(client);
-                }
             }
+
+            //When a client field is set we try switching to this client to present the new information to our user
+            SetCurrentClient(aSessionId);
         }
 
         /// <summary>
@@ -1646,6 +1677,7 @@ namespace SharpDisplayManager
             TableLayout layout = aClient.Layout;
             int fieldCount = 0;
 
+            //First clean our current panel
             tableLayoutPanel.Controls.Clear();
             tableLayoutPanel.RowStyles.Clear();
             tableLayoutPanel.ColumnStyles.Clear();

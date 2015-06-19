@@ -28,5 +28,8 @@ namespace SharpDisplayManager
         public List<DataField> Fields { get; set; }
         public TableLayout Layout { get; set; }
         public ICallback Callback { get; set; }
+
+        //Client management
+        public DateTime LastSwitchTime { get; set; }
     }
 }
