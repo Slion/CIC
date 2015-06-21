@@ -566,12 +566,18 @@ namespace SharpDisplayManager
 
 
             //Check when was the last time we switched to that client
-            double lastSwitchToClientSecondsAgo = (DateTime.Now - iClients[aSessionId].LastSwitchTime).TotalSeconds;
-            //TODO: put that hard coded delay in settings
-            if (!aForce && (lastSwitchToClientSecondsAgo < 10))
+            if (iCurrentClientData != null)
             {
-                //Don't switch clients too often
-                return;
+                double lastSwitchToClientSecondsAgo = (DateTime.Now - iCurrentClientData.LastSwitchTime).TotalSeconds;
+                //TODO: put that hard coded value as a client property
+                //Clients should be able to define how often they can be interrupted
+                //Thus a background client can set this to zero allowing any other client to interrupt at any time
+                //We could also compute this delay by looking at the requests frequencies?
+                if (!aForce && (lastSwitchToClientSecondsAgo < 30)) //Make sure a client is on for at least 30 seconds
+                {
+                    //Don't switch clients too often
+                    return;
+                }
             }
 
             //Set current client ID.
