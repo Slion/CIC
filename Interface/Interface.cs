@@ -50,6 +50,50 @@ namespace SharpDisplay
             }
         }
 
+        /// <summary>
+        /// Compare two TableLayout object.
+        /// </summary>
+        /// <returns>Tells whether both layout are identical.</returns>
+        public bool IsSameAs(TableLayout aTableLayout)
+        {
+            //Check rows and columns counts
+            if (Columns.Count != aTableLayout.Columns.Count || Rows.Count != aTableLayout.Rows.Count)
+            {
+                return false;
+            }
+
+            //Compare each columns
+            for (int i=0;i<Columns.Count;i++)
+            {
+                if (Columns[i].SizeType != aTableLayout.Columns[i].SizeType)
+                {
+                    return false;
+                }
+
+                if (Columns[i].Width != aTableLayout.Columns[i].Width)
+                {
+                    return false;
+                }
+            }
+
+            //Compare each columns
+            for (int i = 0; i < Rows.Count; i++)
+            {
+                if (Rows[i].SizeType != aTableLayout.Rows[i].SizeType)
+                {
+                    return false;
+                }
+
+                if (Rows[i].Height != aTableLayout.Rows[i].Height)
+                {
+                    return false;
+                }
+            }
+
+            //Both rows and columns have the same content.
+            return true;
+        }
+
         [DataMember]
         public List<ColumnStyle> Columns { get; set; }
 
