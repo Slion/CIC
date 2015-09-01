@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Microsoft.Win32.SafeHandles;
 //
 using Hid = SharpLib.Hid;
 using SharpLib.Win32;
@@ -112,44 +113,81 @@ namespace SharpDisplayManager
             }
             else
             {
-                //We are in the proper thread
-                if (aHidEvent.Usages.Count > 0
-                    && aHidEvent.UsagePage == (ushort)Hid.UsagePage.WindowsMediaCenterRemoteControl
-                    && aHidEvent.Usages[0] == (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart)
-                //&& aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer
-                //&& aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
+                if (aHidEvent.Usages.Count == 0)
                 {
-                    //First check if the process we want to launch already exists
-                    string procName = Path.GetFileNameWithoutExtension(Properties.Settings.Default.StartFileName);
-                    Process[] existingProcesses = Process.GetProcessesByName(procName);
-                    if (existingProcesses == null || existingProcesses.Length == 0)
-                    {
-                        // Process do not exists just try to launch it
-                        ProcessStartInfo start = new ProcessStartInfo();
-                        // Enter in the command line arguments, everything you would enter after the executable name itself
-                        //start.Arguments = arguments; 
-                        // Enter the executable to run, including the complete path
-                        start.FileName = Properties.Settings.Default.StartFileName;
-                        start.WindowStyle = ProcessWindowStyle.Normal;
-                        start.CreateNoWindow = true;
-                        start.UseShellExecute = true;
-                        // Run the external process & wait for it to finish
-                        Process proc = Process.Start(start);
+                    //No usage, nothing to do then
+                    return;
+                }
 
-                        //SL: We could have used that too
-                        //Shell32.Shell shell = new Shell32.Shell();
-                        //shell.ShellExecute(Properties.Settings.Default.StartFileName);
-                    }
-                    else
+                //We are in the proper thread
+                if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.WindowsMediaCenterRemoteControl)
+                {
+                    switch (aHidEvent.Usages[0])
                     {
-                        //This won't work properly until we have a manifest that enables uiAccess.
-                        //However uiAccess just won't work with ClickOnce so we will have to use a different deployment system.
-                        SwitchToThisWindow(existingProcesses[0].MainWindowHandle, true);
+                        case (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart:
+                            HandleGreenStart();
+                            break;
+                        case (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.Eject:
+                        case (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.Ext2:
+                            HandleEject();
+                            break;
                     }
                 }
             }
         }
 
+        private SafeFileHandle OpenVolume()
+        {
+            return Function.CreateFile(  "E:",
+                               SharpLib.Win32.FileAccess.GENERIC_READ,
+                               SharpLib.Win32.FileShare.FILE_SHARE_READ | SharpLib.Win32.FileShare.FILE_SHARE_WRITE,
+                               IntPtr.Zero,
+                               CreationDisposition.OPEN_EXISTING,
+                               0,
+                               IntPtr.Zero);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void HandleEject()
+        {
+            SafeFileHandle handle = OpenVolume();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void HandleGreenStart()
+        {
+            //First check if the process we want to launch already exists
+            string procName = Path.GetFileNameWithoutExtension(Properties.Settings.Default.StartFileName);
+            Process[] existingProcesses = Process.GetProcessesByName(procName);
+            if (existingProcesses == null || existingProcesses.Length == 0)
+            {
+                // Process do not exists just try to launch it
+                ProcessStartInfo start = new ProcessStartInfo();
+                // Enter in the command line arguments, everything you would enter after the executable name itself
+                //start.Arguments = arguments; 
+                // Enter the executable to run, including the complete path
+                start.FileName = Properties.Settings.Default.StartFileName;
+                start.WindowStyle = ProcessWindowStyle.Normal;
+                start.CreateNoWindow = true;
+                start.UseShellExecute = true;
+                // Run the external process & wait for it to finish
+                Process proc = Process.Start(start);
+
+                //SL: We could have used that too
+                //Shell32.Shell shell = new Shell32.Shell();
+                //shell.ShellExecute(Properties.Settings.Default.StartFileName);
+            }
+            else
+            {
+                //This won't work properly until we have a manifest that enables uiAccess.
+                //However uiAccess just won't work with ClickOnce so we will have to use a different deployment system.
+                SwitchToThisWindow(existingProcesses[0].MainWindowHandle, true);
+            }            
+        }
         /// <summary>
         /// We need to handle WM_INPUT.
         /// </summary>
