@@ -136,9 +136,27 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private IntPtr MarshalToPointer(object data)
+        {
+            IntPtr buf = Marshal.AllocHGlobal(
+                Marshal.SizeOf(data));
+            Marshal.StructureToPtr(data,
+                buf, false);
+            return buf;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private SafeFileHandle OpenVolume()
         {
-            return Function.CreateFile(  "E:",
+            return Function.CreateFile("\\\\.\\E:",
                                SharpLib.Win32.FileAccess.GENERIC_READ,
                                SharpLib.Win32.FileShare.FILE_SHARE_READ | SharpLib.Win32.FileShare.FILE_SHARE_WRITE,
                                IntPtr.Zero,
@@ -150,9 +168,109 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="aVolume"></param>
+        /// <returns></returns>
+        private bool LockVolume(SafeFileHandle aVolume)
+        {
+            //Hope that's doing what I think it does
+            IntPtr dwBytesReturned=new IntPtr();
+            //Should not be needed but I'm not sure how to pass NULL in there.
+            OVERLAPPED overlapped=new OVERLAPPED();
+
+            int tries = 0;
+            const int KMaxTries = 100;
+            const int KSleepTime = 10;
+            bool success = false;
+
+            while (!success && tries < KMaxTries)
+            {
+                success = Function.DeviceIoControl(aVolume, Const.FSCTL_LOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+                System.Threading.Thread.Sleep(KSleepTime);
+                tries++;
+            }
+
+            return success;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aVolume"></param>
+        /// <returns></returns>
+        private bool DismountVolume(SafeFileHandle aVolume)
+        {
+            //Hope that's doing what I think it does
+            IntPtr dwBytesReturned = new IntPtr();
+            //Should not be needed but I'm not sure how to pass NULL in there.
+            OVERLAPPED overlapped=new OVERLAPPED();
+
+            return Function.DeviceIoControl(aVolume, Const.FSCTL_DISMOUNT_VOLUME, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aVolume"></param>
+        /// <param name="aPreventRemoval"></param>
+        /// <returns></returns>
+        private bool PreventRemovalOfVolume(SafeFileHandle aVolume, bool aPreventRemoval)
+        {
+            //Hope that's doing what I think it does
+            IntPtr dwBytesReturned = new IntPtr();
+            //Should not be needed but I'm not sure how to pass NULL in there.
+            OVERLAPPED overlapped = new OVERLAPPED();
+            //
+            PREVENT_MEDIA_REMOVAL preventMediaRemoval = new PREVENT_MEDIA_REMOVAL();
+            preventMediaRemoval.PreventMediaRemoval = Convert.ToByte(aPreventRemoval);
+            IntPtr preventMediaRemovalParam = MarshalToPointer(preventMediaRemoval);
+
+            bool result = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_MEDIA_REMOVAL, preventMediaRemovalParam, Convert.ToUInt32(Marshal.SizeOf(preventMediaRemoval)), IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+
+            Marshal.FreeHGlobal(preventMediaRemovalParam);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aVolume"></param>
+        /// <returns></returns>
+        private bool AutoEjectVolume(SafeFileHandle aVolume)
+        {
+            //Hope that's doing what I think it does
+            IntPtr dwBytesReturned = new IntPtr();
+            //Should not be needed but I'm not sure how to pass NULL in there.
+            OVERLAPPED overlapped=new OVERLAPPED();
+
+            return Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_EJECT_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+        }
+
+        
+
+
+        /// <summary>
+        /// Perform media ejection.
+        /// </summary>
         private void HandleEject()
         {
             SafeFileHandle handle = OpenVolume();
+            if (handle.IsInvalid)
+            {
+                return;
+            }
+
+            if (LockVolume(handle) && DismountVolume(handle))
+            {
+                Debug.Write("Volume was dismounted.");
+
+                if (PreventRemovalOfVolume(handle,false) && AutoEjectVolume(handle))
+                {
+                    Debug.Write("Media was Ejected");
+                }
+            }
         }
 
         /// <summary>
