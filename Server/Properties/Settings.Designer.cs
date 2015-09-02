@@ -105,5 +105,17 @@ namespace SharpDisplayManager.Properties {
                 this["StartFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public string OpticalDriveToEject {
+            get {
+                return ((string)(this["OpticalDriveToEject"]));
+            }
+            set {
+                this["OpticalDriveToEject"] = value;
+            }
+        }
     }
 }

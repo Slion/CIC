@@ -494,6 +494,7 @@ namespace SharpDisplayManager
         {
             //Reset our list of drives
             comboBoxOpticalDrives.Items.Clear();
+            comboBoxOpticalDrives.Items.Add("None");
 
             //Go through each drives on our system and collected the optical ones in our list
             DriveInfo[] allDrives = DriveInfo.GetDrives();
@@ -507,13 +508,7 @@ namespace SharpDisplayManager
                     //This is an optical drive, add it now
                     comboBoxOpticalDrives.Items.Add(d.Name.Substring(0,2));
                 }                
-            }
-
-            //Select current drive to eject
-            if (comboBoxOpticalDrives.Items.Count>0)
-            {
-                comboBoxOpticalDrives.SelectedIndex = 0;
-            }            
+            }           
         }
 
         /// <summary>
@@ -522,7 +517,7 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public string OpticalDriveToEject()
         {
-            return comboBoxOpticalDrives.Items[comboBoxOpticalDrives.SelectedIndex].ToString();
+            return comboBoxOpticalDrives.SelectedItem.ToString();
         }
 
 
@@ -1060,6 +1055,31 @@ namespace SharpDisplayManager
 			checkBoxMinimizeToTray.Checked = Properties.Settings.Default.MinimizeToTray;
 			checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
 			labelStartFileName.Text = Properties.Settings.Default.StartFileName;
+
+            //Try find our drive in our drive list
+            int opticalDriveItemIndex=0;
+            bool driveNotFound = true;
+            string opticalDriveToEject=Properties.Settings.Default.OpticalDriveToEject;
+            foreach (object item in comboBoxOpticalDrives.Items)
+            {
+                if (opticalDriveToEject.Equals(item.ToString()))
+                {
+                    comboBoxOpticalDrives.SelectedIndex = opticalDriveItemIndex;
+                    driveNotFound = false;
+                    break;
+                }
+                opticalDriveItemIndex++;
+            }
+
+            if (driveNotFound)
+            {
+                //We could not find the drive we had saved.
+                //Select "None" then.
+                comboBoxOpticalDrives.SelectedIndex = 0;
+            }
+
+
+
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
             checkBoxInverseColors.Checked = cds.InverseColors;
 			checkBoxShowVolumeLabel.Checked = cds.ShowVolumeLabel;
@@ -2139,5 +2159,17 @@ namespace SharpDisplayManager
 				Properties.Settings.Default.Save();
 			}
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBoxOpticalDrives_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Save the optical drive the user selected for ejection
+            Properties.Settings.Default.OpticalDriveToEject = comboBoxOpticalDrives.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+        }
     }
 }
