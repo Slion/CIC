@@ -133,6 +133,13 @@ namespace SharpDisplayManager
                             break;
                     }
                 }
+
+                //Keep this for debug when only ThinkPad keyboard is available
+                if (aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer && aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
+                {
+                    HandleEject();
+                }
+
             }
         }
 
@@ -154,9 +161,9 @@ namespace SharpDisplayManager
         /// 
         /// </summary>
         /// <returns></returns>
-        private SafeFileHandle OpenVolume()
+        private SafeFileHandle OpenVolume(string aDriveName)
         {
-            return Function.CreateFile("\\\\.\\E:",
+            return Function.CreateFile("\\\\.\\" + aDriveName,
                                SharpLib.Win32.FileAccess.GENERIC_READ,
                                SharpLib.Win32.FileShare.FILE_SHARE_READ | SharpLib.Win32.FileShare.FILE_SHARE_WRITE,
                                IntPtr.Zero,
@@ -248,6 +255,22 @@ namespace SharpDisplayManager
             return Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_EJECT_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
         }
 
+        /// <summary>
+        /// Not working.
+        /// </summary>
+        /// <param name="aVolume"></param>
+        /// <returns></returns>
+        private bool CloseTray(SafeFileHandle aVolume)
+        {
+            //Hope that's doing what I think it does
+            IntPtr dwBytesReturned = new IntPtr();
+            //Should not be needed but I'm not sure how to pass NULL in there.
+            OVERLAPPED overlapped=new OVERLAPPED();
+
+            return Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_LOAD_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+        }
+
+        
         
 
 
@@ -256,7 +279,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void HandleEject()
         {
-            SafeFileHandle handle = OpenVolume();
+            SafeFileHandle handle = OpenVolume(((MainForm)this).OpticalDriveToEject());
             if (handle.IsInvalid)
             {
                 return;
@@ -266,9 +289,16 @@ namespace SharpDisplayManager
             {
                 Debug.Write("Volume was dismounted.");
 
-                if (PreventRemovalOfVolume(handle,false) && AutoEjectVolume(handle))
+                if (PreventRemovalOfVolume(handle,false))
                 {
-                    Debug.Write("Media was Ejected");
+                    if (AutoEjectVolume(handle))
+                    {
+                        Debug.Write("Media was ejected");
+                    }
+                    //else if (CloseTray(handle))
+                    //{
+                    //    Debug.Write("Media was loaded");
+                    //}                    
                 }
             }
         }
