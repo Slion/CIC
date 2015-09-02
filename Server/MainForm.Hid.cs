@@ -279,7 +279,15 @@ namespace SharpDisplayManager
         /// </summary>
         private void HandleEject()
         {
-            SafeFileHandle handle = OpenVolume(((MainForm)this).OpticalDriveToEject());
+            string drive = ((MainForm)this).OpticalDriveToEject();
+            if (drive.Length!=2)
+            {
+                //Not a proper drive spec.
+                //Probably 'None' selected.
+                return;
+            }
+
+            SafeFileHandle handle = OpenVolume(drive);
             if (handle.IsInvalid)
             {
                 return;

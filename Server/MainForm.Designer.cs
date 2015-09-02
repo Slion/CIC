@@ -91,6 +91,8 @@
             this.checkBoxMute = new System.Windows.Forms.CheckBox();
             this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
             this.tabPageInput = new System.Windows.Forms.TabPage();
+            this.comboBoxOpticalDrives = new System.Windows.Forms.ComboBox();
+            this.labelOpticalDriveEject = new System.Windows.Forms.Label();
             this.pictureBoxGreenStart = new System.Windows.Forms.PictureBox();
             this.labelStartFileName = new System.Windows.Forms.Label();
             this.buttonSelectFile = new System.Windows.Forms.Button();
@@ -104,8 +106,6 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
-            this.labelOpticalDriveEject = new System.Windows.Forms.Label();
-            this.comboBoxOpticalDrives = new System.Windows.Forms.ComboBox();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -718,6 +718,25 @@
             this.tabPageInput.Text = "Input";
             this.tabPageInput.UseVisualStyleBackColor = true;
             // 
+            // comboBoxOpticalDrives
+            // 
+            this.comboBoxOpticalDrives.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxOpticalDrives.FormattingEnabled = true;
+            this.comboBoxOpticalDrives.Location = new System.Drawing.Point(113, 53);
+            this.comboBoxOpticalDrives.Name = "comboBoxOpticalDrives";
+            this.comboBoxOpticalDrives.Size = new System.Drawing.Size(55, 21);
+            this.comboBoxOpticalDrives.TabIndex = 18;
+            this.comboBoxOpticalDrives.SelectedIndexChanged += new System.EventHandler(this.comboBoxOpticalDrives_SelectedIndexChanged);
+            // 
+            // labelOpticalDriveEject
+            // 
+            this.labelOpticalDriveEject.AutoSize = true;
+            this.labelOpticalDriveEject.Location = new System.Drawing.Point(0, 56);
+            this.labelOpticalDriveEject.Name = "labelOpticalDriveEject";
+            this.labelOpticalDriveEject.Size = new System.Drawing.Size(107, 13);
+            this.labelOpticalDriveEject.TabIndex = 3;
+            this.labelOpticalDriveEject.Text = "Optical drive to eject:";
+            // 
             // pictureBoxGreenStart
             // 
             this.pictureBoxGreenStart.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxGreenStart.Image")));
@@ -836,24 +855,6 @@
             this.pictureBoxDemo.Size = new System.Drawing.Size(100, 50);
             this.pictureBoxDemo.TabIndex = 21;
             this.pictureBoxDemo.TabStop = false;
-            // 
-            // labelOpticalDriveEject
-            // 
-            this.labelOpticalDriveEject.AutoSize = true;
-            this.labelOpticalDriveEject.Location = new System.Drawing.Point(0, 56);
-            this.labelOpticalDriveEject.Name = "labelOpticalDriveEject";
-            this.labelOpticalDriveEject.Size = new System.Drawing.Size(107, 13);
-            this.labelOpticalDriveEject.TabIndex = 3;
-            this.labelOpticalDriveEject.Text = "Optical drive to eject:";
-            // 
-            // comboBoxOpticalDrives
-            // 
-            this.comboBoxOpticalDrives.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxOpticalDrives.FormattingEnabled = true;
-            this.comboBoxOpticalDrives.Location = new System.Drawing.Point(113, 53);
-            this.comboBoxOpticalDrives.Name = "comboBoxOpticalDrives";
-            this.comboBoxOpticalDrives.Size = new System.Drawing.Size(44, 21);
-            this.comboBoxOpticalDrives.TabIndex = 18;
             // 
             // MainForm
             // 
