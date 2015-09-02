@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Win32.SafeHandles;
+using System.ComponentModel;
 //
 using Hid = SharpLib.Hid;
 using SharpLib.Win32;
@@ -146,6 +147,16 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="aPrefix"></param>
+        private void CheckLastError(string aPrefix)
+        {
+            string errorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
+            Debug.WriteLine(aPrefix + Marshal.GetLastWin32Error().ToString() + ": " + errorMessage);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         private IntPtr MarshalToPointer(object data)
@@ -196,6 +207,8 @@ namespace SharpDisplayManager
                 tries++;
             }
 
+            CheckLastError("Lock volume: ");
+
             return success;
         }
 
@@ -211,7 +224,9 @@ namespace SharpDisplayManager
             //Should not be needed but I'm not sure how to pass NULL in there.
             OVERLAPPED overlapped=new OVERLAPPED();
 
-            return Function.DeviceIoControl(aVolume, Const.FSCTL_DISMOUNT_VOLUME, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+            bool res = Function.DeviceIoControl(aVolume, Const.FSCTL_DISMOUNT_VOLUME, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+            CheckLastError("Dismount volume: ");
+            return res;
         }
 
 
@@ -234,7 +249,7 @@ namespace SharpDisplayManager
             IntPtr preventMediaRemovalParam = MarshalToPointer(preventMediaRemoval);
 
             bool result = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_MEDIA_REMOVAL, preventMediaRemovalParam, Convert.ToUInt32(Marshal.SizeOf(preventMediaRemoval)), IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
-
+            CheckLastError("Media removal: ");
             Marshal.FreeHGlobal(preventMediaRemovalParam);
 
             return result;
@@ -252,7 +267,9 @@ namespace SharpDisplayManager
             //Should not be needed but I'm not sure how to pass NULL in there.
             OVERLAPPED overlapped=new OVERLAPPED();
 
-            return Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_EJECT_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+            bool res = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_EJECT_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+            CheckLastError("Media eject: ");
+            return res;
         }
 
         /// <summary>
@@ -267,7 +284,9 @@ namespace SharpDisplayManager
             //Should not be needed but I'm not sure how to pass NULL in there.
             OVERLAPPED overlapped=new OVERLAPPED();
 
-            return Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_LOAD_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+            bool res = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_LOAD_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+            CheckLastError("Media load: ");
+            return res;
         }
 
         /// <summary>
@@ -284,7 +303,7 @@ namespace SharpDisplayManager
 
             bool res = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_CHECK_VERIFY2, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
 
-            Debug.WriteLine("Check Verify: " + Marshal.GetLastWin32Error().ToString());
+            CheckLastError("Check verify: ");
 
             return res;
         }        
@@ -307,7 +326,7 @@ namespace SharpDisplayManager
             SafeFileHandle handle = OpenVolume(drive);
             if (handle.IsInvalid)
             {
-                Debug.WriteLine("ERROR: Failed to open volume.");
+                CheckLastError("ERROR: Failed to open volume: ");
                 return;
             }
 
@@ -317,7 +336,7 @@ namespace SharpDisplayManager
 
                 if (PreventRemovalOfVolume(handle,false))
                 {
-                    //StorageCheckVerify(handle);
+                   StorageCheckVerify(handle);
 
                     if (MediaEject(handle))
                     {
