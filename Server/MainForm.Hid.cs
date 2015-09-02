@@ -241,11 +241,11 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        /// Eject optical drive media opening the tray if any.
         /// </summary>
         /// <param name="aVolume"></param>
         /// <returns></returns>
-        private bool AutoEjectVolume(SafeFileHandle aVolume)
+        private bool MediaEject(SafeFileHandle aVolume)
         {
             //Hope that's doing what I think it does
             IntPtr dwBytesReturned = new IntPtr();
@@ -256,11 +256,11 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// Not working.
+        /// Close an optical drive tray.
         /// </summary>
         /// <param name="aVolume"></param>
         /// <returns></returns>
-        private bool CloseTray(SafeFileHandle aVolume)
+        private bool MediaLoad(SafeFileHandle aVolume)
         {
             //Hope that's doing what I think it does
             IntPtr dwBytesReturned = new IntPtr();
@@ -270,7 +270,24 @@ namespace SharpDisplayManager
             return Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_LOAD_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
         }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aVolume"></param>
+        /// <returns></returns>
+        private bool StorageCheckVerify(SafeFileHandle aVolume)
+        {
+            //Hope that's doing what I think it does
+            IntPtr dwBytesReturned = new IntPtr();
+            //Should not be needed but I'm not sure how to pass NULL in there.
+            OVERLAPPED overlapped = new OVERLAPPED();
+
+            bool res = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_CHECK_VERIFY2, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
+
+            Debug.WriteLine("Check Verify: " + Marshal.GetLastWin32Error().ToString());
+
+            return res;
+        }        
         
 
 
@@ -290,25 +307,35 @@ namespace SharpDisplayManager
             SafeFileHandle handle = OpenVolume(drive);
             if (handle.IsInvalid)
             {
+                Debug.WriteLine("ERROR: Failed to open volume.");
                 return;
             }
 
             if (LockVolume(handle) && DismountVolume(handle))
             {
-                Debug.Write("Volume was dismounted.");
+                Debug.WriteLine("Volume was dismounted.");
 
                 if (PreventRemovalOfVolume(handle,false))
                 {
-                    if (AutoEjectVolume(handle))
+                    //StorageCheckVerify(handle);
+
+                    if (MediaEject(handle))
                     {
-                        Debug.Write("Media was ejected");
+                        Debug.WriteLine("Media was ejected");
                     }
-                    //else if (CloseTray(handle))
-                    //{
-                    //    Debug.Write("Media was loaded");
-                    //}                    
+                    else if (MediaLoad(handle))
+                    {
+                        Debug.WriteLine("Media was loaded");
+                    }                    
                 }
             }
+            else
+            {
+                Debug.WriteLine("Volume lock or dismount failed.");
+            }
+
+            //This is needed to make sure we can open the volume next time around
+            handle.Dispose();
         }
 
         /// <summary>

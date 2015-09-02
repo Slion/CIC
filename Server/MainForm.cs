@@ -1062,7 +1062,7 @@ namespace SharpDisplayManager
             string opticalDriveToEject=Properties.Settings.Default.OpticalDriveToEject;
             foreach (object item in comboBoxOpticalDrives.Items)
             {
-                if (opticalDriveToEject.Equals(item.ToString()))
+                if (opticalDriveToEject == item.ToString())
                 {
                     comboBoxOpticalDrives.SelectedIndex = opticalDriveItemIndex;
                     driveNotFound = false;
