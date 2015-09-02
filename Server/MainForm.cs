@@ -126,6 +126,9 @@ namespace SharpDisplayManager
 			//Populate device types
 			PopulateDeviceTypes();
 
+            //Populate optical drives
+            PopulateOpticalDrives();
+
 			//Initial status update 
             UpdateStatus();
 
@@ -483,6 +486,46 @@ namespace SharpDisplayManager
 				comboBoxDisplayType.Items.Add(Display.TypeName((MiniDisplay.Type)i));
 			}
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PopulateOpticalDrives()
+        {
+            //Reset our list of drives
+            comboBoxOpticalDrives.Items.Clear();
+
+            //Go through each drives on our system and collected the optical ones in our list
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+            foreach (DriveInfo d in allDrives)
+            {
+                Debug.WriteLine("Drive {0}", d.Name);
+                Debug.WriteLine("  Drive type: {0}", d.DriveType);
+
+                if (d.DriveType==DriveType.CDRom)
+                {
+                    //This is an optical drive, add it now
+                    comboBoxOpticalDrives.Items.Add(d.Name.Substring(0,2));
+                }                
+            }
+
+            //Select current drive to eject
+            if (comboBoxOpticalDrives.Items.Count>0)
+            {
+                comboBoxOpticalDrives.SelectedIndex = 0;
+            }            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string OpticalDriveToEject()
+        {
+            return comboBoxOpticalDrives.Items[comboBoxOpticalDrives.SelectedIndex].ToString();
+        }
+
+
 
 		/// <summary>
 		///
