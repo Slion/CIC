@@ -336,9 +336,16 @@ namespace SharpDisplayManager
 
                 if (PreventRemovalOfVolume(handle,false))
                 {
-                   StorageCheckVerify(handle);
+                    //StorageCheckVerify(handle);
 
-                    if (MediaEject(handle))
+                    DateTime before;
+                    before = DateTime.Now;
+                    bool ejectSuccess = MediaEject(handle);
+                    double ms = (DateTime.Now - before).TotalMilliseconds;
+
+                    //We assume that if it take more than a certain time to for eject to execute it means we actually ejected.
+                    //If our eject completes too rapidly we assume the tray is already open and we will try to close it. 
+                    if (ejectSuccess && ms > 100)
                     {
                         Debug.WriteLine("Media was ejected");
                     }
