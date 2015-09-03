@@ -500,7 +500,7 @@ namespace SharpDisplayManager
             DriveInfo[] allDrives = DriveInfo.GetDrives();
             foreach (DriveInfo d in allDrives)
             {
-                Debug.WriteLine("Drive {0}", d.Name);
+                Debug.WriteLine("Drive " + d.Name);
                 Debug.WriteLine("  Drive type: {0}", d.DriveType);
 
                 if (d.DriveType==DriveType.CDRom)
