@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SharpDisplayManager</RootNamespace>
     <AssemblyName>SharpDisplayManager</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>true</IsWebBootstrapper>
@@ -33,7 +33,7 @@
     <WebPage>index.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>0.5.4.0</ApplicationVersion>
+    <ApplicationVersion>0.5.5.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -215,6 +215,10 @@
     <ProjectReference Include="..\Interface\SharpDisplayInterface.csproj">
       <Project>{88eee0dc-abbc-4738-bad6-7e08cf7f50f9}</Project>
       <Name>SharpDisplayInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerManager\PowerManager.vcxproj">
+      <Project>{c174f23d-3055-49bc-b6b0-563011af624d}</Project>
+      <Name>PowerManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
