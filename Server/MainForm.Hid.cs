@@ -31,6 +31,9 @@ namespace SharpDisplayManager
         /// </summary>
         private Hid.Handler iHidHandler;
 
+        ///
+        private PowerManager.PowerSettingNotifier iPowerSettingNotifier;
+
         /// <summary>
         /// Register HID devices so that we receive corresponding WM_INPUT messages.
         /// </summary>
@@ -91,7 +94,23 @@ namespace SharpDisplayManager
                 Debug.WriteLine("Failed to register raw input devices: " + Marshal.GetLastWin32Error().ToString());
             }
             iHidHandler.OnHidEvent += HandleHidEventThreadSafe;
+
+            //TODO: Move this some place else
+            iPowerSettingNotifier = new PowerManager.PowerSettingNotifier(Handle);
+            iPowerSettingNotifier.OnMonitorPowerOn += MonitorPowerOn;
+            iPowerSettingNotifier.OnMonitorPowerOff += MonitorPowerOff;
         }
+
+        static void MonitorPowerOn()
+        {
+            Debug.WriteLine("ON");
+        }
+
+        static void MonitorPowerOff()
+        {
+            Debug.WriteLine("OFF");
+        }
+
 
         /// <summary>
         /// Here we receive HID events from our HID library.
@@ -411,6 +430,13 @@ namespace SharpDisplayManager
                     iHidHandler.ProcessInput(ref message);
                     break;
             }
+
+            //Hook in our power manager
+            if (iPowerSettingNotifier!=null)
+            {
+                iPowerSettingNotifier.WndProc(ref message);
+            }
+
             //Is that needed? Check the docs.
             base.WndProc(ref message);
         }
