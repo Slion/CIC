@@ -32,7 +32,7 @@ namespace SharpDisplayManager
         private Hid.Handler iHidHandler;
 
         ///
-        private PowerManager.PowerSettingNotifier iPowerSettingNotifier;
+        private PowerManager.SettingNotifier iPowerSettingNotifier;
 
         /// <summary>
         /// Register HID devices so that we receive corresponding WM_INPUT messages.
@@ -96,7 +96,7 @@ namespace SharpDisplayManager
             iHidHandler.OnHidEvent += HandleHidEventThreadSafe;
 
             //TODO: Move this some place else
-            iPowerSettingNotifier = new PowerManager.PowerSettingNotifier(Handle);
+            iPowerSettingNotifier = new PowerManager.SettingNotifier(Handle);
             iPowerSettingNotifier.OnMonitorPowerOn += MonitorPowerOn;
             iPowerSettingNotifier.OnMonitorPowerOff += MonitorPowerOff;
         }

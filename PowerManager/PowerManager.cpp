@@ -9,44 +9,38 @@ using namespace System::Diagnostics;
 namespace PowerManager
 {
     ///
-    PowerSettingNotifier::PowerSettingNotifier(IntPtr aHandle, Boolean aService)
+    SettingNotifier::SettingNotifier(IntPtr aHandle, Boolean aService)
     {
         Construct(aHandle, aService);
     }
 
     ///
-    PowerSettingNotifier::PowerSettingNotifier(IntPtr aHandle)
+    SettingNotifier::SettingNotifier(IntPtr aHandle)
     {
         //By default we assume we run as a Window
         Construct(aHandle, false);
     }
 
     ///
-    void PowerSettingNotifier::Construct(IntPtr aHandle, Boolean aService)
+    void SettingNotifier::Construct(IntPtr aHandle, Boolean aService)
     {
         iHandle = aHandle;
         iIsService = aService;
         iMonitorPowerOnDelegate = nullptr;
         iMonitorPowerOffDelegate = nullptr;
         iMonitorPowerObserverCount = 0;
+        iMonitorPowerHandle = NULL;
     }
 
-    ///
-    Boolean PowerSettingNotifier::RegisterPowerSettingNotification(IntPtr aHandle, Boolean aService)
+    /// TODO: Make this generic by passing the HPOWERNOTIFY by reference and GUID as parameter too
+    HPOWERNOTIFY SettingNotifier::RegisterPowerSettingNotification(LPCGUID aGuid)
 	{
-        HANDLE handle = aHandle.ToPointer();        
-        HPOWERNOTIFY res=::RegisterPowerSettingNotification(handle, &GUID_MONITOR_POWER_ON, (aService?DEVICE_NOTIFY_SERVICE_HANDLE:DEVICE_NOTIFY_WINDOW_HANDLE));
-        return (res != NULL);
-	};
-
-    /// 
-    Boolean PowerSettingNotifier::RegisterPowerSettingNotification(IntPtr aHandle)
-    {
-        return RegisterPowerSettingNotification(aHandle,false);
-    };
+        HANDLE handle = iHandle.ToPointer();
+        return ::RegisterPowerSettingNotification(handle, aGuid, (iIsService?DEVICE_NOTIFY_SERVICE_HANDLE:DEVICE_NOTIFY_WINDOW_HANDLE));
+	}
 
     ///
-    void PowerSettingNotifier::WndProc(Message% aMessage)
+    void SettingNotifier::WndProc(Message% aMessage)
     {
         POWERBROADCAST_SETTING* setting;
 
@@ -72,32 +66,33 @@ namespace PowerManager
     }
 
     ///
-    void PowerSettingNotifier::OnMonitorPowerOn::add(PowerManagerDelegate^ d)
+    void SettingNotifier::OnMonitorPowerOn::add(PowerManagerDelegate^ d)
     {
         iMonitorPowerOnDelegate += d;
         iMonitorPowerObserverCount++;
         //iMonitorPowerOnDelegate->GetInvocationList()->GetLength(0)
         if (iMonitorPowerObserverCount == 1)
         {
-            //TODO: register
-            RegisterPowerSettingNotification(iHandle,iIsService);
+            //Register for monitor power notifications
+            iMonitorPowerHandle=RegisterPowerSettingNotification(&GUID_MONITOR_POWER_ON);
         }
 
     }
 
     ///
-    void PowerSettingNotifier::OnMonitorPowerOn::remove(PowerManagerDelegate^ d)
+    void SettingNotifier::OnMonitorPowerOn::remove(PowerManagerDelegate^ d)
     {
         iMonitorPowerOnDelegate -= d;
         iMonitorPowerObserverCount--;
         if (iMonitorPowerObserverCount==0)
         {
-            //TODO: unregister
+            //Unregister from corresponding power setting notification
+            UnregisterPowerSettingNotification(iMonitorPowerHandle);
         }
     }
 
     //
-    void PowerSettingNotifier::OnMonitorPowerOn::raise()
+    void SettingNotifier::OnMonitorPowerOn::raise()
     {        
         if (iMonitorPowerOnDelegate != nullptr)
         {
@@ -106,30 +101,31 @@ namespace PowerManager
     }
 
     ///
-    void PowerSettingNotifier::OnMonitorPowerOff::add(PowerManagerDelegate^ d)
+    void SettingNotifier::OnMonitorPowerOff::add(PowerManagerDelegate^ d)
     {
         iMonitorPowerOffDelegate += d;
         iMonitorPowerObserverCount++;
         if (iMonitorPowerObserverCount == 1)
         {
-            //TODO: register
-            RegisterPowerSettingNotification(iHandle, iIsService);
+            //Register for monitor power notifications
+            iMonitorPowerHandle = RegisterPowerSettingNotification(&GUID_MONITOR_POWER_ON);
         }
     }
 
     ///
-    void PowerSettingNotifier::OnMonitorPowerOff::remove(PowerManagerDelegate^ d)
+    void SettingNotifier::OnMonitorPowerOff::remove(PowerManagerDelegate^ d)
     {
         iMonitorPowerOffDelegate -= d;
         iMonitorPowerObserverCount--;
         if (iMonitorPowerObserverCount == 0)
         {
-            //TODO: unregister
+            //Unregister from corresponding power setting notification
+            UnregisterPowerSettingNotification(iMonitorPowerHandle);
         }
     }
 
     //
-    void PowerSettingNotifier::OnMonitorPowerOff::raise()
+    void SettingNotifier::OnMonitorPowerOff::raise()
     {
         if (iMonitorPowerOffDelegate != nullptr)
         {
