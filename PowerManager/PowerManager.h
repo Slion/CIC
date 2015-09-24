@@ -9,11 +9,12 @@ namespace PowerManager
 {
     public delegate void PowerManagerDelegate();
 
-	public ref class PowerSettingNotifier
+	public ref class SettingNotifier
 	{
     public:
-        PowerSettingNotifier(IntPtr aHandle, Boolean aService);
-        PowerSettingNotifier(IntPtr aHandle);
+        //Constructors
+        SettingNotifier(IntPtr aHandle, Boolean aService);
+        SettingNotifier(IntPtr aHandle);
         //
         void WndProc(Message% aMessage);
 
@@ -36,8 +37,7 @@ namespace PowerManager
     private:
         void Construct(IntPtr aHandle, Boolean aService);
         //
-        Boolean RegisterPowerSettingNotification(IntPtr aHandle, Boolean aService);
-        Boolean RegisterPowerSettingNotification(IntPtr aHandle);
+        HPOWERNOTIFY RegisterPowerSettingNotification(LPCGUID aGuid);
 
     private:
         PowerManagerDelegate^ iMonitorPowerOnDelegate;
@@ -51,5 +51,6 @@ namespace PowerManager
         Boolean iIsService;
         ///
         int iMonitorPowerObserverCount;
+        HPOWERNOTIFY iMonitorPowerHandle;
 	};
 }
