@@ -220,6 +220,16 @@ namespace SharpDisplayClient
             layout.Columns[1].Width = 25F;
             //Send layout to server
             iClient.SetLayout(layout);
+
+            //Set texts
+            iClient.CreateFields(new DataField[]
+            {                
+                new DataField(0, textBoxTop.Text, Alignment),
+                new DataField(1, textBoxBottom.Text, Alignment),
+                new DataField(2, "Third text field", Alignment),
+                new DataField(3, "Forth text field", Alignment)
+            });
+
         }
 
         private void buttonSetBitmap_Click(object sender, EventArgs e)

@@ -133,6 +133,7 @@ namespace SharpDisplayManager
             UpdateStatus();
 
             //We have a bug when drawing minimized and reusing our bitmap
+            //Though I could not reproduce it on Windows 10
             iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
 
@@ -879,8 +880,9 @@ namespace SharpDisplayManager
 					//Draw to bitmap
 					if (iCreateBitmap)
 					{
-						iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
-					}
+                        iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+                        iCreateBitmap = false;
+                    }
 					tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
 					//iBmp.Save("D:\\capture.png");
 
@@ -1269,8 +1271,8 @@ namespace SharpDisplayManager
         {
             if (WindowState == FormWindowState.Minimized)
             {
-                // Do some stuff
-                //iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+                // To workaround our empty bitmap bug on Windows 7 we need to recreate our bitmap when the application is minimized
+                // That's apparently not needed on Windows 10 but we better leave it in place.
                 iCreateBitmap = true;
             }
         }
@@ -1502,10 +1504,17 @@ namespace SharpDisplayManager
                     //Don't change a thing if the layout is the same
                     if (!client.Layout.IsSameAs(aLayout))
                     {
+                        Debug.Print("SetClientLayoutThreadSafe: Layout updated.");
                         //Set our client layout then
                         client.Layout = aLayout;
+                        //Layout has changed clear our fields then
+                        client.Fields.Clear();
                         //
                         UpdateClientTreeViewNode(client);
+                    }
+                    else
+                    {
+                        Debug.Print("SetClientLayoutThreadSafe: Layout has not changed.");
                     }
                 }
             }
@@ -1553,7 +1562,7 @@ namespace SharpDisplayManager
                 layoutChanged = true;
             }
 
-            //Now that we know hour fields are in place just update that one
+            //Now that we know our fields are in place just update that one
             client.Fields[aField.Index] = aField;
 
             if (client.Fields[aField.Index].IsSameLayout(aField))
@@ -1602,6 +1611,14 @@ namespace SharpDisplayManager
                         UpdateTableLayoutPanel(iCurrentClientData);
                     }
                 }
+                else
+                {
+                    Debug.Print("Layout has not changed.");
+                }
+            }
+            else
+            {
+                Debug.Print("WARNING: content and layout have not changed!");
             }
 
             //When a client field is set we try switching to this client to present the new information to our user
