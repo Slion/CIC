@@ -69,6 +69,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -105,6 +106,10 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LibCecSharp, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>.\LibCecSharp.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="MiniDisplayInterop">
@@ -141,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CbtHook.cs" />
+    <Compile Include="CecSharpClient.cs" />
     <Compile Include="ClientData.cs" />
     <Compile Include="MainForm.Hid.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -270,7 +276,12 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MiniDisplay.dll" />
+    <Content Include="libcec.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MiniDisplay.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\LibMiniDisplay.1.1.4\build\LibMiniDisplay.targets" Condition="Exists('..\packages\LibMiniDisplay.1.1.4\build\LibMiniDisplay.targets')" />

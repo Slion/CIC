@@ -34,6 +34,9 @@ namespace SharpDisplayManager
         ///
         private PowerManager.SettingNotifier iPowerSettingNotifier;
 
+        ///
+        private Cec.Client iCecClient;
+
         /// <summary>
         /// Register HID devices so that we receive corresponding WM_INPUT messages.
         /// </summary>
@@ -99,16 +102,25 @@ namespace SharpDisplayManager
             iPowerSettingNotifier = new PowerManager.SettingNotifier(Handle);
             iPowerSettingNotifier.OnMonitorPowerOn += MonitorPowerOn;
             iPowerSettingNotifier.OnMonitorPowerOff += MonitorPowerOff;
+
+            //CEC
+            iCecClient = new Cec.Client();
+            if (!iCecClient.Connect(1000))
+            {
+                Debug.WriteLine("WARNING: No CEC connection!");
+            }
         }
 
-        static void MonitorPowerOn()
+        void MonitorPowerOn()
         {
             Debug.WriteLine("ON");
+            iCecClient.PowerOnDevices(CecSharp.CecLogicalAddress.Tv);
         }
 
-        static void MonitorPowerOff()
+        void MonitorPowerOff()
         {
             Debug.WriteLine("OFF");
+            iCecClient.StandbyDevices(CecSharp.CecLogicalAddress.Tv);
         }
 
 
