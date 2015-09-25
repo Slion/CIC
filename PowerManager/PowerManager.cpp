@@ -32,7 +32,7 @@ namespace PowerManager
         iMonitorPowerHandle = NULL;
     }
 
-    /// TODO: Make this generic by passing the HPOWERNOTIFY by reference and GUID as parameter too
+    ///
     HPOWERNOTIFY SettingNotifier::RegisterPowerSettingNotification(LPCGUID aGuid)
 	{
         HANDLE handle = iHandle.ToPointer();
@@ -61,8 +61,6 @@ namespace PowerManager
                 }
             }
         }
-
-
     }
 
     ///
