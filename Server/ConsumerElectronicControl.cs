@@ -22,12 +22,22 @@ namespace SharpDisplayManager
         /// <param name="aWndHandle"></param>
         /// <param name="aDeviceName"></param>
         /// <param name="aHdmiPort"></param>
-        public void Start(IntPtr aWndHandle, string aDeviceName, byte aHdmiPort)
+        public void Start(IntPtr aWndHandle, string aDeviceName, byte aHdmiPort, bool aMonitorOn, bool aMonitorOff)
         {
             //Create our power setting notifier and register the event we are insterrested in
             iPowerSettingNotifier = new PowerManager.SettingNotifier(aWndHandle);
-            iPowerSettingNotifier.OnMonitorPowerOn += OnMonitorPowerOn;
-            iPowerSettingNotifier.OnMonitorPowerOff += OnMonitorPowerOff;
+
+            //
+            if (aMonitorOn)
+            {
+                iPowerSettingNotifier.OnMonitorPowerOn += OnMonitorPowerOn;
+            }
+
+            //
+            if (aMonitorOff)
+            {
+                iPowerSettingNotifier.OnMonitorPowerOff += OnMonitorPowerOff;
+            }
 
             //CEC
             iCecClient = new Cec.Client(aDeviceName,aHdmiPort);
@@ -41,13 +51,19 @@ namespace SharpDisplayManager
         public void Stop()
         {
             //
-            iPowerSettingNotifier.OnMonitorPowerOn -= OnMonitorPowerOn;
-            iPowerSettingNotifier.OnMonitorPowerOff -= OnMonitorPowerOff;
-            iPowerSettingNotifier = null;
+            if (iPowerSettingNotifier != null)
+            {
+                iPowerSettingNotifier.OnMonitorPowerOn -= OnMonitorPowerOn;
+                iPowerSettingNotifier.OnMonitorPowerOff -= OnMonitorPowerOff;
+                iPowerSettingNotifier = null;
+            }
             //
-            iCecClient.Close();
-            iCecClient.Dispose();
-            iCecClient = null;
+            if (iCecClient != null)
+            {
+                iCecClient.Close();
+                iCecClient.Dispose();
+                iCecClient = null;
+            }
         }
 
 
