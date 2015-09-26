@@ -59,7 +59,7 @@ namespace SharpDisplayManager
     public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
     public delegate void SetClientNameDelegate(string aSessionId, string aName);
 	public delegate void PlainUpdateDelegate();
-
+    public delegate void WndProcDelegate(ref Message aMessage);
 
     /// <summary>
     /// Our Display manager main form
@@ -92,8 +92,13 @@ namespace SharpDisplayManager
 		private MMDevice iMultiMediaDevice;
 		//Network
 		private NetworkManager iNetworkManager;
-		
 
+        /// <summary>
+        /// CEC - Consumer Electronic Control.
+        /// Notably used to turn TV on and off as Windows broadcast monitor on and off notifications.
+        /// </summary>
+        private ConsumerElectronicControl iCecManager;
+		
 		/// <summary>
 		/// Manage run when Windows startup option
 		/// </summary>
@@ -103,6 +108,11 @@ namespace SharpDisplayManager
 		/// System tray icon.
 		/// </summary>
 		private NotifyIconAdv iNotifyIcon;
+
+        /// <summary>
+        /// Allow user to receive window messages;
+        /// </summary>
+        public event WndProcDelegate OnWndProc;
 
         public MainForm()
         {
@@ -174,8 +184,13 @@ namespace SharpDisplayManager
 			iNetworkManager.OnConnectivityChanged += OnConnectivityChanged;
 			UpdateNetworkStatus();
 
-			//Setup notification icon
-			SetupTrayIcon();
+            //CEC
+            iCecManager = new ConsumerElectronicControl();
+            OnWndProc += iCecManager.OnWndProc;
+            iCecManager.Start(Handle,"CEC", 2);
+
+            //Setup notification icon
+            SetupTrayIcon();
 
 			// To make sure start up with minimize to tray works
 			if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
@@ -1279,6 +1294,7 @@ namespace SharpDisplayManager
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            iCecManager.Stop();
 			iNetworkManager.Dispose();
 			CloseDisplayConnection();
             StopServer();
@@ -2187,6 +2203,20 @@ namespace SharpDisplayManager
             //Save the optical drive the user selected for ejection
             Properties.Settings.Default.OpticalDriveToEject = comboBoxOpticalDrives.SelectedItem.ToString();
             Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Broadcast messages to subscribers.
+        /// </summary>
+        /// <param name="message"></param>
+        protected override void WndProc(ref Message aMessage)
+        {
+            if (OnWndProc!=null)
+            {
+                OnWndProc(ref aMessage);
+            }
+            
+            base.WndProc(ref aMessage);
         }
     }
 }
