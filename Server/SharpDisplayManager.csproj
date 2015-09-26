@@ -115,7 +115,7 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MiniDisplayInterop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LibMiniDisplay.1.1.7\lib\net20\MiniDisplayInterop.dll</HintPath>
+      <HintPath>..\packages\LibMiniDisplay.1.1.8\lib\net20\MiniDisplayInterop.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -283,12 +283,12 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\LibMiniDisplay.1.1.7\build\LibMiniDisplay.targets" Condition="Exists('..\packages\LibMiniDisplay.1.1.7\build\LibMiniDisplay.targets')" />
+  <Import Project="..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets" Condition="Exists('..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\LibMiniDisplay.1.1.7\build\LibMiniDisplay.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibMiniDisplay.1.1.7\build\LibMiniDisplay.targets'))" />
+    <Error Condition="!Exists('..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
