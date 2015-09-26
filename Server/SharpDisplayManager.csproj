@@ -148,7 +148,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CbtHook.cs" />
-    <Compile Include="CecSharpClient.cs" />
+    <Compile Include="CecClient.cs" />
+    <Compile Include="ConsumerElectronicControl.cs" />
     <Compile Include="ClientData.cs" />
     <Compile Include="MainForm.Hid.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
