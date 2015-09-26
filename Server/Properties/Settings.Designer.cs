@@ -117,5 +117,53 @@ namespace SharpDisplayManager.Properties {
                 this["OpticalDriveToEject"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CecEnabled {
+            get {
+                return ((bool)(this["CecEnabled"]));
+            }
+            set {
+                this["CecEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public byte CecHdmiPort {
+            get {
+                return ((byte)(this["CecHdmiPort"]));
+            }
+            set {
+                this["CecHdmiPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CecMonitorOn {
+            get {
+                return ((bool)(this["CecMonitorOn"]));
+            }
+            set {
+                this["CecMonitorOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CecMonitorOff {
+            get {
+                return ((bool)(this["CecMonitorOff"]));
+            }
+            set {
+                this["CecMonitorOff"] = value;
+            }
+        }
     }
 }

@@ -96,6 +96,12 @@
             this.pictureBoxGreenStart = new System.Windows.Forms.PictureBox();
             this.labelStartFileName = new System.Windows.Forms.Label();
             this.buttonSelectFile = new System.Windows.Forms.Button();
+            this.tabPageCec = new System.Windows.Forms.TabPage();
+            this.checkBoxCecMonitorOn = new System.Windows.Forms.CheckBox();
+            this.checkBoxCecMonitorOff = new System.Windows.Forms.CheckBox();
+            this.checkBoxCecEnabled = new System.Windows.Forms.CheckBox();
+            this.labelHdmiPort = new System.Windows.Forms.Label();
+            this.comboBoxHdmiPort = new System.Windows.Forms.ComboBox();
             this.tabPageApp = new System.Windows.Forms.TabPage();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
@@ -105,7 +111,6 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.pictureBoxDemo = new System.Windows.Forms.PictureBox();
             this.panelDisplay.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -118,8 +123,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).BeginInit();
             this.tabPageInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).BeginInit();
+            this.tabPageCec.SuspendLayout();
             this.tabPageApp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).BeginInit();
             this.SuspendLayout();
             // 
             // panelDisplay
@@ -521,6 +526,7 @@
             this.tabControl.Controls.Add(this.tabPageDesign);
             this.tabControl.Controls.Add(this.tabPageAudio);
             this.tabControl.Controls.Add(this.tabPageInput);
+            this.tabControl.Controls.Add(this.tabPageCec);
             this.tabControl.Controls.Add(this.tabPageApp);
             this.tabControl.Location = new System.Drawing.Point(12, 139);
             this.tabControl.Name = "tabControl";
@@ -766,6 +772,86 @@
             this.buttonSelectFile.UseVisualStyleBackColor = true;
             this.buttonSelectFile.Click += new System.EventHandler(this.buttonSelectFile_Click);
             // 
+            // tabPageCec
+            // 
+            this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOn);
+            this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOff);
+            this.tabPageCec.Controls.Add(this.checkBoxCecEnabled);
+            this.tabPageCec.Controls.Add(this.labelHdmiPort);
+            this.tabPageCec.Controls.Add(this.comboBoxHdmiPort);
+            this.tabPageCec.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCec.Name = "tabPageCec";
+            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCec.Size = new System.Drawing.Size(592, 242);
+            this.tabPageCec.TabIndex = 7;
+            this.tabPageCec.Text = "CEC";
+            this.tabPageCec.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxCecMonitorOn
+            // 
+            this.checkBoxCecMonitorOn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxCecMonitorOn.AutoSize = true;
+            this.checkBoxCecMonitorOn.Location = new System.Drawing.Point(6, 92);
+            this.checkBoxCecMonitorOn.Name = "checkBoxCecMonitorOn";
+            this.checkBoxCecMonitorOn.Size = new System.Drawing.Size(192, 17);
+            this.checkBoxCecMonitorOn.TabIndex = 23;
+            this.checkBoxCecMonitorOn.Text = "Wake up TV when screen turns on";
+            this.checkBoxCecMonitorOn.UseVisualStyleBackColor = true;
+            this.checkBoxCecMonitorOn.CheckedChanged += new System.EventHandler(this.checkBoxCecMonitorOn_CheckedChanged);
+            // 
+            // checkBoxCecMonitorOff
+            // 
+            this.checkBoxCecMonitorOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxCecMonitorOff.AutoSize = true;
+            this.checkBoxCecMonitorOff.Location = new System.Drawing.Point(6, 69);
+            this.checkBoxCecMonitorOff.Name = "checkBoxCecMonitorOff";
+            this.checkBoxCecMonitorOff.Size = new System.Drawing.Size(219, 17);
+            this.checkBoxCecMonitorOff.TabIndex = 22;
+            this.checkBoxCecMonitorOff.Text = "Set TV on standby when screen turns off";
+            this.checkBoxCecMonitorOff.UseVisualStyleBackColor = true;
+            this.checkBoxCecMonitorOff.CheckedChanged += new System.EventHandler(this.checkBoxCecMonitorOff_CheckedChanged);
+            // 
+            // checkBoxCecEnabled
+            // 
+            this.checkBoxCecEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxCecEnabled.AutoSize = true;
+            this.checkBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
+            this.checkBoxCecEnabled.Name = "checkBoxCecEnabled";
+            this.checkBoxCecEnabled.Size = new System.Drawing.Size(83, 17);
+            this.checkBoxCecEnabled.TabIndex = 21;
+            this.checkBoxCecEnabled.Text = "Enable CEC";
+            this.checkBoxCecEnabled.UseVisualStyleBackColor = true;
+            this.checkBoxCecEnabled.CheckedChanged += new System.EventHandler(this.checkBoxCecEnabled_CheckedChanged);
+            // 
+            // labelHdmiPort
+            // 
+            this.labelHdmiPort.AutoSize = true;
+            this.labelHdmiPort.Location = new System.Drawing.Point(3, 26);
+            this.labelHdmiPort.Name = "labelHdmiPort";
+            this.labelHdmiPort.Size = new System.Drawing.Size(182, 13);
+            this.labelHdmiPort.TabIndex = 20;
+            this.labelHdmiPort.Text = "TV HDMI port connected to your PC:";
+            // 
+            // comboBoxHdmiPort
+            // 
+            this.comboBoxHdmiPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxHdmiPort.FormattingEnabled = true;
+            this.comboBoxHdmiPort.Items.AddRange(new object[] {
+            "HDMI 1",
+            "HDMI 2",
+            "HDMI 3",
+            "HDMI 4",
+            "HDMI 5",
+            "HDMI 6",
+            "HDMI 7",
+            "HDMI 8",
+            "HDMI 9"});
+            this.comboBoxHdmiPort.Location = new System.Drawing.Point(6, 42);
+            this.comboBoxHdmiPort.Name = "comboBoxHdmiPort";
+            this.comboBoxHdmiPort.Size = new System.Drawing.Size(87, 21);
+            this.comboBoxHdmiPort.TabIndex = 19;
+            this.comboBoxHdmiPort.SelectedIndexChanged += new System.EventHandler(this.comboBoxHdmiPort_SelectedIndexChanged);
+            // 
             // tabPageApp
             // 
             this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
@@ -848,20 +934,11 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
-            // pictureBoxDemo
-            // 
-            this.pictureBoxDemo.Location = new System.Drawing.Point(478, 54);
-            this.pictureBoxDemo.Name = "pictureBoxDemo";
-            this.pictureBoxDemo.Size = new System.Drawing.Size(100, 50);
-            this.pictureBoxDemo.TabIndex = 21;
-            this.pictureBoxDemo.TabStop = false;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
-            this.Controls.Add(this.pictureBoxDemo);
             this.Controls.Add(this.labelFontHeight);
             this.Controls.Add(this.labelFontWidth);
             this.Controls.Add(this.labelWarning);
@@ -894,9 +971,10 @@
             this.tabPageInput.ResumeLayout(false);
             this.tabPageInput.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).EndInit();
+            this.tabPageCec.ResumeLayout(false);
+            this.tabPageCec.PerformLayout();
             this.tabPageApp.ResumeLayout(false);
             this.tabPageApp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDemo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -945,7 +1023,6 @@
         private System.Windows.Forms.Label labelFontWidth;
         private System.Windows.Forms.Label labelFontHeight;
         private System.Windows.Forms.CheckBox checkBoxInverseColors;
-        private System.Windows.Forms.PictureBox pictureBoxDemo;
         private System.Windows.Forms.TabPage tabPageApp;
         private System.Windows.Forms.Button buttonUpdate;
 		private System.Windows.Forms.CheckBox checkBoxAutoStart;
@@ -971,6 +1048,12 @@
 		private System.Windows.Forms.PictureBox pictureBoxGreenStart;
         private System.Windows.Forms.ComboBox comboBoxOpticalDrives;
         private System.Windows.Forms.Label labelOpticalDriveEject;
+        private System.Windows.Forms.TabPage tabPageCec;
+        private System.Windows.Forms.CheckBox checkBoxCecEnabled;
+        private System.Windows.Forms.Label labelHdmiPort;
+        private System.Windows.Forms.ComboBox comboBoxHdmiPort;
+        private System.Windows.Forms.CheckBox checkBoxCecMonitorOn;
+        private System.Windows.Forms.CheckBox checkBoxCecMonitorOff;
     }
 }
 

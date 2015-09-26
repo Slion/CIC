@@ -187,7 +187,8 @@ namespace SharpDisplayManager
             //CEC
             iCecManager = new ConsumerElectronicControl();
             OnWndProc += iCecManager.OnWndProc;
-            iCecManager.Start(Handle,"CEC", 2);
+            ResetCec();
+
 
             //Setup notification icon
             SetupTrayIcon();
@@ -1095,8 +1096,13 @@ namespace SharpDisplayManager
                 comboBoxOpticalDrives.SelectedIndex = 0;
             }
 
+            //CEC settings
+            checkBoxCecEnabled.Checked = Properties.Settings.Default.CecEnabled;
+            checkBoxCecMonitorOn.Checked = Properties.Settings.Default.CecMonitorOn;
+            checkBoxCecMonitorOff.Checked = Properties.Settings.Default.CecMonitorOff;
+            comboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
 
-
+            //Mini Display settings
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
             checkBoxInverseColors.Checked = cds.InverseColors;
 			checkBoxShowVolumeLabel.Checked = cds.ShowVolumeLabel;
@@ -2217,6 +2223,63 @@ namespace SharpDisplayManager
             }
             
             base.WndProc(ref aMessage);
+        }
+
+        private void checkBoxCecEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            //Save CEC enabled status
+            Properties.Settings.Default.CecEnabled = checkBoxCecEnabled.Checked;
+            Properties.Settings.Default.Save();
+            //
+            ResetCec();
+        }
+
+        private void comboBoxHdmiPort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Save CEC HDMI port
+            Properties.Settings.Default.CecHdmiPort = Convert.ToByte(comboBoxHdmiPort.SelectedIndex);
+            Properties.Settings.Default.CecHdmiPort++;
+            Properties.Settings.Default.Save();
+            //
+            ResetCec();
+        }
+
+        private void checkBoxCecMonitorOff_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.CecMonitorOff = checkBoxCecMonitorOff.Checked;
+            Properties.Settings.Default.Save();
+            //
+            ResetCec();
+        }
+
+        private void checkBoxCecMonitorOn_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.CecMonitorOn = checkBoxCecMonitorOn.Checked;
+            Properties.Settings.Default.Save();
+            //
+            ResetCec();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ResetCec()
+        {
+            if (iCecManager==null)
+            {
+                //Thus skipping initial UI setup
+                return;
+            }
+
+            iCecManager.Stop();
+            //
+            if (Properties.Settings.Default.CecEnabled)
+            {
+                iCecManager.Start(Handle, "CEC",
+                Properties.Settings.Default.CecHdmiPort,
+                Properties.Settings.Default.CecMonitorOn,
+                Properties.Settings.Default.CecMonitorOff);
+            }
         }
     }
 }
