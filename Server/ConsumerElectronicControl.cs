@@ -70,7 +70,7 @@ namespace SharpDisplayManager
         private void OnMonitorPowerOn()
         {
             Debug.WriteLine("ON");
-            //iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
+            iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
             iCecClient.Lib.SetActiveSource(CecDeviceType.Tv);
         }
 
