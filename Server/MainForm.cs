@@ -44,7 +44,7 @@ using NETWORKLIST;
 using SharpDisplayClient;
 using SharpDisplay;
 using MiniDisplayInterop;
-
+using SharpLib.Display;
 
 namespace SharpDisplayManager
 {

@@ -82,19 +82,13 @@
         "Entry"
         {
         "MsmKey" = "8:_9F004B0F8506B523869FACB14EFF064D"
-        "OwnerKey" = "8:_8CD29D0F38634408AC33359D27B44035"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9F004B0F8506B523869FACB14EFF064D"
         "OwnerKey" = "8:_9A642A9E3FEC4B88888C4B96086D59E8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A8CD4C9EB63D487F8E718093F92404DB"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_9F004B0F8506B523869FACB14EFF064D"
+        "OwnerKey" = "8:_8CD29D0F38634408AC33359D27B44035"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -118,55 +112,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A8CD4C9EB63D487F8E718093F92404DB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8CD29D0F38634408AC33359D27B44035"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9A642A9E3FEC4B88888C4B96086D59E8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_63DC5055504D8E8030D07BDDC074A009"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7010B5ED2C1B4E82D3DBE2B590A4FC8E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_295C95460CE37C9B5A2F236412BA3C46"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_334B309CE72870CC620EAB7737749CDB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_3EF5004CB20A413815D0A2588A19CDD4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C2E6C8EB1D62D3C8FA1D1C243958D2D5"
+        "OwnerKey" = "8:_9F004B0F8506B523869FACB14EFF064D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -178,7 +124,49 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9F004B0F8506B523869FACB14EFF064D"
+        "OwnerKey" = "8:_C2E6C8EB1D62D3C8FA1D1C243958D2D5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3EF5004CB20A413815D0A2588A19CDD4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_334B309CE72870CC620EAB7737749CDB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_295C95460CE37C9B5A2F236412BA3C46"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7010B5ED2C1B4E82D3DBE2B590A4FC8E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_63DC5055504D8E8030D07BDDC074A009"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9A642A9E3FEC4B88888C4B96086D59E8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8CD29D0F38634408AC33359D27B44035"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -199,6 +187,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -215,6 +211,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -251,11 +255,6 @@
             "AssemblyAsmDisplayName" = "8:SharpDisplayClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_0BDF79321B394EC0E77BF680C3F40422"
-                    {
-                    "Name" = "8:SharpDisplayClient.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SharpDisplayClient.exe"
             "TargetName" = "8:"
@@ -282,11 +281,6 @@
             "AssemblyAsmDisplayName" = "8:SharpLibHid, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_295C95460CE37C9B5A2F236412BA3C46"
-                    {
-                    "Name" = "8:SharpLibHid.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SharpLibHid.dll"
             "TargetName" = "8:"
@@ -313,11 +307,6 @@
             "AssemblyAsmDisplayName" = "8:SharpLibWin32, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_334B309CE72870CC620EAB7737749CDB"
-                    {
-                    "Name" = "8:SharpLibWin32.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SharpLibWin32.dll"
             "TargetName" = "8:"
@@ -344,11 +333,6 @@
             "AssemblyAsmDisplayName" = "8:NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_3EF5004CB20A413815D0A2588A19CDD4"
-                    {
-                    "Name" = "8:NAudio.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:NAudio.dll"
             "TargetName" = "8:"
@@ -375,11 +359,6 @@
             "AssemblyAsmDisplayName" = "8:System.Xml.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
                 "ScatterAssemblies"
                 {
-                    "_63DC5055504D8E8030D07BDDC074A009"
-                    {
-                    "Name" = "8:System.Xml.Serialization.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Xml.Serialization.dll"
             "TargetName" = "8:"
@@ -406,11 +385,6 @@
             "AssemblyAsmDisplayName" = "8:LibCecSharp, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_7010B5ED2C1B4E82D3DBE2B590A4FC8E"
-                    {
-                    "Name" = "8:LibCecSharp.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:LibCecSharp.dll"
             "TargetName" = "8:"
@@ -437,11 +411,6 @@
             "AssemblyAsmDisplayName" = "8:SharpDisplayInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_9F004B0F8506B523869FACB14EFF064D"
-                    {
-                    "Name" = "8:SharpDisplayInterface.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SharpDisplayInterface.dll"
             "TargetName" = "8:"
@@ -468,11 +437,6 @@
             "AssemblyAsmDisplayName" = "8:MiniDisplayInterop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C2E6C8EB1D62D3C8FA1D1C243958D2D5"
-                    {
-                    "Name" = "8:MiniDisplayInterop.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MiniDisplayInterop.dll"
             "TargetName" = "8:"
@@ -499,11 +463,6 @@
             "AssemblyAsmDisplayName" = "8:PowerManager, Version=1.0.5750.26884, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_FE5CFB2A37C82C1C9824F67FFE127C01"
-                    {
-                    "Name" = "8:PowerManager.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:PowerManager.dll"
             "TargetName" = "8:"
@@ -1217,34 +1176,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{1DA8C1B3-18C5-4E74-BE4E-0B0E15FBAF49}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A8CD4C9EB63D487F8E718093F92404DB"
-            {
-            "SourcePath" = "8:..\\bin\\x86\\Release\\obj\\x86\\Release\\SharpDisplayInterface.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_E283B42AF1634497931184D1A685745A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{88EEE0DC-ABBC-4738-BAD6-7E08CF7F50F9}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

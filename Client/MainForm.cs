@@ -29,7 +29,7 @@ using System.Windows.Forms;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Diagnostics;
-using SharpDisplay;
+using SharpLib.Display;
 
 
 namespace SharpDisplayClient
@@ -39,7 +39,7 @@ namespace SharpDisplayClient
 		public StartParams Params { get; set; }
 
 		//
-        DisplayClient iClient;
+        Client iClient;
 		//
         ContentAlignment Alignment;
         DataField iTextFieldTop;
@@ -55,14 +55,20 @@ namespace SharpDisplayClient
             iTextFieldTop = new DataField(0);
         }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
+        public void OnCloseOrder()
+        {
+            CloseThreadSafe();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            iClient = new DisplayClient(this);
+            iClient = new Client();
+            iClient.CloseOrderEvent += OnCloseOrder;
             iClient.Open();
 
             //Connect using unique name

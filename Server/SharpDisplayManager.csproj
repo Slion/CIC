@@ -103,7 +103,7 @@
     <StartupObject>SharpDisplayManager.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationManifest>Resources\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -121,6 +121,10 @@
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpLibDisplay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpLibDisplay.0.0.2\lib\net40\SharpLibDisplay.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SharpLibHid">
       <HintPath>..\packages\SharpLibHid.1.2.1\lib\net20\SharpLibHid.dll</HintPath>
@@ -197,7 +201,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.manifest">
+    <None Include="Resources\app.manifest">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
@@ -214,16 +218,12 @@
     <None Include="SharpDisplayManager_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Resources\App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Client\SharpDisplayClient.csproj">
       <Project>{7ee64074-8cdb-4448-b40c-81b75d6b31cd}</Project>
       <Name>SharpDisplayClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Interface\SharpDisplayInterface.csproj">
-      <Project>{88eee0dc-abbc-4738-bad6-7e08cf7f50f9}</Project>
-      <Name>SharpDisplayInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\PowerManager\PowerManager.vcxproj">
       <Project>{c174f23d-3055-49bc-b6b0-563011af624d}</Project>

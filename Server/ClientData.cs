@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //
-using SharpDisplay;
+using SharpLib.Display;
 
 namespace SharpDisplayManager
 {
