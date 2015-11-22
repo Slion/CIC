@@ -1580,32 +1580,35 @@ namespace SharpDisplayManager
             while (client.Fields.Count < (aField.Index + 1))
             {
                 //Add a data field with proper index
-                client.Fields.Add(new DataField(client.Fields.Count));
+                client.Fields.Add(new TextField(client.Fields.Count));
                 layoutChanged = true;
             }
 
             //Now that we know our fields are in place just update that one
             client.Fields[aField.Index] = aField;
 
+
             if (client.Fields[aField.Index].IsSameLayout(aField))
             {
                 //If we are updating a field in our current client we need to update it in our panel
                 if (aSessionId == iCurrentClientSessionId)
                 {
-                    if (aField.IsText && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
+                    if (aField.IsTextField && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
                     {
+                        TextField textField=(TextField)aField;
                         //Text field control already in place, just change the text
                         MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aField.Index];
-                        contentChanged = (label.Text != aField.Text || label.TextAlign != aField.Alignment);
-                        label.Text = aField.Text;
-                        label.TextAlign = aField.Alignment;
+                        contentChanged = (label.Text != textField.Text || label.TextAlign != textField.Alignment);
+                        label.Text = textField.Text;
+                        label.TextAlign = textField.Alignment;
                     }
-                    else if (aField.IsBitmap && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is PictureBox)
+                    else if (aField.IsBitmapField && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is PictureBox)
                     {
+                        BitmapField bitmapField = (BitmapField)aField;
                         contentChanged = true; //TODO: Bitmap comp or should we leave that to clients?
                         //Bitmap field control already in place just change the bitmap
                         PictureBox pictureBox = (PictureBox)tableLayoutPanel.Controls[aField.Index];
-                        pictureBox.Image = aField.Bitmap;
+                        pictureBox.Image = bitmapField.Bitmap;
                     }
                     else
                     {
@@ -1752,14 +1755,18 @@ namespace SharpDisplayManager
                     //For each text add a new entry
                     foreach (DataField field in aClient.Fields)
                     {
-                        if (!field.IsBitmap)
+                        if (field.IsTextField)
                         {
-                            DataField textField = (DataField)field;
+                            TextField textField = (TextField)field;
                             textsRoot.Nodes.Add(new TreeNode("[Text]" + textField.Text));
                         }
-                        else
+                        else if (field.IsBitmapField)
                         {
                             textsRoot.Nodes.Add(new TreeNode("[Bitmap]"));
+                        }
+                        else if (field.IsRecordingField)
+                        {
+                            textsRoot.Nodes.Add(new TreeNode("[Recording]"));
                         }
                     }
                 }
@@ -1843,18 +1850,28 @@ namespace SharpDisplayManager
                     if (aClient.Fields.Count <= tableLayoutPanel.Controls.Count)
                     {
                         //No client field specified, create a text field by default
-                        aClient.Fields.Add(new DataField(aClient.Fields.Count));
+                        aClient.Fields.Add(new TextField(aClient.Fields.Count));
                     }
 
-                    //Create a control corresponding to the field specified for that cell
+                    //
                     DataField field = aClient.Fields[tableLayoutPanel.Controls.Count];
-                    Control control = CreateControlForDataField(field);
+                    if (!field.IsTableField)
+                    {
+                        //That field is not taking part in our table layout then 
+                        //We should be ok I guess
+                        continue;
+                    }
+
+                    TableField tableField = (TableField)field;
+
+                    //Create a control corresponding to the field specified for that cell
+                    Control control = CreateControlForDataField(tableField);
 
                     //Add newly created control to our table layout at the specified row and column
                     tableLayoutPanel.Controls.Add(control, i, j);
                     //Make sure we specify row and column span for that new control
-                    tableLayoutPanel.SetRowSpan(control,field.RowSpan);
-                    tableLayoutPanel.SetColumnSpan(control, field.ColumnSpan);
+                    tableLayoutPanel.SetRowSpan(control, tableField.RowSpan);
+                    tableLayoutPanel.SetColumnSpan(control, tableField.ColumnSpan);
                 }
             }
 
@@ -1876,7 +1893,7 @@ namespace SharpDisplayManager
         private Control CreateControlForDataField(DataField aField)
         {
             Control control=null;
-            if (!aField.IsBitmap)
+            if (aField.IsTextField)
             {
                 MarqueeLabel label = new SharpDisplayManager.MarqueeLabel();
                 label.AutoEllipsis = true;
@@ -1895,13 +1912,14 @@ namespace SharpDisplayManager
                 //control.TabIndex = 2;
                 label.Font = cds.Font;
 
-				label.TextAlign = aField.Alignment;
+                TextField field = (TextField)aField;
+                label.TextAlign = field.Alignment;
                 label.UseCompatibleTextRendering = true;
-                label.Text = aField.Text;
+                label.Text = field.Text;
                 //
                 control = label;
             }
-            else
+            else if (aField.IsBitmapField)
             {
                 //Create picture box
                 PictureBox picture = new PictureBox();
@@ -1912,10 +1930,12 @@ namespace SharpDisplayManager
                 picture.Margin = new System.Windows.Forms.Padding(0);
                 picture.Name = "pictureBox" + aField;
                 //Set our image
-                picture.Image = aField.Bitmap;
+                BitmapField field = (BitmapField)aField;
+                picture.Image = field.Bitmap;
                 //
                 control = picture;
             }
+            //TODO: Handle recording field?
 
             return control;
         }
