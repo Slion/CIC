@@ -107,7 +107,7 @@ namespace SharpDisplayManager
 		/// <summary>
 		/// System tray icon.
 		/// </summary>
-		private NotifyIconAdv iNotifyIcon;
+		private SharpLib.Notification.Control iNotifyIcon;
 
         /// <summary>
         /// Allow user to receive window messages;
@@ -128,7 +128,7 @@ namespace SharpDisplayManager
 			//
 			iClients = new Dictionary<string, ClientData>();
 			iStartupManager = new StartupManager();
-			iNotifyIcon = new NotifyIconAdv();
+			iNotifyIcon = new SharpLib.Notification.Control();
 
 			//Have our designer initialize its controls
             InitializeComponent();
