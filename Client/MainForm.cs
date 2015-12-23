@@ -227,13 +227,18 @@ namespace SharpDisplayClient
             //Send layout to server
             iClient.SetLayout(layout);
 
+            //
+            RecordingField recording = new RecordingField();
+            recording.IsActive = true;
+
             //Set texts
             iClient.CreateFields(new DataField[]
             {                
                 new TextField(0, textBoxTop.Text, Alignment),
                 new TextField(1, textBoxBottom.Text, Alignment),
                 new TextField(2, "Third text field", Alignment),
-                new TextField(3, "Forth text field", Alignment)
+                new TextField(3, "Forth text field", Alignment),
+                //recording
             });
 
         }
