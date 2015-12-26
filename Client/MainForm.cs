@@ -238,7 +238,7 @@ namespace SharpDisplayClient
                 new TextField(1, textBoxBottom.Text, Alignment),
                 new TextField(2, "Third text field", Alignment),
                 new TextField(3, "Forth text field", Alignment),
-                //recording
+                recording
             });
 
         }
@@ -363,9 +363,9 @@ namespace SharpDisplayClient
             iClient.CreateFields(new DataField[]
             {
                 textFieldTop,
-                indicator1,
-                indicator2,
                 textFieldBottom,
+                indicator1,
+                indicator2,                
                 indicator3,
                 indicator4
             });

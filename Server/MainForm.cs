@@ -144,7 +144,7 @@ namespace SharpDisplayManager
 
             //We have a bug when drawing minimized and reusing our bitmap
             //Though I could not reproduce it on Windows 10
-            iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+            iBmp = new System.Drawing.Bitmap(iTableLayoutPanel.Width, iTableLayoutPanel.Height, PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
 
 			//Minimize our window if desired
@@ -668,7 +668,7 @@ namespace SharpDisplayManager
             if (DlgBox.ShowDialog(fontDialog) != DialogResult.Cancel)
             {
                 //Set the fonts to all our labels in our layout
-                foreach (Control ctrl in tableLayoutPanel.Controls)
+                foreach (Control ctrl in iTableLayoutPanel.Controls)
                 {
                     if (ctrl is MarqueeLabel)
                     {
@@ -704,7 +704,7 @@ namespace SharpDisplayManager
 
             MarqueeLabel label = null;
             //Get the first label control we can find
-            foreach (Control ctrl in tableLayoutPanel.Controls)
+            foreach (Control ctrl in iTableLayoutPanel.Controls)
             {
                 if (ctrl is MarqueeLabel)
                 {
@@ -728,12 +728,12 @@ namespace SharpDisplayManager
 
         private void buttonCapture_Click(object sender, EventArgs e)
         {
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height);
-            tableLayoutPanel.DrawToBitmap(bmp, tableLayoutPanel.ClientRectangle);
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(iTableLayoutPanel.Width, iTableLayoutPanel.Height);
+            iTableLayoutPanel.DrawToBitmap(bmp, iTableLayoutPanel.ClientRectangle);
             //Bitmap bmpToSave = new Bitmap(bmp);
             bmp.Save("D:\\capture.png");
 
-            ((MarqueeLabel)tableLayoutPanel.Controls[0]).Text = "Captured";
+            ((MarqueeLabel)iTableLayoutPanel.Controls[0]).Text = "Captured";
 
             /*
             string outputFileName = "d:\\capture.png";
@@ -876,7 +876,7 @@ namespace SharpDisplayManager
 			UpdateNetworkSignal(LastTickTime, NewTickTime);
 
             //Update animation for all our marquees
-            foreach (Control ctrl in tableLayoutPanel.Controls)
+            foreach (Control ctrl in iTableLayoutPanel.Controls)
             {
                 if (ctrl is MarqueeLabel)
                 {
@@ -896,10 +896,10 @@ namespace SharpDisplayManager
 					//Draw to bitmap
 					if (iCreateBitmap)
 					{
-                        iBmp = new System.Drawing.Bitmap(tableLayoutPanel.Width, tableLayoutPanel.Height, PixelFormat.Format32bppArgb);
+                        iBmp = new System.Drawing.Bitmap(iTableLayoutPanel.Width, iTableLayoutPanel.Height, PixelFormat.Format32bppArgb);
                         iCreateBitmap = false;
                     }
-					tableLayoutPanel.DrawToBitmap(iBmp, tableLayoutPanel.ClientRectangle);
+					iTableLayoutPanel.DrawToBitmap(iBmp, iTableLayoutPanel.ClientRectangle);
 					//iBmp.Save("D:\\capture.png");
 
 					//Send it to our display
@@ -1057,10 +1057,10 @@ namespace SharpDisplayManager
         {            
             //Load settings
             checkBoxShowBorders.Checked = cds.ShowBorders;
-            tableLayoutPanel.CellBorderStyle = (cds.ShowBorders ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
+            iTableLayoutPanel.CellBorderStyle = (cds.ShowBorders ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
 
             //Set the proper font to each of our labels
-            foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+            foreach (MarqueeLabel ctrl in iTableLayoutPanel.Controls)
             {
                 ctrl.Font = cds.Font;
             }
@@ -1123,7 +1123,7 @@ namespace SharpDisplayManager
 				//We have a display connection
 				//Reflect that in our UI
 
-				tableLayoutPanel.Enabled = true;
+				iTableLayoutPanel.Enabled = true;
 				panelDisplay.Enabled = true;
 
                 //Only setup brightness if display is open
@@ -1195,7 +1195,7 @@ namespace SharpDisplayManager
 				//Display is connection not available
 				//Reflect that in our UI
 				checkBoxShowVolumeLabel.Enabled = false;
-				tableLayoutPanel.Enabled = false;
+				iTableLayoutPanel.Enabled = false;
 				panelDisplay.Enabled = false;
                 buttonFill.Enabled = false;
                 buttonClear.Enabled = false;
@@ -1228,7 +1228,7 @@ namespace SharpDisplayManager
         private void checkBoxShowBorders_CheckedChanged(object sender, EventArgs e)
         {
             //Save our show borders setting
-            tableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
+            iTableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked ? TableLayoutPanelCellBorderStyle.Single : TableLayoutPanelCellBorderStyle.None);
             cds.ShowBorders = checkBoxShowBorders.Checked;
             Properties.Settings.Default.Save();
             CheckFontHeight();
@@ -1382,9 +1382,9 @@ namespace SharpDisplayManager
 		/// </summary>
 		private void ClearLayout()
 		{
-			tableLayoutPanel.Controls.Clear();
-			tableLayoutPanel.RowStyles.Clear();
-			tableLayoutPanel.ColumnStyles.Clear();
+			iTableLayoutPanel.Controls.Clear();
+			iTableLayoutPanel.RowStyles.Clear();
+			iTableLayoutPanel.ColumnStyles.Clear();
 			iCurrentClientData = null;
 		}
 
@@ -1529,6 +1529,8 @@ namespace SharpDisplayManager
                         Debug.Print("SetClientLayoutThreadSafe: Layout updated.");
                         //Set our client layout then
                         client.Layout = aLayout;
+                        //So that next time we update all our fields at ones
+                        client.HasNewLayout = true;
                         //Layout has changed clear our fields then
                         client.Fields.Clear();
                         //
@@ -1564,7 +1566,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        ///
+        /// Set a data field in the given client.
         /// </summary>
         /// <param name="aSessionId"></param>
         /// <param name="aField"></param>
@@ -1584,30 +1586,32 @@ namespace SharpDisplayManager
                 layoutChanged = true;
             }
 
+            //Keep our previous field in there
+            DataField previousField = client.Fields[aField.Index];
             //Now that we know our fields are in place just update that one
             client.Fields[aField.Index] = aField;
 
 
-            if (client.Fields[aField.Index].IsSameLayout(aField))
+            if (previousField.IsSameLayout(aField))
             {
                 //If we are updating a field in our current client we need to update it in our panel
                 if (aSessionId == iCurrentClientSessionId)
                 {
-                    if (aField.IsTextField && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
+                    if (aField.IsTextField && aField.Index < iTableLayoutPanel.Controls.Count && iTableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
                     {
                         TextField textField=(TextField)aField;
                         //Text field control already in place, just change the text
-                        MarqueeLabel label = (MarqueeLabel)tableLayoutPanel.Controls[aField.Index];
+                        MarqueeLabel label = (MarqueeLabel)iTableLayoutPanel.Controls[aField.Index];
                         contentChanged = (label.Text != textField.Text || label.TextAlign != textField.Alignment);
                         label.Text = textField.Text;
                         label.TextAlign = textField.Alignment;
                     }
-                    else if (aField.IsBitmapField && aField.Index < tableLayoutPanel.Controls.Count && tableLayoutPanel.Controls[aField.Index] is PictureBox)
+                    else if (aField.IsBitmapField && aField.Index < iTableLayoutPanel.Controls.Count && iTableLayoutPanel.Controls[aField.Index] is PictureBox)
                     {
                         BitmapField bitmapField = (BitmapField)aField;
                         contentChanged = true; //TODO: Bitmap comp or should we leave that to clients?
                         //Bitmap field control already in place just change the bitmap
-                        PictureBox pictureBox = (PictureBox)tableLayoutPanel.Controls[aField.Index];
+                        PictureBox pictureBox = (PictureBox)iTableLayoutPanel.Controls[aField.Index];
                         pictureBox.Image = bitmapField.Bitmap;
                     }
                     else
@@ -1664,10 +1668,33 @@ namespace SharpDisplayManager
             }
             else
             {
-                //Put each our text fields in a label control
-                foreach (DataField field in aFields)
+                ClientData client = iClients[aSessionId];
+
+                if (client.HasNewLayout)
                 {
-                    SetClientField(aSessionId, field);
+                    //TODO: Assert client.Count == 0
+                    //Our layout was just changed
+                    //Do some special handling to avoid re-creating our panel N times, once for each fields
+                    client.HasNewLayout = false;
+                    //Just set all our fields then
+                    client.Fields.AddRange(aFields);
+                    //Try switch to that client
+                    SetCurrentClient(aSessionId);
+
+                    //If we are updating the current client update our panel
+                    if (aSessionId == iCurrentClientSessionId)
+                    {
+                        //Apply layout and set data fields.
+                        UpdateTableLayoutPanel(iCurrentClientData);
+                    }
+                }
+                else
+                {
+                    //Put each our text fields in a label control
+                    foreach (DataField field in aFields)
+                    {
+                        SetClientField(aSessionId, field);
+                    }
                 }
             }
         }
@@ -1780,20 +1807,22 @@ namespace SharpDisplayManager
         /// </summary>
         private void UpdateTableLayoutRowStyles()
         {
-            foreach (RowStyle rowStyle in tableLayoutPanel.RowStyles)
+            foreach (RowStyle rowStyle in iTableLayoutPanel.RowStyles)
             {
                 rowStyle.SizeType = SizeType.Percent;
-                rowStyle.Height = 100 / tableLayoutPanel.RowCount;
+                rowStyle.Height = 100 / iTableLayoutPanel.RowCount;
             }
         }
 
         /// <summary>
         /// Update our display table layout.
+        /// Will instanciated every field control as defined by our client.
+        /// Fields must be specified by rows from the left.
         /// </summary>
         /// <param name="aLayout"></param>
         private void UpdateTableLayoutPanel(ClientData aClient)
         {
-            Debug.Print("UpdateClientTreeViewNode");
+            Debug.Print("UpdateTableLayoutPanel");
 
 			if (aClient == null)
 			{
@@ -1806,37 +1835,41 @@ namespace SharpDisplayManager
             int fieldCount = 0;
 
             //First clean our current panel
-            tableLayoutPanel.Controls.Clear();
-            tableLayoutPanel.RowStyles.Clear();
-            tableLayoutPanel.ColumnStyles.Clear();
-            tableLayoutPanel.RowCount = 0;
-            tableLayoutPanel.ColumnCount = 0;
+            iTableLayoutPanel.Controls.Clear();
+            iTableLayoutPanel.RowStyles.Clear();
+            iTableLayoutPanel.ColumnStyles.Clear();
+            iTableLayoutPanel.RowCount = 0;
+            iTableLayoutPanel.ColumnCount = 0;
 
-            while (tableLayoutPanel.RowCount < layout.Rows.Count)
+            //Then recreate our rows...
+            while (iTableLayoutPanel.RowCount < layout.Rows.Count)
             {
-                tableLayoutPanel.RowCount++;
+                iTableLayoutPanel.RowCount++;
             }
 
-            while (tableLayoutPanel.ColumnCount < layout.Columns.Count)
+            // ...and columns 
+            while (iTableLayoutPanel.ColumnCount < layout.Columns.Count)
             {
-                tableLayoutPanel.ColumnCount++;
+                iTableLayoutPanel.ColumnCount++;
             }
 
-            for (int i = 0; i < tableLayoutPanel.ColumnCount; i++)
+            //For each column
+            for (int i = 0; i < iTableLayoutPanel.ColumnCount; i++)
             {
                 //Create our column styles
-                this.tableLayoutPanel.ColumnStyles.Add(layout.Columns[i]);
+                this.iTableLayoutPanel.ColumnStyles.Add(layout.Columns[i]);
 
-                for (int j = 0; j < tableLayoutPanel.RowCount; j++)
+                //For each rows
+                for (int j = 0; j < iTableLayoutPanel.RowCount; j++)
                 {
                     if (i == 0)
                     {
                         //Create our row styles
-                        this.tableLayoutPanel.RowStyles.Add(layout.Rows[j]);
+                        this.iTableLayoutPanel.RowStyles.Add(layout.Rows[j]);
                     }
 
                     //Check if we already have a control
-                    Control existingControl = tableLayoutPanel.GetControlFromPosition(i,j);
+                    Control existingControl = iTableLayoutPanel.GetControlFromPosition(i,j);
                     if (existingControl!=null)
                     {
                         //We already have a control in that cell as a results of row/col spanning
@@ -1847,14 +1880,14 @@ namespace SharpDisplayManager
                     fieldCount++;
 
                     //Check if a client field already exists for that cell
-                    if (aClient.Fields.Count <= tableLayoutPanel.Controls.Count)
+                    if (aClient.Fields.Count <= iTableLayoutPanel.Controls.Count)
                     {
                         //No client field specified, create a text field by default
                         aClient.Fields.Add(new TextField(aClient.Fields.Count));
                     }
 
                     //
-                    DataField field = aClient.Fields[tableLayoutPanel.Controls.Count];
+                    DataField field = aClient.Fields[iTableLayoutPanel.Controls.Count];
                     if (!field.IsTableField)
                     {
                         //That field is not taking part in our table layout then 
@@ -1868,10 +1901,10 @@ namespace SharpDisplayManager
                     Control control = CreateControlForDataField(tableField);
 
                     //Add newly created control to our table layout at the specified row and column
-                    tableLayoutPanel.Controls.Add(control, i, j);
+                    iTableLayoutPanel.Controls.Add(control, i, j);
                     //Make sure we specify row and column span for that new control
-                    tableLayoutPanel.SetRowSpan(control, tableField.RowSpan);
-                    tableLayoutPanel.SetColumnSpan(control, tableField.ColumnSpan);
+                    iTableLayoutPanel.SetRowSpan(control, tableField.RowSpan);
+                    iTableLayoutPanel.SetColumnSpan(control, tableField.ColumnSpan);
                 }
             }
 
@@ -2018,7 +2051,7 @@ namespace SharpDisplayManager
             Properties.Settings.Default.Save();
 
 			//Update our text fields
-			foreach (MarqueeLabel ctrl in tableLayoutPanel.Controls)
+			foreach (MarqueeLabel ctrl in iTableLayoutPanel.Controls)
 			{
 				ctrl.Separator = cds.Separator;
 			}
