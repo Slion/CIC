@@ -34,5 +34,46 @@ namespace SharpDisplayManager
 
         //Client management
         public DateTime LastSwitchTime { get; set; }
+
+        /// <summary>
+        /// Look up the corresponding field in our field collection.
+        /// </summary>
+        /// <param name="aField"></param>
+        /// <returns></returns>
+        public DataField FindSameFieldAs(DataField aField)
+        {
+            foreach (DataField field in Fields)
+            {
+                if (field.IsSameAs(aField))
+                {
+                    return field;
+                }                
+            }
+
+            return null;
+        }
+
+
+        /// <summary>
+        /// Look up the corresponding field in our field collection.
+        /// </summary>
+        /// <param name="aField"></param>
+        /// <returns></returns>
+        public int FindSameFieldIndex(DataField aField)
+        {
+            int i = 0;
+            foreach (DataField field in Fields)
+            {
+                if (field.IsSameAs(aField))
+                {
+                    return i;
+                }
+                i++;
+            }
+
+            return -1;
+        }
+
+
     }
 }

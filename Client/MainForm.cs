@@ -52,7 +52,7 @@ namespace SharpDisplayClient
         {
             InitializeComponent();
             Alignment = ContentAlignment.MiddleLeft;
-            iTextFieldTop = new TextField(0);
+            iTextFieldTop = new TextField();
         }
 
         public void OnCloseOrder()
@@ -212,8 +212,8 @@ namespace SharpDisplayClient
 			//Set our fields
 			iClient.CreateFields(new DataField[]
             {
-                new TextField(0, textBoxTop.Text, Alignment),
-                new TextField(1, textBoxBottom.Text, Alignment)
+                new TextField(textBoxTop.Text, Alignment, 0, 0),
+                new TextField(textBoxBottom.Text, Alignment, 0, 1)
             });
 
 		}
@@ -234,10 +234,10 @@ namespace SharpDisplayClient
             //Set texts
             iClient.CreateFields(new DataField[]
             {                
-                new TextField(0, textBoxTop.Text, Alignment),
-                new TextField(1, textBoxBottom.Text, Alignment),
-                new TextField(2, "Third text field", Alignment),
-                new TextField(3, "Forth text field", Alignment),
+                new TextField(textBoxTop.Text, Alignment, 0, 0),
+                new TextField(textBoxBottom.Text, Alignment, 0, 1),
+                new TextField("Third text field", Alignment, 1, 0),
+                new TextField("Forth text field", Alignment, 1, 1),
                 recording
             });
 
@@ -260,7 +260,7 @@ namespace SharpDisplayClient
                 graphics.DrawLine(blackPen, x1, y2, x2, y1);
             }
 
-            DataField field = new BitmapField(0, bitmap);
+            DataField field = new BitmapField(bitmap);
             //field.ColumnSpan = 2;
             iClient.SetField(field);
         }
@@ -301,16 +301,15 @@ namespace SharpDisplayClient
             }
 
             //Create a bitmap field from the bitmap we just created
-            BitmapField field = new BitmapField(0, bitmap);
             //We want our bitmap field to span across two rows
-            field.RowSpan = 2;
-
+            BitmapField bitmapField = new BitmapField(bitmap, 0, 0, 1, 2);
+            
             //Set texts
             iClient.CreateFields(new DataField[]
             {
-                field,
-                new TextField(1, textBoxTop.Text, Alignment),
-                new TextField(2, textBoxBottom.Text, Alignment)
+                bitmapField,
+                new TextField(textBoxTop.Text, Alignment, 1, 0),
+                new TextField(textBoxBottom.Text, Alignment, 1, 1)
             });
 
         }
@@ -343,21 +342,17 @@ namespace SharpDisplayClient
             }
 
             //Create a bitmap field from the bitmap we just created
-            DataField indicator1 = new BitmapField(2, bitmap);
+            DataField indicator1 = new BitmapField(bitmap, 1, 0);
             //Create a bitmap field from the bitmap we just created
-            DataField indicator2 = new BitmapField(3, bitmap);
+            DataField indicator2 = new BitmapField(bitmap, 1, 1);
             //Create a bitmap field from the bitmap we just created
-            DataField indicator3 = new BitmapField(4, bitmap);
+            DataField indicator3 = new BitmapField(bitmap, 1, 2);
             //Create a bitmap field from the bitmap we just created
-            DataField indicator4 = new BitmapField(5, bitmap);
+            DataField indicator4 = new BitmapField(bitmap, 1, 3);
 
             //
-            TextField textFieldTop = new TextField(0, textBoxTop.Text, Alignment);
-            textFieldTop.RowSpan = 2;
-
-            TextField textFieldBottom = new TextField(1, textBoxBottom.Text, Alignment);
-            textFieldBottom.RowSpan = 2;
-
+            TextField textFieldTop = new TextField(textBoxTop.Text, Alignment, 0, 0, 1, 2);
+            TextField textFieldBottom = new TextField(textBoxBottom.Text, Alignment, 0, 2, 1, 2);
 
             //Set texts
             iClient.CreateFields(new DataField[]
@@ -377,8 +372,8 @@ namespace SharpDisplayClient
 
             bool res = iClient.SetFields(new DataField[]
             {
-                new TextField(0, textBoxTop.Text, Alignment),
-                new TextField(1, textBoxBottom.Text, Alignment)
+                new TextField(textBoxTop.Text, Alignment,0,0),
+                new TextField(textBoxBottom.Text, Alignment,0,1)
             });
 
             if (!res)
@@ -397,7 +392,7 @@ namespace SharpDisplayClient
 			//Set our fields
 			iClient.CreateFields(new DataField[]
             {
-                new TextField(0, textBoxTop.Text, Alignment)
+                new TextField(textBoxTop.Text, Alignment)
             });
 		}
     }

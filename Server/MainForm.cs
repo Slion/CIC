@@ -1565,6 +1565,9 @@ namespace SharpDisplayManager
             }
         }
 
+
+
+
         /// <summary>
         /// Set a data field in the given client.
         /// </summary>
@@ -1578,40 +1581,49 @@ namespace SharpDisplayManager
             bool layoutChanged = false;
             bool contentChanged = true;
 
-            //Make sure all our fields are in place
-            while (client.Fields.Count < (aField.Index + 1))
+            //Fetch our field index
+            int fieldIndex = client.FindSameFieldIndex(aField);
+
+            if (fieldIndex < 0)
             {
-                //Add a data field with proper index
-                client.Fields.Add(new TextField(client.Fields.Count));
-                layoutChanged = true;
+                //No corresponding field, just bail out
+                return;
             }
 
             //Keep our previous field in there
-            DataField previousField = client.Fields[aField.Index];
-            //Now that we know our fields are in place just update that one
-            client.Fields[aField.Index] = aField;
+            DataField previousField = client.Fields[fieldIndex];
+            //Just update that field then 
+            client.Fields[fieldIndex] = aField;
 
+            if (!aField.IsTableField)
+            {
+                //We are done then if that field is not in our table layout
+                return;
+            }
+
+            TableField tableField = (TableField) aField;
 
             if (previousField.IsSameLayout(aField))
             {
                 //If we are updating a field in our current client we need to update it in our panel
                 if (aSessionId == iCurrentClientSessionId)
                 {
-                    if (aField.IsTextField && aField.Index < iTableLayoutPanel.Controls.Count && iTableLayoutPanel.Controls[aField.Index] is MarqueeLabel)
+                    Control ctrl=iTableLayoutPanel.GetControlFromPosition(tableField.Column, tableField.Row);
+                    if (aField.IsTextField && ctrl is MarqueeLabel)
                     {
                         TextField textField=(TextField)aField;
                         //Text field control already in place, just change the text
-                        MarqueeLabel label = (MarqueeLabel)iTableLayoutPanel.Controls[aField.Index];
+                        MarqueeLabel label = (MarqueeLabel)ctrl;
                         contentChanged = (label.Text != textField.Text || label.TextAlign != textField.Alignment);
                         label.Text = textField.Text;
                         label.TextAlign = textField.Alignment;
                     }
-                    else if (aField.IsBitmapField && aField.Index < iTableLayoutPanel.Controls.Count && iTableLayoutPanel.Controls[aField.Index] is PictureBox)
+                    else if (aField.IsBitmapField && ctrl is PictureBox)
                     {
                         BitmapField bitmapField = (BitmapField)aField;
                         contentChanged = true; //TODO: Bitmap comp or should we leave that to clients?
                         //Bitmap field control already in place just change the bitmap
-                        PictureBox pictureBox = (PictureBox)iTableLayoutPanel.Controls[aField.Index];
+                        PictureBox pictureBox = (PictureBox)ctrl;
                         pictureBox.Image = bitmapField.Bitmap;
                     }
                     else
@@ -1687,6 +1699,8 @@ namespace SharpDisplayManager
                         //Apply layout and set data fields.
                         UpdateTableLayoutPanel(iCurrentClientData);
                     }
+
+                    UpdateClientTreeViewNode(client);
                 }
                 else
                 {
@@ -1832,7 +1846,6 @@ namespace SharpDisplayManager
 
 
             TableLayout layout = aClient.Layout;
-            int fieldCount = 0;
 
             //First clean our current panel
             iTableLayoutPanel.Controls.Clear();
@@ -1867,54 +1880,34 @@ namespace SharpDisplayManager
                         //Create our row styles
                         this.iTableLayoutPanel.RowStyles.Add(layout.Rows[j]);
                     }
-
-                    //Check if we already have a control
-                    Control existingControl = iTableLayoutPanel.GetControlFromPosition(i,j);
-                    if (existingControl!=null)
+                    else
                     {
-                        //We already have a control in that cell as a results of row/col spanning
-                        //Move on to next cell then
                         continue;
                     }
-
-                    fieldCount++;
-
-                    //Check if a client field already exists for that cell
-                    if (aClient.Fields.Count <= iTableLayoutPanel.Controls.Count)
-                    {
-                        //No client field specified, create a text field by default
-                        aClient.Fields.Add(new TextField(aClient.Fields.Count));
-                    }
-
-                    //
-                    DataField field = aClient.Fields[iTableLayoutPanel.Controls.Count];
-                    if (!field.IsTableField)
-                    {
-                        //That field is not taking part in our table layout then 
-                        //We should be ok I guess
-                        continue;
-                    }
-
-                    TableField tableField = (TableField)field;
-
-                    //Create a control corresponding to the field specified for that cell
-                    Control control = CreateControlForDataField(tableField);
-
-                    //Add newly created control to our table layout at the specified row and column
-                    iTableLayoutPanel.Controls.Add(control, i, j);
-                    //Make sure we specify row and column span for that new control
-                    iTableLayoutPanel.SetRowSpan(control, tableField.RowSpan);
-                    iTableLayoutPanel.SetColumnSpan(control, tableField.ColumnSpan);
                 }
             }
 
-            //
-            while (aClient.Fields.Count > fieldCount)
+            //For each field
+            foreach (DataField field in aClient.Fields)
             {
-                //We have too much fields for this layout
-                //Just discard them until we get there
-                aClient.Fields.RemoveAt(aClient.Fields.Count-1);
+                if (!field.IsTableField)
+                {
+                    //That field is not taking part in our table layout skip it
+                    continue;
+                }
+
+                TableField tableField = (TableField)field;
+
+                //Create a control corresponding to the field specified for that cell
+                Control control = CreateControlForDataField(tableField);
+
+                //Add newly created control to our table layout at the specified row and column
+                iTableLayoutPanel.Controls.Add(control, tableField.Column, tableField.Row);
+                //Make sure we specify column and row span for that new control
+                iTableLayoutPanel.SetColumnSpan(control, tableField.ColumnSpan);
+                iTableLayoutPanel.SetRowSpan(control, tableField.RowSpan);
             }
+
 
             CheckFontHeight();
         }
@@ -1935,7 +1928,7 @@ namespace SharpDisplayManager
                 label.Dock = System.Windows.Forms.DockStyle.Fill;
                 label.Location = new System.Drawing.Point(1, 1);
                 label.Margin = new System.Windows.Forms.Padding(0);
-                label.Name = "marqueeLabel" + aField.Index;
+                label.Name = "marqueeLabel" + aField;
                 label.OwnTimer = false;
                 label.PixelsPerSecond = cds.ScrollingSpeedInPixelsPerSecond;
                 label.Separator = cds.Separator;
