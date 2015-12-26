@@ -121,7 +121,7 @@
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="SharpLibDisplay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpLibDisplay.0.1.2\lib\net40\SharpLibDisplay.dll</HintPath>
+      <HintPath>..\packages\SharpLibDisplay.0.1.3\lib\net40\SharpLibDisplay.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpLibHid">
