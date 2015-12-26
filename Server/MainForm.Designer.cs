@@ -40,7 +40,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panelDisplay = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.iTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.fontDialog = new System.Windows.Forms.FontDialog();
@@ -112,7 +112,7 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelDisplay.SuspendLayout();
-            this.tableLayoutPanel.SuspendLayout();
+            this.iTableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabPageClients.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
@@ -130,35 +130,35 @@
             // panelDisplay
             // 
             this.panelDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelDisplay.Controls.Add(this.tableLayoutPanel);
+            this.panelDisplay.Controls.Add(this.iTableLayoutPanel);
             this.panelDisplay.Location = new System.Drawing.Point(173, 40);
             this.panelDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.panelDisplay.Name = "panelDisplay";
             this.panelDisplay.Size = new System.Drawing.Size(258, 66);
             this.panelDisplay.TabIndex = 12;
             // 
-            // tableLayoutPanel
+            // iTableLayoutPanel
             // 
-            this.tableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.iTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.tableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel.ColumnCount = 1;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Controls.Add(this.marqueeLabelTop, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.marqueeLabelBottom, 0, 1);
-            this.tableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 2;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(256, 64);
-            this.tableLayoutPanel.TabIndex = 5;
-            this.tableLayoutPanel.SizeChanged += new System.EventHandler(this.tableLayoutPanel_SizeChanged);
+            this.iTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.iTableLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.iTableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.iTableLayoutPanel.ColumnCount = 1;
+            this.iTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.iTableLayoutPanel.Controls.Add(this.marqueeLabelTop, 0, 0);
+            this.iTableLayoutPanel.Controls.Add(this.marqueeLabelBottom, 0, 1);
+            this.iTableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.iTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.iTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.iTableLayoutPanel.Name = "iTableLayoutPanel";
+            this.iTableLayoutPanel.RowCount = 2;
+            this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.iTableLayoutPanel.Size = new System.Drawing.Size(256, 64);
+            this.iTableLayoutPanel.TabIndex = 5;
+            this.iTableLayoutPanel.SizeChanged += new System.EventHandler(this.tableLayoutPanel_SizeChanged);
             // 
             // marqueeLabelTop
             // 
@@ -954,8 +954,8 @@
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.panelDisplay.ResumeLayout(false);
-            this.tableLayoutPanel.ResumeLayout(false);
-            this.tableLayoutPanel.PerformLayout();
+            this.iTableLayoutPanel.ResumeLayout(false);
+            this.iTableLayoutPanel.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabPageClients.ResumeLayout(false);
@@ -990,7 +990,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSpring;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelPower;
         private System.Windows.Forms.Panel panelDisplay;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
+        private System.Windows.Forms.TableLayoutPanel iTableLayoutPanel;
         private MarqueeLabel marqueeLabelTop;
         private MarqueeLabel marqueeLabelBottom;
         private System.Windows.Forms.TabPage tabPageClients;

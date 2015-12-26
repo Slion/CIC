@@ -21,6 +21,7 @@ namespace SharpDisplayManager
             Fields = new List<DataField>();
             Layout = new TableLayout(1, 2); //Default to one column and two rows
             Callback = aCallback;
+            HasNewLayout = true;            
         }
 
         public string SessionId { get; set; }
@@ -28,6 +29,8 @@ namespace SharpDisplayManager
         public List<DataField> Fields { get; set; }
         public TableLayout Layout { get; set; }
         public ICallback Callback { get; set; }
+
+        public bool HasNewLayout { get; set; }
 
         //Client management
         public DateTime LastSwitchTime { get; set; }
