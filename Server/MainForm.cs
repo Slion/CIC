@@ -1807,7 +1807,8 @@ namespace SharpDisplayManager
                         }
                         else if (field.IsRecordingField)
                         {
-                            textsRoot.Nodes.Add(new TreeNode("[Recording]"));
+                            RecordingField recordingField = (RecordingField)field;
+                            textsRoot.Nodes.Add(new TreeNode("[Recording]" + recordingField.IsActive));
                         }
                     }
                 }
