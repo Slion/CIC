@@ -85,7 +85,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>70A149AB9F89E507D9411D109553BE22455895D6</ManifestCertificateThumbprint>
@@ -279,6 +279,7 @@
     <Content Include="libcec.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\record.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets" Condition="Exists('..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets')" />

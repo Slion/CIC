@@ -105,9 +105,15 @@ namespace SharpDisplayManager
 		private StartupManager iStartupManager;
 
 		/// <summary>
-		/// System tray icon.
+		/// System notification icon used to hide our application from the task bar.
 		/// </summary>
 		private SharpLib.Notification.Control iNotifyIcon;
+
+        /// <summary>
+        /// System recording notifcation icon.
+        /// </summary>
+        private SharpLib.Notification.Control iRecordingNotification;
+
 
         /// <summary>
         /// Allow user to receive window messages;
@@ -129,8 +135,9 @@ namespace SharpDisplayManager
 			iClients = new Dictionary<string, ClientData>();
 			iStartupManager = new StartupManager();
 			iNotifyIcon = new SharpLib.Notification.Control();
+            iRecordingNotification = new SharpLib.Notification.Control();
 
-			//Have our designer initialize its controls
+            //Have our designer initialize its controls
             InitializeComponent();
 
 			//Populate device types
@@ -193,8 +200,11 @@ namespace SharpDisplayManager
             //Setup notification icon
             SetupTrayIcon();
 
-			// To make sure start up with minimize to tray works
-			if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
+            //Setup recording notification
+            SetupRecordingNotification();
+
+            // To make sure start up with minimize to tray works
+            if (WindowState == FormWindowState.Minimized && Properties.Settings.Default.MinimizeToTray)
 			{
 				Visible = false;
 			}
@@ -577,6 +587,16 @@ namespace SharpDisplayManager
 
 			iNotifyIcon.ContextMenu = contextMenu;
 		}
+
+        /// <summary>
+        ///
+        /// </summary>
+        private void SetupRecordingNotification()
+        {
+            iRecordingNotification.Icon = GetIcon("record.ico");
+            iRecordingNotification.Text = "No recording";
+            iRecordingNotification.Visible = true;
+        }
 
         /// <summary>
         /// Access icons from embedded resources.
