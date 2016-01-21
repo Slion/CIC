@@ -457,7 +457,7 @@ namespace SharpDisplayManager
 					}
 				}
 
-				//Take care our our mute icon
+				//Take care of our mute icon
                 iDisplay.SetIconOnOff(MiniDisplay.IconType.Mute, iMultiMediaDevice.AudioEndpointVolume.Mute);
 			}
 
@@ -1783,7 +1783,9 @@ namespace SharpDisplayManager
             {
                 iRecordingNotification.Text = text;
                 iRecordingNotification.Visible = activeRecording;
-
+                //Assuming the notification icon is in sync with our display icon
+                //Take care of our REC icon
+                iDisplay.SetIconOnOff(MiniDisplay.IconType.Recording, activeRecording);
             }
         }
 
