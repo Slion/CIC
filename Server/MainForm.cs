@@ -578,23 +578,20 @@ namespace SharpDisplayManager
 			iNotifyIcon.ContextMenu = contextMenu;
 		}
 
-		/// <summary>
-		/// Access icons from embedded resources.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		public static Icon GetIcon(string name)
+        /// <summary>
+        /// Access icons from embedded resources.
+        /// </summary>
+        /// <param name="aName"></param>
+        /// <returns></returns>
+        public static Icon GetIcon(string aName)
 		{
-			name = "SharpDisplayManager.Resources." + name;
-
-			string[] names =
-			  Assembly.GetExecutingAssembly().GetManifestResourceNames();
-			for (int i = 0; i < names.Length; i++)
+			string[] names =  Assembly.GetExecutingAssembly().GetManifestResourceNames();
+			foreach (string name in names)
 			{
-				if (names[i].Replace('\\', '.') == name)
+                //Find a resource name that ends with the given name
+				if (name.EndsWith(aName))
 				{
-					using (Stream stream = Assembly.GetExecutingAssembly().
-					  GetManifestResourceStream(names[i]))
+					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
 					{
 						return new Icon(stream);
 					}
