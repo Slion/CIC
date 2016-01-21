@@ -595,7 +595,7 @@ namespace SharpDisplayManager
         {
             iRecordingNotification.Icon = GetIcon("record.ico");
             iRecordingNotification.Text = "No recording";
-            iRecordingNotification.Visible = true;
+            iRecordingNotification.Visible = false;
         }
 
         /// <summary>
@@ -1759,6 +1759,35 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
+        /// Update our recording notification.
+        /// </summary>
+        private void UpdateRecordingNotification()
+        {
+            //Go through each 
+            bool activeRecording = false;
+            string text="";
+            RecordingField recField=new RecordingField();
+            foreach (var client in iClients)
+            {
+                RecordingField rec=(RecordingField)client.Value.FindSameFieldAs(recField);
+                if (rec!=null && rec.IsActive)
+                {
+                    activeRecording = true;
+                    //Don't break cause we are collecting the names.
+                    text += client.Value.Name + " recording\n";
+                }
+            }
+
+            //Change visibility of notification if needed
+            if (iRecordingNotification.Visible != activeRecording)
+            {
+                iRecordingNotification.Text = text;
+                iRecordingNotification.Visible = activeRecording;
+
+            }
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="aClient"></param>
@@ -1770,6 +1799,9 @@ namespace SharpDisplayManager
             {
                 return;
             }
+
+            //Hook in record icon update too
+            UpdateRecordingNotification();
 
             TreeNode node = null;
             //Check that our client node already exists
