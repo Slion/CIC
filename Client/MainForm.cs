@@ -230,7 +230,7 @@ namespace SharpDisplayClient
             //
             RecordingField recording = new RecordingField();
             recording.IsActive = true;
-
+            recording.Text = "Recording Tame of Gone until 22:05";
             //Set texts
             iClient.CreateFields(new DataField[]
             {                
