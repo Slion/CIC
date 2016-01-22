@@ -1759,6 +1759,17 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="maxChars"></param>
+        /// <returns></returns>
+        public static string Truncate(string value, int maxChars)
+        {
+            return value.Length <= maxChars ? value : value.Substring(0, maxChars-3) + "...";
+        }
+
+        /// <summary>
         /// Update our recording notification.
         /// </summary>
         private void UpdateRecordingNotification()
@@ -1773,19 +1784,33 @@ namespace SharpDisplayManager
                 if (rec!=null && rec.IsActive)
                 {
                     activeRecording = true;
-                    //Don't break cause we are collecting the names.
-                    text += client.Value.Name + " recording\n";
+                    //Don't break cause we are collecting the names/texts.
+                    if (!String.IsNullOrEmpty(rec.Text))
+                    {
+                        text += (rec.Text + "\n");
+                    }
+                    else
+                    {
+                        //Not text for that recording, use client name instead
+                        text += client.Value.Name + " recording\n";
+                    }
+                    
                 }
             }
 
+            //Update our text no matter what, can't have more than 63 characters otherwise it throws an exception.
+            iRecordingNotification.Text = Truncate(text,63);
+
             //Change visibility of notification if needed
             if (iRecordingNotification.Visible != activeRecording)
-            {
-                iRecordingNotification.Text = text;
+            {                
                 iRecordingNotification.Visible = activeRecording;
                 //Assuming the notification icon is in sync with our display icon
                 //Take care of our REC icon
-                iDisplay.SetIconOnOff(MiniDisplay.IconType.Recording, activeRecording);
+                if (iDisplay.IsOpen())
+                {
+                    iDisplay.SetIconOnOff(MiniDisplay.IconType.Recording, activeRecording);
+                }                
             }
         }
 
