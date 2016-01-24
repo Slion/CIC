@@ -395,5 +395,10 @@ namespace SharpDisplayClient
                 new TextField(textBoxTop.Text, Alignment)
             });
 		}
+
+        private void numericUpDownPriority_ValueChanged(object sender, EventArgs e)
+        {
+            iClient.SetPriority((uint)numericUpDownPriority.Value);
+        }
     }
 }

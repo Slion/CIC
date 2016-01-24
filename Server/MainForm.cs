@@ -58,7 +58,8 @@ namespace SharpDisplayManager
     public delegate void SetFieldsDelegate(string SessionId, System.Collections.Generic.IList<DataField> aFields);
     public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
     public delegate void SetClientNameDelegate(string aSessionId, string aName);
-	public delegate void PlainUpdateDelegate();
+    public delegate void SetClientPriorityDelegate(string aSessionId, uint aPriority);
+    public delegate void PlainUpdateDelegate();
     public delegate void WndProcDelegate(ref Message aMessage);
 
     /// <summary>
@@ -1758,6 +1759,30 @@ namespace SharpDisplayManager
             }
         }
 
+        ///
+        public void SetClientPriorityThreadSafe(string aSessionId, uint aPriority)
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                SetClientPriorityDelegate d = new SetClientPriorityDelegate(SetClientPriorityThreadSafe);
+                this.Invoke(d, new object[] { aSessionId, aPriority });
+            }
+            else
+            {
+                //We are in the proper thread
+                //Get our client
+                ClientData client = iClients[aSessionId];
+                if (client != null)
+                {
+                    //Set its name
+                    client.Priority = aPriority;
+                    //Update our tree-view
+                    UpdateClientTreeViewNode(client);
+                }
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -1851,9 +1876,9 @@ namespace SharpDisplayManager
             if (node != null)
             {
                 //Change its name
-                if (aClient.Name != "")
+                if (!String.IsNullOrEmpty(aClient.Name))
                 {
-                    //We have a name, us it as text for our root node
+                    //We have a name, use it as text for our root node
                     node.Text = aClient.Name;
                     //Add a child with SessionId
                     node.Nodes.Add(new TreeNode(aClient.SessionId));
@@ -1863,6 +1888,9 @@ namespace SharpDisplayManager
                     //No name, use session ID instead
                     node.Text = aClient.SessionId;
                 }
+
+                //Display client priority
+                node.Nodes.Add(new TreeNode("Priority: " + aClient.Priority));
 
                 if (aClient.Fields.Count > 0)
                 {

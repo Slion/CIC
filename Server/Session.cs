@@ -40,6 +40,7 @@ namespace SharpDisplay
     {
         public string SessionId { get; set; }
         public string Name { get; set; }
+        public uint Priority { get; set; }
 
         Session()
         {
@@ -71,6 +72,16 @@ namespace SharpDisplay
             //Program.iMainForm.treeViewClients.Nodes.Add(aClientName, aClientName);
             //For some reason MP still hangs on that one
             //callback.OnConnected();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aPriority"></param>
+        public void SetPriority(uint aPriority)
+        {
+            Priority = aPriority;
+            SharpDisplayManager.Program.iMainForm.SetClientPriorityThreadSafe(SessionId, Priority);
         }
 
         public void SetLayout(TableLayout aLayout)
