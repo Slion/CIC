@@ -41,6 +41,9 @@
             this.buttonIndicatorsLayout = new System.Windows.Forms.Button();
             this.buttonUpdateTexts = new System.Windows.Forms.Button();
             this.buttonLayoutOneTextField = new System.Windows.Forms.Button();
+            this.numericUpDownPriority = new System.Windows.Forms.NumericUpDown();
+            this.labelPriority = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPriority)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonSetText
@@ -167,11 +170,45 @@
             this.buttonLayoutOneTextField.UseVisualStyleBackColor = true;
             this.buttonLayoutOneTextField.Click += new System.EventHandler(this.buttonLayoutOneTextField_Click);
             // 
+            // numericUpDownPriority
+            // 
+            this.numericUpDownPriority.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownPriority.Location = new System.Drawing.Point(57, 83);
+            this.numericUpDownPriority.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownPriority.Name = "numericUpDownPriority";
+            this.numericUpDownPriority.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownPriority.TabIndex = 31;
+            this.numericUpDownPriority.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numericUpDownPriority.ValueChanged += new System.EventHandler(this.numericUpDownPriority_ValueChanged);
+            // 
+            // labelPriority
+            // 
+            this.labelPriority.AutoSize = true;
+            this.labelPriority.Location = new System.Drawing.Point(12, 85);
+            this.labelPriority.Name = "labelPriority";
+            this.labelPriority.Size = new System.Drawing.Size(41, 13);
+            this.labelPriority.TabIndex = 32;
+            this.labelPriority.Text = "Priority:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 252);
+            this.Controls.Add(this.labelPriority);
+            this.Controls.Add(this.numericUpDownPriority);
             this.Controls.Add(this.buttonLayoutOneTextField);
             this.Controls.Add(this.buttonUpdateTexts);
             this.Controls.Add(this.buttonIndicatorsLayout);
@@ -189,6 +226,7 @@
             this.Text = "Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPriority)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,6 +247,8 @@
         private System.Windows.Forms.Button buttonIndicatorsLayout;
         private System.Windows.Forms.Button buttonUpdateTexts;
 		private System.Windows.Forms.Button buttonLayoutOneTextField;
+        private System.Windows.Forms.NumericUpDown numericUpDownPriority;
+        private System.Windows.Forms.Label labelPriority;
     }
 }
 
