@@ -1494,6 +1494,25 @@ namespace SharpDisplayManager
             }
         }
 
+
+        /// <summary>
+        /// Find the client with the highest priority if any.
+        /// </summary>
+        /// <returns>Our highest priority client or null if not a single client is connected.</returns>
+        public ClientData FindHighestPriorityClient()
+        {
+            ClientData highestPriorityClient = null;
+            foreach (var client in iClients)
+            {
+                if (highestPriorityClient == null || client.Value.Priority > highestPriorityClient.Priority)
+                {
+                    highestPriorityClient = client.Value;
+                }
+            }
+
+            return highestPriorityClient;
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -1516,7 +1535,19 @@ namespace SharpDisplayManager
                     Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0]);
                 }
 
-				if (iClients.Count == 0)
+                if (iCurrentClientSessionId == aSessionId)
+                {
+                    //The current client is closing
+                    iCurrentClientData = null;
+                    //Find the client with the highest priority and set it as current
+                    ClientData newCurrentClient = FindHighestPriorityClient();
+                    if (newCurrentClient!=null)
+                    {
+                        SetCurrentClient(newCurrentClient.SessionId, true);
+                    }                    
+                }
+
+                if (iClients.Count == 0)
 				{
 					//Clear our screen when last client disconnects
 					ClearLayout();
@@ -1789,6 +1820,12 @@ namespace SharpDisplayManager
                     client.Priority = aPriority;
                     //Update our tree-view
                     UpdateClientTreeViewNode(client);
+                    //Change our current client as per new priority
+                    ClientData newCurrentClient = FindHighestPriorityClient();
+                    if (newCurrentClient!=null)
+                    {
+                        SetCurrentClient(newCurrentClient.SessionId);
+                    }
                 }
             }
         }
