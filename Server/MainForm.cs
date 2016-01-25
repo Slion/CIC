@@ -637,16 +637,26 @@ namespace SharpDisplayManager
                 return;
             }
 
+            ClientData requestedClientData = iClients[aSessionId];
 
             //Check when was the last time we switched to that client
             if (iCurrentClientData != null)
             {
+                //Do not switch client if priority of current client is higher 
+                if (!aForce && requestedClientData.Priority < iCurrentClientData.Priority)
+                {
+                    return;
+                }
+
+
                 double lastSwitchToClientSecondsAgo = (DateTime.Now - iCurrentClientData.LastSwitchTime).TotalSeconds;
                 //TODO: put that hard coded value as a client property
                 //Clients should be able to define how often they can be interrupted
                 //Thus a background client can set this to zero allowing any other client to interrupt at any time
                 //We could also compute this delay by looking at the requests frequencies?
-                if (!aForce && (lastSwitchToClientSecondsAgo < 30)) //Make sure a client is on for at least 30 seconds
+                if (!aForce &&
+                    requestedClientData.Priority == iCurrentClientData.Priority && //Time sharing is only if clients have the same priority
+                    (lastSwitchToClientSecondsAgo < 30)) //Make sure a client is on for at least 30 seconds
                 {
                     //Don't switch clients too often
                     return;
@@ -658,7 +668,7 @@ namespace SharpDisplayManager
             //Set the time we last switched to that client
             iClients[aSessionId].LastSwitchTime = DateTime.Now;
             //Fetch and set current client data.
-            iCurrentClientData = iClients[aSessionId];
+            iCurrentClientData = requestedClientData;
             //Apply layout and set data fields.
             UpdateTableLayoutPanel(iCurrentClientData);
         }
