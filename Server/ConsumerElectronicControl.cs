@@ -24,7 +24,7 @@ namespace SharpDisplayManager
         /// <param name="aHdmiPort"></param>
         public void Start(IntPtr aWndHandle, string aDeviceName, byte aHdmiPort, bool aMonitorOn, bool aMonitorOff)
         {
-            //Create our power setting notifier and register the event we are insterrested in
+            //Create our power setting notifier and register the event we are interested in
             iPowerSettingNotifier = new PowerManager.SettingNotifier(aWndHandle);
 
             //

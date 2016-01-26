@@ -237,8 +237,8 @@ namespace SharpDisplayManager
 		/// <param name="aDisplay"></param>
 		private void OnDisplayOpened(Display aDisplay)
 		{
-			//Make sure we resume frame rendering
-			iSkipFrameRendering = false;
+            //Make sure we resume frame rendering
+            iSkipFrameRendering = false;
 
 			//Set our screen size now that our display is connected
 			//Our panelDisplay is the container of our tableLayoutPanel
@@ -272,8 +272,8 @@ namespace SharpDisplayManager
 		/// <param name="aDisplay"></param>
 		private void OnDisplayClosed(Display aDisplay)
 		{
-			//Our display was just closed, update our UI consequently
-			UpdateStatus();
+            //Our display was just closed, update our UI consequently
+            UpdateStatus();
 		}
 
 		public void OnConnectivityChanged(NetworkManager aNetwork, NLM_CONNECTIVITY newConnectivity)
@@ -1148,8 +1148,9 @@ namespace SharpDisplayManager
 
             if (iDisplay.IsOpen())
             {
-				//We have a display connection
-				//Reflect that in our UI
+                //We have a display connection
+                //Reflect that in our UI
+                StartTimer();
 
 				iTableLayoutPanel.Enabled = true;
 				panelDisplay.Enabled = true;
@@ -1220,9 +1221,16 @@ namespace SharpDisplayManager
             }
             else
             {
-				//Display is connection not available
-				//Reflect that in our UI
-				checkBoxShowVolumeLabel.Enabled = false;
+                //Display connection not available
+                //Reflect that in our UI
+#if DEBUG
+                //In debug start our timer even if we don't have a display connection
+                StartTimer();
+#else
+                //In production environment we don't need our timer if no display connection
+                StopTimer();
+#endif
+                checkBoxShowVolumeLabel.Enabled = false;
 				iTableLayoutPanel.Enabled = false;
 				panelDisplay.Enabled = false;
                 buttonFill.Enabled = false;
@@ -1434,8 +1442,32 @@ namespace SharpDisplayManager
 
         private void buttonSuspend_Click(object sender, EventArgs e)
         {
+            ToggleTimer();
+        }
+
+        private void StartTimer()
+        {
+            LastTickTime = DateTime.Now; //Reset timer to prevent jump
+            timer.Enabled = true;
+            UpdateSuspendButton();
+        }
+
+        private void StopTimer()
+        {
+            LastTickTime = DateTime.Now; //Reset timer to prevent jump
+            timer.Enabled = false;
+            UpdateSuspendButton();
+        }
+
+        private void ToggleTimer()
+        {
             LastTickTime = DateTime.Now; //Reset timer to prevent jump
             timer.Enabled = !timer.Enabled;
+            UpdateSuspendButton();
+        }
+
+        private void UpdateSuspendButton()
+        {
             if (!timer.Enabled)
             {
                 buttonSuspend.Text = "Run";
@@ -1445,6 +1477,7 @@ namespace SharpDisplayManager
                 buttonSuspend.Text = "Pause";
             }
         }
+
 
         private void buttonCloseClients_Click(object sender, EventArgs e)
         {
@@ -2305,7 +2338,7 @@ namespace SharpDisplayManager
 					}
 					else
 					{
-						// Display a message that the app MUST reboot. Display the minimum required version.
+						// Display a message that the application MUST reboot. Display the minimum required version.
 						MessageBox.Show("This application has detected a mandatory update from your current " +
 							"version to version " + info.MinimumRequiredVersion.ToString() +
 							". The application will now install the update and restart.",
