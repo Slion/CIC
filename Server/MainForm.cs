@@ -1435,6 +1435,18 @@ namespace SharpDisplayManager
 			BringToFront();
 		}
 
+        /// <summary>
+        /// Just launch our idle client.
+        /// </summary>
+        private void StartIdleClient(string aTopText = "", string aBottomText = "")
+        {
+            Thread clientThread = new Thread(SharpDisplayIdleClient.Program.MainWithParams);
+            SharpDisplayIdleClient.StartParams myParams = new SharpDisplayIdleClient.StartParams(new Point(this.Right, this.Top), aTopText, aBottomText);
+            clientThread.Start(myParams);
+            BringToFront();
+        }
+
+
         private void buttonStartClient_Click(object sender, EventArgs e)
         {
 			StartNewClient();
@@ -2513,6 +2525,11 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.CecMonitorOn,
                 Properties.Settings.Default.CecMonitorOff);
             }
+        }
+
+        private void ButtonStartIdleClient_Click(object sender, EventArgs e)
+        {
+            StartIdleClient();
         }
     }
 }
