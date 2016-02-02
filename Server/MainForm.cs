@@ -1403,7 +1403,7 @@ namespace SharpDisplayManager
                 foreach (var client in inactiveClients)
                 {
                     iClients.Remove(client);
-                    Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(client, false)[0]);
+                    Program.iMainForm.iTreeViewClients.Nodes.Remove(Program.iMainForm.iTreeViewClients.Nodes.Find(client, false)[0]);
                 }
             }
 
@@ -1565,7 +1565,9 @@ namespace SharpDisplayManager
                 if (Program.iMainForm.iClients.Keys.Contains(aSessionId))
                 {
                     Program.iMainForm.iClients.Remove(aSessionId);
-                    Program.iMainForm.treeViewClients.Nodes.Remove(Program.iMainForm.treeViewClients.Nodes.Find(aSessionId, false)[0]);
+                    Program.iMainForm.iTreeViewClients.Nodes.Remove(Program.iMainForm.iTreeViewClients.Nodes.Find(aSessionId, false)[0]);
+                    //Update recording status too whenever a client is removed
+                    UpdateRecordingNotification();
                 }
 
                 if (iCurrentClientSessionId == aSessionId)
@@ -1938,7 +1940,7 @@ namespace SharpDisplayManager
             TreeNode node = null;
             //Check that our client node already exists
             //Get our client root node using its key which is our session ID
-            TreeNode[] nodes = treeViewClients.Nodes.Find(aClient.SessionId, false);
+            TreeNode[] nodes = iTreeViewClients.Nodes.Find(aClient.SessionId, false);
             if (nodes.Count()>0)
             {
                 //We already have a node for that client
@@ -1949,8 +1951,8 @@ namespace SharpDisplayManager
             else
             {
                 //Client node does not exists create a new one
-                treeViewClients.Nodes.Add(aClient.SessionId, aClient.SessionId);
-                node = treeViewClients.Nodes.Find(aClient.SessionId, false)[0];
+                iTreeViewClients.Nodes.Add(aClient.SessionId, aClient.SessionId);
+                node = iTreeViewClients.Nodes.Find(aClient.SessionId, false)[0];
             }
 
             if (node != null)

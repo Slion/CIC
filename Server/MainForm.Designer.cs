@@ -53,7 +53,7 @@
             this.tabPageClients = new System.Windows.Forms.TabPage();
             this.buttonCloseClients = new System.Windows.Forms.Button();
             this.buttonStartClient = new System.Windows.Forms.Button();
-            this.treeViewClients = new System.Windows.Forms.TreeView();
+            this.iTreeViewClients = new System.Windows.Forms.TreeView();
             this.tabPageDisplay = new System.Windows.Forms.TabPage();
             this.buttonShowClock = new System.Windows.Forms.Button();
             this.buttonHideClock = new System.Windows.Forms.Button();
@@ -246,7 +246,7 @@
             // 
             this.tabPageClients.Controls.Add(this.buttonCloseClients);
             this.tabPageClients.Controls.Add(this.buttonStartClient);
-            this.tabPageClients.Controls.Add(this.treeViewClients);
+            this.tabPageClients.Controls.Add(this.iTreeViewClients);
             this.tabPageClients.Location = new System.Drawing.Point(4, 22);
             this.tabPageClients.Name = "tabPageClients";
             this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
@@ -275,16 +275,16 @@
             this.buttonStartClient.UseVisualStyleBackColor = true;
             this.buttonStartClient.Click += new System.EventHandler(this.buttonStartClient_Click);
             // 
-            // treeViewClients
+            // iTreeViewClients
             // 
-            this.treeViewClients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.iTreeViewClients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeViewClients.Location = new System.Drawing.Point(87, 6);
-            this.treeViewClients.Name = "treeViewClients";
-            this.treeViewClients.Size = new System.Drawing.Size(499, 233);
-            this.treeViewClients.TabIndex = 0;
-            this.treeViewClients.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewClients_AfterSelect);
+            this.iTreeViewClients.Location = new System.Drawing.Point(87, 6);
+            this.iTreeViewClients.Name = "iTreeViewClients";
+            this.iTreeViewClients.Size = new System.Drawing.Size(499, 233);
+            this.iTreeViewClients.TabIndex = 0;
+            this.iTreeViewClients.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewClients_AfterSelect);
             // 
             // tabPageDisplay
             // 
@@ -993,7 +993,7 @@
         private MarqueeLabel marqueeLabelTop;
         private MarqueeLabel marqueeLabelBottom;
         private System.Windows.Forms.TabPage tabPageClients;
-        private System.Windows.Forms.TreeView treeViewClients;
+        private System.Windows.Forms.TreeView iTreeViewClients;
         private System.Windows.Forms.TabPage tabPageDisplay;
         private System.Windows.Forms.CheckBox checkBoxFixedPitchFontOnly;
         private System.Windows.Forms.Button buttonSuspend;
