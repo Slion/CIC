@@ -218,6 +218,10 @@
     <None Include="SharpDisplayManager_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Clients\Idle\SharpDisplayIdleClient.csproj">
+      <Project>{a76579e5-aa8d-45a3-99e1-239a5c030a78}</Project>
+      <Name>SharpDisplayIdleClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Client\SharpDisplayClient.csproj">
       <Project>{7ee64074-8cdb-4448-b40c-81b75d6b31cd}</Project>
       <Name>SharpDisplayClient</Name>

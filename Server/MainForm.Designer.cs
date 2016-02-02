@@ -111,6 +111,7 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.iButtonStartIdleClient = new System.Windows.Forms.Button();
             this.panelDisplay.SuspendLayout();
             this.iTableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -244,6 +245,7 @@
             // 
             // tabPageClients
             // 
+            this.tabPageClients.Controls.Add(this.iButtonStartIdleClient);
             this.tabPageClients.Controls.Add(this.buttonCloseClients);
             this.tabPageClients.Controls.Add(this.buttonStartClient);
             this.tabPageClients.Controls.Add(this.iTreeViewClients);
@@ -257,9 +259,9 @@
             // 
             // buttonCloseClients
             // 
-            this.buttonCloseClients.Location = new System.Drawing.Point(6, 35);
+            this.buttonCloseClients.Location = new System.Drawing.Point(6, 213);
             this.buttonCloseClients.Name = "buttonCloseClients";
-            this.buttonCloseClients.Size = new System.Drawing.Size(75, 23);
+            this.buttonCloseClients.Size = new System.Drawing.Size(96, 23);
             this.buttonCloseClients.TabIndex = 20;
             this.buttonCloseClients.Text = "Close Clients";
             this.buttonCloseClients.UseVisualStyleBackColor = true;
@@ -269,7 +271,7 @@
             // 
             this.buttonStartClient.Location = new System.Drawing.Point(6, 6);
             this.buttonStartClient.Name = "buttonStartClient";
-            this.buttonStartClient.Size = new System.Drawing.Size(75, 23);
+            this.buttonStartClient.Size = new System.Drawing.Size(96, 23);
             this.buttonStartClient.TabIndex = 19;
             this.buttonStartClient.Text = "Start Client";
             this.buttonStartClient.UseVisualStyleBackColor = true;
@@ -280,9 +282,9 @@
             this.iTreeViewClients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTreeViewClients.Location = new System.Drawing.Point(87, 6);
+            this.iTreeViewClients.Location = new System.Drawing.Point(108, 6);
             this.iTreeViewClients.Name = "iTreeViewClients";
-            this.iTreeViewClients.Size = new System.Drawing.Size(499, 233);
+            this.iTreeViewClients.Size = new System.Drawing.Size(478, 233);
             this.iTreeViewClients.TabIndex = 0;
             this.iTreeViewClients.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewClients_AfterSelect);
             // 
@@ -933,6 +935,16 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
+            // iButtonStartIdleClient
+            // 
+            this.iButtonStartIdleClient.Location = new System.Drawing.Point(6, 35);
+            this.iButtonStartIdleClient.Name = "iButtonStartIdleClient";
+            this.iButtonStartIdleClient.Size = new System.Drawing.Size(96, 23);
+            this.iButtonStartIdleClient.TabIndex = 21;
+            this.iButtonStartIdleClient.Text = "Start Idle Client";
+            this.iButtonStartIdleClient.UseVisualStyleBackColor = true;
+            this.iButtonStartIdleClient.Click += new System.EventHandler(this.ButtonStartIdleClient_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1053,6 +1065,7 @@
         private System.Windows.Forms.ComboBox comboBoxHdmiPort;
         private System.Windows.Forms.CheckBox checkBoxCecMonitorOn;
         private System.Windows.Forms.CheckBox checkBoxCecMonitorOff;
+        private System.Windows.Forms.Button iButtonStartIdleClient;
     }
 }
 
