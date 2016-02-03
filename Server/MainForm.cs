@@ -111,7 +111,7 @@ namespace SharpDisplayManager
 		private SharpLib.Notification.Control iNotifyIcon;
 
         /// <summary>
-        /// System recording notifcation icon.
+        /// System recording notification icon.
         /// </summary>
         private SharpLib.Notification.Control iRecordingNotification;
 
@@ -229,6 +229,12 @@ namespace SharpDisplayManager
 
 			//Register for HID events
 			RegisterHidDevices();
+
+            //Start Idle client if needed
+            if (Properties.Settings.Default.StartIdleClient)
+            {
+                StartIdleClient();
+            }
         }
 
 		/// <summary>
@@ -1100,7 +1106,9 @@ namespace SharpDisplayManager
             checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
 			checkBoxMinimizeToTray.Checked = Properties.Settings.Default.MinimizeToTray;
 			checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
-			labelStartFileName.Text = Properties.Settings.Default.StartFileName;
+            iCheckBoxStartIdleClient.Checked = Properties.Settings.Default.StartIdleClient;
+            labelStartFileName.Text = Properties.Settings.Default.StartFileName;
+
 
             //Try find our drive in our drive list
             int opticalDriveItemIndex=0;
@@ -1292,7 +1300,13 @@ namespace SharpDisplayManager
 			Properties.Settings.Default.Save();
 		}
 
-		private void checkBoxAutoStart_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxStartIdleClient_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.StartIdleClient = iCheckBoxStartIdleClient.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBoxAutoStart_CheckedChanged(object sender, EventArgs e)
 		{
 			iStartupManager.Startup = checkBoxAutoStart.Checked;
 		}

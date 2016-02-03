@@ -165,5 +165,17 @@ namespace SharpDisplayManager.Properties {
                 this["CecMonitorOff"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool StartIdleClient {
+            get {
+                return ((bool)(this["StartIdleClient"]));
+            }
+            set {
+                this["StartIdleClient"] = value;
+            }
+        }
     }
 }
