@@ -218,13 +218,13 @@
     <None Include="SharpDisplayManager_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Clients\Idle\SharpDisplayIdleClient.csproj">
+    <ProjectReference Include="..\Clients\Idle\SharpDisplayClientIdle.csproj">
       <Project>{a76579e5-aa8d-45a3-99e1-239a5c030a78}</Project>
-      <Name>SharpDisplayIdleClient</Name>
+      <Name>SharpDisplayClientIdle</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Clients\Test\SharpDisplayClient.csproj">
+    <ProjectReference Include="..\Clients\Test\SharpDisplayClientTest.csproj">
       <Project>{7ee64074-8cdb-4448-b40c-81b75d6b31cd}</Project>
-      <Name>SharpDisplayClient</Name>
+      <Name>SharpDisplayClientTest</Name>
     </ProjectReference>
     <ProjectReference Include="..\PowerManager\PowerManager.vcxproj">
       <Project>{c174f23d-3055-49bc-b6b0-563011af624d}</Project>

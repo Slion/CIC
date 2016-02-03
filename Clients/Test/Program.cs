@@ -39,7 +39,7 @@ namespace SharpDisplayClient
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+			Application.Run(new FormClientTest());
         }
 
 		[STAThread]
@@ -50,7 +50,7 @@ namespace SharpDisplayClient
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			MainForm mainForm = new MainForm();
+			FormClientTest mainForm = new FormClientTest();
 			mainForm.Params = (StartParams)aParams;
 			Application.Run(mainForm);
 		}

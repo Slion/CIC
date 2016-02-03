@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpLibDisplay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpLibDisplay.0.2.5\lib\net40\SharpLibDisplay.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,16 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormIdleClient.cs">
+    <Compile Include="FormClientIdle.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormIdleClient.Designer.cs">
-      <DependentUpon>FormIdleClient.cs</DependentUpon>
+    <Compile Include="FormClientIdle.Designer.cs">
+      <DependentUpon>FormClientIdle.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormIdleClient.resx">
-      <DependentUpon>FormIdleClient.cs</DependentUpon>
+    <EmbeddedResource Include="FormClientIdle.resx">
+      <DependentUpon>FormClientIdle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -66,6 +70,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

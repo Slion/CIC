@@ -34,7 +34,7 @@ using SharpLib.Display;
 
 namespace SharpDisplayClient
 {
-    public partial class MainForm : Form
+    public partial class FormClientTest : Form
     {
 		public StartParams Params { get; set; }
 
@@ -48,7 +48,7 @@ namespace SharpDisplayClient
 		/// <summary>
 		/// Constructor
 		/// </summary>
-        public MainForm()
+        public FormClientTest()
         {
             InitializeComponent();
             Alignment = ContentAlignment.MiddleLeft;
