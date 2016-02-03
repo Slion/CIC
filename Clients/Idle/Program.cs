@@ -1,5 +1,5 @@
 ﻿//
-// Copyright (C) 2014-2015 Stéphane Lenclud.
+// Copyright (C) 2014-2016 Stéphane Lenclud.
 //
 // This file is part of SharpDisplayManager.
 //
@@ -52,6 +52,8 @@ namespace SharpDisplayIdleClient
             Application.SetCompatibleTextRenderingDefault(false);
             FormClientIdle form = new FormClientIdle();
             form.Params = (StartParams)aParams;
+            form.WindowState = FormWindowState.Minimized;
+            form.ShowInTaskbar = false;
             Application.Run(form);
         }
 
