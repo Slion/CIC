@@ -66,7 +66,7 @@ namespace SharpDisplayIdleClient
             iClient.CloseOrderEvent += OnCloseOrder;
             iClient.Open();
             iClient.SetName("Idle");
-            iClient.SetPriority(SharpLib.Display.Priorities.Background);
+            iClient.SetPriority(Priorities.Background);
             SetupDisplayClient();
 
             //Timer
@@ -195,12 +195,24 @@ namespace SharpDisplayIdleClient
             }
             else
             {
-                //Do some screen saving
+                //Do some screen saving                
                 iTextField.Text = "";
             }
 
             // Update our field
             iClient.SetField(iTextField);
+
+            //Now make sure we save our screen from any running system monitor
+            if (String.IsNullOrEmpty(iTextField.Text))
+            {
+                //If text it empty it means we need to cool down our display even if system monitor is running
+                iClient.SetPriority(Priorities.SystemMonitor + 1);
+            }
+            else
+            {
+                //Switch back to background then, leaving system monitor if any doing its magic
+                iClient.SetPriority(Priorities.Background);
+            }
         }
 
         private void FormClientIdle_Shown(object sender, EventArgs e)
