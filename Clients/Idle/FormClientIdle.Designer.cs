@@ -1,4 +1,5 @@
-﻿namespace SharpDisplayIdleClient
+﻿
+namespace SharpDisplayIdleClient
 {
     partial class FormClientIdle
     {
@@ -28,20 +29,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.iTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // FormIdleClient
+            // iTimer
+            // 
+            this.iTimer.Tick += new System.EventHandler(this.iTimer_Tick);
+            // 
+            // FormClientIdle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(531, 303);
-            this.Name = "FormIdleClient";
+            this.Name = "FormClientIdle";
             this.Text = "Sharp Display Idle Client";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormClientIdle_FormClosing);
+            this.Load += new System.EventHandler(this.FormClientIdle_Load);
+            this.Shown += new System.EventHandler(this.FormClientIdle_Shown);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer iTimer;
     }
 }
 
