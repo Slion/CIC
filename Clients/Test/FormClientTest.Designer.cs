@@ -1,6 +1,6 @@
 ﻿namespace SharpDisplayClient
 {
-    partial class MainForm
+    partial class FormClientTest
     {
         /// <summary>
         /// Required designer variable.

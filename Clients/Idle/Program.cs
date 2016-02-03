@@ -39,7 +39,7 @@ namespace SharpDisplayIdleClient
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormIdleClient());
+            Application.Run(new FormClientIdle());
         }
 
         [STAThread]
@@ -50,7 +50,7 @@ namespace SharpDisplayIdleClient
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            FormIdleClient form = new FormIdleClient();
+            FormClientIdle form = new FormClientIdle();
             form.Params = (StartParams)aParams;
             Application.Run(form);
         }

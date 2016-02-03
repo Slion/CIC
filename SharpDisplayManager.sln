@@ -9,9 +9,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PowerManager", "PowerManage
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{22C920A9-2352-4DC9-91E2-035EBD712866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDisplayIdleClient", "Clients\Idle\SharpDisplayIdleClient.csproj", "{A76579E5-AA8D-45A3-99E1-239A5C030A78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDisplayClientIdle", "Clients\Idle\SharpDisplayClientIdle.csproj", "{A76579E5-AA8D-45A3-99E1-239A5C030A78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDisplayClient", "Clients\Test\SharpDisplayClient.csproj", "{7EE64074-8CDB-4448-B40C-81B75D6B31CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDisplayClientTest", "Clients\Test\SharpDisplayClientTest.csproj", "{7EE64074-8CDB-4448-B40C-81B75D6B31CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
