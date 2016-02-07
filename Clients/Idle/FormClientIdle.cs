@@ -61,6 +61,9 @@ namespace SharpDisplayIdleClient
         /// <param name="e"></param>
         private void FormClientIdle_Load(object sender, EventArgs e)
         {
+            //Prevents showing in the Open Task view (Windows Key + Tab)
+            Visible = false;
+
             //Display client
             iClient = new Client();
             iClient.CloseOrderEvent += OnCloseOrder;
