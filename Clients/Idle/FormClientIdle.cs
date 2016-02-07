@@ -44,6 +44,9 @@ namespace SharpDisplayIdleClient
         Client iClient;
         ContentAlignment iAlignment;
         TextField iTextField;
+        //Used to determine if screen saver need to kick in
+        private PowerManager.SettingNotifier iPowerSettingNotifier;
+        private bool MonitorPowerOn;
 
         public delegate void CloseDelegate();
         public delegate void CloseConnectionDelegate();
@@ -75,7 +78,50 @@ namespace SharpDisplayIdleClient
             //Timer
             iTimer.Interval = IntervalToNextMinute();
             iTimer.Start();
+
+            //Create our power setting notifier and register the event we are interested in
+            iPowerSettingNotifier = new PowerManager.SettingNotifier(Handle);
+            iPowerSettingNotifier.OnMonitorPowerOn += OnMonitorPowerOn;
+            iPowerSettingNotifier.OnMonitorPowerOff += OnMonitorPowerOff;
+            MonitorPowerOn = true;
+
         }
+
+        /// <summary>
+        /// Broadcast messages to subscribers.
+        /// </summary>
+        /// <param name="message"></param>
+        protected override void WndProc(ref Message aMessage)
+        {
+            //Hook in our power manager
+            if (iPowerSettingNotifier != null)
+            {
+                iPowerSettingNotifier.WndProc(ref aMessage);
+            }
+
+            base.WndProc(ref aMessage);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void OnMonitorPowerOn()
+        {
+            MonitorPowerOn = true;
+            UpdateDisplay();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void OnMonitorPowerOff()
+        {
+            MonitorPowerOn = false;
+            UpdateDisplay();
+        }
+
 
         /// <summary>
         /// 
@@ -190,6 +236,15 @@ namespace SharpDisplayIdleClient
             iTimer.Interval = IntervalToNextMinute();
             iTimer.Start();
 
+            UpdateDisplay();
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateDisplay()
+        {
             //
             if (String.IsNullOrEmpty(iTextField.Text))
             {
@@ -206,7 +261,8 @@ namespace SharpDisplayIdleClient
             iClient.SetField(iTextField);
 
             //Now make sure we save our screen from any running system monitor
-            if (String.IsNullOrEmpty(iTextField.Text))
+            //We don't go into screen saving mode if our monitor is still on
+            if (String.IsNullOrEmpty(iTextField.Text) && !MonitorPowerOn)
             {
                 //If text it empty it means we need to cool down our display even if system monitor is running
                 iClient.SetPriority(Priorities.SystemMonitor + 1);
@@ -218,6 +274,11 @@ namespace SharpDisplayIdleClient
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FormClientIdle_Shown(object sender, EventArgs e)
         {
             //Visible = false;

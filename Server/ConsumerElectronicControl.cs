@@ -15,6 +15,9 @@ namespace SharpDisplayManager
         private PowerManager.SettingNotifier iPowerSettingNotifier;
         ///
         private Cec.Client iCecClient;
+        ///This flag will only work properly if both on and off events are monitored.
+        ///TODO: have a more solid implementation
+        public bool MonitorPowerOn;
 
         /// <summary>
         /// 
@@ -24,6 +27,9 @@ namespace SharpDisplayManager
         /// <param name="aHdmiPort"></param>
         public void Start(IntPtr aWndHandle, string aDeviceName, byte aHdmiPort, bool aMonitorOn, bool aMonitorOff)
         {
+            //Assuming monitor is on when we start up
+            MonitorPowerOn = true;
+
             //Create our power setting notifier and register the event we are interested in
             iPowerSettingNotifier = new PowerManager.SettingNotifier(aWndHandle);
 
@@ -72,16 +78,18 @@ namespace SharpDisplayManager
             Debug.WriteLine("ON");
             iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
             iCecClient.Lib.SetActiveSource(CecDeviceType.Tv);
+            MonitorPowerOn = true;
         }
 
         private void OnMonitorPowerOff()
         {
             Debug.WriteLine("OFF");
             iCecClient.Lib.StandbyDevices(CecLogicalAddress.Tv);
+            MonitorPowerOn = false;
         }
 
         /// <summary>
-        /// We need to handle WM_INPUT.
+        /// We need to handle WM_POWERBROADCAST.
         /// </summary>
         /// <param name="message"></param>
         public void OnWndProc(ref Message message)
