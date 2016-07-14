@@ -75,7 +75,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>70A149AB9F89E507D9411D109553BE22455895D6</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>5BAED0690B4D99A5D9E89E562A8B9A2BE342929E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>SharpDisplayManager_TemporaryKey.pfx</ManifestKeyFile>
@@ -132,6 +132,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="SharpDisplayManager_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
