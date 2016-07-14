@@ -60,6 +60,23 @@ namespace Cec
             Console.WriteLine("CEC Parser created - libCEC version " + Config.ServerVersion);
         }
 
+
+
+        public virtual int ReceiveAlert(CecAlert alert, CecParameter data)
+        {
+            return 1;
+        }
+
+        public virtual int ReceiveMenuStateChange(CecMenuState newVal)
+        {
+            return 1;
+        }
+
+        public virtual void SourceActivated(CecLogicalAddress logicalAddress, bool activated)
+        {
+            return;
+        }
+
         public override int ReceiveCommand(CecCommand command)
         {
             return 1;

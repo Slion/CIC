@@ -294,7 +294,7 @@
     <Content Include="..\bin\x86\Release\MiniDisplay.dll">
       <Link>MiniDisplay.dll</Link>
     </Content>
-    <Content Include="libcec.dll">
+    <Content Include="cec.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Resources\record.ico" />
