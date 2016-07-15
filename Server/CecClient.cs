@@ -61,29 +61,68 @@ namespace Cec
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="alert"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public virtual int ReceiveAlert(CecAlert alert, CecParameter data)
         {
+            string log = "CEC alert: " + alert.ToString();
+            if (data != null && data.Type == CecParameterType.ParameterTypeString)
+            {
+                log += " " + data.Data;
+            }
+
+            Console.WriteLine(log);
+
+            Close();
+            //Try reconnect
+            Connect(1000);
             return 1;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newVal"></param>
+        /// <returns></returns>
         public virtual int ReceiveMenuStateChange(CecMenuState newVal)
         {
+            Console.WriteLine("CEC menu state changed to: " + iLib.ToString(newVal));
             return 1;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logicalAddress"></param>
+        /// <param name="activated"></param>
         public virtual void SourceActivated(CecLogicalAddress logicalAddress, bool activated)
         {
+            Console.WriteLine("CEC source activated: " + iLib.ToString(logicalAddress) + "/" + activated.ToString() );
             return;
         }
 
         public override int ReceiveCommand(CecCommand command)
         {
+            Console.WriteLine(string.Format("CEC command Src:{0} Dst:{1} Ack: {2} Eom: {3} OpcodeSet: {4} Opcode: {5} Timeout: {6}",
+                iLib.ToString(command.Initiator),
+                iLib.ToString(command.Destination),
+                command.Ack.ToString(),
+                command.Eom.ToString(),
+                command.OpcodeSet.ToString(),
+                iLib.ToString(command.Opcode),
+                command.TransmitTimeout.ToString()
+                ));
             return 1;
         }
 
         public override int ReceiveKeypress(CecKeypress key)
         {
+            Console.WriteLine(string.Format("CEC keypress: {0} Duration:{1} Empty: {2}",
+                key.Keycode.ToString(), key.Duration.ToString(), key.Empty.ToString()));
             return 1;
         }
 
@@ -114,6 +153,7 @@ namespace Cec
                 }
                 string strLog = string.Format("{0} {1,16} {2}", strLevel, message.Time, message.Message);
                 Console.WriteLine(strLog);
+                
             }
             return 1;
         }
@@ -125,27 +165,74 @@ namespace Cec
         /// <returns></returns>
         public bool Connect(int timeout)
         {
+            Close();         
             CecAdapter[] adapters = iLib.FindAdapters(string.Empty);
             if (adapters.Length > 0)
-                return Connect(adapters[0].ComPort, timeout);
+            {
+                Connect(adapters[0].ComPort, timeout);                
+            }                
             else
             {
-                Console.WriteLine("Did not find any CEC adapters");
-                return false;
+                Console.WriteLine("CEC did not find any adapters");
             }
+
+            return iConnected;
         }
 
         public bool Connect(string port, int timeout)
         {
-            return iLib.Open(port, timeout);
+            Close();
+            iConnected = iLib.Open(port, timeout);
+            if (iConnected)
+            {
+                Scan();
+            }
+            return iConnected;
         }
 
         public void Close()
-        {
+        {            
             iLib.Close();
+            iConnected = false;
         }
 
-        public void ListDevices()
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Scan()
+        {
+            Console.WriteLine("CEC bus information");
+            Console.WriteLine("===================");
+            CecLogicalAddresses addresses = Lib.GetActiveDevices();
+            for (int iPtr = 0; iPtr < addresses.Addresses.Length; iPtr++)
+            {
+                CecLogicalAddress address = (CecLogicalAddress) iPtr;
+                if (!addresses.IsSet(address))
+                    continue;
+
+                CecVendorId iVendorId = Lib.GetDeviceVendorId(address);
+                bool bActive = Lib.IsActiveDevice(address);
+                ushort iPhysicalAddress = Lib.GetDevicePhysicalAddress(address);
+                string strAddr = Lib.PhysicalAddressToString(iPhysicalAddress);
+                CecVersion iCecVersion = Lib.GetDeviceCecVersion(address);
+                CecPowerStatus power = Lib.GetDevicePowerStatus(address);
+                string osdName = Lib.GetDeviceOSDName(address);
+                string lang = Lib.GetDeviceMenuLanguage(address);
+
+                Console.WriteLine("device #" + iPtr + ": " + Lib.ToString(address));
+                Console.WriteLine("address:       " + strAddr);
+                Console.WriteLine("active source: " + (bActive ? "yes" : "no"));
+                Console.WriteLine("vendor:        " + Lib.ToString(iVendorId));
+                Console.WriteLine("osd string:    " + osdName);
+                Console.WriteLine("CEC version:   " + Lib.ToString(iCecVersion));
+                Console.WriteLine("power status:  " + Lib.ToString(power));
+                if (!string.IsNullOrEmpty(lang))
+                    Console.WriteLine("language:      " + lang);
+                Console.WriteLine("");
+            }
+        }
+
+        public void ListAdapters()
         {
             int iAdapter = 0;
             foreach (CecAdapter adapter in iLib.FindAdapters(string.Empty))
@@ -398,5 +485,10 @@ namespace Cec
         /// 
         /// </summary>
         private LibCECConfiguration Config;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool iConnected;
     }
 }

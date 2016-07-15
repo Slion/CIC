@@ -40,7 +40,7 @@ namespace SharpDisplayManager
         static void Main()
         {
 
-			/*
+            /*
 			if (!IsRunAsAdministrator())
 			{
 				var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
@@ -65,9 +65,8 @@ namespace SharpDisplayManager
 				return;
 				//Application.Current.Shutdown();
 			}*/
-
-
-			Application.ApplicationExit += new EventHandler(OnApplicationExit);
+          
+            Application.ApplicationExit += new EventHandler(OnApplicationExit);
 			//
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

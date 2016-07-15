@@ -113,6 +113,8 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.tabPageLogs = new System.Windows.Forms.TabPage();
+            this.richTextBoxLogs = new System.Windows.Forms.RichTextBox();
             this.panelDisplay.SuspendLayout();
             this.iTableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -127,6 +129,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).BeginInit();
             this.tabPageCec.SuspendLayout();
             this.tabPageApp.SuspendLayout();
+            this.tabPageLogs.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelDisplay
@@ -552,6 +555,7 @@
             this.tabControl.Controls.Add(this.tabPageInput);
             this.tabControl.Controls.Add(this.tabPageCec);
             this.tabControl.Controls.Add(this.tabPageApp);
+            this.tabControl.Controls.Add(this.tabPageLogs);
             this.tabControl.Location = new System.Drawing.Point(12, 139);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -958,6 +962,33 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
+            // tabPageLogs
+            // 
+            this.tabPageLogs.Controls.Add(this.richTextBoxLogs);
+            this.tabPageLogs.Location = new System.Drawing.Point(4, 22);
+            this.tabPageLogs.Name = "tabPageLogs";
+            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLogs.Size = new System.Drawing.Size(592, 242);
+            this.tabPageLogs.TabIndex = 8;
+            this.tabPageLogs.Text = "Logs";
+            this.tabPageLogs.UseVisualStyleBackColor = true;
+            // 
+            // richTextBoxLogs
+            // 
+            this.richTextBoxLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxLogs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBoxLogs.DetectUrls = false;
+            this.richTextBoxLogs.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBoxLogs.Location = new System.Drawing.Point(6, 6);
+            this.richTextBoxLogs.Name = "richTextBoxLogs";
+            this.richTextBoxLogs.ReadOnly = true;
+            this.richTextBoxLogs.Size = new System.Drawing.Size(580, 230);
+            this.richTextBoxLogs.TabIndex = 1;
+            this.richTextBoxLogs.Text = "";
+            this.richTextBoxLogs.WordWrap = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1000,6 +1031,7 @@
             this.tabPageCec.PerformLayout();
             this.tabPageApp.ResumeLayout(false);
             this.tabPageApp.PerformLayout();
+            this.tabPageLogs.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1081,6 +1113,8 @@
         private System.Windows.Forms.CheckBox checkBoxCecMonitorOff;
         private System.Windows.Forms.Button iButtonStartIdleClient;
         private System.Windows.Forms.CheckBox iCheckBoxStartIdleClient;
+        private System.Windows.Forms.TabPage tabPageLogs;
+        private System.Windows.Forms.RichTextBox richTextBoxLogs;
     }
 }
 
