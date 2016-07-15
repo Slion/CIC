@@ -33,6 +33,7 @@
 using System;
 using System.Text;
 using CecSharp;
+using System.Threading;
 
 namespace Cec
 {
@@ -43,15 +44,15 @@ namespace Cec
         /// </summary>
         /// <param name="aDeviceName"></param>
         /// <param name="aHdmiPort"></param>
-        public Client(string aDeviceName, byte aHdmiPort)
+        public Client(string aDeviceName, byte aHdmiPort, CecLogLevel aLogLevel = CecLogLevel.Warning)
         {
             Config = new LibCECConfiguration();
-            Config.DeviceTypes.Types[0] = CecDeviceType.Tv;
+            Config.DeviceTypes.Types[0] = CecDeviceType.RecordingDevice;
             Config.DeviceName = aDeviceName;
             Config.HDMIPort = aHdmiPort;
             //Config.ClientVersion = LibCECConfiguration.CurrentVersion;
             Config.SetCallbacks(this);
-            LogLevel = (int)CecLogLevel.All;
+            LogLevel = (int)aLogLevel;
 
             iLib = new LibCecSharp(Config);
             iLib.InitVideoStandalone();
@@ -67,7 +68,7 @@ namespace Cec
         /// <param name="alert"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public virtual int ReceiveAlert(CecAlert alert, CecParameter data)
+        public override int ReceiveAlert(CecAlert alert, CecParameter data)
         {
             string log = "CEC alert: " + alert.ToString();
             if (data != null && data.Type == CecParameterType.ParameterTypeString)
@@ -88,7 +89,7 @@ namespace Cec
         /// </summary>
         /// <param name="newVal"></param>
         /// <returns></returns>
-        public virtual int ReceiveMenuStateChange(CecMenuState newVal)
+        public override int ReceiveMenuStateChange(CecMenuState newVal)
         {
             Console.WriteLine("CEC menu state changed to: " + iLib.ToString(newVal));
             return 1;
@@ -99,7 +100,7 @@ namespace Cec
         /// </summary>
         /// <param name="logicalAddress"></param>
         /// <param name="activated"></param>
-        public virtual void SourceActivated(CecLogicalAddress logicalAddress, bool activated)
+        public override void SourceActivated(CecLogicalAddress logicalAddress, bool activated)
         {
             Console.WriteLine("CEC source activated: " + iLib.ToString(logicalAddress) + "/" + activated.ToString() );
             return;
@@ -134,24 +135,24 @@ namespace Cec
                 switch (message.Level)
                 {
                     case CecLogLevel.Error:
-                        strLevel = "ERROR:     ";
+                        strLevel = "ERROR: ";
                         break;
                     case CecLogLevel.Warning:
                         strLevel = "WARNING: ";
                         break;
                     case CecLogLevel.Notice:
-                        strLevel = "NOTICE:    ";
+                        strLevel = "NOTICE: ";
                         break;
                     case CecLogLevel.Traffic:
                         strLevel = "TRAFFIC: ";
                         break;
                     case CecLogLevel.Debug:
-                        strLevel = "DEBUG:     ";
+                        strLevel = "DEBUG: ";
                         break;
                     default:
                         break;
                 }
-                string strLog = string.Format("{0} {1,16} {2}", strLevel, message.Time, message.Message);
+                string strLog = string.Format("{0} {1} {2}", strLevel, message.Time, message.Message);
                 Console.WriteLine(strLog);
                 
             }
@@ -186,6 +187,7 @@ namespace Cec
             if (iConnected)
             {
                 Scan();
+                //TestSendKey();
             }
             return iConnected;
         }
@@ -194,6 +196,66 @@ namespace Cec
         {            
             iLib.Close();
             iConnected = false;
+        }
+
+
+        public void TestSendKey()
+        {
+            //SetupMenu: opens option menu
+            //RootMenu: opens Android home menu
+            //ContentsMenu: nop
+            //FavoriteMenu: nop
+
+            //Philips TopMenu = 16
+            //Philips PopupMenu = 17
+
+            //bool res = iLib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.DisplayInformation, true);
+            //Thread.Sleep(3000); //Wait few seconds for menu to open
+                                //res = iLib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.SetupMenu, true);
+
+            for (int i = 0; i < 256; i++)
+            {
+                //Thread.Sleep(100);
+                //res = iLib.SendKeyRelease(CecLogicalAddress.Tv, true);
+                //Thread.Sleep(100);
+                switch ((CecUserControlCode)i)
+                {
+                    case CecUserControlCode.Power:
+                    case CecUserControlCode.PowerOffFunction:
+                    case CecUserControlCode.PowerOnFunction:
+                    case CecUserControlCode.PowerToggleFunction:
+                    case CecUserControlCode.ElectronicProgramGuide:
+                    case CecUserControlCode.InputSelect:
+                    case CecUserControlCode.RootMenu:
+
+                        break;
+
+                    default:
+                        Console.WriteLine(i.ToString());
+                        Thread.Sleep(1000);
+                        iLib.SendKeypress(CecLogicalAddress.Tv, (CecUserControlCode)i, true);
+                        
+                        break;
+
+                }
+                
+                //
+            }
+
+
+            for (int i=0;i<7;i++)
+            {
+                //Thread.Sleep(100);
+                //res = iLib.SendKeyRelease(CecLogicalAddress.Tv, true);
+                //Thread.Sleep(100);
+                //res = iLib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.Down, true);
+                //
+            }
+
+            //res = iLib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.Select, true);
+
+            //res = iLib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.Select, true);
+            //res = iLib.SendKeyRelease(CecLogicalAddress.Tv, true);
         }
 
         /// <summary>
@@ -451,7 +513,7 @@ namespace Cec
         /// TODO: remove that
         static void Main(string[] args)
         {
-            Client p = new Client("CEC",2);
+            Client p = new Client("CEC",2, CecLogLevel.All);
             if (p.Connect(10000))
             {
                 p.MainLoop();

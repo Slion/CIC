@@ -115,6 +115,11 @@ namespace SharpDisplayManager
         /// </summary>
         private SharpLib.Notification.Control iRecordingNotification;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        RichTextBoxTextWriter iWriter;
+
 
         /// <summary>
         /// Allow user to receive window messages;
@@ -142,8 +147,8 @@ namespace SharpDisplayManager
             InitializeComponent();
 
             //Redirect console output
-            RichTextBoxTextWriter writer = new RichTextBoxTextWriter(richTextBoxLogs);
-            Console.SetOut(writer);
+            iWriter = new RichTextBoxTextWriter(richTextBoxLogs);
+            Console.SetOut(iWriter);
 
             //Populate device types
             PopulateDeviceTypes();
@@ -2480,6 +2485,11 @@ namespace SharpDisplayManager
         /// <param name="message"></param>
         protected override void WndProc(ref Message aMessage)
         {
+            if (iWriter != null)
+            {
+                iWriter.FlushAccumulator();
+            }
+
             if (OnWndProc!=null)
             {
                 OnWndProc(ref aMessage);

@@ -19,6 +19,11 @@ namespace SharpDisplayManager
         ///TODO: have a more solid implementation
         public bool MonitorPowerOn;
 
+        public void TestSendKeys()
+        {
+            iCecClient.TestSendKey();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -46,7 +51,7 @@ namespace SharpDisplayManager
             }
 
             //CEC
-            iCecClient = new Cec.Client(aDeviceName,aHdmiPort);
+            iCecClient = new Cec.Client(aDeviceName,aHdmiPort, CecLogLevel.Notice);
             if (!iCecClient.Connect(1000))
             {
                 Debug.WriteLine("WARNING: No CEC connection!");
