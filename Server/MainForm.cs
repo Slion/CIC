@@ -141,8 +141,12 @@ namespace SharpDisplayManager
             //Have our designer initialize its controls
             InitializeComponent();
 
-			//Populate device types
-			PopulateDeviceTypes();
+            //Redirect console output
+            RichTextBoxTextWriter writer = new RichTextBoxTextWriter(richTextBoxLogs);
+            Console.SetOut(writer);
+
+            //Populate device types
+            PopulateDeviceTypes();
 
             //Populate optical drives
             PopulateOpticalDrives();
