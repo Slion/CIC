@@ -44,10 +44,10 @@ namespace Cec
         /// </summary>
         /// <param name="aDeviceName"></param>
         /// <param name="aHdmiPort"></param>
-        public Client(string aDeviceName, byte aHdmiPort, CecLogLevel aLogLevel = CecLogLevel.Warning)
+        public Client(string aDeviceName, byte aHdmiPort, CecDeviceType aDeviceType = CecDeviceType.PlaybackDevice, CecLogLevel aLogLevel = CecLogLevel.Warning)
         {
             Config = new LibCECConfiguration();
-            Config.DeviceTypes.Types[0] = CecDeviceType.RecordingDevice;
+            Config.DeviceTypes.Types[0] = aDeviceType;
             Config.DeviceName = aDeviceName;
             Config.HDMIPort = aHdmiPort;
             //Config.ClientVersion = LibCECConfiguration.CurrentVersion;
@@ -509,21 +509,7 @@ namespace Cec
                     LogLevel = int.Parse(splitCommand[1]);                
             }
         }
-
-        /// TODO: remove that
-        static void Main(string[] args)
-        {
-            Client p = new Client("CEC",2, CecLogLevel.All);
-            if (p.Connect(10000))
-            {
-                p.MainLoop();
-            }
-            else
-            {
-                Console.WriteLine("Could not open a connection to the CEC adapter");
-            }
-        }
-
+       
         /// <summary>
         /// Provide direct access to CEC library
         /// </summary>

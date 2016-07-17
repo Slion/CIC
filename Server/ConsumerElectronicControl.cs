@@ -51,7 +51,7 @@ namespace SharpDisplayManager
             }
 
             //CEC
-            iCecClient = new Cec.Client(aDeviceName,aHdmiPort, CecLogLevel.Notice);
+            iCecClient = new Cec.Client(aDeviceName,aHdmiPort, CecDeviceType.PlaybackDevice, CecLogLevel.All&~CecLogLevel.Traffic&~CecLogLevel.Debug);
             if (!iCecClient.Connect(1000))
             {
                 Debug.WriteLine("WARNING: No CEC connection!");
@@ -80,16 +80,24 @@ namespace SharpDisplayManager
 
         private void OnMonitorPowerOn()
         {
-            Debug.WriteLine("ON");
-            iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
-            iCecClient.Lib.SetActiveSource(CecDeviceType.Tv);
+            Console.WriteLine("ON");
+            //Turn on the TV
+            //iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
+            //iCecClient.Lib.SendKeypress(CecLogicalAddress.Tv,CecUserControlCode.PowerOnFunction,true);
+            //Set ourselves as the active source
+            iCecClient.Lib.SetActiveSource(CecDeviceType.PlaybackDevice);
             MonitorPowerOn = true;
         }
 
         private void OnMonitorPowerOff()
         {
-            Debug.WriteLine("OFF");
+            Console.WriteLine("OFF");
+            //Try turning off the TV
             iCecClient.Lib.StandbyDevices(CecLogicalAddress.Tv);
+            //iCecClient.Lib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.PowerOffFunction, true);
+            //Tell everyone that we are no longer active
+            //iCecClient.Lib.SetInactiveView();
+
             MonitorPowerOn = false;
         }
 
