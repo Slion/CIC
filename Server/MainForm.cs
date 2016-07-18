@@ -1145,6 +1145,7 @@ namespace SharpDisplayManager
             checkBoxCecEnabled.Checked = Properties.Settings.Default.CecEnabled;
             checkBoxCecMonitorOn.Checked = Properties.Settings.Default.CecMonitorOn;
             checkBoxCecMonitorOff.Checked = Properties.Settings.Default.CecMonitorOff;
+		    checkBoxCecReconnectToPowerTv.Checked = Properties.Settings.Default.CecReconnectToPowerTv;
             comboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
 
             //Mini Display settings
@@ -2533,6 +2534,14 @@ namespace SharpDisplayManager
             ResetCec();
         }
 
+        private void checkBoxCecReconnectToPowerTv_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.CecReconnectToPowerTv = checkBoxCecReconnectToPowerTv.Checked;
+            Properties.Settings.Default.Save();
+            //
+            ResetCec();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -2551,7 +2560,8 @@ namespace SharpDisplayManager
                 iCecManager.Start(Handle, "CEC",
                 Properties.Settings.Default.CecHdmiPort,
                 Properties.Settings.Default.CecMonitorOn,
-                Properties.Settings.Default.CecMonitorOff);
+                Properties.Settings.Default.CecMonitorOff,
+                Properties.Settings.Default.CecReconnectToPowerTv);
             }
         }
 
@@ -2559,5 +2569,7 @@ namespace SharpDisplayManager
         {
             StartIdleClient();
         }
+
+
     }
 }

@@ -19,6 +19,8 @@ namespace SharpDisplayManager
         ///TODO: have a more solid implementation
         public bool MonitorPowerOn;
 
+        private bool iReconnectToPowerTv = false;
+
         public void TestSendKeys()
         {
             iCecClient.TestSendKey();
@@ -30,10 +32,12 @@ namespace SharpDisplayManager
         /// <param name="aWndHandle"></param>
         /// <param name="aDeviceName"></param>
         /// <param name="aHdmiPort"></param>
-        public void Start(IntPtr aWndHandle, string aDeviceName, byte aHdmiPort, bool aMonitorOn, bool aMonitorOff)
+        public void Start(IntPtr aWndHandle, string aDeviceName, byte aHdmiPort, bool aMonitorOn, bool aMonitorOff, bool aReconnectToPowerTv)
         {
             //Assuming monitor is on when we start up
             MonitorPowerOn = true;
+
+            iReconnectToPowerTv = aReconnectToPowerTv;
 
             //Create our power setting notifier and register the event we are interested in
             iPowerSettingNotifier = new PowerManager.SettingNotifier(aWndHandle);
@@ -52,10 +56,7 @@ namespace SharpDisplayManager
 
             //CEC
             iCecClient = new Cec.Client(aDeviceName,aHdmiPort, CecDeviceType.PlaybackDevice, CecLogLevel.All&~CecLogLevel.Traffic&~CecLogLevel.Debug);
-            if (!iCecClient.Connect(1000))
-            {
-                Debug.WriteLine("WARNING: No CEC connection!");
-            }
+            ConnectCecClient();
         }
 
         //
@@ -77,10 +78,27 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ConnectCecClient()
+        {
+            //Our client takes care of closing before trying to connect
+            if (!iCecClient.Connect(1000))
+            {
+                Debug.WriteLine("WARNING: No CEC connection!");
+            }
+        }
 
         private void OnMonitorPowerOn()
         {
             Console.WriteLine("ON");
+
+            if (iReconnectToPowerTv)
+            {
+                ConnectCecClient();
+            }
+
             //Turn on the TV
             //iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
             //iCecClient.Lib.SendKeypress(CecLogicalAddress.Tv,CecUserControlCode.PowerOnFunction,true);
@@ -92,6 +110,12 @@ namespace SharpDisplayManager
         private void OnMonitorPowerOff()
         {
             Console.WriteLine("OFF");
+
+            if (iReconnectToPowerTv)
+            {
+                ConnectCecClient();
+            }
+
             //Try turning off the TV
             iCecClient.Lib.StandbyDevices(CecLogicalAddress.Tv);
             //iCecClient.Lib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.PowerOffFunction, true);
