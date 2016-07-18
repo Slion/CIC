@@ -99,6 +99,7 @@
             this.labelStartFileName = new System.Windows.Forms.Label();
             this.buttonSelectFile = new System.Windows.Forms.Button();
             this.tabPageCec = new System.Windows.Forms.TabPage();
+            this.checkBoxCecReconnectToPowerTv = new System.Windows.Forms.CheckBox();
             this.checkBoxCecMonitorOn = new System.Windows.Forms.CheckBox();
             this.checkBoxCecMonitorOff = new System.Windows.Forms.CheckBox();
             this.checkBoxCecEnabled = new System.Windows.Forms.CheckBox();
@@ -109,12 +110,12 @@
             this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.tabPageLogs = new System.Windows.Forms.TabPage();
+            this.richTextBoxLogs = new System.Windows.Forms.RichTextBox();
             this.labelFontWidth = new System.Windows.Forms.Label();
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tabPageLogs = new System.Windows.Forms.TabPage();
-            this.richTextBoxLogs = new System.Windows.Forms.RichTextBox();
             this.panelDisplay.SuspendLayout();
             this.iTableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -802,6 +803,7 @@
             // 
             // tabPageCec
             // 
+            this.tabPageCec.Controls.Add(this.checkBoxCecReconnectToPowerTv);
             this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOn);
             this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOff);
             this.tabPageCec.Controls.Add(this.checkBoxCecEnabled);
@@ -814,6 +816,18 @@
             this.tabPageCec.TabIndex = 7;
             this.tabPageCec.Text = "CEC";
             this.tabPageCec.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxCecReconnectToPowerTv
+            // 
+            this.checkBoxCecReconnectToPowerTv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxCecReconnectToPowerTv.AutoSize = true;
+            this.checkBoxCecReconnectToPowerTv.Location = new System.Drawing.Point(6, 115);
+            this.checkBoxCecReconnectToPowerTv.Name = "checkBoxCecReconnectToPowerTv";
+            this.checkBoxCecReconnectToPowerTv.Size = new System.Drawing.Size(194, 17);
+            this.checkBoxCecReconnectToPowerTv.TabIndex = 24;
+            this.checkBoxCecReconnectToPowerTv.Text = "Reconnect before TV power switch";
+            this.checkBoxCecReconnectToPowerTv.UseVisualStyleBackColor = true;
+            this.checkBoxCecReconnectToPowerTv.CheckedChanged += new System.EventHandler(this.checkBoxCecReconnectToPowerTv_CheckedChanged);
             // 
             // checkBoxCecMonitorOn
             // 
@@ -940,28 +954,6 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
-            // labelFontWidth
-            // 
-            this.labelFontWidth.AutoSize = true;
-            this.labelFontWidth.Location = new System.Drawing.Point(13, 29);
-            this.labelFontWidth.Name = "labelFontWidth";
-            this.labelFontWidth.Size = new System.Drawing.Size(56, 13);
-            this.labelFontWidth.TabIndex = 19;
-            this.labelFontWidth.Text = "Font width";
-            // 
-            // labelFontHeight
-            // 
-            this.labelFontHeight.AutoSize = true;
-            this.labelFontHeight.Location = new System.Drawing.Point(13, 46);
-            this.labelFontHeight.Name = "labelFontHeight";
-            this.labelFontHeight.Size = new System.Drawing.Size(60, 13);
-            this.labelFontHeight.TabIndex = 20;
-            this.labelFontHeight.Text = "Font height";
-            // 
-            // openFileDialog
-            // 
-            this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
-            // 
             // tabPageLogs
             // 
             this.tabPageLogs.Controls.Add(this.richTextBoxLogs);
@@ -988,6 +980,28 @@
             this.richTextBoxLogs.TabIndex = 1;
             this.richTextBoxLogs.Text = "";
             this.richTextBoxLogs.WordWrap = false;
+            // 
+            // labelFontWidth
+            // 
+            this.labelFontWidth.AutoSize = true;
+            this.labelFontWidth.Location = new System.Drawing.Point(13, 29);
+            this.labelFontWidth.Name = "labelFontWidth";
+            this.labelFontWidth.Size = new System.Drawing.Size(56, 13);
+            this.labelFontWidth.TabIndex = 19;
+            this.labelFontWidth.Text = "Font width";
+            // 
+            // labelFontHeight
+            // 
+            this.labelFontHeight.AutoSize = true;
+            this.labelFontHeight.Location = new System.Drawing.Point(13, 46);
+            this.labelFontHeight.Name = "labelFontHeight";
+            this.labelFontHeight.Size = new System.Drawing.Size(60, 13);
+            this.labelFontHeight.TabIndex = 20;
+            this.labelFontHeight.Text = "Font height";
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
             // MainForm
             // 
@@ -1115,6 +1129,7 @@
         private System.Windows.Forms.CheckBox iCheckBoxStartIdleClient;
         private System.Windows.Forms.TabPage tabPageLogs;
         private System.Windows.Forms.RichTextBox richTextBoxLogs;
+        private System.Windows.Forms.CheckBox checkBoxCecReconnectToPowerTv;
     }
 }
 

@@ -177,5 +177,17 @@ namespace SharpDisplayManager.Properties {
                 this["StartIdleClient"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CecReconnectToPowerTv {
+            get {
+                return ((bool)(this["CecReconnectToPowerTv"]));
+            }
+            set {
+                this["CecReconnectToPowerTv"] = value;
+            }
+        }
     }
 }
