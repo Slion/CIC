@@ -2577,27 +2577,35 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.CecMonitorOff,
                 Properties.Settings.Default.CecReconnectToPowerTv);
 
-                //Setup log level
-                iCecManager.Client.LogLevel = 0;
-
-                if (checkBoxCecLogError.Checked)
-                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Error;
-
-                if (checkBoxCecLogWarning.Checked)
-                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Warning;
-
-                if (checkBoxCecLogNotice.Checked)
-                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Notice;
-
-                if (checkBoxCecLogTraffic.Checked)
-                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Traffic;
-
-                if (checkBoxCecLogDebug.Checked)
-                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Debug;
-
-                iCecManager.Client.FilterOutPollLogs = checkBoxCecLogNoPoll.Checked;
-
+                SetupCecLogLevel();
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void SetupCecLogLevel()
+        {
+            //Setup log level
+            iCecManager.Client.LogLevel = 0;
+
+            if (checkBoxCecLogError.Checked)
+                iCecManager.Client.LogLevel |= (int)CecLogLevel.Error;
+
+            if (checkBoxCecLogWarning.Checked)
+                iCecManager.Client.LogLevel |= (int)CecLogLevel.Warning;
+
+            if (checkBoxCecLogNotice.Checked)
+                iCecManager.Client.LogLevel |= (int)CecLogLevel.Notice;
+
+            if (checkBoxCecLogTraffic.Checked)
+                iCecManager.Client.LogLevel |= (int)CecLogLevel.Traffic;
+
+            if (checkBoxCecLogDebug.Checked)
+                iCecManager.Client.LogLevel |= (int)CecLogLevel.Debug;
+
+            iCecManager.Client.FilterOutPollLogs = checkBoxCecLogNoPoll.Checked;
+
         }
 
         private void ButtonStartIdleClient_Click(object sender, EventArgs e)
@@ -2612,7 +2620,7 @@ namespace SharpDisplayManager
 
         private void checkBoxCecLogs_CheckedChanged(object sender, EventArgs e)
         {
-            ResetCec();
+            SetupCecLogLevel();
         }
     }
 }

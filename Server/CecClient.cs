@@ -142,7 +142,7 @@ namespace Cec
 
         public override int ReceiveCommand(CecCommand command)
         {
-            Console.WriteLine(string.Format("CEC command Src:{0} Dst:{1} Ack: {2} Eom: {3} OpcodeSet: {4} Opcode: {5} Timeout: {6}",
+            Console.WriteLine(string.Format("CEC command '{5}' from {0} to {1} - Ack: {2} Eom: {3} OpcodeSet: {4} Timeout: {6}",
                 iLib.ToString(command.Initiator),
                 iLib.ToString(command.Destination),
                 command.Ack.ToString(),
@@ -302,8 +302,9 @@ namespace Cec
         /// </summary>
         public void Scan()
         {
-            Console.WriteLine("CEC bus information");
-            Console.WriteLine("===================");
+            string scanRes = "";
+            scanRes += "CEC bus information\n";
+            scanRes += "===================\n";
             CecLogicalAddresses addresses = Lib.GetActiveDevices();
             for (int iPtr = 0; iPtr < addresses.Addresses.Length; iPtr++)
             {
@@ -320,17 +321,19 @@ namespace Cec
                 string osdName = Lib.GetDeviceOSDName(address);
                 string lang = Lib.GetDeviceMenuLanguage(address);
 
-                Console.WriteLine("device #" + iPtr + ": " + Lib.ToString(address));
-                Console.WriteLine("address:       " + strAddr);
-                Console.WriteLine("active source: " + (bActive ? "yes" : "no"));
-                Console.WriteLine("vendor:        " + Lib.ToString(iVendorId));
-                Console.WriteLine("osd string:    " + osdName);
-                Console.WriteLine("CEC version:   " + Lib.ToString(iCecVersion));
-                Console.WriteLine("power status:  " + Lib.ToString(power));
+                scanRes += "device #" + iPtr + ": " + Lib.ToString(address) + "\n";
+                scanRes += "address:       " + strAddr + "\n";
+                scanRes += "active source: " + (bActive ? "yes" : "no") + "\n";
+                scanRes += "vendor:        " + Lib.ToString(iVendorId) + "\n";
+                scanRes += "osd string:    " + osdName + "\n";
+                scanRes += "CEC version:   " + Lib.ToString(iCecVersion) + "\n";
+                scanRes += "power status:  " + Lib.ToString(power) + "\n";
                 if (!string.IsNullOrEmpty(lang))
-                    Console.WriteLine("language:      " + lang);
-                Console.WriteLine("");
+                    scanRes += "language:      " + lang + "\n";
+                scanRes += "===================" + "\n";
             }
+
+            Console.Write(scanRes);
         }
 
         public void ListAdapters()
