@@ -14,7 +14,7 @@ namespace SharpDisplayManager
         ///
         private PowerManager.SettingNotifier iPowerSettingNotifier;
         ///
-        private Cec.Client iCecClient;
+        public Cec.Client Client;
         ///This flag will only work properly if both on and off events are monitored.
         ///TODO: have a more solid implementation
         public bool MonitorPowerOn;
@@ -23,7 +23,7 @@ namespace SharpDisplayManager
 
         public void TestSendKeys()
         {
-            iCecClient.TestSendKey();
+            Client.TestSendKey();
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SharpDisplayManager
             }
 
             //CEC
-            iCecClient = new Cec.Client(aDeviceName,aHdmiPort, CecDeviceType.PlaybackDevice, CecLogLevel.All&~CecLogLevel.Traffic&~CecLogLevel.Debug);
+            Client = new Cec.Client(aDeviceName,aHdmiPort, CecDeviceType.PlaybackDevice);
             ConnectCecClient();
         }
 
@@ -70,11 +70,11 @@ namespace SharpDisplayManager
                 iPowerSettingNotifier = null;
             }
             //
-            if (iCecClient != null)
+            if (Client != null)
             {
-                iCecClient.Close();
-                iCecClient.Dispose();
-                iCecClient = null;
+                Client.Close();
+                Client.Dispose();
+                Client = null;
             }
         }
 
@@ -84,7 +84,7 @@ namespace SharpDisplayManager
         private void ConnectCecClient()
         {
             //Our client takes care of closing before trying to connect
-            if (!iCecClient.Connect(1000))
+            if (!Client.Connect(1000))
             {
                 Debug.WriteLine("WARNING: No CEC connection!");
             }
@@ -92,7 +92,7 @@ namespace SharpDisplayManager
 
         private void OnMonitorPowerOn()
         {
-            Console.WriteLine("ON");
+            Console.WriteLine("OnMonitorPowerOn");
 
             if (iReconnectToPowerTv)
             {
@@ -103,13 +103,13 @@ namespace SharpDisplayManager
             //iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
             //iCecClient.Lib.SendKeypress(CecLogicalAddress.Tv,CecUserControlCode.PowerOnFunction,true);
             //Set ourselves as the active source
-            iCecClient.Lib.SetActiveSource(CecDeviceType.PlaybackDevice);
+            Client.Lib.SetActiveSource(CecDeviceType.PlaybackDevice);
             MonitorPowerOn = true;
         }
 
         private void OnMonitorPowerOff()
         {
-            Console.WriteLine("OFF");
+            Console.WriteLine("OnMonitorPowerOff");
 
             if (iReconnectToPowerTv)
             {
@@ -117,7 +117,7 @@ namespace SharpDisplayManager
             }
 
             //Try turning off the TV
-            iCecClient.Lib.StandbyDevices(CecLogicalAddress.Tv);
+            Client.Lib.StandbyDevices(CecLogicalAddress.Tv);
             //iCecClient.Lib.SendKeypress(CecLogicalAddress.Tv, CecUserControlCode.PowerOffFunction, true);
             //Tell everyone that we are no longer active
             //iCecClient.Lib.SetInactiveView();

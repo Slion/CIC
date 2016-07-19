@@ -38,6 +38,7 @@ using System.Reflection;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
+using CecSharp;
 //Network
 using NETWORKLIST;
 //
@@ -913,6 +914,9 @@ namespace SharpDisplayManager
         //This is our timer tick responsible to perform our render
         private void timer_Tick(object sender, EventArgs e)
         {
+            //Not ideal cause this has nothing to do with display render
+            LogsUpdate();
+
             //Update our animations
             DateTime NewTickTime = DateTime.Now;
 
@@ -2480,16 +2484,26 @@ namespace SharpDisplayManager
             Properties.Settings.Default.Save();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void LogsUpdate()
+        {
+            if (iWriter != null)
+            {
+                iWriter.Flush();
+            }
+
+        }
+
         /// <summary>
         /// Broadcast messages to subscribers.
         /// </summary>
         /// <param name="message"></param>
         protected override void WndProc(ref Message aMessage)
         {
-            if (iWriter != null)
-            {
-                iWriter.FlushAccumulator();
-            }
+            LogsUpdate();
 
             if (OnWndProc!=null)
             {
@@ -2562,6 +2576,27 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.CecMonitorOn,
                 Properties.Settings.Default.CecMonitorOff,
                 Properties.Settings.Default.CecReconnectToPowerTv);
+
+                //Setup log level
+                iCecManager.Client.LogLevel = 0;
+
+                if (checkBoxCecLogError.Checked)
+                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Error;
+
+                if (checkBoxCecLogWarning.Checked)
+                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Warning;
+
+                if (checkBoxCecLogNotice.Checked)
+                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Notice;
+
+                if (checkBoxCecLogTraffic.Checked)
+                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Traffic;
+
+                if (checkBoxCecLogDebug.Checked)
+                    iCecManager.Client.LogLevel &= (int)CecLogLevel.Debug;
+
+                iCecManager.Client.FilterOutPollLogs = checkBoxCecLogNoPoll.Checked;
+
             }
         }
 
@@ -2570,6 +2605,14 @@ namespace SharpDisplayManager
             StartIdleClient();
         }
 
+        private void buttonClearLogs_Click(object sender, EventArgs e)
+        {
+            richTextBoxLogs.Clear();
+        }
 
+        private void checkBoxCecLogs_CheckedChanged(object sender, EventArgs e)
+        {
+            ResetCec();
+        }
     }
 }

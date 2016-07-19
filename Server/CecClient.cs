@@ -40,11 +40,46 @@ namespace Cec
     class Client : CecCallbackMethods
     {
         /// <summary>
+        /// Provide direct access to CEC library
+        /// </summary>
+        public LibCecSharp Lib
+        {
+            get
+            {
+                return iLib;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int LogLevel = (int)CecLogLevel.Notice;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool FilterOutPollLogs = true;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private LibCecSharp iLib;
+        /// <summary>
+        /// 
+        /// </summary>
+        private LibCECConfiguration Config;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool iConnected;
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="aDeviceName"></param>
         /// <param name="aHdmiPort"></param>
-        public Client(string aDeviceName, byte aHdmiPort, CecDeviceType aDeviceType = CecDeviceType.PlaybackDevice, CecLogLevel aLogLevel = CecLogLevel.Warning)
+        public Client(string aDeviceName, byte aHdmiPort, CecDeviceType aDeviceType = CecDeviceType.PlaybackDevice)
         {
             Config = new LibCECConfiguration();
             Config.DeviceTypes.Types[0] = aDeviceType;
@@ -52,7 +87,6 @@ namespace Cec
             Config.HDMIPort = aHdmiPort;
             //Config.ClientVersion = LibCECConfiguration.CurrentVersion;
             Config.SetCallbacks(this);
-            LogLevel = (int)aLogLevel;
 
             iLib = new LibCecSharp(Config);
             iLib.InitVideoStandalone();
@@ -148,6 +182,11 @@ namespace Cec
                         break;
                     case CecLogLevel.Debug:
                         strLevel = "DEBUG: ";
+                        if (message.Message.IndexOf("POLL") != -1 && FilterOutPollLogs)
+                        {
+                            //We have an option to prevent spamming with poll debug logs
+                            return 1;
+                        }
                         break;
                     default:
                         break;
@@ -510,33 +549,6 @@ namespace Cec
             }
         }
        
-        /// <summary>
-        /// Provide direct access to CEC library
-        /// </summary>
-        public LibCecSharp Lib
-        {
-            get
-            {
-                return iLib;
-            }
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private int LogLevel;
-        /// <summary>
-        /// 
-        /// </summary>
-        private LibCecSharp iLib;
-        /// <summary>
-        /// 
-        /// </summary>
-        private LibCECConfiguration Config;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private bool iConnected;
     }
 }

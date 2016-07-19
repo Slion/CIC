@@ -11,14 +11,31 @@ namespace SharpDisplayManager
 
         RichTextBox iRichTextBox = null;
         string iAccumulator = "";
+        private char iLastChar='\n';
 
         public RichTextBoxTextWriter(RichTextBox aRichTextBox)
         {
-            iRichTextBox = aRichTextBox;
+            iRichTextBox = aRichTextBox;            
         }
 
         public override void Write(char aChar)
         {
+            if (aChar == '\r')
+            {
+                //Skip
+                return;
+            }
+
+            //Put our time stamp if starting a new line
+            char previousChar = iLastChar;
+            iLastChar = aChar;
+            if (previousChar == '\n')
+            {
+                //Write(DateTime.Now.ToString("yyyy/MM/dd - hh:mm:ss.fff: "));
+                Write(DateTime.Now.ToString("MM/dd hh:mm:ss.fff: "));
+            }
+
+            
             base.Write(aChar);
             if (iRichTextBox.InvokeRequired)
             {
@@ -27,6 +44,7 @@ namespace SharpDisplayManager
                     iAccumulator += aChar;
                 }
                 
+                //Invoke was not working from here
                 //WriteDelegate d = new WriteDelegate(Write);
                 //iRichTextBox.Invoke(d, new object[] { aChar });
             }
@@ -34,7 +52,7 @@ namespace SharpDisplayManager
             {
                 Flush();
                 iRichTextBox.AppendText(aChar.ToString()); // When character data is written, append it to the text box.
-            }            
+            }
         }
 
         public override Encoding Encoding
@@ -42,8 +60,13 @@ namespace SharpDisplayManager
             get { return System.Text.Encoding.UTF8; }
         }
 
-        public void FlushAccumulator()
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Flush()
         {
+            base.Flush();
+
             lock (iAccumulator)
             {
                 if (!string.IsNullOrEmpty(iAccumulator))
@@ -51,7 +74,6 @@ namespace SharpDisplayManager
                     iRichTextBox.AppendText(iAccumulator); // When character data is written, append it to the text box.
                     iAccumulator = "";
                 }
-
             }
 
         }

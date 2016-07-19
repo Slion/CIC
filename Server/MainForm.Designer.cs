@@ -99,6 +99,13 @@
             this.labelStartFileName = new System.Windows.Forms.Label();
             this.buttonSelectFile = new System.Windows.Forms.Button();
             this.tabPageCec = new System.Windows.Forms.TabPage();
+            this.groupBoxCecLogOptions = new System.Windows.Forms.GroupBox();
+            this.checkBoxCecLogNoPoll = new System.Windows.Forms.CheckBox();
+            this.checkBoxCecLogTraffic = new System.Windows.Forms.CheckBox();
+            this.checkBoxCecLogDebug = new System.Windows.Forms.CheckBox();
+            this.checkBoxCecLogNotice = new System.Windows.Forms.CheckBox();
+            this.checkBoxCecLogError = new System.Windows.Forms.CheckBox();
+            this.checkBoxCecLogWarning = new System.Windows.Forms.CheckBox();
             this.checkBoxCecReconnectToPowerTv = new System.Windows.Forms.CheckBox();
             this.checkBoxCecMonitorOn = new System.Windows.Forms.CheckBox();
             this.checkBoxCecMonitorOff = new System.Windows.Forms.CheckBox();
@@ -111,6 +118,7 @@
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.tabPageLogs = new System.Windows.Forms.TabPage();
+            this.buttonClearLogs = new System.Windows.Forms.Button();
             this.richTextBoxLogs = new System.Windows.Forms.RichTextBox();
             this.labelFontWidth = new System.Windows.Forms.Label();
             this.labelFontHeight = new System.Windows.Forms.Label();
@@ -129,6 +137,7 @@
             this.tabPageInput.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).BeginInit();
             this.tabPageCec.SuspendLayout();
+            this.groupBoxCecLogOptions.SuspendLayout();
             this.tabPageApp.SuspendLayout();
             this.tabPageLogs.SuspendLayout();
             this.SuspendLayout();
@@ -217,10 +226,10 @@
             this.toolStripStatusLabelSpring,
             this.toolStripStatusLabelPower,
             this.toolStripStatusLabelFps});
-            this.statusStrip.Location = new System.Drawing.Point(0, 420);
+            this.statusStrip.Location = new System.Drawing.Point(0, 539);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip.Size = new System.Drawing.Size(624, 22);
+            this.statusStrip.Size = new System.Drawing.Size(784, 22);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -233,7 +242,7 @@
             // toolStripStatusLabelSpring
             // 
             this.toolStripStatusLabelSpring.Name = "toolStripStatusLabelSpring";
-            this.toolStripStatusLabelSpring.Size = new System.Drawing.Size(473, 17);
+            this.toolStripStatusLabelSpring.Size = new System.Drawing.Size(633, 17);
             this.toolStripStatusLabelSpring.Spring = true;
             // 
             // toolStripStatusLabelPower
@@ -258,15 +267,16 @@
             this.tabPageClients.Location = new System.Drawing.Point(4, 22);
             this.tabPageClients.Name = "tabPageClients";
             this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageClients.Size = new System.Drawing.Size(592, 242);
+            this.tabPageClients.Size = new System.Drawing.Size(752, 385);
             this.tabPageClients.TabIndex = 2;
             this.tabPageClients.Text = "Clients";
             this.tabPageClients.UseVisualStyleBackColor = true;
             // 
             // iCheckBoxStartIdleClient
             // 
+            this.iCheckBoxStartIdleClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.iCheckBoxStartIdleClient.AutoSize = true;
-            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 217);
+            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 340);
             this.iCheckBoxStartIdleClient.Name = "iCheckBoxStartIdleClient";
             this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(145, 17);
             this.iCheckBoxStartIdleClient.TabIndex = 22;
@@ -286,7 +296,8 @@
             // 
             // buttonCloseClients
             // 
-            this.buttonCloseClients.Location = new System.Drawing.Point(6, 213);
+            this.buttonCloseClients.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonCloseClients.Location = new System.Drawing.Point(6, 336);
             this.buttonCloseClients.Name = "buttonCloseClients";
             this.buttonCloseClients.Size = new System.Drawing.Size(96, 23);
             this.buttonCloseClients.TabIndex = 20;
@@ -311,7 +322,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.iTreeViewClients.Location = new System.Drawing.Point(108, 6);
             this.iTreeViewClients.Name = "iTreeViewClients";
-            this.iTreeViewClients.Size = new System.Drawing.Size(478, 205);
+            this.iTreeViewClients.Size = new System.Drawing.Size(638, 328);
             this.iTreeViewClients.TabIndex = 0;
             this.iTreeViewClients.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewClients_AfterSelect);
             // 
@@ -335,14 +346,14 @@
             this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
             this.tabPageDisplay.Name = "tabPageDisplay";
             this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDisplay.Size = new System.Drawing.Size(592, 242);
+            this.tabPageDisplay.Size = new System.Drawing.Size(752, 385);
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
             // 
             // buttonShowClock
             // 
-            this.buttonShowClock.Location = new System.Drawing.Point(293, 124);
+            this.buttonShowClock.Location = new System.Drawing.Point(6, 122);
             this.buttonShowClock.Name = "buttonShowClock";
             this.buttonShowClock.Size = new System.Drawing.Size(75, 23);
             this.buttonShowClock.TabIndex = 23;
@@ -352,7 +363,7 @@
             // 
             // buttonHideClock
             // 
-            this.buttonHideClock.Location = new System.Drawing.Point(293, 153);
+            this.buttonHideClock.Location = new System.Drawing.Point(6, 151);
             this.buttonHideClock.Name = "buttonHideClock";
             this.buttonHideClock.Size = new System.Drawing.Size(75, 23);
             this.buttonHideClock.TabIndex = 22;
@@ -362,7 +373,7 @@
             // 
             // buttonPowerOff
             // 
-            this.buttonPowerOff.Location = new System.Drawing.Point(293, 211);
+            this.buttonPowerOff.Location = new System.Drawing.Point(6, 209);
             this.buttonPowerOff.Name = "buttonPowerOff";
             this.buttonPowerOff.Size = new System.Drawing.Size(75, 23);
             this.buttonPowerOff.TabIndex = 21;
@@ -372,7 +383,7 @@
             // 
             // buttonPowerOn
             // 
-            this.buttonPowerOn.Location = new System.Drawing.Point(293, 182);
+            this.buttonPowerOn.Location = new System.Drawing.Point(6, 180);
             this.buttonPowerOn.Name = "buttonPowerOn";
             this.buttonPowerOn.Size = new System.Drawing.Size(75, 23);
             this.buttonPowerOn.TabIndex = 20;
@@ -412,7 +423,7 @@
             // buttonSuspend
             // 
             this.buttonSuspend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSuspend.Location = new System.Drawing.Point(6, 184);
+            this.buttonSuspend.Location = new System.Drawing.Point(6, 317);
             this.buttonSuspend.Name = "buttonSuspend";
             this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
             this.buttonSuspend.TabIndex = 16;
@@ -424,7 +435,7 @@
             // 
             this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxConnectOnStartup.AutoSize = true;
-            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 217);
+            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
             this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
             this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
             this.checkBoxConnectOnStartup.TabIndex = 13;
@@ -437,10 +448,10 @@
             this.trackBarBrightness.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarBrightness.BackColor = System.Drawing.SystemColors.Window;
-            this.trackBarBrightness.Location = new System.Drawing.Point(544, 9);
+            this.trackBarBrightness.Location = new System.Drawing.Point(704, 9);
             this.trackBarBrightness.Name = "trackBarBrightness";
             this.trackBarBrightness.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarBrightness.Size = new System.Drawing.Size(45, 225);
+            this.trackBarBrightness.Size = new System.Drawing.Size(45, 358);
             this.trackBarBrightness.TabIndex = 10;
             this.trackBarBrightness.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.toolTip.SetToolTip(this.trackBarBrightness, "Brightness adjustment");
@@ -489,7 +500,7 @@
             // buttonCapture
             // 
             this.buttonCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCapture.Location = new System.Drawing.Point(6, 213);
+            this.buttonCapture.Location = new System.Drawing.Point(6, 346);
             this.buttonCapture.Name = "buttonCapture";
             this.buttonCapture.Size = new System.Drawing.Size(75, 23);
             this.buttonCapture.TabIndex = 5;
@@ -514,7 +525,7 @@
             // 
             this.checkBoxFixedPitchFontOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxFixedPitchFontOnly.AutoSize = true;
-            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(87, 217);
+            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(87, 362);
             this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
             this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
             this.checkBoxFixedPitchFontOnly.TabIndex = 17;
@@ -525,7 +536,7 @@
             // 
             this.checkBoxShowBorders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxShowBorders.AutoSize = true;
-            this.checkBoxShowBorders.Location = new System.Drawing.Point(485, 29);
+            this.checkBoxShowBorders.Location = new System.Drawing.Point(645, 29);
             this.checkBoxShowBorders.Name = "checkBoxShowBorders";
             this.checkBoxShowBorders.Size = new System.Drawing.Size(91, 17);
             this.checkBoxShowBorders.TabIndex = 11;
@@ -536,7 +547,7 @@
             // buttonFont
             // 
             this.buttonFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonFont.Location = new System.Drawing.Point(6, 213);
+            this.buttonFont.Location = new System.Drawing.Point(6, 356);
             this.buttonFont.Name = "buttonFont";
             this.buttonFont.Size = new System.Drawing.Size(75, 23);
             this.buttonFont.TabIndex = 0;
@@ -557,10 +568,10 @@
             this.tabControl.Controls.Add(this.tabPageCec);
             this.tabControl.Controls.Add(this.tabPageApp);
             this.tabControl.Controls.Add(this.tabPageLogs);
-            this.tabControl.Location = new System.Drawing.Point(12, 139);
+            this.tabControl.Location = new System.Drawing.Point(12, 125);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(600, 268);
+            this.tabControl.Size = new System.Drawing.Size(760, 411);
             this.tabControl.TabIndex = 0;
             // 
             // tabPageDesign
@@ -580,15 +591,16 @@
             this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
             this.tabPageDesign.Name = "tabPageDesign";
             this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDesign.Size = new System.Drawing.Size(592, 242);
+            this.tabPageDesign.Size = new System.Drawing.Size(752, 385);
             this.tabPageDesign.TabIndex = 3;
             this.tabPageDesign.Text = "Design";
             this.tabPageDesign.UseVisualStyleBackColor = true;
             // 
             // labelScrollingSpeed
             // 
+            this.labelScrollingSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelScrollingSpeed.AutoSize = true;
-            this.labelScrollingSpeed.Location = new System.Drawing.Point(84, 119);
+            this.labelScrollingSpeed.Location = new System.Drawing.Point(92, 248);
             this.labelScrollingSpeed.Name = "labelScrollingSpeed";
             this.labelScrollingSpeed.Size = new System.Drawing.Size(115, 13);
             this.labelScrollingSpeed.TabIndex = 28;
@@ -596,7 +608,8 @@
             // 
             // maskedTextBoxScrollingSpeed
             // 
-            this.maskedTextBoxScrollingSpeed.Location = new System.Drawing.Point(205, 116);
+            this.maskedTextBoxScrollingSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.maskedTextBoxScrollingSpeed.Location = new System.Drawing.Point(213, 245);
             this.maskedTextBoxScrollingSpeed.Mask = "000";
             this.maskedTextBoxScrollingSpeed.Name = "maskedTextBoxScrollingSpeed";
             this.maskedTextBoxScrollingSpeed.PromptChar = ' ';
@@ -606,8 +619,9 @@
             // 
             // labelScrollLoopSeparator
             // 
+            this.labelScrollLoopSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelScrollLoopSeparator.AutoSize = true;
-            this.labelScrollLoopSeparator.Location = new System.Drawing.Point(90, 145);
+            this.labelScrollLoopSeparator.Location = new System.Drawing.Point(98, 274);
             this.labelScrollLoopSeparator.Name = "labelScrollLoopSeparator";
             this.labelScrollLoopSeparator.Size = new System.Drawing.Size(109, 13);
             this.labelScrollLoopSeparator.TabIndex = 26;
@@ -615,7 +629,8 @@
             // 
             // textBoxScrollLoopSeparator
             // 
-            this.textBoxScrollLoopSeparator.Location = new System.Drawing.Point(205, 142);
+            this.textBoxScrollLoopSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBoxScrollLoopSeparator.Location = new System.Drawing.Point(213, 271);
             this.textBoxScrollLoopSeparator.Name = "textBoxScrollLoopSeparator";
             this.textBoxScrollLoopSeparator.Size = new System.Drawing.Size(74, 20);
             this.textBoxScrollLoopSeparator.TabIndex = 25;
@@ -623,8 +638,9 @@
             // 
             // labelMinFontSize
             // 
+            this.labelMinFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelMinFontSize.AutoSize = true;
-            this.labelMinFontSize.Location = new System.Drawing.Point(80, 194);
+            this.labelMinFontSize.Location = new System.Drawing.Point(88, 323);
             this.labelMinFontSize.Name = "labelMinFontSize";
             this.labelMinFontSize.Size = new System.Drawing.Size(119, 13);
             this.labelMinFontSize.TabIndex = 24;
@@ -632,7 +648,8 @@
             // 
             // maskedTextBoxMinFontSize
             // 
-            this.maskedTextBoxMinFontSize.Location = new System.Drawing.Point(205, 191);
+            this.maskedTextBoxMinFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.maskedTextBoxMinFontSize.Location = new System.Drawing.Point(213, 320);
             this.maskedTextBoxMinFontSize.Mask = "000";
             this.maskedTextBoxMinFontSize.Name = "maskedTextBoxMinFontSize";
             this.maskedTextBoxMinFontSize.PromptChar = ' ';
@@ -644,7 +661,7 @@
             // 
             this.checkBoxScaleToFit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxScaleToFit.AutoSize = true;
-            this.checkBoxScaleToFit.Location = new System.Drawing.Point(87, 168);
+            this.checkBoxScaleToFit.Location = new System.Drawing.Point(86, 297);
             this.checkBoxScaleToFit.Name = "checkBoxScaleToFit";
             this.checkBoxScaleToFit.Size = new System.Drawing.Size(201, 17);
             this.checkBoxScaleToFit.TabIndex = 22;
@@ -656,7 +673,7 @@
             // 
             this.checkBoxInverseColors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxInverseColors.AutoSize = true;
-            this.checkBoxInverseColors.Location = new System.Drawing.Point(485, 52);
+            this.checkBoxInverseColors.Location = new System.Drawing.Point(645, 52);
             this.checkBoxInverseColors.Name = "checkBoxInverseColors";
             this.checkBoxInverseColors.Size = new System.Drawing.Size(92, 17);
             this.checkBoxInverseColors.TabIndex = 21;
@@ -668,7 +685,7 @@
             // 
             this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxReverseScreen.AutoSize = true;
-            this.checkBoxReverseScreen.Location = new System.Drawing.Point(485, 6);
+            this.checkBoxReverseScreen.Location = new System.Drawing.Point(645, 6);
             this.checkBoxReverseScreen.Name = "checkBoxReverseScreen";
             this.checkBoxReverseScreen.Size = new System.Drawing.Size(101, 17);
             this.checkBoxReverseScreen.TabIndex = 14;
@@ -685,7 +702,7 @@
             this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
             this.tabPageAudio.Name = "tabPageAudio";
             this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAudio.Size = new System.Drawing.Size(592, 242);
+            this.tabPageAudio.Size = new System.Drawing.Size(752, 385);
             this.tabPageAudio.TabIndex = 5;
             this.tabPageAudio.Text = "Audio";
             this.tabPageAudio.UseVisualStyleBackColor = true;
@@ -704,7 +721,7 @@
             // 
             this.checkBoxShowVolumeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxShowVolumeLabel.AutoSize = true;
-            this.checkBoxShowVolumeLabel.Location = new System.Drawing.Point(3, 196);
+            this.checkBoxShowVolumeLabel.Location = new System.Drawing.Point(3, 329);
             this.checkBoxShowVolumeLabel.Name = "checkBoxShowVolumeLabel";
             this.checkBoxShowVolumeLabel.Size = new System.Drawing.Size(115, 17);
             this.checkBoxShowVolumeLabel.TabIndex = 18;
@@ -716,7 +733,7 @@
             // 
             this.checkBoxMute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxMute.AutoSize = true;
-            this.checkBoxMute.Location = new System.Drawing.Point(3, 219);
+            this.checkBoxMute.Location = new System.Drawing.Point(3, 352);
             this.checkBoxMute.Name = "checkBoxMute";
             this.checkBoxMute.Size = new System.Drawing.Size(50, 17);
             this.checkBoxMute.TabIndex = 17;
@@ -726,12 +743,14 @@
             // 
             // trackBarMasterVolume
             // 
+            this.trackBarMasterVolume.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarMasterVolume.BackColor = System.Drawing.SystemColors.Window;
-            this.trackBarMasterVolume.Location = new System.Drawing.Point(541, 6);
+            this.trackBarMasterVolume.Location = new System.Drawing.Point(701, 6);
             this.trackBarMasterVolume.Maximum = 100;
             this.trackBarMasterVolume.Name = "trackBarMasterVolume";
             this.trackBarMasterVolume.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarMasterVolume.Size = new System.Drawing.Size(45, 230);
+            this.trackBarMasterVolume.Size = new System.Drawing.Size(45, 373);
             this.trackBarMasterVolume.TabIndex = 0;
             this.trackBarMasterVolume.TickFrequency = 10;
             this.trackBarMasterVolume.TickStyle = System.Windows.Forms.TickStyle.Both;
@@ -748,7 +767,7 @@
             this.tabPageInput.Location = new System.Drawing.Point(4, 22);
             this.tabPageInput.Name = "tabPageInput";
             this.tabPageInput.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInput.Size = new System.Drawing.Size(592, 242);
+            this.tabPageInput.Size = new System.Drawing.Size(752, 385);
             this.tabPageInput.TabIndex = 6;
             this.tabPageInput.Text = "Input";
             this.tabPageInput.UseVisualStyleBackColor = true;
@@ -803,6 +822,7 @@
             // 
             // tabPageCec
             // 
+            this.tabPageCec.Controls.Add(this.groupBoxCecLogOptions);
             this.tabPageCec.Controls.Add(this.checkBoxCecReconnectToPowerTv);
             this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOn);
             this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOff);
@@ -812,14 +832,103 @@
             this.tabPageCec.Location = new System.Drawing.Point(4, 22);
             this.tabPageCec.Name = "tabPageCec";
             this.tabPageCec.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCec.Size = new System.Drawing.Size(592, 242);
+            this.tabPageCec.Size = new System.Drawing.Size(752, 385);
             this.tabPageCec.TabIndex = 7;
             this.tabPageCec.Text = "CEC";
             this.tabPageCec.UseVisualStyleBackColor = true;
             // 
+            // groupBoxCecLogOptions
+            // 
+            this.groupBoxCecLogOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogNoPoll);
+            this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogTraffic);
+            this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogDebug);
+            this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogNotice);
+            this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogError);
+            this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogWarning);
+            this.groupBoxCecLogOptions.Location = new System.Drawing.Point(6, 239);
+            this.groupBoxCecLogOptions.Name = "groupBoxCecLogOptions";
+            this.groupBoxCecLogOptions.Size = new System.Drawing.Size(165, 140);
+            this.groupBoxCecLogOptions.TabIndex = 25;
+            this.groupBoxCecLogOptions.TabStop = false;
+            this.groupBoxCecLogOptions.Text = "Log options";
+            // 
+            // checkBoxCecLogNoPoll
+            // 
+            this.checkBoxCecLogNoPoll.AutoSize = true;
+            this.checkBoxCecLogNoPoll.Checked = true;
+            this.checkBoxCecLogNoPoll.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCecLogNoPoll.Location = new System.Drawing.Point(76, 24);
+            this.checkBoxCecLogNoPoll.Name = "checkBoxCecLogNoPoll";
+            this.checkBoxCecLogNoPoll.Size = new System.Drawing.Size(59, 17);
+            this.checkBoxCecLogNoPoll.TabIndex = 30;
+            this.checkBoxCecLogNoPoll.Text = "No poll";
+            this.checkBoxCecLogNoPoll.UseVisualStyleBackColor = true;
+            this.checkBoxCecLogNoPoll.CheckedChanged += new System.EventHandler(this.checkBoxCecLogs_CheckedChanged);
+            // 
+            // checkBoxCecLogTraffic
+            // 
+            this.checkBoxCecLogTraffic.AutoSize = true;
+            this.checkBoxCecLogTraffic.Location = new System.Drawing.Point(6, 93);
+            this.checkBoxCecLogTraffic.Name = "checkBoxCecLogTraffic";
+            this.checkBoxCecLogTraffic.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxCecLogTraffic.TabIndex = 29;
+            this.checkBoxCecLogTraffic.Text = "Traffic";
+            this.checkBoxCecLogTraffic.UseVisualStyleBackColor = true;
+            this.checkBoxCecLogTraffic.CheckedChanged += new System.EventHandler(this.checkBoxCecLogs_CheckedChanged);
+            // 
+            // checkBoxCecLogDebug
+            // 
+            this.checkBoxCecLogDebug.AutoSize = true;
+            this.checkBoxCecLogDebug.Location = new System.Drawing.Point(6, 116);
+            this.checkBoxCecLogDebug.Name = "checkBoxCecLogDebug";
+            this.checkBoxCecLogDebug.Size = new System.Drawing.Size(58, 17);
+            this.checkBoxCecLogDebug.TabIndex = 28;
+            this.checkBoxCecLogDebug.Text = "Debug";
+            this.checkBoxCecLogDebug.UseVisualStyleBackColor = true;
+            this.checkBoxCecLogDebug.CheckedChanged += new System.EventHandler(this.checkBoxCecLogs_CheckedChanged);
+            // 
+            // checkBoxCecLogNotice
+            // 
+            this.checkBoxCecLogNotice.AutoSize = true;
+            this.checkBoxCecLogNotice.Checked = true;
+            this.checkBoxCecLogNotice.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCecLogNotice.Location = new System.Drawing.Point(6, 70);
+            this.checkBoxCecLogNotice.Name = "checkBoxCecLogNotice";
+            this.checkBoxCecLogNotice.Size = new System.Drawing.Size(57, 17);
+            this.checkBoxCecLogNotice.TabIndex = 27;
+            this.checkBoxCecLogNotice.Text = "Notice";
+            this.checkBoxCecLogNotice.UseVisualStyleBackColor = true;
+            this.checkBoxCecLogNotice.CheckedChanged += new System.EventHandler(this.checkBoxCecLogs_CheckedChanged);
+            // 
+            // checkBoxCecLogError
+            // 
+            this.checkBoxCecLogError.AutoSize = true;
+            this.checkBoxCecLogError.Checked = true;
+            this.checkBoxCecLogError.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCecLogError.Location = new System.Drawing.Point(6, 24);
+            this.checkBoxCecLogError.Name = "checkBoxCecLogError";
+            this.checkBoxCecLogError.Size = new System.Drawing.Size(48, 17);
+            this.checkBoxCecLogError.TabIndex = 26;
+            this.checkBoxCecLogError.Text = "Error";
+            this.checkBoxCecLogError.UseVisualStyleBackColor = true;
+            this.checkBoxCecLogError.CheckedChanged += new System.EventHandler(this.checkBoxCecLogs_CheckedChanged);
+            // 
+            // checkBoxCecLogWarning
+            // 
+            this.checkBoxCecLogWarning.AutoSize = true;
+            this.checkBoxCecLogWarning.Checked = true;
+            this.checkBoxCecLogWarning.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCecLogWarning.Location = new System.Drawing.Point(6, 47);
+            this.checkBoxCecLogWarning.Name = "checkBoxCecLogWarning";
+            this.checkBoxCecLogWarning.Size = new System.Drawing.Size(66, 17);
+            this.checkBoxCecLogWarning.TabIndex = 25;
+            this.checkBoxCecLogWarning.Text = "Warning";
+            this.checkBoxCecLogWarning.UseVisualStyleBackColor = true;
+            this.checkBoxCecLogWarning.CheckedChanged += new System.EventHandler(this.checkBoxCecLogs_CheckedChanged);
+            // 
             // checkBoxCecReconnectToPowerTv
             // 
-            this.checkBoxCecReconnectToPowerTv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCecReconnectToPowerTv.AutoSize = true;
             this.checkBoxCecReconnectToPowerTv.Location = new System.Drawing.Point(6, 115);
             this.checkBoxCecReconnectToPowerTv.Name = "checkBoxCecReconnectToPowerTv";
@@ -831,7 +940,6 @@
             // 
             // checkBoxCecMonitorOn
             // 
-            this.checkBoxCecMonitorOn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCecMonitorOn.AutoSize = true;
             this.checkBoxCecMonitorOn.Location = new System.Drawing.Point(6, 92);
             this.checkBoxCecMonitorOn.Name = "checkBoxCecMonitorOn";
@@ -843,7 +951,6 @@
             // 
             // checkBoxCecMonitorOff
             // 
-            this.checkBoxCecMonitorOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCecMonitorOff.AutoSize = true;
             this.checkBoxCecMonitorOff.Location = new System.Drawing.Point(6, 69);
             this.checkBoxCecMonitorOff.Name = "checkBoxCecMonitorOff";
@@ -855,7 +962,6 @@
             // 
             // checkBoxCecEnabled
             // 
-            this.checkBoxCecEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxCecEnabled.AutoSize = true;
             this.checkBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
             this.checkBoxCecEnabled.Name = "checkBoxCecEnabled";
@@ -903,7 +1009,7 @@
             this.tabPageApp.Location = new System.Drawing.Point(4, 22);
             this.tabPageApp.Name = "tabPageApp";
             this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageApp.Size = new System.Drawing.Size(592, 242);
+            this.tabPageApp.Size = new System.Drawing.Size(752, 385);
             this.tabPageApp.TabIndex = 4;
             this.tabPageApp.Text = "Application";
             this.tabPageApp.UseVisualStyleBackColor = true;
@@ -912,7 +1018,7 @@
             // 
             this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxStartMinimized.AutoSize = true;
-            this.checkBoxStartMinimized.Location = new System.Drawing.Point(8, 144);
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 285);
             this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
             this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
             this.checkBoxStartMinimized.TabIndex = 16;
@@ -924,7 +1030,7 @@
             // 
             this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxMinimizeToTray.AutoSize = true;
-            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(8, 167);
+            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(6, 308);
             this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
             this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
             this.checkBoxMinimizeToTray.TabIndex = 15;
@@ -936,7 +1042,7 @@
             // 
             this.checkBoxAutoStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxAutoStart.AutoSize = true;
-            this.checkBoxAutoStart.Location = new System.Drawing.Point(8, 190);
+            this.checkBoxAutoStart.Location = new System.Drawing.Point(6, 331);
             this.checkBoxAutoStart.Name = "checkBoxAutoStart";
             this.checkBoxAutoStart.Size = new System.Drawing.Size(143, 17);
             this.checkBoxAutoStart.TabIndex = 14;
@@ -946,7 +1052,8 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(6, 213);
+            this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonUpdate.Location = new System.Drawing.Point(6, 354);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdate.TabIndex = 0;
@@ -956,14 +1063,25 @@
             // 
             // tabPageLogs
             // 
+            this.tabPageLogs.Controls.Add(this.buttonClearLogs);
             this.tabPageLogs.Controls.Add(this.richTextBoxLogs);
             this.tabPageLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageLogs.Name = "tabPageLogs";
             this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLogs.Size = new System.Drawing.Size(592, 242);
+            this.tabPageLogs.Size = new System.Drawing.Size(752, 385);
             this.tabPageLogs.TabIndex = 8;
             this.tabPageLogs.Text = "Logs";
             this.tabPageLogs.UseVisualStyleBackColor = true;
+            // 
+            // buttonClearLogs
+            // 
+            this.buttonClearLogs.Location = new System.Drawing.Point(671, 6);
+            this.buttonClearLogs.Name = "buttonClearLogs";
+            this.buttonClearLogs.Size = new System.Drawing.Size(75, 23);
+            this.buttonClearLogs.TabIndex = 2;
+            this.buttonClearLogs.Text = "Clear";
+            this.buttonClearLogs.UseVisualStyleBackColor = true;
+            this.buttonClearLogs.Click += new System.EventHandler(this.buttonClearLogs_Click);
             // 
             // richTextBoxLogs
             // 
@@ -976,7 +1094,7 @@
             this.richTextBoxLogs.Location = new System.Drawing.Point(6, 6);
             this.richTextBoxLogs.Name = "richTextBoxLogs";
             this.richTextBoxLogs.ReadOnly = true;
-            this.richTextBoxLogs.Size = new System.Drawing.Size(580, 230);
+            this.richTextBoxLogs.Size = new System.Drawing.Size(740, 373);
             this.richTextBoxLogs.TabIndex = 1;
             this.richTextBoxLogs.Text = "";
             this.richTextBoxLogs.WordWrap = false;
@@ -1007,7 +1125,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 442);
+            this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.labelFontHeight);
             this.Controls.Add(this.labelFontWidth);
             this.Controls.Add(this.labelWarning);
@@ -1015,7 +1133,7 @@
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panelDisplay);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(640, 480);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "MainForm";
             this.Text = "Sharp Display Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -1043,6 +1161,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).EndInit();
             this.tabPageCec.ResumeLayout(false);
             this.tabPageCec.PerformLayout();
+            this.groupBoxCecLogOptions.ResumeLayout(false);
+            this.groupBoxCecLogOptions.PerformLayout();
             this.tabPageApp.ResumeLayout(false);
             this.tabPageApp.PerformLayout();
             this.tabPageLogs.ResumeLayout(false);
@@ -1130,6 +1250,14 @@
         private System.Windows.Forms.TabPage tabPageLogs;
         private System.Windows.Forms.RichTextBox richTextBoxLogs;
         private System.Windows.Forms.CheckBox checkBoxCecReconnectToPowerTv;
+        private System.Windows.Forms.Button buttonClearLogs;
+        private System.Windows.Forms.GroupBox groupBoxCecLogOptions;
+        private System.Windows.Forms.CheckBox checkBoxCecLogWarning;
+        private System.Windows.Forms.CheckBox checkBoxCecLogError;
+        private System.Windows.Forms.CheckBox checkBoxCecLogDebug;
+        private System.Windows.Forms.CheckBox checkBoxCecLogNotice;
+        private System.Windows.Forms.CheckBox checkBoxCecLogTraffic;
+        private System.Windows.Forms.CheckBox checkBoxCecLogNoPoll;
     }
 }
 
