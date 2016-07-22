@@ -46,6 +46,7 @@ using SharpDisplayClient;
 using SharpDisplay;
 using MiniDisplayInterop;
 using SharpLib.Display;
+using Slions.Ear;
 
 namespace SharpDisplayManager
 {
@@ -69,6 +70,7 @@ namespace SharpDisplayManager
 	[System.ComponentModel.DesignerCategory("Form")]
 	public partial class MainForm : MainFormHid, IMMNotificationClient
     {
+        private Manager iManager = new Manager();
         DateTime LastTickTime;
         Display iDisplay;
         System.Drawing.Bitmap iBmp;
