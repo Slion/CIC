@@ -31,8 +31,8 @@ namespace SharpDisplayManager
             iLastChar = aChar;
             if (previousChar == '\n')
             {
-                //Write(DateTime.Now.ToString("yyyy/MM/dd - hh:mm:ss.fff: "));
-                Write(DateTime.Now.ToString("MM/dd hh:mm:ss.fff: "));
+                //Write(DateTime.Now.ToString("yyyy/MM/dd - HH:mm:ss.fff: "));
+                Write(DateTime.Now.ToString("MM/dd HH:mm:ss.fff: "));
             }
 
             
