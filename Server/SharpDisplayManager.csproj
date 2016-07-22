@@ -188,6 +188,14 @@
     <Compile Include="RichTextBoxTextWriter.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Slions\Ear\Action.cs" />
+    <Compile Include="Slions\Ear\ActionCallback.cs" />
+    <Compile Include="Slions\Ear\ActionSleep.cs" />
+    <Compile Include="Slions\Ear\ActionType.cs" />
+    <Compile Include="Slions\Ear\Event.cs" />
+    <Compile Include="Slions\Ear\EventMonitorPowerOff.cs" />
+    <Compile Include="Slions\Ear\EventMonitorPowerOn.cs" />
+    <Compile Include="Slions\Ear\Manager.cs" />
     <Compile Include="StartupManager.cs" />
     <Compile Include="TaskScheduler.cs" />
     <Compile Include="Win32API.cs" />
@@ -300,6 +308,7 @@
     </Content>
     <EmbeddedResource Include="Resources\record.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets" Condition="Exists('..\packages\LibMiniDisplay.1.1.8\build\LibMiniDisplay.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
