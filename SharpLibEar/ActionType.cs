@@ -4,10 +4,10 @@
 using System.Runtime.Serialization;
 using System.Threading;
 
-namespace Slions.Ear
+namespace SharpLib.Ear
 {
     [DataContract]
-    abstract class ActionType
+    public abstract class ActionType
     {
         [DataMember]
         public string Name { get; protected set;  }

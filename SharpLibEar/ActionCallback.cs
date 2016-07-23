@@ -3,10 +3,10 @@
 using System.Runtime.Serialization;
 
 
-namespace Slions.Ear
+namespace SharpLib.Ear
 {
     [DataContract]
-    abstract class ActionCallback : Action
+    public abstract class ActionCallback : Action
     {
         public delegate void Delegate();
 

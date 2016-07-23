@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Slions.Ear
+namespace SharpLib.Ear
 {
     [DataContract]
-    abstract class MEvent
+    public abstract class MEvent
     {
         [DataMember]
         public string Name { get; protected set; }
@@ -20,19 +20,19 @@ namespace Slions.Ear
     };
 
     [DataContract]
-    abstract class Event : MEvent
+    public abstract class Event : MEvent
     {
-        List<Action> iActions;
+        public List<Action> Actions;
 
         protected Event()
         {
-            iActions = new List<Action>();
+           Actions = new List<Action>();
         }
 
         public override void Trigger()
         {
             Console.WriteLine("Event '" + Name + "' triggered.");
-            foreach (Action action in iActions)
+            foreach (Action action in Actions)
             {
                 action.Execute();
             }

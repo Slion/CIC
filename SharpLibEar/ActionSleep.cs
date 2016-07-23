@@ -4,16 +4,15 @@
 using System.Runtime.Serialization;
 using System.Threading;
 
-namespace Slions.Ear
+
+namespace SharpLib.Ear
 {
     
 
     [DataContract]
-    class ActionSleep : Action
+    [AttributeAction(Id = "Thread.Sleep", Name = "Sleep", Description = "Have the current thread sleep for the specified amount of milliseconds.")]
+    public class ActionSleep : Action
     {
-        static readonly string Name = "Sleep";
-        static readonly string Description = "Have the current thread sleep for the specified amount of milliseconds.";
-
         private readonly int iMillisecondsTimeout;
 
         public ActionSleep()
@@ -31,6 +30,7 @@ namespace Slions.Ear
         {
             Thread.Sleep(iMillisecondsTimeout);
         }
+
     }
 
 
