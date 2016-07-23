@@ -157,6 +157,12 @@
     <Compile Include="CecClient.cs" />
     <Compile Include="ConsumerElectronicControl.cs" />
     <Compile Include="ClientData.cs" />
+    <Compile Include="FormEditAction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEditAction.Designer.cs">
+      <DependentUpon>FormEditAction.cs</DependentUpon>
+    </Compile>
     <Compile Include="FxControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,6 +199,9 @@
     <Compile Include="Win32API.cs" />
     <Compile Include="WindowsHook.cs" />
     <Compile Include="WndProcRetHook.cs" />
+    <EmbeddedResource Include="FormEditAction.resx">
+      <DependentUpon>FormEditAction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FxControl.resx">
       <DependentUpon>FxControl.cs</DependentUpon>
     </EmbeddedResource>

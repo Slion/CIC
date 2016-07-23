@@ -11,7 +11,7 @@ namespace SharpLib.Ear
         public EventMonitorPowerOn()
         {
             Name = "Monitor Power On";
-            Description = "";
+            Description = "Windows is powering on your monitor.";
         }
 
     }

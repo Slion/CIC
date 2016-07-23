@@ -12,6 +12,12 @@ namespace SharpLib.Ear
     {
         public abstract void Execute();
 
+        public string Name {
+            //Get the name of this object action attribute
+            get { return Utils.Reflection.GetAttribute<AttributeAction>(GetType()).Name; }
+            private set { }
+        }
+
         public int CompareTo(object obj)
         {
             //Sort by action name
