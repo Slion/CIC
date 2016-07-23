@@ -3,10 +3,10 @@
 
 using System.Runtime.Serialization;
 
-namespace Slions.Ear
+namespace SharpLib.Ear
 {
     [DataContract]
-    class EventMonitorPowerOff : Event
+    public class EventMonitorPowerOff : Event
     {
         public EventMonitorPowerOff()
         {

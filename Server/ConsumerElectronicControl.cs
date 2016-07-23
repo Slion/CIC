@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
 using CecSharp;
+using SharpLib.Ear;
 
 namespace SharpDisplayManager
 {
@@ -92,12 +93,14 @@ namespace SharpDisplayManager
 
         private void OnMonitorPowerOn()
         {
+            EventActionManager.Current.GetEvent<EventMonitorPowerOn>().Trigger();
+
             Console.WriteLine("OnMonitorPowerOn");
 
             if (iReconnectToPowerTv)
             {
                 ConnectCecClient();
-            }
+            }            
 
             //Turn on the TV
             //iCecClient.Lib.PowerOnDevices(CecLogicalAddress.Tv);
@@ -109,6 +112,8 @@ namespace SharpDisplayManager
 
         private void OnMonitorPowerOff()
         {
+            EventActionManager.Current.GetEvent<EventMonitorPowerOff>().Trigger();
+
             Console.WriteLine("OnMonitorPowerOff");
 
             if (iReconnectToPowerTv)

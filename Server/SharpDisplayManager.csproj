@@ -188,14 +188,6 @@
     <Compile Include="RichTextBoxTextWriter.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Slions\Ear\Action.cs" />
-    <Compile Include="Slions\Ear\ActionCallback.cs" />
-    <Compile Include="Slions\Ear\ActionSleep.cs" />
-    <Compile Include="Slions\Ear\ActionType.cs" />
-    <Compile Include="Slions\Ear\Event.cs" />
-    <Compile Include="Slions\Ear\EventMonitorPowerOff.cs" />
-    <Compile Include="Slions\Ear\EventMonitorPowerOn.cs" />
-    <Compile Include="Slions\Ear\Manager.cs" />
     <Compile Include="StartupManager.cs" />
     <Compile Include="TaskScheduler.cs" />
     <Compile Include="Win32API.cs" />
@@ -247,6 +239,14 @@
     <ProjectReference Include="..\PowerManager\PowerManager.vcxproj">
       <Project>{c174f23d-3055-49bc-b6b0-563011af624d}</Project>
       <Name>PowerManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpLibEar\SharpLibEar.csproj">
+      <Project>{84a9ed37-e6ea-4cbd-b995-b713f46eaab0}</Project>
+      <Name>SharpLibEar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpLibUtils\SharpLibUtils.csproj">
+      <Project>{ae897704-461d-4018-8336-2517988bf7ad}</Project>
+      <Name>SharpLibUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

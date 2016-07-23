@@ -46,7 +46,7 @@ using SharpDisplayClient;
 using SharpDisplay;
 using MiniDisplayInterop;
 using SharpLib.Display;
-using Slions.Ear;
+using SharpLib.Ear;
 
 namespace SharpDisplayManager
 {
@@ -70,7 +70,7 @@ namespace SharpDisplayManager
 	[System.ComponentModel.DesignerCategory("Form")]
 	public partial class MainForm : MainFormHid, IMMNotificationClient
     {
-        private Manager iManager = new Manager();
+        public EventActionManager iManager = new EventActionManager();        
         DateTime LastTickTime;
         Display iDisplay;
         System.Drawing.Bitmap iBmp;
@@ -131,7 +131,8 @@ namespace SharpDisplayManager
 
         public MainForm()
         {
-			iSkipFrameRendering = false;
+            EventActionManager.Current = iManager;
+            iSkipFrameRendering = false;
 			iClosing = false;
             iCurrentClientSessionId = "";
             iCurrentClientData = null;
