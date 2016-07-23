@@ -112,6 +112,10 @@
             this.checkBoxCecEnabled = new System.Windows.Forms.CheckBox();
             this.labelHdmiPort = new System.Windows.Forms.Label();
             this.comboBoxHdmiPort = new System.Windows.Forms.ComboBox();
+            this.tabPageEvent = new System.Windows.Forms.TabPage();
+            this.buttonDeleteAction = new System.Windows.Forms.Button();
+            this.buttonAddAction = new System.Windows.Forms.Button();
+            this.iTreeViewEvents = new System.Windows.Forms.TreeView();
             this.tabPageApp = new System.Windows.Forms.TabPage();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
@@ -138,6 +142,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).BeginInit();
             this.tabPageCec.SuspendLayout();
             this.groupBoxCecLogOptions.SuspendLayout();
+            this.tabPageEvent.SuspendLayout();
             this.tabPageApp.SuspendLayout();
             this.tabPageLogs.SuspendLayout();
             this.SuspendLayout();
@@ -566,6 +571,7 @@
             this.tabControl.Controls.Add(this.tabPageAudio);
             this.tabControl.Controls.Add(this.tabPageInput);
             this.tabControl.Controls.Add(this.tabPageCec);
+            this.tabControl.Controls.Add(this.tabPageEvent);
             this.tabControl.Controls.Add(this.tabPageApp);
             this.tabControl.Controls.Add(this.tabPageLogs);
             this.tabControl.Location = new System.Drawing.Point(12, 125);
@@ -1000,6 +1006,48 @@
             this.comboBoxHdmiPort.TabIndex = 19;
             this.comboBoxHdmiPort.SelectedIndexChanged += new System.EventHandler(this.comboBoxHdmiPort_SelectedIndexChanged);
             // 
+            // tabPageEvent
+            // 
+            this.tabPageEvent.Controls.Add(this.buttonDeleteAction);
+            this.tabPageEvent.Controls.Add(this.buttonAddAction);
+            this.tabPageEvent.Controls.Add(this.iTreeViewEvents);
+            this.tabPageEvent.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEvent.Name = "tabPageEvent";
+            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageEvent.Size = new System.Drawing.Size(752, 385);
+            this.tabPageEvent.TabIndex = 9;
+            this.tabPageEvent.Text = "Events";
+            this.tabPageEvent.UseVisualStyleBackColor = true;
+            // 
+            // buttonDeleteAction
+            // 
+            this.buttonDeleteAction.Location = new System.Drawing.Point(6, 35);
+            this.buttonDeleteAction.Name = "buttonDeleteAction";
+            this.buttonDeleteAction.Size = new System.Drawing.Size(96, 23);
+            this.buttonDeleteAction.TabIndex = 21;
+            this.buttonDeleteAction.Text = "Delete Action";
+            this.buttonDeleteAction.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddAction
+            // 
+            this.buttonAddAction.Location = new System.Drawing.Point(6, 6);
+            this.buttonAddAction.Name = "buttonAddAction";
+            this.buttonAddAction.Size = new System.Drawing.Size(96, 23);
+            this.buttonAddAction.TabIndex = 20;
+            this.buttonAddAction.Text = "Add Action";
+            this.buttonAddAction.UseVisualStyleBackColor = true;
+            this.buttonAddAction.Click += new System.EventHandler(this.buttonAddAction_Click);
+            // 
+            // iTreeViewEvents
+            // 
+            this.iTreeViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTreeViewEvents.Location = new System.Drawing.Point(111, 3);
+            this.iTreeViewEvents.Name = "iTreeViewEvents";
+            this.iTreeViewEvents.Size = new System.Drawing.Size(638, 376);
+            this.iTreeViewEvents.TabIndex = 1;
+            // 
             // tabPageApp
             // 
             this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
@@ -1163,6 +1211,7 @@
             this.tabPageCec.PerformLayout();
             this.groupBoxCecLogOptions.ResumeLayout(false);
             this.groupBoxCecLogOptions.PerformLayout();
+            this.tabPageEvent.ResumeLayout(false);
             this.tabPageApp.ResumeLayout(false);
             this.tabPageApp.PerformLayout();
             this.tabPageLogs.ResumeLayout(false);
@@ -1258,6 +1307,10 @@
         private System.Windows.Forms.CheckBox checkBoxCecLogNotice;
         private System.Windows.Forms.CheckBox checkBoxCecLogTraffic;
         private System.Windows.Forms.CheckBox checkBoxCecLogNoPoll;
+        private System.Windows.Forms.TabPage tabPageEvent;
+        private System.Windows.Forms.TreeView iTreeViewEvents;
+        private System.Windows.Forms.Button buttonDeleteAction;
+        private System.Windows.Forms.Button buttonAddAction;
     }
 }
 

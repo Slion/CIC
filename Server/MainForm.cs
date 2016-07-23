@@ -210,6 +210,8 @@ namespace SharpDisplayManager
             OnWndProc += iCecManager.OnWndProc;
             ResetCec();
 
+            //Setup Events
+            SetupEvents();
 
             //Setup notification icon
             SetupTrayIcon();
@@ -284,6 +286,30 @@ namespace SharpDisplayManager
 #endif
 
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void SetupEvents()
+        {
+            //Reset our tree
+            iTreeViewEvents.Nodes.Clear();
+            //Populate registered events
+            foreach (string key in EventActionManager.Current.Events.Keys)
+            {
+                Event e = EventActionManager.Current.Events[key];
+                TreeNode eventNode = iTreeViewEvents.Nodes.Add(key,e.Name);
+                eventNode.Tag = e;
+                eventNode.Nodes.Add(key + ".Description", e.Description);
+                TreeNode actionsNodes = eventNode.Nodes.Add(key + ".Actions", "Actions");
+
+                foreach (SharpLib.Ear.Action a in e.Actions)
+                {
+                    actionsNodes.Nodes.Add(a.Name);
+                }
+            }
+
+        }
 
 		/// <summary>
 		/// Called when our display is closed.
@@ -2624,6 +2650,24 @@ namespace SharpDisplayManager
         private void checkBoxCecLogs_CheckedChanged(object sender, EventArgs e)
         {
             SetupCecLogLevel();
+        }
+
+        private void buttonAddAction_Click(object sender, EventArgs e)
+        {
+            Event ear = (Event)iTreeViewEvents.SelectedNode.Tag;
+            if (ear == null)
+            {
+                //Must select event node
+                return;
+            }
+
+            FormEditAction ea = new FormEditAction();
+            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            if (res == DialogResult.OK)
+            {
+                ear.Actions.Add(ea.Action);
+                SetupEvents();
+            }
         }
     }
 }

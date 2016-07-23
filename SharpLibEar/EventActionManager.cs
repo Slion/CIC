@@ -14,7 +14,7 @@ namespace SharpLib.Ear
     {
         public static EventActionManager Current = null;
         public IDictionary<string, Type> ActionTypes;
-        private IDictionary<string, Event> Events;
+        public readonly IDictionary<string, Event> Events;
 
         public EventActionManager()
         {
