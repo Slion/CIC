@@ -40,6 +40,11 @@ namespace Cec
     class Client : CecCallbackMethods
     {
         /// <summary>
+        /// Enable public static access
+        /// </summary>
+        public static Client Static;
+
+        /// <summary>
         /// Provide direct access to CEC library
         /// </summary>
         public LibCecSharp Lib
@@ -91,8 +96,18 @@ namespace Cec
             iLib = new LibCecSharp(Config);
             iLib.InitVideoStandalone();
 
+            if (Static != null)
+            {
+                Console.WriteLine("WARNING: CEC client static already exists");
+            }
+            else
+            {
+                Static = this;
+            }
+            
+
             //Console.WriteLine("CEC Parser created - libCEC version " + Lib.VersionToString(Config.ServerVersion));
-            Console.WriteLine("CEC Parser created - libCEC version " + Config.ServerVersion);
+            Console.WriteLine("INFO: CEC Parser created - libCEC version " + Config.ServerVersion);
         }
 
 
@@ -114,7 +129,7 @@ namespace Cec
 
             Close();
             //Try reconnect
-            Connect(1000);
+            Open(1000);
             return 1;
         }
 
@@ -203,13 +218,13 @@ namespace Cec
         /// </summary>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public bool Connect(int timeout)
+        public bool Open(int timeout)
         {
             Close();         
             CecAdapter[] adapters = iLib.FindAdapters(string.Empty);
             if (adapters.Length > 0)
             {
-                Connect(adapters[0].ComPort, timeout);                
+                Open(adapters[0].ComPort, timeout);                
             }                
             else
             {
@@ -219,15 +234,10 @@ namespace Cec
             return iConnected;
         }
 
-        public bool Connect(string port, int timeout)
+        public bool Open(string port, int timeout)
         {
             Close();
             iConnected = iLib.Open(port, timeout);
-            if (iConnected)
-            {
-                Scan();
-                //TestSendKey();
-            }
             return iConnected;
         }
 
@@ -504,7 +514,7 @@ namespace Cec
                     iLib.Close();
 
                     Console.WriteLine("opening a new connection");
-                    Connect(10000);
+                    Open(10000);
 
                     Console.WriteLine("setting active source");
                     iLib.SetActiveSource(CecDeviceType.PlaybackDevice);

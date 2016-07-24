@@ -1027,6 +1027,7 @@
             this.buttonDeleteAction.TabIndex = 21;
             this.buttonDeleteAction.Text = "Delete Action";
             this.buttonDeleteAction.UseVisualStyleBackColor = true;
+            this.buttonDeleteAction.Click += new System.EventHandler(this.buttonDeleteAction_Click);
             // 
             // buttonAddAction
             // 

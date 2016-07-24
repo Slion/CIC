@@ -85,7 +85,7 @@ namespace SharpDisplayManager
         private void ConnectCecClient()
         {
             //Our client takes care of closing before trying to connect
-            if (!Client.Connect(1000))
+            if (!Client.Open(1000))
             {
                 Debug.WriteLine("WARNING: No CEC connection!");
             }
