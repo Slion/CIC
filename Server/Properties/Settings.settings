@@ -44,5 +44,8 @@
     <Setting Name="CecReconnectToPowerTv" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Actions" Type="SharpLib.Ear.ManagerEventAction" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

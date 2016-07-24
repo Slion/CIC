@@ -113,6 +113,21 @@ namespace SharpLib.Utils
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="baseType"></param>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetDerivedTypes<T>() where T: class
+        {            
+            var types = from t in Assembly.GetAssembly(typeof(T)).GetTypes()
+                        where t.IsSubclassOf(typeof(T))
+                        select t;
+
+            return types;
+        }
+
     }
 
 }

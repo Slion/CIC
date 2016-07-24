@@ -189,5 +189,16 @@ namespace SharpDisplayManager.Properties {
                 this["CecReconnectToPowerTv"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::SharpLib.Ear.ManagerEventAction Actions {
+            get {
+                return ((global::SharpLib.Ear.ManagerEventAction)(this["Actions"]));
+            }
+            set {
+                this["Actions"] = value;
+            }
+        }
     }
 }

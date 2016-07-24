@@ -13,6 +13,7 @@ namespace SharpLib.Ear
     [AttributeAction(Id = "Thread.Sleep", Name = "Sleep", Description = "Have the current thread sleep for the specified amount of milliseconds.")]
     public class ActionSleep : Action
     {
+        [DataMember]
         private readonly int iMillisecondsTimeout;
 
         public ActionSleep()
