@@ -106,9 +106,6 @@
             this.checkBoxCecLogNotice = new System.Windows.Forms.CheckBox();
             this.checkBoxCecLogError = new System.Windows.Forms.CheckBox();
             this.checkBoxCecLogWarning = new System.Windows.Forms.CheckBox();
-            this.checkBoxCecReconnectToPowerTv = new System.Windows.Forms.CheckBox();
-            this.checkBoxCecMonitorOn = new System.Windows.Forms.CheckBox();
-            this.checkBoxCecMonitorOff = new System.Windows.Forms.CheckBox();
             this.checkBoxCecEnabled = new System.Windows.Forms.CheckBox();
             this.labelHdmiPort = new System.Windows.Forms.Label();
             this.comboBoxHdmiPort = new System.Windows.Forms.ComboBox();
@@ -829,9 +826,6 @@
             // tabPageCec
             // 
             this.tabPageCec.Controls.Add(this.groupBoxCecLogOptions);
-            this.tabPageCec.Controls.Add(this.checkBoxCecReconnectToPowerTv);
-            this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOn);
-            this.tabPageCec.Controls.Add(this.checkBoxCecMonitorOff);
             this.tabPageCec.Controls.Add(this.checkBoxCecEnabled);
             this.tabPageCec.Controls.Add(this.labelHdmiPort);
             this.tabPageCec.Controls.Add(this.comboBoxHdmiPort);
@@ -932,39 +926,6 @@
             this.checkBoxCecLogWarning.Text = "Warning";
             this.checkBoxCecLogWarning.UseVisualStyleBackColor = true;
             this.checkBoxCecLogWarning.CheckedChanged += new System.EventHandler(this.checkBoxCecLogs_CheckedChanged);
-            // 
-            // checkBoxCecReconnectToPowerTv
-            // 
-            this.checkBoxCecReconnectToPowerTv.AutoSize = true;
-            this.checkBoxCecReconnectToPowerTv.Location = new System.Drawing.Point(6, 115);
-            this.checkBoxCecReconnectToPowerTv.Name = "checkBoxCecReconnectToPowerTv";
-            this.checkBoxCecReconnectToPowerTv.Size = new System.Drawing.Size(194, 17);
-            this.checkBoxCecReconnectToPowerTv.TabIndex = 24;
-            this.checkBoxCecReconnectToPowerTv.Text = "Reconnect before TV power switch";
-            this.checkBoxCecReconnectToPowerTv.UseVisualStyleBackColor = true;
-            this.checkBoxCecReconnectToPowerTv.CheckedChanged += new System.EventHandler(this.checkBoxCecReconnectToPowerTv_CheckedChanged);
-            // 
-            // checkBoxCecMonitorOn
-            // 
-            this.checkBoxCecMonitorOn.AutoSize = true;
-            this.checkBoxCecMonitorOn.Location = new System.Drawing.Point(6, 92);
-            this.checkBoxCecMonitorOn.Name = "checkBoxCecMonitorOn";
-            this.checkBoxCecMonitorOn.Size = new System.Drawing.Size(192, 17);
-            this.checkBoxCecMonitorOn.TabIndex = 23;
-            this.checkBoxCecMonitorOn.Text = "Wake up TV when screen turns on";
-            this.checkBoxCecMonitorOn.UseVisualStyleBackColor = true;
-            this.checkBoxCecMonitorOn.CheckedChanged += new System.EventHandler(this.checkBoxCecMonitorOn_CheckedChanged);
-            // 
-            // checkBoxCecMonitorOff
-            // 
-            this.checkBoxCecMonitorOff.AutoSize = true;
-            this.checkBoxCecMonitorOff.Location = new System.Drawing.Point(6, 69);
-            this.checkBoxCecMonitorOff.Name = "checkBoxCecMonitorOff";
-            this.checkBoxCecMonitorOff.Size = new System.Drawing.Size(219, 17);
-            this.checkBoxCecMonitorOff.TabIndex = 22;
-            this.checkBoxCecMonitorOff.Text = "Set TV on standby when screen turns off";
-            this.checkBoxCecMonitorOff.UseVisualStyleBackColor = true;
-            this.checkBoxCecMonitorOff.CheckedChanged += new System.EventHandler(this.checkBoxCecMonitorOff_CheckedChanged);
             // 
             // checkBoxCecEnabled
             // 
@@ -1293,13 +1254,10 @@
         private System.Windows.Forms.CheckBox checkBoxCecEnabled;
         private System.Windows.Forms.Label labelHdmiPort;
         private System.Windows.Forms.ComboBox comboBoxHdmiPort;
-        private System.Windows.Forms.CheckBox checkBoxCecMonitorOn;
-        private System.Windows.Forms.CheckBox checkBoxCecMonitorOff;
         private System.Windows.Forms.Button iButtonStartIdleClient;
         private System.Windows.Forms.CheckBox iCheckBoxStartIdleClient;
         private System.Windows.Forms.TabPage tabPageLogs;
         private System.Windows.Forms.RichTextBox richTextBoxLogs;
-        private System.Windows.Forms.CheckBox checkBoxCecReconnectToPowerTv;
         private System.Windows.Forms.Button buttonClearLogs;
         private System.Windows.Forms.GroupBox groupBoxCecLogOptions;
         private System.Windows.Forms.CheckBox checkBoxCecLogWarning;

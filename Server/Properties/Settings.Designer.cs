@@ -145,48 +145,12 @@ namespace SharpDisplayManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CecMonitorOn {
-            get {
-                return ((bool)(this["CecMonitorOn"]));
-            }
-            set {
-                this["CecMonitorOn"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CecMonitorOff {
-            get {
-                return ((bool)(this["CecMonitorOff"]));
-            }
-            set {
-                this["CecMonitorOff"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool StartIdleClient {
             get {
                 return ((bool)(this["StartIdleClient"]));
             }
             set {
                 this["StartIdleClient"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool CecReconnectToPowerTv {
-            get {
-                return ((bool)(this["CecReconnectToPowerTv"]));
-            }
-            set {
-                this["CecReconnectToPowerTv"] = value;
             }
         }
         
