@@ -38,8 +38,7 @@ namespace SharpLib.Ear
             Events = Utils.Reflection.GetConcreteClassesInstanceDerivedFromByName<Event>();
 
             if (ActionsByEvents == null)
-            {
-                
+            {                
                 ActionsByEvents = new Dictionary<string, List<Action>>();
             }
 
@@ -61,9 +60,32 @@ namespace SharpLib.Ear
             }
         }
 
+        /// <summary>
+        /// Get and event instance from its type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public Event GetEvent<T>() where T : class
         {
             return Events[typeof(T).Name];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aAction"></param>
+        public void RemoveAction(Action aAction)
+        {
+            foreach (string key in Events.Keys)
+            {
+                Event e = Events[key];
+                if (e.Actions.Remove(aAction))
+                {
+                    //We removed our action, we are done here.
+                    return;
+                }
+
+            }
         }
 
     }

@@ -153,13 +153,20 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ActionCecClose.cs" />
+    <Compile Include="Actions\ActionCecInactiveSource.cs" />
+    <Compile Include="Actions\ActionCecOpen.cs" />
+    <Compile Include="Actions\ActionCecPowerOnTv.cs" />
+    <Compile Include="Actions\ActionCecActiveSource.cs" />
+    <Compile Include="Actions\ActionCecScan.cs" />
+    <Compile Include="Actions\ActionCecSendKeypressTvPowerOff.cs" />
+    <Compile Include="Actions\ActionCecStandbyTv.cs" />
+    <Compile Include="Actions\ActionCecSendKeypressTvPowerOn.cs" />
     <Compile Include="CbtHook.cs" />
     <Compile Include="CecClient.cs" />
     <Compile Include="ConsumerElectronicControl.cs" />
     <Compile Include="ClientData.cs" />
-    <Compile Include="FormEditAction.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormEditAction.cs" />
     <Compile Include="FormEditAction.Designer.cs">
       <DependentUpon>FormEditAction.cs</DependentUpon>
     </Compile>

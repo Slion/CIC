@@ -315,11 +315,15 @@ namespace SharpDisplayManager
                 eventNode.Nodes.Add(key + ".Description", e.Description);
                 TreeNode actionsNodes = eventNode.Nodes.Add(key + ".Actions", "Actions");
 
+                // Add our actions for that event
                 foreach (SharpLib.Ear.Action a in e.Actions)
                 {
-                    actionsNodes.Nodes.Add(a.Name);
+                    TreeNode actionNode = actionsNodes.Nodes.Add(a.Name);
+                    actionNode.Tag = a;
                 }
             }
+
+            iTreeViewEvents.ExpandAll();
 
         }
 
@@ -2666,7 +2670,8 @@ namespace SharpDisplayManager
 
         private void buttonAddAction_Click(object sender, EventArgs e)
         {
-            if (iTreeViewEvents.SelectedNode==null)
+            if (iTreeViewEvents.SelectedNode==null
+                || !(iTreeViewEvents.SelectedNode.Tag is Event))
             {
                 return;
             }
@@ -2687,6 +2692,27 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.Save();
                 SetupEvents();
             }
+        }
+
+        private void buttonDeleteAction_Click(object sender, EventArgs e)
+        {
+            if (iTreeViewEvents.SelectedNode == null
+                || !(iTreeViewEvents.SelectedNode.Tag is SharpLib.Ear.Action))
+            {
+                return;
+            }
+
+            SharpLib.Ear.Action action = (SharpLib.Ear.Action)iTreeViewEvents.SelectedNode.Tag;
+            if (action == null)
+            {
+                //Must select action node
+                return;
+            }
+
+            ManagerEventAction.Current.RemoveAction(action);
+            Properties.Settings.Default.Actions = ManagerEventAction.Current;
+            Properties.Settings.Default.Save();
+            SetupEvents();
         }
     }
 }
