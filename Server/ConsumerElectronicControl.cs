@@ -93,7 +93,7 @@ namespace SharpDisplayManager
 
         private void OnMonitorPowerOn()
         {
-            EventActionManager.Current.GetEvent<EventMonitorPowerOn>().Trigger();
+            ManagerEventAction.Current.GetEvent<EventMonitorPowerOn>().Trigger();
 
             Console.WriteLine("OnMonitorPowerOn");
 
@@ -112,7 +112,7 @@ namespace SharpDisplayManager
 
         private void OnMonitorPowerOff()
         {
-            EventActionManager.Current.GetEvent<EventMonitorPowerOff>().Trigger();
+            ManagerEventAction.Current.GetEvent<EventMonitorPowerOff>().Trigger();
 
             Console.WriteLine("OnMonitorPowerOff");
 

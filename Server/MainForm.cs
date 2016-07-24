@@ -70,7 +70,7 @@ namespace SharpDisplayManager
 	[System.ComponentModel.DesignerCategory("Form")]
 	public partial class MainForm : MainFormHid, IMMNotificationClient
     {
-        public EventActionManager iManager = new EventActionManager();        
+        //public ManagerEventAction iManager = new ManagerEventAction();        
         DateTime LastTickTime;
         Display iDisplay;
         System.Drawing.Bitmap iBmp;
@@ -131,7 +131,19 @@ namespace SharpDisplayManager
 
         public MainForm()
         {
-            EventActionManager.Current = iManager;
+            ManagerEventAction.Current = Properties.Settings.Default.Actions;
+            if (ManagerEventAction.Current == null)
+            {
+                //No actions in our settings yet
+                ManagerEventAction.Current = new ManagerEventAction();
+                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+            }
+            else
+            {
+                //We loaded actions from our settings
+                //We need to hook them with corresponding events
+                ManagerEventAction.Current.Init();
+            }
             iSkipFrameRendering = false;
 			iClosing = false;
             iCurrentClientSessionId = "";
@@ -295,9 +307,9 @@ namespace SharpDisplayManager
             //Reset our tree
             iTreeViewEvents.Nodes.Clear();
             //Populate registered events
-            foreach (string key in EventActionManager.Current.Events.Keys)
+            foreach (string key in ManagerEventAction.Current.Events.Keys)
             {
-                Event e = EventActionManager.Current.Events[key];
+                Event e = ManagerEventAction.Current.Events[key];
                 TreeNode eventNode = iTreeViewEvents.Nodes.Add(key,e.Name);
                 eventNode.Tag = e;
                 eventNode.Nodes.Add(key + ".Description", e.Description);
@@ -2654,8 +2666,13 @@ namespace SharpDisplayManager
 
         private void buttonAddAction_Click(object sender, EventArgs e)
         {
-            Event ear = (Event)iTreeViewEvents.SelectedNode.Tag;
-            if (ear == null)
+            if (iTreeViewEvents.SelectedNode==null)
+            {
+                return;
+            }
+
+            Event earEvent = (Event)iTreeViewEvents.SelectedNode.Tag;
+            if (earEvent == null)
             {
                 //Must select event node
                 return;
@@ -2665,7 +2682,9 @@ namespace SharpDisplayManager
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
-                ear.Actions.Add(ea.Action);
+                earEvent.Actions.Add(ea.Action);                
+                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Save();
                 SetupEvents();
             }
         }

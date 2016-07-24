@@ -10,10 +10,7 @@ namespace SharpLib.Ear
     [DataContract]
     public abstract class MEvent
     {
-        [DataMember]
         public string Name { get; protected set; }
-
-        [DataMember]
         public string Description { get; protected set; }
 
         public abstract void Trigger();
@@ -22,11 +19,12 @@ namespace SharpLib.Ear
     [DataContract]
     public abstract class Event : MEvent
     {
-        public List<Action> Actions;
+        [DataMember]
+        public List<Action> Actions = new List<Action>();
 
         protected Event()
         {
-           Actions = new List<Action>();
+           
         }
 
         public override void Trigger()

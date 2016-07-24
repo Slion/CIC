@@ -28,6 +28,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Drawing;
+using SharpLib.Utils;
 
 namespace SharpDisplayManager
 {
@@ -114,10 +115,12 @@ namespace SharpDisplayManager
     /// <summary>
     /// Contain settings for each of our display type.
     /// </summary>
-    [TypeConverter(typeof(DisplaySettingsConverter))]
+    [TypeConverter(typeof(TypeConverterJson<DisplaysSettings>))]
     [DataContract]
     public class DisplaysSettings
     {
+        private List<DisplaySettings> iDisplays;
+
         public DisplaysSettings()
         {
             Init();
@@ -125,9 +128,9 @@ namespace SharpDisplayManager
 
         public void Init()
         {
-            if (Displays == null)
+            if (iDisplays == null)
             {
-                Displays = new List<DisplaySettings>();
+                iDisplays = new List<DisplaySettings>();
             }
         }
 
@@ -135,50 +138,9 @@ namespace SharpDisplayManager
         //public int CurrentSettingsIndex { get; set; }
 
         [DataMember]
-        public List<DisplaySettings> Displays { get; set; }
+        public List<DisplaySettings> Displays { get { Init(); return iDisplays; } private set { iDisplays = value; } }
 
-        public override string ToString()
-        {
-            //Save settings into JSON string
-            MemoryStream stream = new MemoryStream();
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(DisplaysSettings));
-            ser.WriteObject(stream, this);
-            // convert stream to string
-            stream.Position = 0;
-            StreamReader reader = new StreamReader(stream);
-            string text = reader.ReadToEnd();
-            return text;
-        }
+
     }
-
-    public class DisplaySettingsConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string))
-                return true;
-            else
-                return base.CanConvertFrom(context, sourceType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
-        {
-            string stringValue = value as string;
-            if (stringValue != null)
-            {
-                //Load settings form JSON string
-                byte[] byteArray = Encoding.UTF8.GetBytes(stringValue);
-                MemoryStream stream = new MemoryStream(byteArray);
-                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(DisplaysSettings));
-                DisplaysSettings settings = (DisplaysSettings)ser.ReadObject(stream);
-                settings.Init();
-                return settings;
-            }
-            else
-                return base.ConvertFrom(context, culture, value);
-        }
-    };
-
-
 }
 

@@ -7,7 +7,7 @@
     <ProjectGuid>{84A9ED37-E6EA-4CBD-B995-B713F46EAAB0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SharpLibEar</RootNamespace>
+    <RootNamespace>SharpLib.Ear</RootNamespace>
     <AssemblyName>SharpLibEar</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,7 +49,7 @@
     <Compile Include="Event.cs" />
     <Compile Include="EventMonitorPowerOff.cs" />
     <Compile Include="EventMonitorPowerOn.cs" />
-    <Compile Include="EventActionManager.cs" />
+    <Compile Include="ManagerEventAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -23,9 +23,9 @@ namespace SharpDisplayManager
         private void FormEditAction_Load(object sender, EventArgs e)
         {
             //Populate registered actions
-            foreach (string key in EventActionManager.Current.ActionTypes.Keys)
+            foreach (string key in ManagerEventAction.Current.ActionTypes.Keys)
             {
-                Type t = EventActionManager.Current.ActionTypes[key];
+                Type t = ManagerEventAction.Current.ActionTypes[key];
                 comboBoxActionType.Items.Add(t);                
             }
 
