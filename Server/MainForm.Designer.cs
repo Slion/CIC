@@ -982,6 +982,7 @@
             // 
             // buttonDeleteAction
             // 
+            this.buttonDeleteAction.Enabled = false;
             this.buttonDeleteAction.Location = new System.Drawing.Point(6, 35);
             this.buttonDeleteAction.Name = "buttonDeleteAction";
             this.buttonDeleteAction.Size = new System.Drawing.Size(96, 23);
@@ -992,6 +993,7 @@
             // 
             // buttonAddAction
             // 
+            this.buttonAddAction.Enabled = false;
             this.buttonAddAction.Location = new System.Drawing.Point(6, 6);
             this.buttonAddAction.Name = "buttonAddAction";
             this.buttonAddAction.Size = new System.Drawing.Size(96, 23);
@@ -1009,6 +1011,7 @@
             this.iTreeViewEvents.Name = "iTreeViewEvents";
             this.iTreeViewEvents.Size = new System.Drawing.Size(638, 376);
             this.iTreeViewEvents.TabIndex = 1;
+            this.iTreeViewEvents.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.iTreeViewEvents_AfterSelect);
             // 
             // tabPageApp
             // 

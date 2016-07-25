@@ -304,6 +304,10 @@ namespace SharpDisplayManager
         /// </summary>
         private void SetupEvents()
         {
+            //Disable action buttons
+            buttonAddAction.Enabled = false;
+            buttonDeleteAction.Enabled = false;
+
             //Reset our tree
             iTreeViewEvents.Nodes.Clear();
             //Populate registered events
@@ -2638,18 +2642,54 @@ namespace SharpDisplayManager
             SetupCecLogLevel();
         }
 
-        private void buttonAddAction_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private Event CurrentEvent()
         {
-            if (iTreeViewEvents.SelectedNode==null
-                || !(iTreeViewEvents.SelectedNode.Tag is Event))
+            //Walk up the tree from the selected node to find our event
+            TreeNode node = iTreeViewEvents.SelectedNode;
+            Event selectedEvent = null;
+            while (node != null)
             {
-                return;
+                if (node.Tag is Event)
+                {
+                    selectedEvent = (Event)node.Tag;
+                    break;
+                }
+                node = node.Parent;
             }
 
-            Event earEvent = (Event)iTreeViewEvents.SelectedNode.Tag;
-            if (earEvent == null)
+            return selectedEvent;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private SharpLib.Ear.Action CurrentAction()
+        {
+            TreeNode node = iTreeViewEvents.SelectedNode;
+            if (node != null && node.Tag is SharpLib.Ear.Action)
             {
-                //Must select event node
+                return (SharpLib.Ear.Action) node.Tag;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonAddAction_Click(object sender, EventArgs e)
+        {
+            Event selectedEvent = CurrentEvent();
+            if (selectedEvent == null)
+            {
+                //We did not find a corresponding event
                 return;
             }
 
@@ -2657,22 +2697,22 @@ namespace SharpDisplayManager
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
-                earEvent.Actions.Add(ea.Action);                
+                selectedEvent.Actions.Add(ea.Action);                
                 Properties.Settings.Default.Actions = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
                 SetupEvents();
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonDeleteAction_Click(object sender, EventArgs e)
         {
-            if (iTreeViewEvents.SelectedNode == null
-                || !(iTreeViewEvents.SelectedNode.Tag is SharpLib.Ear.Action))
-            {
-                return;
-            }
 
-            SharpLib.Ear.Action action = (SharpLib.Ear.Action)iTreeViewEvents.SelectedNode.Tag;
+            SharpLib.Ear.Action action = CurrentAction();
             if (action == null)
             {
                 //Must select action node
@@ -2683,6 +2723,13 @@ namespace SharpDisplayManager
             Properties.Settings.Default.Actions = ManagerEventAction.Current;
             Properties.Settings.Default.Save();
             SetupEvents();
+        }
+
+        private void iTreeViewEvents_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            //Enable buttons according to selected item
+            buttonAddAction.Enabled = CurrentEvent() != null;
+            buttonDeleteAction.Enabled = CurrentAction() != null;
         }
     }
 }
