@@ -300,13 +300,15 @@ namespace SharpDisplayManager
 		}
 
         /// <summary>
-        /// 
+        /// Populate tree view with events and actions
         /// </summary>
         private void SetupEvents()
         {
             //Disable action buttons
             buttonAddAction.Enabled = false;
             buttonDeleteAction.Enabled = false;
+
+            Event currentEvent = CurrentEvent();
 
             //Reset our tree
             iTreeViewEvents.Nodes.Clear();
@@ -328,6 +330,7 @@ namespace SharpDisplayManager
             }
 
             iTreeViewEvents.ExpandAll();
+            SelectEvent(currentEvent);
 
         }
 
@@ -2640,6 +2643,27 @@ namespace SharpDisplayManager
         private void checkBoxCecLogs_CheckedChanged(object sender, EventArgs e)
         {
             SetupCecLogLevel();
+        }
+
+       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aEvent"></param>
+        private void SelectEvent(Event aEvent)
+        {
+            if (aEvent == null)
+            {
+                return;
+            }
+
+            string key = aEvent.GetType().Name;
+            TreeNode[] res=iTreeViewEvents.Nodes.Find(key, false);
+            if (res.Length > 0)
+            {                
+                iTreeViewEvents.SelectedNode = res[0];
+                iTreeViewEvents.Focus();
+            }
         }
 
         /// <summary>
