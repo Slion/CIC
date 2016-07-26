@@ -166,7 +166,9 @@
     <Compile Include="CecClient.cs" />
     <Compile Include="ConsumerElectronicControl.cs" />
     <Compile Include="ClientData.cs" />
-    <Compile Include="FormEditAction.cs" />
+    <Compile Include="FormEditAction.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormEditAction.Designer.cs">
       <DependentUpon>FormEditAction.cs</DependentUpon>
     </Compile>
@@ -176,6 +178,7 @@
     <Compile Include="FxControl.Designer.cs">
       <DependentUpon>FxControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ItemActionType.cs" />
     <Compile Include="MainForm.Hid.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
