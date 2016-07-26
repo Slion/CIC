@@ -14,8 +14,16 @@ namespace SharpLib.Ear
     public class ActionSleep : Action
     {
         [DataMember]
-        [AttributeActionProperty(Id = "Thread.Sleep.Timeout", Name = "Timeout",
-            Description = "Specifies the number of milliseconds this action will sleep for.")]
+        [AttributeActionProperty
+            (
+                Id = "Thread.Sleep.Timeout",
+                Name = "Timeout (ms)",
+                Description = "Specifies the number of milliseconds this action will sleep for.",
+                Minimum = "0",
+                Maximum = "10000",
+                Increment =  "1"
+            )
+        ]
         public int TimeoutInMilliseconds { get; set; }
 
         public ActionSleep()
@@ -28,6 +36,12 @@ namespace SharpLib.Ear
         {
             TimeoutInMilliseconds = aMillisecondsTimeout;
         }
+
+        public override string Brief()
+        {
+            return Name + " for " + TimeoutInMilliseconds + " ms";
+        }
+
 
         public override void Execute()
         {

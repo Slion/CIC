@@ -40,7 +40,7 @@ namespace SharpDisplayManager
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            
+            FetchPropertiesValue(Action);
         }
 
         private void FormEditAction_Validating(object sender, CancelEventArgs e)
@@ -55,6 +55,105 @@ namespace SharpDisplayManager
 
             //Create input fields
             UpdateTableLayoutPanel(Action);
+        }
+
+
+        /// <summary>
+        /// Get properties values from our generated input fields
+        /// </summary>
+        private void FetchPropertiesValue(SharpLib.Ear.Action aAction)
+        {
+            int ctrlIndex = 0;
+            foreach (PropertyInfo pi in aAction.GetType().GetProperties())
+            {
+                AttributeActionProperty[] attributes =
+                    ((AttributeActionProperty[]) pi.GetCustomAttributes(typeof(AttributeActionProperty), true));
+                if (attributes.Length != 1)
+                {
+                    continue;
+                }
+
+                AttributeActionProperty attribute = attributes[0];
+
+                if (!IsPropertyTypeSupported(pi))
+                {
+                    continue;
+                }
+
+                GetPropertyValueFromControl(iTableLayoutPanel.Controls[ctrlIndex+1], pi, aAction); //+1 otherwise we get the label
+
+                ctrlIndex+=2; //Jump over the label too
+            }
+        }
+
+        /// <summary>
+        /// Extend this function to support reading new types of properties.
+        /// </summary>
+        /// <param name="aAction"></param>
+        private void GetPropertyValueFromControl(Control aControl, PropertyInfo aInfo, SharpLib.Ear.Action aAction)
+        {
+            if (aInfo.PropertyType == typeof(int))
+            {
+                NumericUpDown ctrl=(NumericUpDown)aControl;
+                aInfo.SetValue(aAction,(int)ctrl.Value);
+            }
+            else if (aInfo.PropertyType.IsEnum)
+            {
+                // Instantiate our enum
+                object enumValue= Activator.CreateInstance(aInfo.PropertyType);
+                // Parse our enum from combo box
+                //enumValue = Enum.Parse(aInfo.PropertyType,((ComboBox)aControl).SelectedValue.ToString());
+                enumValue = ((ComboBox)aControl).SelectedValue;
+                // Set enum value
+                aInfo.SetValue(aAction, enumValue);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aInfo"></param>
+        /// <param name="action"></param>
+        private Control CreateControlForProperty(PropertyInfo aInfo, AttributeActionProperty aAttribute, SharpLib.Ear.Action aAction)
+        {
+            if (aInfo.PropertyType == typeof(int))
+            {
+                //Integer properties are using numeric editor
+                NumericUpDown ctrl = new NumericUpDown();                
+                ctrl.Minimum = Int32.Parse(aAttribute.Minimum);
+                ctrl.Maximum = Int32.Parse(aAttribute.Maximum);
+                ctrl.Increment = Int32.Parse(aAttribute.Increment);
+                ctrl.Value = (int)aInfo.GetValue(aAction);
+                return ctrl;
+            }
+            else if (aInfo.PropertyType.IsEnum)
+            {
+                //Enum properties are using combo box
+                ComboBox ctrl = new ComboBox();
+                ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
+                ctrl.DataSource = Enum.GetValues(aInfo.PropertyType);
+                return ctrl;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Don't forget to extend that one and adding types
+        /// </summary>
+        /// <returns></returns>
+        private bool IsPropertyTypeSupported(PropertyInfo aInfo)
+        {
+            if (aInfo.PropertyType == typeof(int))
+            {
+                return true;
+            }
+            else if (aInfo.PropertyType.IsEnum)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -98,6 +197,16 @@ namespace SharpDisplayManager
                 }
 
                 AttributeActionProperty attribute = attributes[0];
+
+                //Before anything we need to check if that kind of property is supported by our UI
+                //Create the editor
+                Control ctrl = CreateControlForProperty(pi, attribute, aAction);
+                if (ctrl == null)
+                {
+                    //Property type not supported
+                    continue;
+                }
+
                 //Add a new row
                 iTableLayoutPanel.RowCount++;
                 iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -107,67 +216,11 @@ namespace SharpDisplayManager
                 toolTip.SetToolTip(label, attribute.Description);
                 iTableLayoutPanel.Controls.Add(label, 0, iTableLayoutPanel.RowCount-1);
 
-
-                //Create the editor
-
-            }
+                //Add our editor to our form
+                iTableLayoutPanel.Controls.Add(ctrl, 1, iTableLayoutPanel.RowCount - 1);
 
 
-            /*
-            //Then recreate our rows...
-            while (iTableLayoutPanel.RowCount < layout.Rows.Count)
-            {
-                iTableLayoutPanel.RowCount++;
-            }
-
-            // ...and columns 
-            while (iTableLayoutPanel.ColumnCount < layout.Columns.Count)
-            {
-                iTableLayoutPanel.ColumnCount++;
-            }
-
-            //For each column
-            for (int i = 0; i < iTableLayoutPanel.ColumnCount; i++)
-            {
-                //Create our column styles
-                this.iTableLayoutPanel.ColumnStyles.Add(layout.Columns[i]);
-
-                //For each rows
-                for (int j = 0; j < iTableLayoutPanel.RowCount; j++)
-                {
-                    if (i == 0)
-                    {
-                        //Create our row styles
-                        this.iTableLayoutPanel.RowStyles.Add(layout.Rows[j]);
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-            }
-
-            //For each field
-            foreach (DataField field in aClient.Fields)
-            {
-                if (!field.IsTableField)
-                {
-                    //That field is not taking part in our table layout skip it
-                    continue;
-                }
-
-                TableField tableField = (TableField)field;
-
-                //Create a control corresponding to the field specified for that cell
-                Control control = CreateControlForDataField(tableField);
-
-                //Add newly created control to our table layout at the specified row and column
-                iTableLayoutPanel.Controls.Add(control, tableField.Column, tableField.Row);
-                //Make sure we specify column and row span for that new control
-                iTableLayoutPanel.SetColumnSpan(control, tableField.ColumnSpan);
-                iTableLayoutPanel.SetRowSpan(control, tableField.RowSpan);
-            }
-            */
+            }        
 
         }
 
