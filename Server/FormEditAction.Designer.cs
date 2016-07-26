@@ -44,6 +44,7 @@
             this.comboBoxActionType.Location = new System.Drawing.Point(55, 12);
             this.comboBoxActionType.Name = "comboBoxActionType";
             this.comboBoxActionType.Size = new System.Drawing.Size(333, 21);
+            this.comboBoxActionType.Sorted = true;
             this.comboBoxActionType.TabIndex = 18;
             this.comboBoxActionType.SelectedIndexChanged += new System.EventHandler(this.comboBoxActionType_SelectedIndexChanged);
             // 
