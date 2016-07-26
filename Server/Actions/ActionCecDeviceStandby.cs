@@ -20,6 +20,12 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override string Brief()
         {
+            if (Device == CecLogicalAddress.Broadcast)
+            {
+                //Because of duplicated values it would display Unregistered
+                return "CEC Standby Broadcast";
+            }
+
             return "CEC Standby " + Device.ToString();
         }
 

@@ -102,8 +102,8 @@ namespace SharpDisplayManager
                 // Instantiate our enum
                 object enumValue= Activator.CreateInstance(aInfo.PropertyType);
                 // Parse our enum from combo box
-                //enumValue = Enum.Parse(aInfo.PropertyType,((ComboBox)aControl).SelectedValue.ToString());
-                enumValue = ((ComboBox)aControl).SelectedValue;
+                enumValue = Enum.Parse(aInfo.PropertyType,((ComboBox)aControl).SelectedItem.ToString());
+                //enumValue = ((ComboBox)aControl).SelectedValue;
                 // Set enum value
                 aInfo.SetValue(aAction, enumValue);
             }
@@ -131,7 +131,18 @@ namespace SharpDisplayManager
                 //Enum properties are using combo box
                 ComboBox ctrl = new ComboBox();
                 ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
-                ctrl.DataSource = Enum.GetValues(aInfo.PropertyType);
+                //Data source is fine but it gives us duplicate entries for duplicated enum values
+                //ctrl.DataSource = Enum.GetValues(aInfo.PropertyType);
+
+                //Therefore we need to explicitly create our items  
+                foreach (string name in aInfo.PropertyType.GetEnumNames())
+                {
+                    ctrl.Items.Add(name.ToString());
+                }
+
+                //Select the first item
+                ctrl.SelectedItem=ctrl.Items[0];
+
                 return ctrl;
             }
 
