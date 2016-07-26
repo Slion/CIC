@@ -20,6 +20,11 @@ namespace SharpLib.Ear
             private set { }
         }
 
+        public virtual string Brief()
+        {
+            return Name;
+        }
+
         public int CompareTo(object obj)
         {
             //Sort by action name

@@ -15,5 +15,13 @@ namespace SharpLib.Ear
         public string Id;
         public string Name;
         public string Description;
+        // For numerics
+        public string Minimum;
+        public string Maximum;
+        public string Increment;
     }
+
+
+
+
 }

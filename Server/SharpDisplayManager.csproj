@@ -154,12 +154,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\ActionCecClose.cs" />
+    <Compile Include="Actions\ActionCecDevice.cs" />
     <Compile Include="Actions\ActionCecInactiveSource.cs" />
     <Compile Include="Actions\ActionCecOpen.cs" />
+    <Compile Include="Actions\ActionCecDevicePowerOn.cs" />
     <Compile Include="Actions\ActionCecPowerOnTv.cs" />
     <Compile Include="Actions\ActionCecActiveSource.cs" />
     <Compile Include="Actions\ActionCecScan.cs" />
     <Compile Include="Actions\ActionCecSendKeypressTvPowerOff.cs" />
+    <Compile Include="Actions\ActionCecDeviceStandby.cs" />
     <Compile Include="Actions\ActionCecStandbyTv.cs" />
     <Compile Include="Actions\ActionCecSendKeypressTvPowerOn.cs" />
     <Compile Include="CbtHook.cs" />

@@ -324,7 +324,7 @@ namespace SharpDisplayManager
                 // Add our actions for that event
                 foreach (SharpLib.Ear.Action a in e.Actions)
                 {
-                    TreeNode actionNode = actionsNodes.Nodes.Add(a.Name);
+                    TreeNode actionNode = actionsNodes.Nodes.Add(a.Brief());
                     actionNode.Tag = a;
                 }
             }
