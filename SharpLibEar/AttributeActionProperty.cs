@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace SharpLib.Ear
 {
-
     /// <summary>
-    /// For action class to define name and description.
+    /// To expose an action property thus enabling user to edit it.
     /// </summary>
-    [System.AttributeUsage(System.AttributeTargets.Class)]
-    public class AttributeAction : System.Attribute
+    [System.AttributeUsage(System.AttributeTargets.Property)]
+    public class AttributeActionProperty : System.Attribute
     {
         public string Id;
         public string Name;
         public string Description;
     }
-
-
 }

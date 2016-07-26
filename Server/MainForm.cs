@@ -223,7 +223,7 @@ namespace SharpDisplayManager
             ResetCec();
 
             //Setup Events
-            SetupEvents();
+            PopulateEventsTreeView();
 
             //Setup notification icon
             SetupTrayIcon();
@@ -302,7 +302,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// Populate tree view with events and actions
         /// </summary>
-        private void SetupEvents()
+        private void PopulateEventsTreeView()
         {
             //Disable action buttons
             buttonAddAction.Enabled = false;
@@ -331,6 +331,11 @@ namespace SharpDisplayManager
 
             iTreeViewEvents.ExpandAll();
             SelectEvent(currentEvent);
+            //Select the last action if any 
+            if (iTreeViewEvents.SelectedNode!= null && iTreeViewEvents.SelectedNode.Nodes[1].GetNodeCount(false) > 0)
+            {
+                iTreeViewEvents.SelectedNode = iTreeViewEvents.SelectedNode.Nodes[1].Nodes[iTreeViewEvents.SelectedNode.Nodes[1].GetNodeCount(false)-1];
+            }
 
         }
 
@@ -2666,8 +2671,10 @@ namespace SharpDisplayManager
             }
         }
 
+
+
         /// <summary>
-        /// 
+        /// Get the current event based on event tree view selection.
         /// </summary>
         /// <returns></returns>
         private Event CurrentEvent()
@@ -2689,7 +2696,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        /// Get the current action based on event tree view selection
         /// </summary>
         /// <returns></returns>
         private SharpLib.Ear.Action CurrentAction()
@@ -2724,7 +2731,7 @@ namespace SharpDisplayManager
                 selectedEvent.Actions.Add(ea.Action);                
                 Properties.Settings.Default.Actions = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
-                SetupEvents();
+                PopulateEventsTreeView();
             }
         }
 
@@ -2746,7 +2753,7 @@ namespace SharpDisplayManager
             ManagerEventAction.Current.RemoveAction(action);
             Properties.Settings.Default.Actions = ManagerEventAction.Current;
             Properties.Settings.Default.Save();
-            SetupEvents();
+            PopulateEventsTreeView();
         }
 
         private void iTreeViewEvents_AfterSelect(object sender, TreeViewEventArgs e)

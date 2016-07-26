@@ -46,6 +46,7 @@
     <Compile Include="ActionSleep.cs" />
     <Compile Include="ActionType.cs" />
     <Compile Include="AttributeAction.cs" />
+    <Compile Include="AttributeActionProperty.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventMonitorPowerOff.cs" />
     <Compile Include="EventMonitorPowerOn.cs" />
