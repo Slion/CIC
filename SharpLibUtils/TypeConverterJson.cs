@@ -33,7 +33,7 @@ namespace SharpLib.Utils
         }
 
         /// <summary>
-        /// 
+        /// Internalize
         /// </summary>
         /// <param name="context"></param>
         /// <param name="culture"></param>
@@ -44,22 +44,35 @@ namespace SharpLib.Utils
             string stringValue = value as string;
             if (stringValue != null)
             {
-                //Load object form JSON string
-                byte[] byteArray = Encoding.UTF8.GetBytes(stringValue);
-                MemoryStream stream = new MemoryStream(byteArray);
-                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T), new DataContractJsonSerializerSettings()
-                {
-                    UseSimpleDictionaryFormat = true
-                });
-                T settings = (T)ser.ReadObject(stream);
-                return settings;
+                //try
+                //{
+                    //Load object form JSON string
+                    byte[] byteArray = Encoding.UTF8.GetBytes(stringValue);
+                    MemoryStream stream = new MemoryStream(byteArray);
+                    DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T),
+                        new DataContractJsonSerializerSettings()
+                        {
+                            UseSimpleDictionaryFormat = true
+                        });
+                    T settings = (T)ser.ReadObject(stream);
+                    return settings;
+                //}
+                //catch (Exception ex)
+                //{
+                    //That's not helping with partial loading
+                //    Console.WriteLine("WARNING: Internalize exception -" + ex.ToString() );
+                //    return null;
+                //}
             }
             else
+            {
                 return base.ConvertFrom(context, culture, value);
+            }
+                
         }
 
         /// <summary>
-        /// 
+        /// Externalize
         /// </summary>
         /// <param name="context"></param>
         /// <param name="culture"></param>

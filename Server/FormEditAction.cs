@@ -107,6 +107,11 @@ namespace SharpDisplayManager
                 // Set enum value
                 aInfo.SetValue(aAction, enumValue);
             }
+            else if (aInfo.PropertyType == typeof(bool))
+            {
+                CheckBox ctrl = (CheckBox)aControl;
+                aInfo.SetValue(aAction, ctrl.Checked);
+            }
         }
 
         /// <summary>
@@ -119,7 +124,8 @@ namespace SharpDisplayManager
             if (aInfo.PropertyType == typeof(int))
             {
                 //Integer properties are using numeric editor
-                NumericUpDown ctrl = new NumericUpDown();                
+                NumericUpDown ctrl = new NumericUpDown();
+                ctrl.AutoSize = true;
                 ctrl.Minimum = Int32.Parse(aAttribute.Minimum);
                 ctrl.Maximum = Int32.Parse(aAttribute.Maximum);
                 ctrl.Increment = Int32.Parse(aAttribute.Increment);
@@ -130,6 +136,8 @@ namespace SharpDisplayManager
             {
                 //Enum properties are using combo box
                 ComboBox ctrl = new ComboBox();
+                ctrl.AutoSize = true;
+                ctrl.Sorted = true;
                 ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
                 //Data source is fine but it gives us duplicate entries for duplicated enum values
                 //ctrl.DataSource = Enum.GetValues(aInfo.PropertyType);
@@ -140,9 +148,20 @@ namespace SharpDisplayManager
                     ctrl.Items.Add(name.ToString());
                 }
 
-                //Select the first item
-                ctrl.SelectedItem=ctrl.Items[0];
+                // Instantiate our enum
+                object enumValue = Activator.CreateInstance(aInfo.PropertyType);
+                enumValue = aInfo.GetValue(aAction);
+                //Set the current item
+                ctrl.SelectedItem = enumValue.ToString();
 
+                return ctrl;
+            }
+            else if (aInfo.PropertyType == typeof(bool))
+            {
+                CheckBox ctrl = new CheckBox();
+                ctrl.AutoSize = true;
+                ctrl.Text = aAttribute.Description;
+                ctrl.Checked = (bool)aInfo.GetValue(aAction);                
                 return ctrl;
             }
 
@@ -160,6 +179,10 @@ namespace SharpDisplayManager
                 return true;
             }
             else if (aInfo.PropertyType.IsEnum)
+            {
+                return true;
+            }
+            else if (aInfo.PropertyType == typeof(bool))
             {
                 return true;
             }
