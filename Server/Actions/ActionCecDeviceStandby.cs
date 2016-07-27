@@ -15,18 +15,12 @@ namespace SharpDisplayManager
     public class ActionCecDeviceStandby : ActionCecDevice
     {
         /// <summary>
-        /// 
+        /// Build a user readable string to describe this action.
         /// </summary>
         /// <returns></returns>
         public override string Brief()
         {
-            if (Device == CecLogicalAddress.Broadcast)
-            {
-                //Because of duplicated values it would display Unregistered
-                return "CEC Standby Broadcast";
-            }
-
-            return "CEC Standby " + Device.ToString();
+            return "CEC Standby " + DeviceName;
         }
 
         /// <summary>

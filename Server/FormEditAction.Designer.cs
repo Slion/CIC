@@ -94,7 +94,7 @@
             this.iTableLayoutPanel.RowCount = 2;
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanel.Size = new System.Drawing.Size(373, 16);
+            this.iTableLayoutPanel.Size = new System.Drawing.Size(375, 16);
             this.iTableLayoutPanel.TabIndex = 23;
             // 
             // FormEditAction
@@ -104,7 +104,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(400, 107);
+            this.ClientSize = new System.Drawing.Size(402, 107);
             this.Controls.Add(this.iTableLayoutPanel);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);

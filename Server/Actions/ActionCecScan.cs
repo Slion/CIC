@@ -19,6 +19,7 @@ namespace SharpDisplayManager
             if (Cec.Client.Static == null)
             {
                 Console.WriteLine("WARNING: No CEC client installed.");
+                return;
             }
 
             Cec.Client.Static.Scan();

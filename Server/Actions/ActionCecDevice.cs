@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace SharpDisplayManager
 {
+    /// <summary>
+    /// Abstract CEC action using a device logical address.
+    /// </summary>
     [DataContract]
     public abstract class ActionCecDevice: SharpLib.Ear.Action
     {
@@ -22,5 +25,22 @@ namespace SharpDisplayManager
             )
         ]
         public CecLogicalAddress Device { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string DeviceName {
+            get
+            {
+                if (Device == CecLogicalAddress.Broadcast)
+                {
+                    //Because of duplicate value in enumeration
+                    return "Broadcast";
+                }
+
+                return Device.ToString();
+            }
+        }
+
     }
 }
