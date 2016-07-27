@@ -136,17 +136,26 @@ namespace SharpDisplayManager
             {
                 //Enum properties are using combo box
                 ComboBox ctrl = new ComboBox();
-                ctrl.AutoSize = true;
-                ctrl.Sorted = true;
+                ctrl.AutoSize = true;                
+                ctrl.Sorted = true;                
                 ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
                 //Data source is fine but it gives us duplicate entries for duplicated enum values
                 //ctrl.DataSource = Enum.GetValues(aInfo.PropertyType);
 
                 //Therefore we need to explicitly create our items
+                Size cbSize = new Size(0,0);
                 foreach (string name in aInfo.PropertyType.GetEnumNames())
                 {
                     ctrl.Items.Add(name.ToString());
+                    Graphics g = this.CreateGraphics();
+                    //Since combobox autosize would not work we need to get measure text ourselves
+                    SizeF size=g.MeasureString(name.ToString(), ctrl.Font);
+                    cbSize.Width = Math.Max(cbSize.Width,(int)size.Width);
+                    cbSize.Height = Math.Max(cbSize.Height, (int)size.Height);
                 }
+
+                //Make sure our combobox is large enough
+                ctrl.MinimumSize = cbSize;
 
                 // Instantiate our enum
                 object enumValue = Activator.CreateInstance(aInfo.PropertyType);
@@ -246,6 +255,9 @@ namespace SharpDisplayManager
                 iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 //Create the label
                 Label label = new Label();
+                label.AutoSize = true;
+                label.Dock = DockStyle.Fill;
+                label.TextAlign = ContentAlignment.MiddleCenter;
                 label.Text = attribute.Name;
                 toolTip.SetToolTip(label, attribute.Description);
                 iTableLayoutPanel.Controls.Add(label, 0, iTableLayoutPanel.RowCount-1);
