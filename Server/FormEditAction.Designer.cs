@@ -39,11 +39,13 @@
             // 
             // comboBoxActionType
             // 
+            this.comboBoxActionType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxActionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxActionType.FormattingEnabled = true;
             this.comboBoxActionType.Location = new System.Drawing.Point(55, 12);
             this.comboBoxActionType.Name = "comboBoxActionType";
-            this.comboBoxActionType.Size = new System.Drawing.Size(333, 21);
+            this.comboBoxActionType.Size = new System.Drawing.Size(272, 21);
             this.comboBoxActionType.Sorted = true;
             this.comboBoxActionType.TabIndex = 18;
             this.comboBoxActionType.SelectedIndexChanged += new System.EventHandler(this.comboBoxActionType_SelectedIndexChanged);
@@ -86,6 +88,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.iTableLayoutPanel.AutoSize = true;
+            this.iTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.iTableLayoutPanel.ColumnCount = 2;
             this.iTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.iTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -94,7 +97,7 @@
             this.iTableLayoutPanel.RowCount = 2;
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanel.Size = new System.Drawing.Size(375, 16);
+            this.iTableLayoutPanel.Size = new System.Drawing.Size(312, 16);
             this.iTableLayoutPanel.TabIndex = 23;
             // 
             // FormEditAction
@@ -103,8 +106,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(402, 107);
+            this.ClientSize = new System.Drawing.Size(339, 107);
             this.Controls.Add(this.iTableLayoutPanel);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
