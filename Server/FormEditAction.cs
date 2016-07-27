@@ -142,7 +142,7 @@ namespace SharpDisplayManager
                 //Data source is fine but it gives us duplicate entries for duplicated enum values
                 //ctrl.DataSource = Enum.GetValues(aInfo.PropertyType);
 
-                //Therefore we need to explicitly create our items  
+                //Therefore we need to explicitly create our items
                 foreach (string name in aInfo.PropertyType.GetEnumNames())
                 {
                     ctrl.Items.Add(name.ToString());
@@ -252,7 +252,8 @@ namespace SharpDisplayManager
 
                 //Add our editor to our form
                 iTableLayoutPanel.Controls.Add(ctrl, 1, iTableLayoutPanel.RowCount - 1);
-
+                //Add tooltip to editor too
+                toolTip.SetToolTip(ctrl, attribute.Description);
 
             }        
 

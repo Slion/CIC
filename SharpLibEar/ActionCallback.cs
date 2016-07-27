@@ -17,7 +17,7 @@ namespace SharpLib.Ear
             iCallback = aCallback;
         }
 
-        public override void Execute()
+        public override void DoExecute()
         {
             if (iCallback != null)
             {
