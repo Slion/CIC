@@ -110,6 +110,9 @@
             this.labelHdmiPort = new System.Windows.Forms.Label();
             this.comboBoxHdmiPort = new System.Windows.Forms.ComboBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
+            this.buttonActionMoveUp = new System.Windows.Forms.Button();
+            this.buttonActionMoveDown = new System.Windows.Forms.Button();
+            this.buttonTestAction = new System.Windows.Forms.Button();
             this.buttonDeleteAction = new System.Windows.Forms.Button();
             this.buttonAddAction = new System.Windows.Forms.Button();
             this.iTreeViewEvents = new System.Windows.Forms.TreeView();
@@ -969,6 +972,9 @@
             // 
             // tabPageEvent
             // 
+            this.tabPageEvent.Controls.Add(this.buttonActionMoveUp);
+            this.tabPageEvent.Controls.Add(this.buttonActionMoveDown);
+            this.tabPageEvent.Controls.Add(this.buttonTestAction);
             this.tabPageEvent.Controls.Add(this.buttonDeleteAction);
             this.tabPageEvent.Controls.Add(this.buttonAddAction);
             this.tabPageEvent.Controls.Add(this.iTreeViewEvents);
@@ -979,6 +985,39 @@
             this.tabPageEvent.TabIndex = 9;
             this.tabPageEvent.Text = "Events";
             this.tabPageEvent.UseVisualStyleBackColor = true;
+            // 
+            // buttonActionMoveUp
+            // 
+            this.buttonActionMoveUp.Enabled = false;
+            this.buttonActionMoveUp.Location = new System.Drawing.Point(6, 327);
+            this.buttonActionMoveUp.Name = "buttonActionMoveUp";
+            this.buttonActionMoveUp.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionMoveUp.TabIndex = 24;
+            this.buttonActionMoveUp.Text = "Move Up";
+            this.buttonActionMoveUp.UseVisualStyleBackColor = true;
+            this.buttonActionMoveUp.Click += new System.EventHandler(this.buttonActionMoveUp_Click);
+            // 
+            // buttonActionMoveDown
+            // 
+            this.buttonActionMoveDown.Enabled = false;
+            this.buttonActionMoveDown.Location = new System.Drawing.Point(6, 356);
+            this.buttonActionMoveDown.Name = "buttonActionMoveDown";
+            this.buttonActionMoveDown.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionMoveDown.TabIndex = 23;
+            this.buttonActionMoveDown.Text = "Move Down";
+            this.buttonActionMoveDown.UseVisualStyleBackColor = true;
+            this.buttonActionMoveDown.Click += new System.EventHandler(this.buttonActionMoveDown_Click);
+            // 
+            // buttonTestAction
+            // 
+            this.buttonTestAction.Enabled = false;
+            this.buttonTestAction.Location = new System.Drawing.Point(6, 64);
+            this.buttonTestAction.Name = "buttonTestAction";
+            this.buttonTestAction.Size = new System.Drawing.Size(96, 23);
+            this.buttonTestAction.TabIndex = 22;
+            this.buttonTestAction.Text = "Test Action";
+            this.buttonTestAction.UseVisualStyleBackColor = true;
+            this.buttonTestAction.Click += new System.EventHandler(this.buttonTestAction_Click);
             // 
             // buttonDeleteAction
             // 
@@ -1007,6 +1046,7 @@
             this.iTreeViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTreeViewEvents.HideSelection = false;
             this.iTreeViewEvents.Location = new System.Drawing.Point(111, 3);
             this.iTreeViewEvents.Name = "iTreeViewEvents";
             this.iTreeViewEvents.Size = new System.Drawing.Size(638, 376);
@@ -1273,6 +1313,9 @@
         private System.Windows.Forms.TreeView iTreeViewEvents;
         private System.Windows.Forms.Button buttonDeleteAction;
         private System.Windows.Forms.Button buttonAddAction;
+        private System.Windows.Forms.Button buttonActionMoveUp;
+        private System.Windows.Forms.Button buttonActionMoveDown;
+        private System.Windows.Forms.Button buttonTestAction;
     }
 }
 
