@@ -24,33 +24,33 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace SharpDisplayClientIdle
+namespace SharpDisplayClientMessage
 {
-    public static class Program
+    static public class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static public void Main()
+        public static void Main()
         {
             //Set high priority to our process to avoid lags when rendering to our screen
-            System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.AboveNormal;
+            //System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.AboveNormal;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormClientIdle());
+            Application.Run(new FormClientMessage());
         }
 
         [STAThread]
         public static void MainWithParams(object aParams)
         {
             //Set high priority to our process to avoid lags when rendering to our screen
-            System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.AboveNormal;
+            //System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.AboveNormal;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            FormClientIdle form = new FormClientIdle();
+            FormClientMessage form = new FormClientMessage();
             form.Params = (StartParams)aParams;
             form.WindowState = FormWindowState.Minimized;
             form.ShowInTaskbar = false;
@@ -61,15 +61,17 @@ namespace SharpDisplayClientIdle
 
     public class StartParams
     {
-        public StartParams(Point aLocation, string aTopText = "", string aBottomText = "")
+        public StartParams(string aPrimaryText, string aSecondaryText ="", int aDurationInMs = 5000, uint aClientPriority = SharpLib.Display.Priorities.Foreground)
         {
-            TopText = aTopText;
-            BottomText = aBottomText;
-            Location = aLocation;
+            PrimaryText = aPrimaryText;
+            SecondaryText = aSecondaryText;
+            Priority = aClientPriority;
+            DurationInMs = aDurationInMs;
         }
 
-        public string TopText { get; set; }
-        public string BottomText { get; set; }
-        public Point Location { get; set; }
+        public string PrimaryText { get; set; }
+        public string SecondaryText { get; set; }
+        public uint Priority { get; set; }
+        public int DurationInMs { get; set; }
     }
 }

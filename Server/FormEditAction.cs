@@ -112,6 +112,12 @@ namespace SharpDisplayManager
                 CheckBox ctrl = (CheckBox)aControl;
                 aInfo.SetValue(aAction, ctrl.Checked);
             }
+            else if (aInfo.PropertyType == typeof(string))
+            {
+                TextBox ctrl = (TextBox)aControl;
+                aInfo.SetValue(aAction, ctrl.Text);
+            }
+            //TODO: add support for other types here
         }
 
         /// <summary>
@@ -173,6 +179,14 @@ namespace SharpDisplayManager
                 ctrl.Checked = (bool)aInfo.GetValue(aAction);                
                 return ctrl;
             }
+            else if (aInfo.PropertyType == typeof(string))
+            {
+                TextBox ctrl = new TextBox();
+                ctrl.AutoSize = true;
+                ctrl.Text = (string)aInfo.GetValue(aAction);
+                return ctrl;
+            }
+            //TODO: add support for other control type here
 
             return null;
         }
@@ -195,6 +209,11 @@ namespace SharpDisplayManager
             {
                 return true;
             }
+            else if (aInfo.PropertyType == typeof(string))
+            {
+                return true;
+            }
+            //TODO: add support for other type here
 
             return false;
         }

@@ -164,6 +164,7 @@
     <Compile Include="Actions\ActionCecUserControlPressed.cs" />
     <Compile Include="Actions\ActionCecDeviceStandby.cs" />
     <Compile Include="Actions\ActionCecUserControlReleased.cs" />
+    <Compile Include="Actions\ActionDisplayMessage.cs" />
     <Compile Include="CbtHook.cs" />
     <Compile Include="CecClient.cs" />
     <Compile Include="ConsumerElectronicControl.cs" />
@@ -254,6 +255,10 @@
     <ProjectReference Include="..\Clients\Idle\SharpDisplayClientIdle.csproj">
       <Project>{a76579e5-aa8d-45a3-99e1-239a5c030a78}</Project>
       <Name>SharpDisplayClientIdle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Clients\Message\SharpDisplayClientMessage.csproj">
+      <Project>{d9aad299-e97f-47e0-8e92-110f49f2b89c}</Project>
+      <Name>SharpDisplayClientMessage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Clients\Test\SharpDisplayClientTest.csproj">
       <Project>{7ee64074-8cdb-4448-b40c-81b75d6b31cd}</Project>

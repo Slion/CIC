@@ -1575,9 +1575,9 @@ namespace SharpDisplayManager
         /// </summary>
         private void StartIdleClient(string aTopText = "", string aBottomText = "")
         {
-            Thread clientThread = new Thread(SharpDisplayIdleClient.Program.MainWithParams);
-            SharpDisplayIdleClient.StartParams myParams =
-                new SharpDisplayIdleClient.StartParams(new Point(this.Right, this.Top), aTopText, aBottomText);
+            Thread clientThread = new Thread(SharpDisplayClientIdle.Program.MainWithParams);
+            SharpDisplayClientIdle.StartParams myParams =
+                new SharpDisplayClientIdle.StartParams(new Point(this.Right, this.Top), aTopText, aBottomText);
             clientThread.Start(myParams);
             BringToFront();
         }
