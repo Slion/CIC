@@ -1,7 +1,6 @@
-﻿
-namespace SharpDisplayClientIdle
+﻿namespace SharpDisplayClientMessage
 {
-    partial class FormClientIdle
+    partial class FormClientMessage
     {
         /// <summary>
         /// Required designer variable.
@@ -37,16 +36,16 @@ namespace SharpDisplayClientIdle
             // 
             this.iTimer.Tick += new System.EventHandler(this.iTimer_Tick);
             // 
-            // FormClientIdle
+            // FormClientMessage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(531, 303);
-            this.Name = "FormClientIdle";
-            this.Text = "Sharp Display Idle Client";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormClientIdle_FormClosing);
-            this.Load += new System.EventHandler(this.FormClientIdle_Load);
-            this.Shown += new System.EventHandler(this.FormClientIdle_Shown);
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "FormClientMessage";
+            this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormClientMessage_FormClosing);
+            this.Load += new System.EventHandler(this.FormClientMessage_Load);
+            this.Shown += new System.EventHandler(this.FormClientMessage_Shown);
             this.ResumeLayout(false);
 
         }
