@@ -16,7 +16,7 @@ namespace SharpLib.Ear
 
         public void Execute()
         {
-            Console.WriteLine("Executing action: " + Brief());
+            Console.WriteLine("Action executing: " + Brief());
             DoExecute();
         }
 

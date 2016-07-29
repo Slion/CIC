@@ -29,7 +29,7 @@ namespace SharpLib.Ear
 
         public override void Trigger()
         {
-            Console.WriteLine("Event '" + Name + "' triggered.");
+            Console.WriteLine("Event triggered: " + Name);
             foreach (Action action in Actions)
             {
                 action.Execute();

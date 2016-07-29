@@ -129,6 +129,7 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.buttonEventTest = new System.Windows.Forms.Button();
             this.panelDisplay.SuspendLayout();
             this.iTableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -973,6 +974,7 @@
             // 
             // tabPageEvent
             // 
+            this.tabPageEvent.Controls.Add(this.buttonEventTest);
             this.tabPageEvent.Controls.Add(this.buttonActionEdit);
             this.tabPageEvent.Controls.Add(this.buttonActionMoveUp);
             this.tabPageEvent.Controls.Add(this.buttonActionMoveDown);
@@ -1187,6 +1189,17 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
+            // buttonEventTest
+            // 
+            this.buttonEventTest.Enabled = false;
+            this.buttonEventTest.Location = new System.Drawing.Point(6, 122);
+            this.buttonEventTest.Name = "buttonEventTest";
+            this.buttonEventTest.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventTest.TabIndex = 26;
+            this.buttonEventTest.Text = "Test Event";
+            this.buttonEventTest.UseVisualStyleBackColor = true;
+            this.buttonEventTest.Click += new System.EventHandler(this.buttonEventTest_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1330,6 +1343,7 @@
         private System.Windows.Forms.Button buttonActionMoveDown;
         private System.Windows.Forms.Button buttonActionTest;
         private System.Windows.Forms.Button buttonActionEdit;
+        private System.Windows.Forms.Button buttonEventTest;
     }
 }
 
