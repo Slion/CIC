@@ -110,11 +110,12 @@
             this.labelHdmiPort = new System.Windows.Forms.Label();
             this.comboBoxHdmiPort = new System.Windows.Forms.ComboBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
+            this.buttonActionEdit = new System.Windows.Forms.Button();
             this.buttonActionMoveUp = new System.Windows.Forms.Button();
             this.buttonActionMoveDown = new System.Windows.Forms.Button();
-            this.buttonTestAction = new System.Windows.Forms.Button();
-            this.buttonDeleteAction = new System.Windows.Forms.Button();
-            this.buttonAddAction = new System.Windows.Forms.Button();
+            this.buttonActionTest = new System.Windows.Forms.Button();
+            this.buttonActionDelete = new System.Windows.Forms.Button();
+            this.buttonActionAdd = new System.Windows.Forms.Button();
             this.iTreeViewEvents = new System.Windows.Forms.TreeView();
             this.tabPageApp = new System.Windows.Forms.TabPage();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
@@ -972,11 +973,12 @@
             // 
             // tabPageEvent
             // 
+            this.tabPageEvent.Controls.Add(this.buttonActionEdit);
             this.tabPageEvent.Controls.Add(this.buttonActionMoveUp);
             this.tabPageEvent.Controls.Add(this.buttonActionMoveDown);
-            this.tabPageEvent.Controls.Add(this.buttonTestAction);
-            this.tabPageEvent.Controls.Add(this.buttonDeleteAction);
-            this.tabPageEvent.Controls.Add(this.buttonAddAction);
+            this.tabPageEvent.Controls.Add(this.buttonActionTest);
+            this.tabPageEvent.Controls.Add(this.buttonActionDelete);
+            this.tabPageEvent.Controls.Add(this.buttonActionAdd);
             this.tabPageEvent.Controls.Add(this.iTreeViewEvents);
             this.tabPageEvent.Location = new System.Drawing.Point(4, 22);
             this.tabPageEvent.Name = "tabPageEvent";
@@ -985,6 +987,17 @@
             this.tabPageEvent.TabIndex = 9;
             this.tabPageEvent.Text = "Events";
             this.tabPageEvent.UseVisualStyleBackColor = true;
+            // 
+            // buttonActionEdit
+            // 
+            this.buttonActionEdit.Enabled = false;
+            this.buttonActionEdit.Location = new System.Drawing.Point(6, 35);
+            this.buttonActionEdit.Name = "buttonActionEdit";
+            this.buttonActionEdit.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionEdit.TabIndex = 25;
+            this.buttonActionEdit.Text = "Edit Action";
+            this.buttonActionEdit.UseVisualStyleBackColor = true;
+            this.buttonActionEdit.Click += new System.EventHandler(this.buttonActionEdit_Click);
             // 
             // buttonActionMoveUp
             // 
@@ -1008,38 +1021,38 @@
             this.buttonActionMoveDown.UseVisualStyleBackColor = true;
             this.buttonActionMoveDown.Click += new System.EventHandler(this.buttonActionMoveDown_Click);
             // 
-            // buttonTestAction
+            // buttonActionTest
             // 
-            this.buttonTestAction.Enabled = false;
-            this.buttonTestAction.Location = new System.Drawing.Point(6, 64);
-            this.buttonTestAction.Name = "buttonTestAction";
-            this.buttonTestAction.Size = new System.Drawing.Size(96, 23);
-            this.buttonTestAction.TabIndex = 22;
-            this.buttonTestAction.Text = "Test Action";
-            this.buttonTestAction.UseVisualStyleBackColor = true;
-            this.buttonTestAction.Click += new System.EventHandler(this.buttonTestAction_Click);
+            this.buttonActionTest.Enabled = false;
+            this.buttonActionTest.Location = new System.Drawing.Point(6, 93);
+            this.buttonActionTest.Name = "buttonActionTest";
+            this.buttonActionTest.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionTest.TabIndex = 22;
+            this.buttonActionTest.Text = "Test Action";
+            this.buttonActionTest.UseVisualStyleBackColor = true;
+            this.buttonActionTest.Click += new System.EventHandler(this.buttonActionTest_Click);
             // 
-            // buttonDeleteAction
+            // buttonActionDelete
             // 
-            this.buttonDeleteAction.Enabled = false;
-            this.buttonDeleteAction.Location = new System.Drawing.Point(6, 35);
-            this.buttonDeleteAction.Name = "buttonDeleteAction";
-            this.buttonDeleteAction.Size = new System.Drawing.Size(96, 23);
-            this.buttonDeleteAction.TabIndex = 21;
-            this.buttonDeleteAction.Text = "Delete Action";
-            this.buttonDeleteAction.UseVisualStyleBackColor = true;
-            this.buttonDeleteAction.Click += new System.EventHandler(this.buttonDeleteAction_Click);
+            this.buttonActionDelete.Enabled = false;
+            this.buttonActionDelete.Location = new System.Drawing.Point(6, 64);
+            this.buttonActionDelete.Name = "buttonActionDelete";
+            this.buttonActionDelete.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionDelete.TabIndex = 21;
+            this.buttonActionDelete.Text = "Delete Action";
+            this.buttonActionDelete.UseVisualStyleBackColor = true;
+            this.buttonActionDelete.Click += new System.EventHandler(this.buttonActionDelete_Click);
             // 
-            // buttonAddAction
+            // buttonActionAdd
             // 
-            this.buttonAddAction.Enabled = false;
-            this.buttonAddAction.Location = new System.Drawing.Point(6, 6);
-            this.buttonAddAction.Name = "buttonAddAction";
-            this.buttonAddAction.Size = new System.Drawing.Size(96, 23);
-            this.buttonAddAction.TabIndex = 20;
-            this.buttonAddAction.Text = "Add Action";
-            this.buttonAddAction.UseVisualStyleBackColor = true;
-            this.buttonAddAction.Click += new System.EventHandler(this.buttonAddAction_Click);
+            this.buttonActionAdd.Enabled = false;
+            this.buttonActionAdd.Location = new System.Drawing.Point(6, 6);
+            this.buttonActionAdd.Name = "buttonActionAdd";
+            this.buttonActionAdd.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionAdd.TabIndex = 20;
+            this.buttonActionAdd.Text = "Add Action";
+            this.buttonActionAdd.UseVisualStyleBackColor = true;
+            this.buttonActionAdd.Click += new System.EventHandler(this.buttonActionAdd_Click);
             // 
             // iTreeViewEvents
             // 
@@ -1311,11 +1324,12 @@
         private System.Windows.Forms.CheckBox checkBoxCecLogNoPoll;
         private System.Windows.Forms.TabPage tabPageEvent;
         private System.Windows.Forms.TreeView iTreeViewEvents;
-        private System.Windows.Forms.Button buttonDeleteAction;
-        private System.Windows.Forms.Button buttonAddAction;
+        private System.Windows.Forms.Button buttonActionDelete;
+        private System.Windows.Forms.Button buttonActionAdd;
         private System.Windows.Forms.Button buttonActionMoveUp;
         private System.Windows.Forms.Button buttonActionMoveDown;
-        private System.Windows.Forms.Button buttonTestAction;
+        private System.Windows.Forms.Button buttonActionTest;
+        private System.Windows.Forms.Button buttonActionEdit;
     }
 }
 

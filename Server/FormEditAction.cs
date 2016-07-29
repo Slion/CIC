@@ -26,16 +26,37 @@ namespace SharpDisplayManager
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FormEditAction_Load(object sender, EventArgs e)
         {
-            //Populate registered actions
+            // Populate registered actions
             foreach (string key in ManagerEventAction.Current.ActionTypes.Keys)
             {
                 ItemActionType item = new ItemActionType(ManagerEventAction.Current.ActionTypes[key]);
                 comboBoxActionType.Items.Add(item);
             }
 
-            comboBoxActionType.SelectedIndex = 0;
+            if (Action == null)
+            {
+                // Creating new issue, select our first item
+                comboBoxActionType.SelectedIndex = 0;
+            }
+            else
+            {
+                // Editing existing issue
+                // Look up our item in our combobox 
+                foreach (ItemActionType item in comboBoxActionType.Items)
+                {
+                    if (item.Type == Action.GetType())
+                    {
+                        comboBoxActionType.SelectedItem = item;
+                    }
+                }
+            }            
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
@@ -51,8 +72,13 @@ namespace SharpDisplayManager
         private void comboBoxActionType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Instantiate an action corresponding to our type
-            Action = (SharpLib.Ear.Action)Activator.CreateInstance(((ItemActionType)comboBoxActionType.SelectedItem).Type);
-
+            Type actionType = ((ItemActionType) comboBoxActionType.SelectedItem).Type;
+            //Create another type of action only if needed
+            if (Action == null || Action.GetType() != actionType)
+            {
+                Action = (SharpLib.Ear.Action)Activator.CreateInstance(actionType);
+            }
+            
             //Create input fields
             UpdateTableLayoutPanel(Action);
         }

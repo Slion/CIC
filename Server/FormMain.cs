@@ -316,8 +316,8 @@ namespace SharpDisplayManager
         private void PopulateEventsTreeView()
         {
             //Disable action buttons
-            buttonAddAction.Enabled = false;
-            buttonDeleteAction.Enabled = false;
+            buttonActionAdd.Enabled = false;
+            buttonActionDelete.Enabled = false;
 
             Event currentEvent = CurrentEvent();
             SharpLib.Ear.Action currentAction = CurrentAction();
@@ -2780,7 +2780,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonAddAction_Click(object sender, EventArgs e)
+        private void buttonActionAdd_Click(object sender, EventArgs e)
         {
             Event selectedEvent = CurrentEvent();
             if (selectedEvent == null)
@@ -2805,7 +2805,37 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonDeleteAction_Click(object sender, EventArgs e)
+        private void buttonActionEdit_Click(object sender, EventArgs e)
+        {
+            Event selectedEvent = CurrentEvent();
+            SharpLib.Ear.Action selectedAction = CurrentAction();
+            if (selectedEvent == null || selectedAction == null)
+            {
+                //We did not find a corresponding event
+                return;
+            }
+
+            FormEditAction ea = new FormEditAction();
+            ea.Action = selectedAction;
+            int actionIndex = iTreeViewEvents.SelectedNode.Index;
+            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            if (res == DialogResult.OK)
+            {
+                //Update our action
+                selectedEvent.Actions[actionIndex]=ea.Action;
+                //Save and rebuild our event tree view
+                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Save();
+                PopulateEventsTreeView();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonActionDelete_Click(object sender, EventArgs e)
         {
 
             SharpLib.Ear.Action action = CurrentAction();
@@ -2821,35 +2851,12 @@ namespace SharpDisplayManager
             PopulateEventsTreeView();
         }
 
-        private void iTreeViewEvents_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            //Enable buttons according to selected item
-            buttonAddAction.Enabled = CurrentEvent() != null;
-
-            SharpLib.Ear.Action currentAction = CurrentAction();
-            //If an action is selected enable the following buttons
-            buttonTestAction.Enabled =
-            buttonDeleteAction.Enabled =
-            buttonActionMoveUp.Enabled =
-            buttonActionMoveDown.Enabled =
-                    currentAction != null;
-    
-            if (currentAction != null)
-            {
-                //If an action is selected enable move buttons if needed
-                buttonActionMoveUp.Enabled = iTreeViewEvents.SelectedNode.Index != 0;
-                buttonActionMoveDown.Enabled = iTreeViewEvents.SelectedNode.Index <
-                                               iTreeViewEvents.SelectedNode.Parent.Nodes.Count - 1;
-            }
-
-        }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonTestAction_Click(object sender, EventArgs e)
+        private void buttonActionTest_Click(object sender, EventArgs e)
         {
             SharpLib.Ear.Action a = CurrentAction();
             if (a != null)
@@ -2918,5 +2925,36 @@ namespace SharpDisplayManager
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
         }
+
+
+        /// <summary>
+        /// Manages events and actions buttons according to selected item in event tree.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void iTreeViewEvents_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            //Enable buttons according to selected item
+            buttonActionAdd.Enabled = CurrentEvent() != null;
+
+            SharpLib.Ear.Action currentAction = CurrentAction();
+            //If an action is selected enable the following buttons
+            buttonActionTest.Enabled =
+            buttonActionDelete.Enabled =
+            buttonActionMoveUp.Enabled =
+            buttonActionMoveDown.Enabled =
+            buttonActionEdit.Enabled = 
+                    currentAction != null;
+
+            if (currentAction != null)
+            {
+                //If an action is selected enable move buttons if needed
+                buttonActionMoveUp.Enabled = iTreeViewEvents.SelectedNode.Index != 0;
+                buttonActionMoveDown.Enabled = iTreeViewEvents.SelectedNode.Index <
+                                               iTreeViewEvents.SelectedNode.Parent.Nodes.Count - 1;
+            }
+
+        }
+
     }
 }
