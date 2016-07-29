@@ -1,6 +1,6 @@
 ﻿namespace SharpDisplayManager
 {
-    partial class MainForm
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
@@ -38,7 +38,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panelDisplay = new System.Windows.Forms.Panel();
             this.iTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
@@ -1174,7 +1174,7 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
-            // MainForm
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1187,7 +1187,7 @@
             this.Controls.Add(this.panelDisplay);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(800, 600);
-            this.Name = "MainForm";
+            this.Name = "FormMain";
             this.Text = "Sharp Display Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);

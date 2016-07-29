@@ -32,7 +32,7 @@ namespace SharpDisplayManager
     {
         //WARNING: This is assuming we have a single instance of our program.
         //That is what we want but we should enforce it somehow.
-        public static MainForm iMainForm;
+        public static FormMain iFormMain;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -70,8 +70,8 @@ namespace SharpDisplayManager
 			//
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            iMainForm = new MainForm();
-            Application.Run(iMainForm);
+            iFormMain = new FormMain();
+            Application.Run(iFormMain);
         }
 
 
