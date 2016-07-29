@@ -49,27 +49,27 @@ namespace SharpDisplay
             SessionId = OperationContext.Current.SessionId;
             ICallback callback = OperationContext.Current.GetCallbackChannel<ICallback>();
             //
-            SharpDisplayManager.Program.iMainForm.AddClientThreadSafe(SessionId,callback);
+            SharpDisplayManager.Program.iFormMain.AddClientThreadSafe(SessionId,callback);
 
         }
 
         public void Dispose()
         {
             Trace.TraceInformation("Server session closing.");
-            SharpDisplayManager.Program.iMainForm.RemoveClientThreadSafe(SessionId);
+            SharpDisplayManager.Program.iFormMain.RemoveClientThreadSafe(SessionId);
         }
 
         //
         public void SetName(string aClientName)
         {
             Name = aClientName;
-            SharpDisplayManager.Program.iMainForm.SetClientNameThreadSafe(SessionId, Name);
+            SharpDisplayManager.Program.iFormMain.SetClientNameThreadSafe(SessionId, Name);
             //Disconnect(aClientName);
 
             //Register our client and its callback interface
             //IDisplayServiceCallback callback = OperationContext.Current.GetCallbackChannel<IDisplayServiceCallback>();
-            //Program.iMainForm.iClients.Add(aClientName, callback);
-            //Program.iMainForm.treeViewClients.Nodes.Add(aClientName, aClientName);
+            //Program.iFormMain.iClients.Add(aClientName, callback);
+            //Program.iFormMain.treeViewClients.Nodes.Add(aClientName, aClientName);
             //For some reason MP still hangs on that one
             //callback.OnConnected();
         }
@@ -81,30 +81,30 @@ namespace SharpDisplay
         public void SetPriority(uint aPriority)
         {
             Priority = aPriority;
-            SharpDisplayManager.Program.iMainForm.SetClientPriorityThreadSafe(SessionId, Priority);
+            SharpDisplayManager.Program.iFormMain.SetClientPriorityThreadSafe(SessionId, Priority);
         }
 
         public void SetLayout(TableLayout aLayout)
         {
-            SharpDisplayManager.Program.iMainForm.SetClientLayoutThreadSafe(SessionId, aLayout);
+            SharpDisplayManager.Program.iFormMain.SetClientLayoutThreadSafe(SessionId, aLayout);
         }
 
         //
         public void SetField(DataField aField)
         {
-            SharpDisplayManager.Program.iMainForm.SetClientFieldThreadSafe(SessionId, aField);
+            SharpDisplayManager.Program.iFormMain.SetClientFieldThreadSafe(SessionId, aField);
         }
 
         //From IDisplayService
         public void SetFields(System.Collections.Generic.IList<DataField> aFields)
         {
-            SharpDisplayManager.Program.iMainForm.SetClientFieldsThreadSafe(SessionId, aFields);
+            SharpDisplayManager.Program.iFormMain.SetClientFieldsThreadSafe(SessionId, aFields);
         }
 
         ///
         public int ClientCount()
         {
-            return SharpDisplayManager.Program.iMainForm.iClients.Count;
+            return SharpDisplayManager.Program.iFormMain.iClients.Count;
         }
 
 

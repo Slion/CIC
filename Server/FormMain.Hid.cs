@@ -19,7 +19,7 @@ namespace SharpDisplayManager
     /// Implement handling of HID input reports notably to be able to launch an application using the Green Start button from IR remotes.
     /// </summary>
     [System.ComponentModel.DesignerCategory("Code")]
-    public class MainFormHid : Form
+    public class FormMainHid : Form
     {
         [System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint = "SwitchToThisWindow")]
         public static extern void SwitchToThisWindow([System.Runtime.InteropServices.InAttribute()] System.IntPtr hwnd, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fUnknown);
@@ -319,7 +319,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void HandleEject()
         {
-            string drive = ((MainForm)this).OpticalDriveToEject();
+            string drive = ((FormMain)this).OpticalDriveToEject();
             if (drive.Length!=2)
             {
                 //Not a proper drive spec.

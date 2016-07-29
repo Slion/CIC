@@ -78,7 +78,7 @@ namespace SharpDisplayManager
     /// Our Display manager main form
     /// </summary>
     [System.ComponentModel.DesignerCategory("Form")]
-    public partial class MainForm : MainFormHid, IMMNotificationClient
+    public partial class FormMain : FormMainHid, IMMNotificationClient
     {
         //public ManagerEventAction iManager = new ManagerEventAction();        
         DateTime LastTickTime;
@@ -139,7 +139,7 @@ namespace SharpDisplayManager
         /// </summary>
         public event WndProcDelegate OnWndProc;
 
-        public MainForm()
+        public FormMain()
         {
             ManagerEventAction.Current = Properties.Settings.Default.Actions;
             if (ManagerEventAction.Current == null)
@@ -1536,8 +1536,8 @@ namespace SharpDisplayManager
                 foreach (var client in inactiveClients)
                 {
                     iClients.Remove(client);
-                    Program.iMainForm.iTreeViewClients.Nodes.Remove(
-                        Program.iMainForm.iTreeViewClients.Nodes.Find(client, false)[0]);
+                    Program.iFormMain.iTreeViewClients.Nodes.Remove(
+                        Program.iFormMain.iTreeViewClients.Nodes.Find(client, false)[0]);
                 }
             }
 
@@ -1669,7 +1669,7 @@ namespace SharpDisplayManager
                 //We are in the proper thread
                 //Add this session to our collection of clients
                 ClientData newClient = new ClientData(aSessionId, aCallback);
-                Program.iMainForm.iClients.Add(aSessionId, newClient);
+                Program.iFormMain.iClients.Add(aSessionId, newClient);
                 //Add this session to our UI
                 UpdateClientTreeViewNode(newClient);
             }
@@ -1710,11 +1710,11 @@ namespace SharpDisplayManager
             {
                 //We are in the proper thread
                 //Remove this session from both client collection and UI tree view
-                if (Program.iMainForm.iClients.Keys.Contains(aSessionId))
+                if (Program.iFormMain.iClients.Keys.Contains(aSessionId))
                 {
-                    Program.iMainForm.iClients.Remove(aSessionId);
-                    Program.iMainForm.iTreeViewClients.Nodes.Remove(
-                        Program.iMainForm.iTreeViewClients.Nodes.Find(aSessionId, false)[0]);
+                    Program.iFormMain.iClients.Remove(aSessionId);
+                    Program.iFormMain.iTreeViewClients.Nodes.Remove(
+                        Program.iFormMain.iTreeViewClients.Nodes.Find(aSessionId, false)[0]);
                     //Update recording status too whenever a client is removed
                     UpdateRecordingNotification();
                 }
