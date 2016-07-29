@@ -316,5 +316,10 @@ namespace SharpDisplayManager
 
         }
 
+        private void buttonTest_Click(object sender, EventArgs e)
+        {
+            FetchPropertiesValue(Action);
+            Action.Execute();
+        }
     }
 }

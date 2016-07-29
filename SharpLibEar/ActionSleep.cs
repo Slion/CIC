@@ -43,7 +43,7 @@ namespace SharpLib.Ear
         }
 
 
-        public override void DoExecute()
+        protected override void DoExecute()
         {
             Thread.Sleep(TimeoutInMilliseconds);
         }

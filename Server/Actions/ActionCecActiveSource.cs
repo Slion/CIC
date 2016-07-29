@@ -25,7 +25,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// Set the defined device type as active source.
         /// </summary>
-        public override void DoExecute()
+        protected override void DoExecute()
         {
             if (Cec.Client.Static == null)
             {

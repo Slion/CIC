@@ -12,7 +12,7 @@ namespace SharpLib.Ear
     [KnownType("DerivedTypes")]
     public abstract class Action: IComparable
     {
-        public abstract void DoExecute();
+        protected abstract void DoExecute();
 
         public void Execute()
         {

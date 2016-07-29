@@ -13,7 +13,7 @@ namespace SharpDisplayManager
     [AttributeAction(Id = "Cec.Close", Name = "CEC Close", Description = "Close CEC connection.")]
     class ActionCecClose : SharpLib.Ear.Action
     {
-        public override void DoExecute()
+        protected override void DoExecute()
         {
             if (Cec.Client.Static == null)
             {

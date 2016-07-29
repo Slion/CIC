@@ -13,7 +13,7 @@ namespace SharpDisplayManager
     [AttributeAction(Id = "Cec.InactiveSource", Name = "CEC Inactive Source", Description = "Set this CEC device as inactive source.")]
     class ActionCecInactiveSource : SharpLib.Ear.Action
     {
-        public override void DoExecute()
+        protected override void DoExecute()
         {
             if (Cec.Client.Static == null)
             {
