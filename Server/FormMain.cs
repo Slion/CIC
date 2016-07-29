@@ -2863,7 +2863,7 @@ namespace SharpDisplayManager
             SharpLib.Ear.Action a = CurrentAction();
             if (a != null)
             {
-                Console.WriteLine("Action test run");
+                Console.WriteLine("Action testing:");
                 a.Execute();
             }
             iTreeViewEvents.Focus();
@@ -2930,6 +2930,21 @@ namespace SharpDisplayManager
 
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonEventTest_Click(object sender, EventArgs e)
+        {
+            Event earEvent = CurrentEvent();
+            if (earEvent != null)
+            {
+                Console.WriteLine("Event testing:");
+                earEvent.Trigger();
+            }
+        }
+
+        /// <summary>
         /// Manages events and actions buttons according to selected item in event tree.
         /// </summary>
         /// <param name="sender"></param>
@@ -2937,7 +2952,9 @@ namespace SharpDisplayManager
         private void iTreeViewEvents_AfterSelect(object sender, TreeViewEventArgs e)
         {
             //Enable buttons according to selected item
-            buttonActionAdd.Enabled = CurrentEvent() != null;
+            buttonActionAdd.Enabled =
+            buttonEventTest.Enabled =
+                CurrentEvent() != null;
 
             SharpLib.Ear.Action currentAction = CurrentAction();
             //If an action is selected enable the following buttons
