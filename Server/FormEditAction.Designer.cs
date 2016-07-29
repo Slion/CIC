@@ -35,6 +35,7 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.iTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboBoxActionType
@@ -100,6 +101,17 @@
             this.iTableLayoutPanel.Size = new System.Drawing.Size(312, 16);
             this.iTableLayoutPanel.TabIndex = 23;
             // 
+            // buttonTest
+            // 
+            this.buttonTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTest.Location = new System.Drawing.Point(252, 72);
+            this.buttonTest.Name = "buttonTest";
+            this.buttonTest.Size = new System.Drawing.Size(75, 23);
+            this.buttonTest.TabIndex = 24;
+            this.buttonTest.Text = "Test";
+            this.buttonTest.UseVisualStyleBackColor = true;
+            this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
+            // 
             // FormEditAction
             // 
             this.AcceptButton = this.buttonOk;
@@ -109,6 +121,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(339, 107);
+            this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.iTableLayoutPanel);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
@@ -134,5 +147,6 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.TableLayoutPanel iTableLayoutPanel;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.Button buttonTest;
     }
 }

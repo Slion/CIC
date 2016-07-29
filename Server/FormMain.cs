@@ -2790,6 +2790,7 @@ namespace SharpDisplayManager
             }
 
             FormEditAction ea = new FormEditAction();
+            ea.Text = "Add action";
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
@@ -2816,6 +2817,7 @@ namespace SharpDisplayManager
             }
 
             FormEditAction ea = new FormEditAction();
+            ea.Text = "Edit action";
             ea.Action = selectedAction;
             int actionIndex = iTreeViewEvents.SelectedNode.Index;
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
