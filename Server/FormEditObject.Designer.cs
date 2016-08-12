@@ -1,6 +1,6 @@
 ﻿namespace SharpDisplayManager
 {
-    partial class FormEditAction
+    partial class FormEditObject<T>
     {
         /// <summary>
         /// Required designer variable.

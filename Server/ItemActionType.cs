@@ -10,11 +10,11 @@ namespace SharpDisplayManager
     /// <summary>
     /// Used to populate our action type combobox with friendly names
     /// </summary>
-    class ItemActionType
+    class ItemObjectType
     {
         public Type Type;
 
-        public ItemActionType(Type type)
+        public ItemObjectType(Type type)
         {
             this.Type = type;
         }
@@ -23,7 +23,7 @@ namespace SharpDisplayManager
         {
             //Get friendly action name from action attribute.
             //That we then show up in our combobox
-            return SharpLib.Utils.Reflection.GetAttribute<AttributeAction>(Type).Name;
+            return SharpLib.Utils.Reflection.GetAttribute<AttributeObject>(Type).Name;
         }
     }
 }

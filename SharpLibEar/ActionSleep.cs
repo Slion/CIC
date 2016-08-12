@@ -10,11 +10,11 @@ namespace SharpLib.Ear
     
 
     [DataContract]
-    [AttributeAction(Id = "Thread.Sleep", Name = "Sleep", Description = "Have the current thread sleep for the specified amount of milliseconds.")]
+    [AttributeObject(Id = "Thread.Sleep", Name = "Sleep", Description = "Have the current thread sleep for the specified amount of milliseconds.")]
     public class ActionSleep : Action
     {
         [DataMember]
-        [AttributeActionProperty
+        [AttributeObjectProperty
             (
                 Id = "Thread.Sleep.Timeout",
                 Name = "Timeout (ms)",

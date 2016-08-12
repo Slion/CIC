@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SharpDisplayManager
 {
     [DataContract]
-    [AttributeAction(Id = "Cec.Open", Name = "CEC Open", Description = "Open CEC connection.")]
+    [AttributeObject(Id = "Cec.Open", Name = "CEC Open", Description = "Open CEC connection.")]
     class ActionCecOpen : SharpLib.Ear.Action
     {
         protected override void DoExecute()

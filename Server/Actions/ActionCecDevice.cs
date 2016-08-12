@@ -17,7 +17,7 @@ namespace SharpDisplayManager
     public abstract class ActionCecDevice: SharpLib.Ear.Action
     {
         [DataMember]
-        [AttributeActionProperty
+        [AttributeObjectProperty
             (
             Id = "CEC.Device",
             Name = "Device",

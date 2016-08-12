@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SharpDisplayManager
 {
     [DataContract]
-    [AttributeAction(Id = "Cec.Device.Standby", Name = "CEC Device Standby", Description = "Puts on standby the specified CEC device on your HDMI bus.")]
+    [AttributeObject(Id = "Cec.Device.Standby", Name = "CEC Device Standby", Description = "Puts on standby the specified CEC device on your HDMI bus.")]
     public class ActionCecDeviceStandby : ActionCecDevice
     {
         /// <summary>

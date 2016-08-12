@@ -8,26 +8,54 @@ using System.Runtime.Serialization;
 namespace SharpLib.Ear
 {
     [DataContract]
-    public abstract class MEvent
+    [KnownType("DerivedTypes")]
+    public abstract class Event
     {
-        public string Name { get; protected set; }
-        public string Description { get; protected set; }
+        [DataMember]
+        [AttributeObjectProperty
+            (
+                Id = "Event.Enabled",
+                Name = "Enabled",
+                Description = "When enabled an event instance can be triggered."
+            )
+        ]
+        public bool Enabled { get; set; }
 
-        public abstract void Trigger();
-    };
-
-    [DataContract]
-    public abstract class Event : MEvent
-    {
         [DataMember]
         public List<Action> Actions = new List<Action>();
 
-        protected Event()
+        public string Name
         {
-           
+            //Get the name of this object attribute
+            get { return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Name; }
+            private set { }
         }
 
-        public override void Trigger()
+        public string Description
+        {
+            //Get the description of this object attribute
+            get { return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Description; }
+            private set { }
+        }
+
+
+        protected Event()
+        {
+            Enabled = true;
+        }
+
+
+        /// <summary>
+        /// Allows testing from generic edit dialog.
+        /// </summary>
+        public void Test()
+        {
+            Console.WriteLine("Event test");
+            Trigger();
+        }
+
+
+        public void Trigger()
         {
             Console.WriteLine("Event triggered: " + Name);
             foreach (Action action in Actions)
@@ -35,6 +63,15 @@ namespace SharpLib.Ear
                 action.Execute();
             }
         }
-    }
+
+        /// <summary>
+        /// So that data contract knows all our types.
+        /// </summary>
+        /// <returns></returns>
+        private static IEnumerable<Type> DerivedTypes()
+        {
+            return SharpLib.Utils.Reflection.GetDerivedTypes<Event>();
+        }
+    };
 
 }

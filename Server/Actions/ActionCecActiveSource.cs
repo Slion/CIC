@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SharpDisplayManager
 {
     [DataContract]
-    [AttributeAction(Id = "Cec.ActiveSource", Name = "CEC Active Source", Description = "Set this CEC device as active source.")]
+    [AttributeObject(Id = "Cec.ActiveSource", Name = "CEC Active Source", Description = "Set this CEC device as active source.")]
     class ActionCecActiveSource : ActionCecDeviceType
     {
         /// <summary>

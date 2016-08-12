@@ -110,6 +110,10 @@
             this.labelHdmiPort = new System.Windows.Forms.Label();
             this.comboBoxHdmiPort = new System.Windows.Forms.ComboBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
+            this.buttonEventEdit = new System.Windows.Forms.Button();
+            this.buttonEventDelete = new System.Windows.Forms.Button();
+            this.buttonEventAdd = new System.Windows.Forms.Button();
+            this.buttonEventTest = new System.Windows.Forms.Button();
             this.buttonActionEdit = new System.Windows.Forms.Button();
             this.buttonActionMoveUp = new System.Windows.Forms.Button();
             this.buttonActionMoveDown = new System.Windows.Forms.Button();
@@ -129,7 +133,6 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.buttonEventTest = new System.Windows.Forms.Button();
             this.panelDisplay.SuspendLayout();
             this.iTableLayoutPanel.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -974,6 +977,9 @@
             // 
             // tabPageEvent
             // 
+            this.tabPageEvent.Controls.Add(this.buttonEventEdit);
+            this.tabPageEvent.Controls.Add(this.buttonEventDelete);
+            this.tabPageEvent.Controls.Add(this.buttonEventAdd);
             this.tabPageEvent.Controls.Add(this.buttonEventTest);
             this.tabPageEvent.Controls.Add(this.buttonActionEdit);
             this.tabPageEvent.Controls.Add(this.buttonActionMoveUp);
@@ -990,10 +996,53 @@
             this.tabPageEvent.Text = "Events";
             this.tabPageEvent.UseVisualStyleBackColor = true;
             // 
+            // buttonEventEdit
+            // 
+            this.buttonEventEdit.Enabled = false;
+            this.buttonEventEdit.Location = new System.Drawing.Point(6, 35);
+            this.buttonEventEdit.Name = "buttonEventEdit";
+            this.buttonEventEdit.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventEdit.TabIndex = 29;
+            this.buttonEventEdit.Text = "Edit Event";
+            this.buttonEventEdit.UseVisualStyleBackColor = true;
+            this.buttonEventEdit.Click += new System.EventHandler(this.buttonEventEdit_Click);
+            // 
+            // buttonEventDelete
+            // 
+            this.buttonEventDelete.Enabled = false;
+            this.buttonEventDelete.Location = new System.Drawing.Point(6, 64);
+            this.buttonEventDelete.Name = "buttonEventDelete";
+            this.buttonEventDelete.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventDelete.TabIndex = 28;
+            this.buttonEventDelete.Text = "Delete Event";
+            this.buttonEventDelete.UseVisualStyleBackColor = true;
+            this.buttonEventDelete.Click += new System.EventHandler(this.buttonEventDelete_Click);
+            // 
+            // buttonEventAdd
+            // 
+            this.buttonEventAdd.Location = new System.Drawing.Point(6, 6);
+            this.buttonEventAdd.Name = "buttonEventAdd";
+            this.buttonEventAdd.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventAdd.TabIndex = 27;
+            this.buttonEventAdd.Text = "Add Event";
+            this.buttonEventAdd.UseVisualStyleBackColor = true;
+            this.buttonEventAdd.Click += new System.EventHandler(this.buttonEventAdd_Click);
+            // 
+            // buttonEventTest
+            // 
+            this.buttonEventTest.Enabled = false;
+            this.buttonEventTest.Location = new System.Drawing.Point(6, 93);
+            this.buttonEventTest.Name = "buttonEventTest";
+            this.buttonEventTest.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventTest.TabIndex = 26;
+            this.buttonEventTest.Text = "Test Event";
+            this.buttonEventTest.UseVisualStyleBackColor = true;
+            this.buttonEventTest.Click += new System.EventHandler(this.buttonEventTest_Click);
+            // 
             // buttonActionEdit
             // 
             this.buttonActionEdit.Enabled = false;
-            this.buttonActionEdit.Location = new System.Drawing.Point(6, 35);
+            this.buttonActionEdit.Location = new System.Drawing.Point(6, 190);
             this.buttonActionEdit.Name = "buttonActionEdit";
             this.buttonActionEdit.Size = new System.Drawing.Size(96, 23);
             this.buttonActionEdit.TabIndex = 25;
@@ -1026,7 +1075,7 @@
             // buttonActionTest
             // 
             this.buttonActionTest.Enabled = false;
-            this.buttonActionTest.Location = new System.Drawing.Point(6, 93);
+            this.buttonActionTest.Location = new System.Drawing.Point(6, 248);
             this.buttonActionTest.Name = "buttonActionTest";
             this.buttonActionTest.Size = new System.Drawing.Size(96, 23);
             this.buttonActionTest.TabIndex = 22;
@@ -1037,7 +1086,7 @@
             // buttonActionDelete
             // 
             this.buttonActionDelete.Enabled = false;
-            this.buttonActionDelete.Location = new System.Drawing.Point(6, 64);
+            this.buttonActionDelete.Location = new System.Drawing.Point(6, 219);
             this.buttonActionDelete.Name = "buttonActionDelete";
             this.buttonActionDelete.Size = new System.Drawing.Size(96, 23);
             this.buttonActionDelete.TabIndex = 21;
@@ -1048,9 +1097,9 @@
             // buttonActionAdd
             // 
             this.buttonActionAdd.Enabled = false;
-            this.buttonActionAdd.Location = new System.Drawing.Point(6, 6);
+            this.buttonActionAdd.Location = new System.Drawing.Point(6, 157);
             this.buttonActionAdd.Name = "buttonActionAdd";
-            this.buttonActionAdd.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionAdd.Size = new System.Drawing.Size(96, 27);
             this.buttonActionAdd.TabIndex = 20;
             this.buttonActionAdd.Text = "Add Action";
             this.buttonActionAdd.UseVisualStyleBackColor = true;
@@ -1067,6 +1116,7 @@
             this.iTreeViewEvents.Size = new System.Drawing.Size(638, 376);
             this.iTreeViewEvents.TabIndex = 1;
             this.iTreeViewEvents.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.iTreeViewEvents_AfterSelect);
+            this.iTreeViewEvents.Leave += new System.EventHandler(this.iTreeViewEvents_Leave);
             // 
             // tabPageApp
             // 
@@ -1188,17 +1238,6 @@
             // openFileDialog
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
-            // 
-            // buttonEventTest
-            // 
-            this.buttonEventTest.Enabled = false;
-            this.buttonEventTest.Location = new System.Drawing.Point(6, 122);
-            this.buttonEventTest.Name = "buttonEventTest";
-            this.buttonEventTest.Size = new System.Drawing.Size(96, 23);
-            this.buttonEventTest.TabIndex = 26;
-            this.buttonEventTest.Text = "Test Event";
-            this.buttonEventTest.UseVisualStyleBackColor = true;
-            this.buttonEventTest.Click += new System.EventHandler(this.buttonEventTest_Click);
             // 
             // FormMain
             // 
@@ -1344,6 +1383,9 @@
         private System.Windows.Forms.Button buttonActionTest;
         private System.Windows.Forms.Button buttonActionEdit;
         private System.Windows.Forms.Button buttonEventTest;
+        private System.Windows.Forms.Button buttonEventDelete;
+        private System.Windows.Forms.Button buttonEventAdd;
+        private System.Windows.Forms.Button buttonEventEdit;
     }
 }
 

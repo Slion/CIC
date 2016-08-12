@@ -10,7 +10,7 @@ namespace SharpLib.Ear
     /// To expose an action property thus enabling user to edit it.
     /// </summary>
     [System.AttributeUsage(System.AttributeTargets.Property)]
-    public class AttributeActionProperty : System.Attribute
+    public class AttributeObjectProperty : System.Attribute
     {
         public string Id;
         public string Name;

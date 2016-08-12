@@ -16,10 +16,16 @@ namespace SharpLib.Ear
     public class ManagerEventAction
     {
         public static ManagerEventAction Current = null;
-        public IDictionary<string, Type> ActionTypes;
-        public IDictionary<string, Event> Events;
+        //public IDictionary<string, Type> ActionTypes;
+        //public IDictionary<string, Type> EventTypes;
+
+        /// <summary>
+        /// Our events instances.
+        /// </summary>
         [DataMember]
-        public Dictionary<string, List<Action>> ActionsByEvents = new Dictionary<string, List<Action>>();
+        public List<Event> Events;
+
+
 
 
         public ManagerEventAction()
@@ -28,47 +34,30 @@ namespace SharpLib.Ear
         }
 
         /// <summary>
-        /// 
+        /// Executes after internalization took place.
         /// </summary>
         public void Init()
         {
-            //Create our list of supported actions
-            ActionTypes = Utils.Reflection.GetConcreteClassesDerivedFromByName<Action>();
-            //Create our list or support events
-            Events = Utils.Reflection.GetConcreteClassesInstanceDerivedFromByName<Event>();
-
-            if (ActionsByEvents == null)
-            {                
-                ActionsByEvents = new Dictionary<string, List<Action>>();
-            }
-
-            //Hook in loaded actions with corresponding events
-            foreach (string key in Events.Keys)
+            if (Events == null)
             {
-                Event e = Events[key];
-                if (ActionsByEvents.ContainsKey(key))
-                {
-                    //We have actions for that event, hook them in then
-                    e.Actions = ActionsByEvents[key];
-                }
-                else
-                {
-                    //We do not have actions for that event yet, create empty action list
-                    e.Actions = new List<Action>();
-                    ActionsByEvents[key] = e.Actions;
-                }
+                Events = new List<Event>();
             }
+            
         }
 
         /// <summary>
-        /// Get and event instance from its type.
+        /// 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public Event GetEvent<T>() where T : class
+        /// <param name="aEventType"></param>
+        public void TriggerEvent<T>() where T: class
         {
-            return Events[typeof(T).Name];
+            //Only trigger enabled events matching the desired type
+            foreach (Event e in Events.Where(e => e.GetType() == typeof(T) && e.Enabled))
+            {
+                e.Trigger();
+            }
         }
+
 
         /// <summary>
         /// 
@@ -76,17 +65,14 @@ namespace SharpLib.Ear
         /// <param name="aAction"></param>
         public void RemoveAction(Action aAction)
         {
-            foreach (string key in Events.Keys)
+            foreach (Event e in Events)
             {
-                Event e = Events[key];
                 if (e.Actions.Remove(aAction))
                 {
                     //We removed our action, we are done here.
                     return;
                 }
-
             }
         }
-
     }
 }

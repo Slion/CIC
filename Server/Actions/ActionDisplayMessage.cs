@@ -13,11 +13,11 @@ namespace SharpDisplayManager
 
 
     [DataContract]
-    [AttributeAction(Id = "Display.Message", Name = "Display Message", Description = "Shows a message on your internal display.")]
+    [AttributeObject(Id = "Display.Message", Name = "Display Message", Description = "Shows a message on your internal display.")]
     class ActionDisplayMessage : SharpLib.Ear.Action
     {
         [DataMember]
-        [AttributeActionProperty(
+        [AttributeObjectProperty(
             Id = "Display.Message.Duration",
             Name = "Duration (ms)",
             Description = "Specifies the number of milliseconds this message should be displayed.",
@@ -29,7 +29,7 @@ namespace SharpDisplayManager
 
 
         [DataMember]
-        [AttributeActionProperty(
+        [AttributeObjectProperty(
             Id = "Display.Message.PrimaryText",
             Name = "Primary Text",
             Description = "The primary text of this message."
@@ -37,7 +37,7 @@ namespace SharpDisplayManager
         public string PrimaryText { get; set; } = "Your message";
 
         [DataMember]
-        [AttributeActionProperty(
+        [AttributeObjectProperty(
             Id = "Display.Message.SecondaryText",
             Name = "Secondary Text",
             Description = "The secondary text of this message."

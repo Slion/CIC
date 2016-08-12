@@ -11,17 +11,19 @@ using System.Windows.Forms;
 using SharpLib.Display;
 using SharpLib.Ear;
 using System.Reflection;
+using Microsoft.VisualBasic.CompilerServices;
+using SharpLib.Utils;
 
 namespace SharpDisplayManager
 {
     /// <summary>
-    /// Action edit dialog form.
+    /// Object edit dialog form.
     /// </summary>
-    public partial class FormEditAction : Form
+    public partial class FormEditObject<T> : Form where T : class
     {
-        public SharpLib.Ear.Action Action = null;
+        public T Object = null;
 
-        public FormEditAction()
+        public FormEditObject()
         {
             InitializeComponent();
         }
@@ -34,24 +36,25 @@ namespace SharpDisplayManager
         private void FormEditAction_Load(object sender, EventArgs e)
         {
             // Populate registered actions
-            foreach (string key in ManagerEventAction.Current.ActionTypes.Keys)
+            IEnumerable < Type > types = Reflection.GetConcreteClassesDerivedFrom<T>();
+            foreach (Type type in types)
             {
-                ItemActionType item = new ItemActionType(ManagerEventAction.Current.ActionTypes[key]);
+                ItemObjectType item = new ItemObjectType(type);
                 comboBoxActionType.Items.Add(item);
             }
 
-            if (Action == null)
+            if (Object == null)
             {
                 // Creating new issue, select our first item
                 comboBoxActionType.SelectedIndex = 0;
             }
             else
             {
-                // Editing existing issue
+                // Editing existing object
                 // Look up our item in our combobox 
-                foreach (ItemActionType item in comboBoxActionType.Items)
+                foreach (ItemObjectType item in comboBoxActionType.Items)
                 {
-                    if (item.Type == Action.GetType())
+                    if (item.Type == Object.GetType())
                     {
                         comboBoxActionType.SelectedItem = item;
                     }
@@ -61,7 +64,7 @@ namespace SharpDisplayManager
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            FetchPropertiesValue(Action);
+            FetchPropertiesValue(Object);
         }
 
         private void FormEditAction_Validating(object sender, CancelEventArgs e)
@@ -72,34 +75,34 @@ namespace SharpDisplayManager
         private void comboBoxActionType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Instantiate an action corresponding to our type
-            Type actionType = ((ItemActionType) comboBoxActionType.SelectedItem).Type;
+            Type actionType = ((ItemObjectType) comboBoxActionType.SelectedItem).Type;
             //Create another type of action only if needed
-            if (Action == null || Action.GetType() != actionType)
+            if (Object == null || Object.GetType() != actionType)
             {
-                Action = (SharpLib.Ear.Action)Activator.CreateInstance(actionType);
+                Object = (T)Activator.CreateInstance(actionType);
             }
             
             //Create input fields
-            UpdateTableLayoutPanel(Action);
+            UpdateTableLayoutPanel(Object);
         }
 
 
         /// <summary>
         /// Get properties values from our generated input fields
         /// </summary>
-        private void FetchPropertiesValue(SharpLib.Ear.Action aAction)
+        private void FetchPropertiesValue(T aAction)
         {
             int ctrlIndex = 0;
             foreach (PropertyInfo pi in aAction.GetType().GetProperties())
             {
-                AttributeActionProperty[] attributes =
-                    ((AttributeActionProperty[]) pi.GetCustomAttributes(typeof(AttributeActionProperty), true));
+                AttributeObjectProperty[] attributes =
+                    ((AttributeObjectProperty[]) pi.GetCustomAttributes(typeof(AttributeObjectProperty), true));
                 if (attributes.Length != 1)
                 {
                     continue;
                 }
 
-                AttributeActionProperty attribute = attributes[0];
+                AttributeObjectProperty attribute = attributes[0];
 
                 if (!IsPropertyTypeSupported(pi))
                 {
@@ -116,7 +119,7 @@ namespace SharpDisplayManager
         /// Extend this function to support reading new types of properties.
         /// </summary>
         /// <param name="aAction"></param>
-        private void GetPropertyValueFromControl(Control aControl, PropertyInfo aInfo, SharpLib.Ear.Action aAction)
+        private void GetPropertyValueFromControl(Control aControl, PropertyInfo aInfo, T aAction)
         {
             if (aInfo.PropertyType == typeof(int))
             {
@@ -151,7 +154,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aInfo"></param>
         /// <param name="action"></param>
-        private Control CreateControlForProperty(PropertyInfo aInfo, AttributeActionProperty aAttribute, SharpLib.Ear.Action aAction)
+        private Control CreateControlForProperty(PropertyInfo aInfo, AttributeObjectProperty aAttribute, T aAction)
         {
             if (aInfo.PropertyType == typeof(int))
             {
@@ -250,7 +253,7 @@ namespace SharpDisplayManager
         /// Fields must be specified by rows from the left.
         /// </summary>
         /// <param name="aLayout"></param>
-        private void UpdateTableLayoutPanel(SharpLib.Ear.Action aAction)
+        private void UpdateTableLayoutPanel(T aAction)
         {
             toolTip.RemoveAll();
             //Debug.Print("UpdateTableLayoutPanel")
@@ -273,18 +276,18 @@ namespace SharpDisplayManager
             }
             
             //IEnumerable<PropertyInfo> properties = aAction.GetType().GetProperties().Where(
-            //    prop => Attribute.IsDefined(prop, typeof(AttributeActionProperty)));
+            //    prop => Attribute.IsDefined(prop, typeof(AttributeObjectProperty)));
 
 
             foreach (PropertyInfo pi in aAction.GetType().GetProperties())
             {
-                AttributeActionProperty[] attributes = ((AttributeActionProperty[])pi.GetCustomAttributes(typeof(AttributeActionProperty), true));
+                AttributeObjectProperty[] attributes = ((AttributeObjectProperty[])pi.GetCustomAttributes(typeof(AttributeObjectProperty), true));
                 if (attributes.Length != 1)
                 {
                     continue;
                 }
 
-                AttributeActionProperty attribute = attributes[0];
+                AttributeObjectProperty attribute = attributes[0];
 
                 //Before anything we need to check if that kind of property is supported by our UI
                 //Create the editor
@@ -318,8 +321,15 @@ namespace SharpDisplayManager
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
-            FetchPropertiesValue(Action);
-            Action.Execute();
+            FetchPropertiesValue(Object);
+
+            //If our object has a test method with no parameters just run it then
+            MethodInfo info = Object.GetType().GetMethod("Test");
+            if ( info != null && info.GetParameters().Length==0)
+            {
+                info.Invoke(Object,null);
+            }
+
         }
     }
 }

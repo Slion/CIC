@@ -11,7 +11,7 @@ namespace SharpLib.Ear
     /// For action class to define name and description.
     /// </summary>
     [System.AttributeUsage(System.AttributeTargets.Class)]
-    public class AttributeAction : System.Attribute
+    public class AttributeObject : System.Attribute
     {
         public string Id;
         public string Name;

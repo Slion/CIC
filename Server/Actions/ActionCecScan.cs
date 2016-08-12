@@ -11,7 +11,7 @@ namespace SharpDisplayManager
 {
 
     [DataContract]
-    [AttributeAction(Id = "Cec.Scan", Name = "CEC Scan", Description = "Scan devices on your CEC HDMI network.")]
+    [AttributeObject(Id = "Cec.Scan", Name = "CEC Scan", Description = "Scan devices on your CEC HDMI network.")]
     class ActionCecScan : SharpLib.Ear.Action
     {
         protected override void DoExecute()
