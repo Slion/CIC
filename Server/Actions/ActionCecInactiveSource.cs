@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SharpDisplayManager
 {
     [DataContract]
-    [AttributeAction(Id = "Cec.InactiveSource", Name = "CEC Inactive Source", Description = "Set this CEC device as inactive source.")]
+    [AttributeObject(Id = "Cec.InactiveSource", Name = "CEC Inactive Source", Description = "Set this CEC device as inactive source.")]
     class ActionCecInactiveSource : SharpLib.Ear.Action
     {
         protected override void DoExecute()

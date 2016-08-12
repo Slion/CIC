@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SharpDisplayManager
 {
     [DataContract]
-    [AttributeAction(Id = "Cec.Device.PowerOn", Name = "CEC Device Power On", Description = "Turns on the specified CEC device on your HDMI bus.")]
+    [AttributeObject(Id = "Cec.Device.PowerOn", Name = "CEC Device Power On", Description = "Turns on the specified CEC device on your HDMI bus.")]
     public class ActionCecDevicePowerOn : ActionCecDevice
     {
         /// <summary>

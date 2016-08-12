@@ -14,7 +14,7 @@ namespace SharpDisplayManager
     /// Send a user key press event to the given CEC device.
     /// </summary>
     [DataContract]
-    [AttributeAction(Id = "Cec.UserControlPressed", Name = "CEC User Control Pressed", Description = "Send user control code to defined CEC device.")]
+    [AttributeObject(Id = "Cec.UserControlPressed", Name = "CEC User Control Pressed", Description = "Send user control code to defined CEC device.")]
     public class ActionCecUserControlPressed : ActionCecDevice
     {
 
@@ -24,7 +24,7 @@ namespace SharpDisplayManager
         }
 
         [DataMember]
-        [AttributeActionProperty(
+        [AttributeObjectProperty(
         Id = "Cec.UserControlPressed.Code",
         Name = "Code",
         Description = "The key code used by this action."
@@ -32,7 +32,7 @@ namespace SharpDisplayManager
         public CecUserControlCode Code { get; set; }
 
         [DataMember]
-        [AttributeActionProperty(
+        [AttributeObjectProperty(
         Id = "Cec.UserControlPressed.Wait",
         Name = "Wait",
         Description = "Wait for that command."

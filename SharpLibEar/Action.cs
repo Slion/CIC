@@ -14,6 +14,15 @@ namespace SharpLib.Ear
     {
         protected abstract void DoExecute();
 
+        /// <summary>
+        /// Allows testing from generic edit dialog.
+        /// </summary>
+        public void Test()
+        {
+            Console.WriteLine("Action test");
+            Execute();
+        }
+
         public void Execute()
         {
             Console.WriteLine("Action executing: " + Brief());
@@ -22,7 +31,7 @@ namespace SharpLib.Ear
 
         public string Name {
             //Get the name of this object action attribute
-            get { return Utils.Reflection.GetAttribute<AttributeAction>(GetType()).Name; }
+            get { return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Name; }
             private set { }
         }
 
@@ -34,7 +43,7 @@ namespace SharpLib.Ear
         public int CompareTo(object obj)
         {
             //Sort by action name
-            return Utils.Reflection.GetAttribute<AttributeAction>(GetType()).Name.CompareTo(obj.GetType());            
+            return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Name.CompareTo(obj.GetType());            
         }
 
         private static IEnumerable<Type> DerivedTypes()

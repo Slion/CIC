@@ -322,23 +322,33 @@ namespace SharpDisplayManager
             Event currentEvent = CurrentEvent();
             SharpLib.Ear.Action currentAction = CurrentAction();
             TreeNode treeNodeToSelect = null;
-
+            
             //Reset our tree
             iTreeViewEvents.Nodes.Clear();
             //Populate registered events
-            foreach (string key in ManagerEventAction.Current.Events.Keys)
+            foreach (SharpLib.Ear.Event e in ManagerEventAction.Current.Events)
             {
-                Event e = ManagerEventAction.Current.Events[key];
-                TreeNode eventNode = iTreeViewEvents.Nodes.Add(key, e.Name);
-                eventNode.Tag = e;
-                eventNode.Nodes.Add(key + ".Description", e.Description);
-                TreeNode actionsNodes = eventNode.Nodes.Add(key + ".Actions", "Actions");
+                //Create our event node
+                TreeNode eventNode = iTreeViewEvents.Nodes.Add(e.Name);
+                eventNode.Tag = e; //For easy access to our event
+                if (!e.Enabled)
+                {
+                    //Dim our nodes if disabled
+                    eventNode.ForeColor = Color.DimGray;
+                }
+
+                //Add event description as child node
+                eventNode.Nodes.Add(e.Description).ForeColor = eventNode.ForeColor; 
+                //Create child node for actions root
+                TreeNode actionsNodes = eventNode.Nodes.Add("Actions");
+                actionsNodes.ForeColor = eventNode.ForeColor;
 
                 // Add our actions for that event
                 foreach (SharpLib.Ear.Action a in e.Actions)
                 {
                     TreeNode actionNode = actionsNodes.Nodes.Add(a.Brief());
                     actionNode.Tag = a;
+                    actionNode.ForeColor = eventNode.ForeColor;
                     if (a == currentAction)
                     {
                         treeNodeToSelect = actionNode;
@@ -360,7 +370,14 @@ namespace SharpDisplayManager
                     iTreeViewEvents.SelectedNode.Nodes[1].Nodes[
                         iTreeViewEvents.SelectedNode.Nodes[1].GetNodeCount(false) - 1];
             }
+            else if (iTreeViewEvents.SelectedNode == null && iTreeViewEvents.Nodes.Count > 0)
+            {
+                //Still no selected node select the first one then
+                iTreeViewEvents.SelectedNode = iTreeViewEvents.Nodes[0];
+            }
 
+
+            UpdateEventView();
         }
 
         /// <summary>
@@ -2727,12 +2744,13 @@ namespace SharpDisplayManager
                 return;
             }
 
-            string key = aEvent.GetType().Name;
-            TreeNode[] res = iTreeViewEvents.Nodes.Find(key, false);
-            if (res.Length > 0)
+            foreach (TreeNode node in iTreeViewEvents.Nodes)
             {
-                iTreeViewEvents.SelectedNode = res[0];
-                iTreeViewEvents.Focus();
+                if (node.Tag == aEvent)
+                {
+                    iTreeViewEvents.SelectedNode = node;
+                    iTreeViewEvents.Focus();
+                }
             }
         }
 
@@ -2789,12 +2807,12 @@ namespace SharpDisplayManager
                 return;
             }
 
-            FormEditAction ea = new FormEditAction();
+            FormEditObject<SharpLib.Ear.Action> ea = new FormEditObject<SharpLib.Ear.Action>();
             ea.Text = "Add action";
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
-                selectedEvent.Actions.Add(ea.Action);
+                selectedEvent.Actions.Add(ea.Object);
                 Properties.Settings.Default.Actions = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
@@ -2816,15 +2834,15 @@ namespace SharpDisplayManager
                 return;
             }
 
-            FormEditAction ea = new FormEditAction();
+            FormEditObject<SharpLib.Ear.Action> ea = new FormEditObject<SharpLib.Ear.Action>();
             ea.Text = "Edit action";
-            ea.Action = selectedAction;
+            ea.Object = selectedAction;
             int actionIndex = iTreeViewEvents.SelectedNode.Index;
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
                 //Update our action
-                selectedEvent.Actions[actionIndex]=ea.Action;
+                selectedEvent.Actions[actionIndex]=ea.Object;
                 //Save and rebuild our event tree view
                 Properties.Settings.Default.Actions = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
@@ -2863,8 +2881,7 @@ namespace SharpDisplayManager
             SharpLib.Ear.Action a = CurrentAction();
             if (a != null)
             {
-                Console.WriteLine("Action testing:");
-                a.Execute();
+                a.Test();
             }
             iTreeViewEvents.Focus();
         }
@@ -2939,8 +2956,7 @@ namespace SharpDisplayManager
             Event earEvent = CurrentEvent();
             if (earEvent != null)
             {
-                Console.WriteLine("Event testing:");
-                earEvent.Trigger();
+                earEvent.Test();
             }
         }
 
@@ -2951,9 +2967,22 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void iTreeViewEvents_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            UpdateEventView();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateEventView()
+        {
+            //One can always add an event
+            buttonEventAdd.Enabled = true;
+
             //Enable buttons according to selected item
             buttonActionAdd.Enabled =
             buttonEventTest.Enabled =
+            buttonEventDelete.Enabled =
+            buttonEventEdit.Enabled =
                 CurrentEvent() != null;
 
             SharpLib.Ear.Action currentAction = CurrentAction();
@@ -2962,7 +2991,7 @@ namespace SharpDisplayManager
             buttonActionDelete.Enabled =
             buttonActionMoveUp.Enabled =
             buttonActionMoveDown.Enabled =
-            buttonActionEdit.Enabled = 
+            buttonActionEdit.Enabled =
                     currentAction != null;
 
             if (currentAction != null)
@@ -2972,8 +3001,65 @@ namespace SharpDisplayManager
                 buttonActionMoveDown.Enabled = iTreeViewEvents.SelectedNode.Index <
                                                iTreeViewEvents.SelectedNode.Parent.Nodes.Count - 1;
             }
-
         }
 
+        private void buttonEventAdd_Click(object sender, EventArgs e)
+        {
+            FormEditObject<SharpLib.Ear.Event> ea = new FormEditObject<SharpLib.Ear.Event>();
+            ea.Text = "Add event";
+            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            if (res == DialogResult.OK)
+            {
+                ManagerEventAction.Current.Events.Add(ea.Object);
+                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Save();
+                PopulateEventsTreeView();
+                SelectEvent(ea.Object);
+            }
+        }
+
+        private void buttonEventDelete_Click(object sender, EventArgs e)
+        {
+            SharpLib.Ear.Event currentEvent = CurrentEvent();
+            if (currentEvent == null)
+            {
+                //Must select action node
+                return;
+            }
+
+            ManagerEventAction.Current.Events.Remove(currentEvent);
+            Properties.Settings.Default.Actions = ManagerEventAction.Current;
+            Properties.Settings.Default.Save();
+            PopulateEventsTreeView();
+        }
+
+        private void buttonEventEdit_Click(object sender, EventArgs e)
+        {
+            Event selectedEvent = CurrentEvent();
+            if (selectedEvent == null)
+            {
+                //We did not find a corresponding event
+                return;
+            }
+
+            FormEditObject<SharpLib.Ear.Event> ea = new FormEditObject<SharpLib.Ear.Event>();
+            ea.Text = "Edit event";
+            ea.Object = selectedEvent;
+            int actionIndex = iTreeViewEvents.SelectedNode.Index;
+            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            if (res == DialogResult.OK)
+            {
+                //Save and rebuild our event tree view
+                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Save();
+                PopulateEventsTreeView();
+            }
+        }
+
+        private void iTreeViewEvents_Leave(object sender, EventArgs e)
+        {
+            //Make sure our event tree never looses focus
+            ((TreeView) sender).Focus();
+        }
     }
 }
