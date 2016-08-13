@@ -35,7 +35,7 @@
     <Setting Name="StartIdleClient" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Actions" Type="SharpLib.Ear.ManagerEventAction" Scope="User">
+    <Setting Name="Events" Type="SharpLib.Ear.ManagerEventAction" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

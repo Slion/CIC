@@ -141,12 +141,12 @@ namespace SharpDisplayManager
 
         public FormMain()
         {
-            ManagerEventAction.Current = Properties.Settings.Default.Actions;
+            ManagerEventAction.Current = Properties.Settings.Default.Events;
             if (ManagerEventAction.Current == null)
             {
                 //No actions in our settings yet
                 ManagerEventAction.Current = new ManagerEventAction();
-                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Events = ManagerEventAction.Current;
             }
             else
             {
@@ -2813,7 +2813,7 @@ namespace SharpDisplayManager
             if (res == DialogResult.OK)
             {
                 selectedEvent.Actions.Add(ea.Object);
-                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Events = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
             }
@@ -2844,7 +2844,7 @@ namespace SharpDisplayManager
                 //Update our action
                 selectedEvent.Actions[actionIndex]=ea.Object;
                 //Save and rebuild our event tree view
-                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Events = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
             }
@@ -2866,7 +2866,7 @@ namespace SharpDisplayManager
             }
 
             ManagerEventAction.Current.RemoveAction(action);
-            Properties.Settings.Default.Actions = ManagerEventAction.Current;
+            Properties.Settings.Default.Events = ManagerEventAction.Current;
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
         }
@@ -2910,7 +2910,7 @@ namespace SharpDisplayManager
             currentEvent.Actions[currentIndex-1] = movingUp;
 
             //Save and populate our tree again
-            Properties.Settings.Default.Actions = ManagerEventAction.Current;
+            Properties.Settings.Default.Events = ManagerEventAction.Current;
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
 
@@ -2940,7 +2940,7 @@ namespace SharpDisplayManager
             currentEvent.Actions[currentIndex + 1] = movingDown;
 
             //Save and populate our tree again
-            Properties.Settings.Default.Actions = ManagerEventAction.Current;
+            Properties.Settings.Default.Events = ManagerEventAction.Current;
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
         }
@@ -3011,7 +3011,7 @@ namespace SharpDisplayManager
             if (res == DialogResult.OK)
             {
                 ManagerEventAction.Current.Events.Add(ea.Object);
-                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Events = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
                 SelectEvent(ea.Object);
@@ -3028,7 +3028,7 @@ namespace SharpDisplayManager
             }
 
             ManagerEventAction.Current.Events.Remove(currentEvent);
-            Properties.Settings.Default.Actions = ManagerEventAction.Current;
+            Properties.Settings.Default.Events = ManagerEventAction.Current;
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
         }
@@ -3050,7 +3050,7 @@ namespace SharpDisplayManager
             if (res == DialogResult.OK)
             {
                 //Save and rebuild our event tree view
-                Properties.Settings.Default.Actions = ManagerEventAction.Current;
+                Properties.Settings.Default.Events = ManagerEventAction.Current;
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
             }
