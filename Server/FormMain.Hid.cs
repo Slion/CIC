@@ -45,31 +45,31 @@ namespace SharpDisplayManager
             int i = 0;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.WindowsMediaCenterRemoteControl;
             rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.WindowsMediaCenter.WindowsMediaCenterRemoteControl;
-            rid[i].dwFlags = Const.RIDEV_INPUTSINK;
+            rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
             rid[i].hwndTarget = Handle;
 
             i++;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.Consumer;
             rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.Consumer.ConsumerControl;
-            rid[i].dwFlags = Const.RIDEV_INPUTSINK;
+            rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
             rid[i].hwndTarget = Handle;
 
             i++;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.Consumer;
             rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.Consumer.Selection;
-            rid[i].dwFlags = Const.RIDEV_INPUTSINK;
+            rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
             rid[i].hwndTarget = Handle;
 
             i++;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.GenericDesktopControls;
             rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.GenericDesktop.SystemControl;
-            rid[i].dwFlags = Const.RIDEV_INPUTSINK;
+            rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
             rid[i].hwndTarget = Handle;
 
             i++;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.GenericDesktopControls;
             rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.GenericDesktop.GamePad;
-            rid[i].dwFlags = Const.RIDEV_INPUTSINK;
+            rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
             rid[i].hwndTarget = Handle;
 
             //i++;

@@ -233,6 +233,9 @@ namespace SharpDisplayManager
             OnWndProc += iCecManager.OnWndProc;
             ResetCec();
 
+            //Harmony
+            ResetHarmony();
+
             //Setup Events
             PopulateEventsTreeView();
 
@@ -1264,6 +1267,10 @@ namespace SharpDisplayManager
                 //Select "None" then.
                 comboBoxOpticalDrives.SelectedIndex = 0;
             }
+
+            //Harmony settings
+            iCheckBoxHarmonyEnabled.Checked = Properties.Settings.Default.HarmonyEnabled;
+            iTextBoxHarmonyHubAddress.Text = Properties.Settings.Default.HarmonyHubAddress;
 
             //CEC settings
             checkBoxCecEnabled.Checked = Properties.Settings.Default.CecEnabled;
@@ -2693,6 +2700,27 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
+        private async void ResetHarmony()
+        {
+            // ConnectAsync already if we have an existing session cookie
+            if (Properties.Settings.Default.HarmonyEnabled && File.Exists("SessionToken"))
+            {
+
+                iButtonHarmonyConnect.Enabled = false;
+                try
+                {
+                    await ConnectHarmonyAsync();
+                }
+                finally
+                {
+                    iButtonHarmonyConnect.Enabled = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void SetupCecLogLevel()
         {
             //Setup log level
@@ -3060,6 +3088,107 @@ namespace SharpDisplayManager
         {
             //Make sure our event tree never looses focus
             ((TreeView) sender).Focus();
+        }
+
+        private async void iButtonHarmonyConnect_Click(object sender, EventArgs e)
+        {
+            //Save hub address
+            Properties.Settings.Default.HarmonyHubAddress = iTextBoxHarmonyHubAddress.Text;
+            Properties.Settings.Default.Save();
+
+            iButtonHarmonyConnect.Enabled = false;
+            try
+            {
+                await ConnectHarmonyAsync();
+            }
+            catch (Exception)
+            {
+                iButtonHarmonyConnect.Enabled = true;
+            }
+
+        }
+
+
+        private async Task ConnectHarmonyAsync()
+        {
+            Console.WriteLine("Harmony: Connecting... ");
+            //First create our client and login
+            if (File.Exists("SessionToken"))
+            {
+                var sessionToken = File.ReadAllText("SessionToken");
+                Console.WriteLine("Harmony: Reusing token: {0}", sessionToken);
+                Program.HarmonyClient = HarmonyHub.HarmonyClient.Create(iTextBoxHarmonyHubAddress.Text, sessionToken);
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(iTextBoxLogitechPassword.Text))
+                {
+                    Console.WriteLine("Harmony: Credentials missing!");
+                    return;
+                }
+
+                Console.WriteLine("Harmony: Authenticating with Logitech servers...");
+                Program.HarmonyClient = await HarmonyHub.HarmonyClient.Create(iTextBoxHarmonyHubAddress.Text, iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
+                File.WriteAllText("SessionToken", Program.HarmonyClient.Token);
+            }
+
+            Console.WriteLine("Harmony: Fetching Harmony Hub configuration...");
+
+            //Fetch our config
+            var harmonyConfig = await Program.HarmonyClient.GetConfigAsync();
+            PopulateTreeViewHarmony(harmonyConfig);
+
+            Console.WriteLine("Harmony: Ready");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aConfig"></param>
+        private void PopulateTreeViewHarmony(HarmonyHub.Entities.Response.Config aConfig)
+        {
+            iTreeViewHarmony.Nodes.Clear();
+            //Add our devices
+            foreach (HarmonyHub.Entities.Response.Device device in aConfig.Devices)
+            {
+                TreeNode deviceNode = iTreeViewHarmony.Nodes.Add(device.Id, $"{device.Label} ({device.DeviceTypeDisplayName}/{device.Model})");
+                deviceNode.Tag = device;
+
+                foreach (HarmonyHub.Entities.Response.ControlGroup cg in device.ControlGroups)
+                {
+                    TreeNode cgNode = deviceNode.Nodes.Add(cg.Name);
+                    cgNode.Tag = cg;
+
+                    foreach (HarmonyHub.Entities.Response.Function f in cg.Functions)
+                    {
+                        TreeNode fNode = cgNode.Nodes.Add(f.Name);
+                        fNode.Tag = f;
+                    }
+                }
+            }
+
+            //treeViewConfig.ExpandAll();
+        }
+
+        private void iCheckBoxHarmonyEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.HarmonyEnabled = iCheckBoxHarmonyEnabled.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private async void iTreeViewHarmony_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            //Upon function node double click we execute it
+            var tag = e.Node.Tag as HarmonyHub.Entities.Response.Function;
+            if (tag != null && e.Node.Parent.Parent.Tag is HarmonyHub.Entities.Response.Device)
+            {
+                HarmonyHub.Entities.Response.Function f = tag;
+                HarmonyHub.Entities.Response.Device d = (HarmonyHub.Entities.Response.Device)e.Node.Parent.Parent.Tag;
+
+                Console.WriteLine($"Harmony: Sending {f.Name} to {d.Label}...");
+
+                await Program.HarmonyClient.SendCommandAsync(d.Id, f.Name);
+            }
         }
     }
 }
