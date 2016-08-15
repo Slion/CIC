@@ -164,5 +164,29 @@ namespace SharpDisplayManager.Properties {
                 this["Events"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HarmonyEnabled {
+            get {
+                return ((bool)(this["HarmonyEnabled"]));
+            }
+            set {
+                this["HarmonyEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("HarmonyHub")]
+        public string HarmonyHubAddress {
+            get {
+                return ((string)(this["HarmonyHubAddress"]));
+            }
+            set {
+                this["HarmonyHubAddress"] = value;
+            }
+        }
     }
 }
