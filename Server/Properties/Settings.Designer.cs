@@ -156,9 +156,9 @@ namespace SharpDisplayManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::SharpLib.Ear.ManagerEventAction Events {
+        public global::SharpLib.Ear.Manager Events {
             get {
-                return ((global::SharpLib.Ear.ManagerEventAction)(this["Events"]));
+                return ((global::SharpLib.Ear.Manager)(this["Events"]));
             }
             set {
                 this["Events"] = value;
