@@ -1,6 +1,4 @@
 //
-
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,13 +9,18 @@ using SharpLib.Utils;
 
 namespace SharpLib.Ear
 {
-    [TypeConverter(typeof(TypeConverterJson<ManagerEventAction>))]
+    /// <summary>
+    /// Event Action Router (Ear) is a generic and extensible framework allowing users to execute actions in response to events. 
+    /// Users can implement their own events and actions.
+    /// </summary>
+    [TypeConverter(typeof(TypeConverterJson<Manager>))]
     [DataContract]
-    public class ManagerEventAction
+    public class Manager
     {
-        public static ManagerEventAction Current = null;
-        //public IDictionary<string, Type> ActionTypes;
-        //public IDictionary<string, Type> EventTypes;
+        /// <summary>
+        /// Access the currently installed EAR manager. 
+        /// </summary>
+        public static Manager Current = null;
 
         /// <summary>
         /// Our events instances.
@@ -25,10 +28,10 @@ namespace SharpLib.Ear
         [DataMember]
         public List<Event> Events;
 
-
-
-
-        public ManagerEventAction()
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Manager()
         {
             Init();
         }
@@ -46,7 +49,7 @@ namespace SharpLib.Ear
         }
 
         /// <summary>
-        /// 
+        /// Trigger the given event.
         /// </summary>
         /// <param name="aEventType"></param>
         public void TriggerEvent<T>() where T: class
@@ -60,7 +63,7 @@ namespace SharpLib.Ear
 
 
         /// <summary>
-        /// 
+        /// Remove the specified action from the event it belongs too.
         /// </summary>
         /// <param name="aAction"></param>
         public void RemoveAction(Action aAction)

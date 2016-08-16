@@ -82,14 +82,14 @@ namespace SharpDisplayManager
         {
             MonitorPowerOn = true;
             //Trigger corresponding event thus executing associated actions
-            ManagerEventAction.Current.TriggerEvent<EventMonitorPowerOn>();            
+            Manager.Current.TriggerEvent<EventMonitorPowerOn>();            
         }
 
         private void OnMonitorPowerOff()
         {
             MonitorPowerOn = false;
             //Trigger corresponding event thus executing associated actions
-            ManagerEventAction.Current.TriggerEvent<EventMonitorPowerOff>();
+            Manager.Current.TriggerEvent<EventMonitorPowerOff>();
         }
 
         /// <summary>
