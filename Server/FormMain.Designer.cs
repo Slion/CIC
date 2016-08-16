@@ -297,13 +297,15 @@
             // 
             this.iCheckBoxStartIdleClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.iCheckBoxStartIdleClient.AutoSize = true;
+            this.iCheckBoxStartIdleClient.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartIdleClient;
+            this.iCheckBoxStartIdleClient.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.iCheckBoxStartIdleClient.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartIdleClient", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 340);
             this.iCheckBoxStartIdleClient.Name = "iCheckBoxStartIdleClient";
             this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(145, 17);
             this.iCheckBoxStartIdleClient.TabIndex = 22;
             this.iCheckBoxStartIdleClient.Text = "Start idle client on startup";
             this.iCheckBoxStartIdleClient.UseVisualStyleBackColor = true;
-            this.iCheckBoxStartIdleClient.CheckedChanged += new System.EventHandler(this.checkBoxStartIdleClient_CheckedChanged);
             // 
             // iButtonStartIdleClient
             // 
@@ -456,13 +458,14 @@
             // 
             this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxConnectOnStartup.AutoSize = true;
+            this.checkBoxConnectOnStartup.Checked = global::SharpDisplayManager.Properties.Settings.Default.DisplayConnectOnStartup;
+            this.checkBoxConnectOnStartup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "DisplayConnectOnStartup", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
             this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
             this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
             this.checkBoxConnectOnStartup.TabIndex = 13;
             this.checkBoxConnectOnStartup.Text = "Connect on stratup ";
             this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
-            this.checkBoxConnectOnStartup.CheckedChanged += new System.EventHandler(this.checkBoxConnectOnStartup_CheckedChanged);
             // 
             // trackBarBrightness
             // 
@@ -950,6 +953,8 @@
             // checkBoxCecEnabled
             // 
             this.checkBoxCecEnabled.AutoSize = true;
+            this.checkBoxCecEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.CecEnabled;
+            this.checkBoxCecEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "CecEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.checkBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
             this.checkBoxCecEnabled.Name = "checkBoxCecEnabled";
             this.checkBoxCecEnabled.Size = new System.Drawing.Size(83, 17);
@@ -1009,13 +1014,14 @@
             // iCheckBoxHarmonyEnabled
             // 
             this.iCheckBoxHarmonyEnabled.AutoSize = true;
+            this.iCheckBoxHarmonyEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.HarmonyEnabled;
+            this.iCheckBoxHarmonyEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.iCheckBoxHarmonyEnabled.Location = new System.Drawing.Point(6, 6);
             this.iCheckBoxHarmonyEnabled.Name = "iCheckBoxHarmonyEnabled";
             this.iCheckBoxHarmonyEnabled.Size = new System.Drawing.Size(104, 17);
             this.iCheckBoxHarmonyEnabled.TabIndex = 22;
             this.iCheckBoxHarmonyEnabled.Text = "Enable Harmony";
             this.iCheckBoxHarmonyEnabled.UseVisualStyleBackColor = true;
-            this.iCheckBoxHarmonyEnabled.CheckedChanged += new System.EventHandler(this.iCheckBoxHarmonyEnabled_CheckedChanged);
             // 
             // iTreeViewHarmony
             // 
@@ -1255,25 +1261,27 @@
             // 
             this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxStartMinimized.AutoSize = true;
+            this.checkBoxStartMinimized.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartMinimized;
+            this.checkBoxStartMinimized.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartMinimized", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 285);
             this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
             this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
             this.checkBoxStartMinimized.TabIndex = 16;
             this.checkBoxStartMinimized.Text = "Start minimized";
             this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
-            this.checkBoxStartMinimized.CheckedChanged += new System.EventHandler(this.checkBoxStartMinimized_CheckedChanged);
             // 
             // checkBoxMinimizeToTray
             // 
             this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxMinimizeToTray.AutoSize = true;
+            this.checkBoxMinimizeToTray.Checked = global::SharpDisplayManager.Properties.Settings.Default.MinimizeToTray;
+            this.checkBoxMinimizeToTray.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(6, 308);
             this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
             this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
             this.checkBoxMinimizeToTray.TabIndex = 15;
             this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
             this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
-            this.checkBoxMinimizeToTray.CheckedChanged += new System.EventHandler(this.checkBoxMinimizeToTray_CheckedChanged);
             // 
             // checkBoxAutoStart
             // 
