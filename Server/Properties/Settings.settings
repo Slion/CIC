@@ -35,7 +35,7 @@
     <Setting Name="StartIdleClient" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Events" Type="SharpLib.Ear.Manager" Scope="User">
+    <Setting Name="EarManager" Type="SharpDisplayManager.EarManager" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="HarmonyEnabled" Type="System.Boolean" Scope="User">

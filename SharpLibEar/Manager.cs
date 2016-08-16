@@ -7,21 +7,17 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using SharpLib.Utils;
 
+
 namespace SharpLib.Ear
 {
     /// <summary>
     /// Event Action Router (Ear) is a generic and extensible framework allowing users to execute actions in response to events. 
     /// Users can implement their own events and actions.
     /// </summary>
-    [TypeConverter(typeof(TypeConverterJson<Manager>))]
     [DataContract]
+    [KnownType("DerivedTypes")]
     public class Manager
     {
-        /// <summary>
-        /// Access the currently installed EAR manager. 
-        /// </summary>
-        public static Manager Current = null;
-
         /// <summary>
         /// Our events instances.
         /// </summary>
@@ -76,6 +72,16 @@ namespace SharpLib.Ear
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Allow extending our data contract.
+        /// See KnownType above.
+        /// </summary>
+        /// <returns></returns>
+        private static IEnumerable<Type> DerivedTypes()
+        {
+            return SharpLib.Utils.Reflection.GetDerivedTypes<Manager>();
         }
     }
 }

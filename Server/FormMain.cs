@@ -141,18 +141,17 @@ namespace SharpDisplayManager
 
         public FormMain()
         {
-            Ear.Manager.Current = Properties.Settings.Default.Events;
-            if (Ear.Manager.Current == null)
+            if (Properties.Settings.Default.EarManager == null)
             {
                 //No actions in our settings yet
-                Ear.Manager.Current = new Ear.Manager();
-                Properties.Settings.Default.Events = Ear.Manager.Current;
+                Properties.Settings.Default.EarManager = new EarManager();
             }
             else
             {
-                //We loaded actions from our settings
-                //We need to hook them with corresponding events
-                Ear.Manager.Current.Init();
+                // We loaded events and actions from our settings
+                // Internalizer apparently skips constructor so we need to initialize it here
+                // Though I reckon that should only be needed when loading an empty EAR manager I guess.
+                Properties.Settings.Default.EarManager.Init();
             }
             iSkipFrameRendering = false;
             iClosing = false;
@@ -329,7 +328,7 @@ namespace SharpDisplayManager
             //Reset our tree
             iTreeViewEvents.Nodes.Clear();
             //Populate registered events
-            foreach (Ear.Event e in Ear.Manager.Current.Events)
+            foreach (Ear.Event e in Properties.Settings.Default.EarManager.Events)
             {
                 //Create our event node
                 TreeNode eventNode = iTreeViewEvents.Nodes.Add(e.Name);
@@ -1238,11 +1237,7 @@ namespace SharpDisplayManager
             CheckFontHeight();
             //Check if "run on Windows startup" is enabled
             checkBoxAutoStart.Checked = iStartupManager.Startup;
-            //
-            checkBoxConnectOnStartup.Checked = Properties.Settings.Default.DisplayConnectOnStartup;
-            checkBoxMinimizeToTray.Checked = Properties.Settings.Default.MinimizeToTray;
-            checkBoxStartMinimized.Checked = Properties.Settings.Default.StartMinimized;
-            iCheckBoxStartIdleClient.Checked = Properties.Settings.Default.StartIdleClient;
+            //            
             labelStartFileName.Text = Properties.Settings.Default.StartFileName;
 
 
@@ -1269,11 +1264,9 @@ namespace SharpDisplayManager
             }
 
             //Harmony settings
-            iCheckBoxHarmonyEnabled.Checked = Properties.Settings.Default.HarmonyEnabled;
             iTextBoxHarmonyHubAddress.Text = Properties.Settings.Default.HarmonyHubAddress;
 
             //CEC settings
-            checkBoxCecEnabled.Checked = Properties.Settings.Default.CecEnabled;
             comboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
 
             //Mini Display settings
@@ -1416,34 +1409,6 @@ namespace SharpDisplayManager
             cds.ShowBorders = checkBoxShowBorders.Checked;
             Properties.Settings.Default.Save();
             CheckFontHeight();
-        }
-
-        private void checkBoxConnectOnStartup_CheckedChanged(object sender, EventArgs e)
-        {
-            //Save our connect on startup setting
-            Properties.Settings.Default.DisplayConnectOnStartup = checkBoxConnectOnStartup.Checked;
-            Properties.Settings.Default.Save();
-        }
-
-        private void checkBoxMinimizeToTray_CheckedChanged(object sender, EventArgs e)
-        {
-            //Save our "Minimize to tray" setting
-            Properties.Settings.Default.MinimizeToTray = checkBoxMinimizeToTray.Checked;
-            Properties.Settings.Default.Save();
-
-        }
-
-        private void checkBoxStartMinimized_CheckedChanged(object sender, EventArgs e)
-        {
-            //Save our "Start minimized" setting
-            Properties.Settings.Default.StartMinimized = checkBoxStartMinimized.Checked;
-            Properties.Settings.Default.Save();
-        }
-
-        private void checkBoxStartIdleClient_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.StartIdleClient = iCheckBoxStartIdleClient.Checked;
-            Properties.Settings.Default.Save();
         }
 
         private void checkBoxAutoStart_CheckedChanged(object sender, EventArgs e)
@@ -2658,9 +2623,6 @@ namespace SharpDisplayManager
 
         private void checkBoxCecEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            //Save CEC enabled status
-            Properties.Settings.Default.CecEnabled = checkBoxCecEnabled.Checked;
-            Properties.Settings.Default.Save();
             //
             ResetCec();
         }
@@ -2840,8 +2802,7 @@ namespace SharpDisplayManager
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
-                selectedEvent.Actions.Add(ea.Object);
-                Properties.Settings.Default.Events = Ear.Manager.Current;
+                selectedEvent.Actions.Add(ea.Object);               
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
             }
@@ -2872,7 +2833,6 @@ namespace SharpDisplayManager
                 //Update our action
                 selectedEvent.Actions[actionIndex]=ea.Object;
                 //Save and rebuild our event tree view
-                Properties.Settings.Default.Events = Ear.Manager.Current;
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
             }
@@ -2893,8 +2853,7 @@ namespace SharpDisplayManager
                 return;
             }
 
-            Ear.Manager.Current.RemoveAction(action);
-            Properties.Settings.Default.Events = Ear.Manager.Current;
+            Properties.Settings.Default.EarManager.RemoveAction(action);
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
         }
@@ -2938,7 +2897,6 @@ namespace SharpDisplayManager
             currentEvent.Actions[currentIndex-1] = movingUp;
 
             //Save and populate our tree again
-            Properties.Settings.Default.Events = Ear.Manager.Current;
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
 
@@ -2968,7 +2926,6 @@ namespace SharpDisplayManager
             currentEvent.Actions[currentIndex + 1] = movingDown;
 
             //Save and populate our tree again
-            Properties.Settings.Default.Events = Ear.Manager.Current;
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
         }
@@ -3038,8 +2995,7 @@ namespace SharpDisplayManager
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
-                Ear.Manager.Current.Events.Add(ea.Object);
-                Properties.Settings.Default.Events = Ear.Manager.Current;
+                Properties.Settings.Default.EarManager.Events.Add(ea.Object);
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
                 SelectEvent(ea.Object);
@@ -3055,8 +3011,7 @@ namespace SharpDisplayManager
                 return;
             }
 
-            Ear.Manager.Current.Events.Remove(currentEvent);
-            Properties.Settings.Default.Events = Ear.Manager.Current;
+            Properties.Settings.Default.EarManager.Events.Remove(currentEvent);
             Properties.Settings.Default.Save();
             PopulateEventsTreeView();
         }
@@ -3078,7 +3033,6 @@ namespace SharpDisplayManager
             if (res == DialogResult.OK)
             {
                 //Save and rebuild our event tree view
-                Properties.Settings.Default.Events = Ear.Manager.Current;
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
             }
@@ -3168,12 +3122,6 @@ namespace SharpDisplayManager
             }
 
             //treeViewConfig.ExpandAll();
-        }
-
-        private void iCheckBoxHarmonyEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.HarmonyEnabled = iCheckBoxHarmonyEnabled.Checked;
-            Properties.Settings.Default.Save();
         }
 
         private async void iTreeViewHarmony_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)

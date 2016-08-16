@@ -17,6 +17,8 @@
 // along with SharpDisplayManager.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using System;
+
 namespace SharpDisplayManager.Properties {
     
     
@@ -30,18 +32,34 @@ namespace SharpDisplayManager.Properties {
         public Settings() : base("default") {
             // // To add event handlers for saving and changing settings, uncomment the lines below:
             //
-            // this.SettingChanging += this.SettingChangingEventHandler;
+             this.SettingChanging += this.SettingChangingEventHandler;
             //
-            // this.SettingsSaving += this.SettingsSavingEventHandler;
+             this.SettingsSaving += this.SettingsSavingEventHandler;
             //
+            this.SettingsLoaded += this.SettingsLoadedEventHandler;
+            //
+            this.PropertyChanged += this.PropertyChangedEventHandler;
         }
-        
+
+        private void PropertyChangedEventHandler(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Console.WriteLine($"Settings: property changed {e.PropertyName}");
+            Default.Save();
+        }
+
         private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e) {
             // Add code to handle the SettingChangingEvent event here.
+            Console.WriteLine($"Settings: changing {e.SettingKey}.{e.SettingName}");
         }
-        
+
+        private void SettingsLoadedEventHandler(object sender, System.Configuration.SettingsLoadedEventArgs e)
+        {
+            Console.WriteLine($"Settings: loaded {e.Provider.ApplicationName}");
+        }
+
         private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
             // Add code to handle the SettingsSaving event here.
+            Console.WriteLine("Settings: saving");
         }
     }
 }
