@@ -38,6 +38,10 @@ namespace SharpLib.Ear
             private set { }
         }
 
+        public virtual string Brief()
+        {
+            return Name;
+        }
 
         protected Event()
         {
@@ -71,6 +75,14 @@ namespace SharpLib.Ear
         private static IEnumerable<Type> DerivedTypes()
         {
             return SharpLib.Utils.Reflection.GetDerivedTypes<Event>();
+        }
+
+        //
+        public override bool Equals(object obj)
+        {
+            //Default implementation assumes event are the same if types are the same
+            bool res=  obj.GetType() == GetType();
+            return res;
         }
     };
 

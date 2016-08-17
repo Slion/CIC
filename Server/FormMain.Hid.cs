@@ -138,11 +138,18 @@ namespace SharpDisplayManager
                             break;
                     }
                 }
-
-                //Keep this for debug when only ThinkPad keyboard is available
-                if (aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer && aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
+                else if (aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer)
                 {
-                    HandleEject();
+                    //Keep this for debug when only ThinkPad keyboard is available
+                    //if (aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
+                    //{
+                    //    HandleEject();
+                    //}
+
+                    EventHidConsumerControl e = new EventHidConsumerControl {Usage = (Hid.Usage.ConsumerControl)aHidEvent.Usages[0]};
+                    Properties.Settings.Default.EarManager.TriggerEvent(e);
+
+
                 }
 
             }

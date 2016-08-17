@@ -331,7 +331,7 @@ namespace SharpDisplayManager
             foreach (Ear.Event e in Properties.Settings.Default.EarManager.Events)
             {
                 //Create our event node
-                TreeNode eventNode = iTreeViewEvents.Nodes.Add(e.Name);
+                TreeNode eventNode = iTreeViewEvents.Nodes.Add(e.Brief());
                 eventNode.Tag = e; //For easy access to our event
                 if (!e.Enabled)
                 {
