@@ -35,7 +35,7 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void FormEditAction_Load(object sender, EventArgs e)
         {
-            // Populate registered actions
+            // Populate registered object types
             IEnumerable < Type > types = Reflection.GetConcreteClassesDerivedFrom<T>();
             foreach (Type type in types)
             {
@@ -90,10 +90,10 @@ namespace SharpDisplayManager
         /// <summary>
         /// Get properties values from our generated input fields
         /// </summary>
-        private void FetchPropertiesValue(T aAction)
+        private void FetchPropertiesValue(T aObject)
         {
             int ctrlIndex = 0;
-            foreach (PropertyInfo pi in aAction.GetType().GetProperties())
+            foreach (PropertyInfo pi in aObject.GetType().GetProperties())
             {
                 AttributeObjectProperty[] attributes =
                     ((AttributeObjectProperty[]) pi.GetCustomAttributes(typeof(AttributeObjectProperty), true));
@@ -109,7 +109,7 @@ namespace SharpDisplayManager
                     continue;
                 }
 
-                GetPropertyValueFromControl(iTableLayoutPanel.Controls[ctrlIndex+1], pi, aAction); //+1 otherwise we get the label
+                GetPropertyValueFromControl(iTableLayoutPanel.Controls[ctrlIndex+1], pi, aObject); //+1 otherwise we get the label
 
                 ctrlIndex+=2; //Jump over the label too
             }
@@ -118,13 +118,13 @@ namespace SharpDisplayManager
         /// <summary>
         /// Extend this function to support reading new types of properties.
         /// </summary>
-        /// <param name="aAction"></param>
-        private void GetPropertyValueFromControl(Control aControl, PropertyInfo aInfo, T aAction)
+        /// <param name="aObject"></param>
+        private void GetPropertyValueFromControl(Control aControl, PropertyInfo aInfo, T aObject)
         {
             if (aInfo.PropertyType == typeof(int))
             {
                 NumericUpDown ctrl=(NumericUpDown)aControl;
-                aInfo.SetValue(aAction,(int)ctrl.Value);
+                aInfo.SetValue(aObject,(int)ctrl.Value);
             }
             else if (aInfo.PropertyType.IsEnum)
             {
@@ -134,27 +134,30 @@ namespace SharpDisplayManager
                 enumValue = Enum.Parse(aInfo.PropertyType,((ComboBox)aControl).SelectedItem.ToString());
                 //enumValue = ((ComboBox)aControl).SelectedValue;
                 // Set enum value
-                aInfo.SetValue(aAction, enumValue);
+                aInfo.SetValue(aObject, enumValue);
             }
             else if (aInfo.PropertyType == typeof(bool))
             {
                 CheckBox ctrl = (CheckBox)aControl;
-                aInfo.SetValue(aAction, ctrl.Checked);
+                aInfo.SetValue(aObject, ctrl.Checked);
             }
             else if (aInfo.PropertyType == typeof(string))
             {
                 TextBox ctrl = (TextBox)aControl;
-                aInfo.SetValue(aAction, ctrl.Text);
+                aInfo.SetValue(aObject, ctrl.Text);
             }
             //TODO: add support for other types here
         }
 
+
         /// <summary>
-        /// 
+        /// Create a control for the given property.
         /// </summary>
         /// <param name="aInfo"></param>
-        /// <param name="action"></param>
-        private Control CreateControlForProperty(PropertyInfo aInfo, AttributeObjectProperty aAttribute, T aAction)
+        /// <param name="aAttribute"></param>
+        /// <param name="aObject"></param>
+        /// <returns></returns>
+        private Control CreateControlForProperty(PropertyInfo aInfo, AttributeObjectProperty aAttribute, T aObject)
         {
             if (aInfo.PropertyType == typeof(int))
             {
@@ -164,7 +167,7 @@ namespace SharpDisplayManager
                 ctrl.Minimum = Int32.Parse(aAttribute.Minimum);
                 ctrl.Maximum = Int32.Parse(aAttribute.Maximum);
                 ctrl.Increment = Int32.Parse(aAttribute.Increment);
-                ctrl.Value = (int)aInfo.GetValue(aAction);
+                ctrl.Value = (int)aInfo.GetValue(aObject);
                 return ctrl;
             }
             else if (aInfo.PropertyType.IsEnum)
@@ -194,7 +197,7 @@ namespace SharpDisplayManager
 
                 // Instantiate our enum
                 object enumValue = Activator.CreateInstance(aInfo.PropertyType);
-                enumValue = aInfo.GetValue(aAction);
+                enumValue = aInfo.GetValue(aObject);
                 //Set the current item
                 ctrl.SelectedItem = enumValue.ToString();
 
@@ -205,14 +208,14 @@ namespace SharpDisplayManager
                 CheckBox ctrl = new CheckBox();
                 ctrl.AutoSize = true;
                 ctrl.Text = aAttribute.Description;
-                ctrl.Checked = (bool)aInfo.GetValue(aAction);                
+                ctrl.Checked = (bool)aInfo.GetValue(aObject);                
                 return ctrl;
             }
             else if (aInfo.PropertyType == typeof(string))
             {
                 TextBox ctrl = new TextBox();
                 ctrl.AutoSize = true;
-                ctrl.Text = (string)aInfo.GetValue(aAction);
+                ctrl.Text = (string)aInfo.GetValue(aObject);
                 return ctrl;
             }
             //TODO: add support for other control type here
@@ -253,7 +256,7 @@ namespace SharpDisplayManager
         /// Fields must be specified by rows from the left.
         /// </summary>
         /// <param name="aLayout"></param>
-        private void UpdateTableLayoutPanel(T aAction)
+        private void UpdateTableLayoutPanel(T aObject)
         {
             toolTip.RemoveAll();
             //Debug.Print("UpdateTableLayoutPanel")
@@ -269,17 +272,17 @@ namespace SharpDisplayManager
             iTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
 
 
-            if (aAction == null)
+            if (aObject == null)
             {
                 //Just drop it
                 return;
             }
             
-            //IEnumerable<PropertyInfo> properties = aAction.GetType().GetProperties().Where(
+            //IEnumerable<PropertyInfo> properties = aObject.GetType().GetProperties().Where(
             //    prop => Attribute.IsDefined(prop, typeof(AttributeObjectProperty)));
 
 
-            foreach (PropertyInfo pi in aAction.GetType().GetProperties())
+            foreach (PropertyInfo pi in aObject.GetType().GetProperties())
             {
                 AttributeObjectProperty[] attributes = ((AttributeObjectProperty[])pi.GetCustomAttributes(typeof(AttributeObjectProperty), true));
                 if (attributes.Length != 1)
@@ -291,7 +294,7 @@ namespace SharpDisplayManager
 
                 //Before anything we need to check if that kind of property is supported by our UI
                 //Create the editor
-                Control ctrl = CreateControlForProperty(pi, attribute, aAction);
+                Control ctrl = CreateControlForProperty(pi, attribute, aObject);
                 if (ctrl == null)
                 {
                     //Property type not supported

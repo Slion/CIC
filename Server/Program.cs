@@ -20,7 +20,6 @@
 using System;
 using System.Windows.Forms;
 using System.Security.Principal;
-using HarmonyHub;
 
 
 namespace SharpDisplayManager
@@ -31,8 +30,17 @@ namespace SharpDisplayManager
         //That is what we want but we should enforce it somehow.
         public static FormMain iFormMain;
 
-        //
-        public static HarmonyClient HarmonyClient { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static HarmonyHub.Client HarmonyClient { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static HarmonyHub.Config HarmonyConfig { get; set; }
+
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

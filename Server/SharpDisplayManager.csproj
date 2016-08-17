@@ -112,7 +112,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HarmonyHub, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpLibHarmony.0.2.1\lib\net451\HarmonyHub.dll</HintPath>
+      <HintPath>..\packages\SharpLibHarmony.0.3.0\lib\net451\HarmonyHub.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="LibCecSharp, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
@@ -173,6 +173,7 @@
     <Compile Include="Actions\ActionCecDeviceStandby.cs" />
     <Compile Include="Actions\ActionCecUserControlReleased.cs" />
     <Compile Include="Actions\ActionDisplayMessage.cs" />
+    <Compile Include="Actions\ActionHarmonyCommand.cs" />
     <Compile Include="CbtHook.cs" />
     <Compile Include="CecClient.cs" />
     <Compile Include="ConsumerElectronicControl.cs" />

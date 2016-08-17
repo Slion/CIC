@@ -1,4 +1,5 @@
-﻿using SharpLib.Ear;
+﻿using Ear = SharpLib.Ear;
+using SharpLib.Ear;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +15,7 @@ namespace SharpDisplayManager
 
     [DataContract]
     [AttributeObject(Id = "Display.Message", Name = "Display Message", Description = "Shows a message on your internal display.")]
-    class ActionDisplayMessage : SharpLib.Ear.Action
+    class ActionDisplayMessage : Ear.Action
     {
         [DataMember]
         [AttributeObjectProperty(
