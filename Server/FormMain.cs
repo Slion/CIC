@@ -3065,13 +3065,23 @@ namespace SharpDisplayManager
 
         private async Task ConnectHarmonyAsync()
         {
+            if (Program.HarmonyClient != null)
+            {
+                Program.HarmonyClient.Close();
+            }
+
+            //Reset Harmony client & config
+            Program.HarmonyClient = null;
+            Program.HarmonyConfig = null;
+
             Console.WriteLine("Harmony: Connecting... ");
+            Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text);
             //First create our client and login
             if (File.Exists("SessionToken"))
             {
                 var sessionToken = File.ReadAllText("SessionToken");
                 Console.WriteLine("Harmony: Reusing token: {0}", sessionToken);
-                Program.HarmonyClient = HarmonyHub.HarmonyClient.Create(iTextBoxHarmonyHubAddress.Text, sessionToken);
+                Program.HarmonyClient.Open(sessionToken);
             }
             else
             {
@@ -3082,15 +3092,15 @@ namespace SharpDisplayManager
                 }
 
                 Console.WriteLine("Harmony: Authenticating with Logitech servers...");
-                Program.HarmonyClient = await HarmonyHub.HarmonyClient.Create(iTextBoxHarmonyHubAddress.Text, iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
+                await Program.HarmonyClient.Open(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
                 File.WriteAllText("SessionToken", Program.HarmonyClient.Token);
             }
 
             Console.WriteLine("Harmony: Fetching Harmony Hub configuration...");
 
             //Fetch our config
-            var harmonyConfig = await Program.HarmonyClient.GetConfigAsync();
-            PopulateTreeViewHarmony(harmonyConfig);
+            Program.HarmonyConfig = await Program.HarmonyClient.GetConfigAsync();
+            PopulateTreeViewHarmony(Program.HarmonyConfig);
 
             Console.WriteLine("Harmony: Ready");
         }
@@ -3099,21 +3109,21 @@ namespace SharpDisplayManager
         /// 
         /// </summary>
         /// <param name="aConfig"></param>
-        private void PopulateTreeViewHarmony(HarmonyHub.Entities.Response.Config aConfig)
+        private void PopulateTreeViewHarmony(HarmonyHub.Config aConfig)
         {
             iTreeViewHarmony.Nodes.Clear();
             //Add our devices
-            foreach (HarmonyHub.Entities.Response.Device device in aConfig.Devices)
+            foreach (HarmonyHub.Device device in aConfig.Devices)
             {
                 TreeNode deviceNode = iTreeViewHarmony.Nodes.Add(device.Id, $"{device.Label} ({device.DeviceTypeDisplayName}/{device.Model})");
                 deviceNode.Tag = device;
 
-                foreach (HarmonyHub.Entities.Response.ControlGroup cg in device.ControlGroups)
+                foreach (HarmonyHub.ControlGroup cg in device.ControlGroups)
                 {
                     TreeNode cgNode = deviceNode.Nodes.Add(cg.Name);
                     cgNode.Tag = cg;
 
-                    foreach (HarmonyHub.Entities.Response.Function f in cg.Functions)
+                    foreach (HarmonyHub.Function f in cg.Functions)
                     {
                         TreeNode fNode = cgNode.Nodes.Add(f.Name);
                         fNode.Tag = f;
@@ -3127,11 +3137,11 @@ namespace SharpDisplayManager
         private async void iTreeViewHarmony_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             //Upon function node double click we execute it
-            var tag = e.Node.Tag as HarmonyHub.Entities.Response.Function;
-            if (tag != null && e.Node.Parent.Parent.Tag is HarmonyHub.Entities.Response.Device)
+            var tag = e.Node.Tag as HarmonyHub.Function;
+            if (tag != null && e.Node.Parent.Parent.Tag is HarmonyHub.Device)
             {
-                HarmonyHub.Entities.Response.Function f = tag;
-                HarmonyHub.Entities.Response.Device d = (HarmonyHub.Entities.Response.Device)e.Node.Parent.Parent.Tag;
+                HarmonyHub.Function f = tag;
+                HarmonyHub.Device d = (HarmonyHub.Device)e.Node.Parent.Parent.Tag;
 
                 Console.WriteLine($"Harmony: Sending {f.Name} to {d.Label}...");
 
