@@ -49,6 +49,12 @@ namespace SharpLib.Ear
             return Name + ": " + Path.GetFileName(File.FullPath);
         }
 
+        public override bool IsValid()
+        {
+            // This is a valid configuration only if our file exists
+            return System.IO.File.Exists(File.FullPath);
+        }
+
         [System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint = "SwitchToThisWindow")]
         public static extern void SwitchToThisWindow([System.Runtime.InteropServices.InAttribute()] System.IntPtr hwnd, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fUnknown);
 

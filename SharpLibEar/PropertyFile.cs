@@ -15,6 +15,6 @@ namespace SharpLib.Ear
     public class PropertyFile : Object
     {
         [DataMember]
-        public string FullPath { get; set; } = "";
+        public string FullPath { get; set; } = "Select a file";
     }
 }

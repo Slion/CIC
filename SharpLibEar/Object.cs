@@ -21,7 +21,9 @@ namespace SharpLib.Ear
     [KnownType("DerivedTypes")]
     public abstract class Object: IComparable
     {
-
+        /// <summary>
+        /// Static object name.
+        /// </summary>
         public string Name
         {
             //Get the name of this object attribute
@@ -29,6 +31,9 @@ namespace SharpLib.Ear
             private set { }
         }
 
+        /// <summary>
+        /// Static object description.
+        /// </summary>
         public string Description
         {
             //Get the description of this object attribute
@@ -36,15 +41,33 @@ namespace SharpLib.Ear
             private set { }
         }
 
+        /// <summary>
+        /// Dynamic object description.
+        /// </summary>
+        /// <returns></returns>
         public virtual string Brief()
         {
             return Name;
         }
 
+        /// <summary>
+        /// Needed to make sure our sorting makes sense
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public int CompareTo(object obj)
         {
             //Sort by object name
             return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Name.CompareTo(obj.GetType());
+        }
+
+        /// <summary>
+        /// Tells whether the current object configuration is valid.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsValid()
+        {
+            return true;
         }
 
         /// <summary>

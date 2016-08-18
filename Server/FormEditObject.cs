@@ -14,13 +14,14 @@ using System.Reflection;
 using Microsoft.VisualBasic.CompilerServices;
 using SharpLib.Utils;
 using CodeProject.Dialog;
+using System.IO;
 
 namespace SharpDisplayManager
 {
     /// <summary>
     /// Object edit dialog form.
     /// </summary>
-    public partial class FormEditObject<T> : Form where T : class
+    public partial class FormEditObject<T> : Form where T: SharpLib.Ear.Object
     {
         public T Object = null;
 
@@ -52,7 +53,7 @@ namespace SharpDisplayManager
             else
             {
                 // Editing existing object
-                // Look up our item in our combobox 
+                // Look up our item in our combobox
                 foreach (ItemObjectType item in comboBoxActionType.Items)
                 {
                     if (item.Type == Object.GetType())
@@ -60,17 +61,23 @@ namespace SharpDisplayManager
                         comboBoxActionType.SelectedItem = item;
                     }
                 }
-            }            
+            }
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
             FetchPropertiesValue(Object);
+            if (!Object.IsValid())
+            {
+                // Tell for closing event to abort
+                DialogResult = DialogResult.None;
+            }
         }
 
-        private void FormEditAction_Validating(object sender, CancelEventArgs e)
-        {
 
+        private void FormEditObject_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = DialogResult == DialogResult.None;
         }
 
         private void comboBoxActionType_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,7 +89,10 @@ namespace SharpDisplayManager
             {
                 Object = (T)Activator.CreateInstance(actionType);
             }
-            
+
+            //Disable ok button if our object is not valid
+            buttonOk.Enabled = Object.IsValid();
+
             //Create input fields
             UpdateTableLayoutPanel(Object);
         }
@@ -232,6 +242,7 @@ namespace SharpDisplayManager
                 Button ctrl = new Button();
                 ctrl.AutoSize = true;
                 ctrl.Text = ((PropertyFile)aInfo.GetValue(aObject)).FullPath;
+
                 // Add lambda expression to Click event
                 ctrl.Click += (sender, e) =>
                 {
@@ -245,6 +256,8 @@ namespace SharpDisplayManager
                     {
                         // Fetch selected file name
                         ctrl.Text = ofd.FileName;
+                        //Enable Ok button then
+                        buttonOk.Enabled = Object.IsValid();
                     }
                 };
 

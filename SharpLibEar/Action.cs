@@ -25,6 +25,12 @@ namespace SharpLib.Ear
         public void Execute()
         {
             Console.WriteLine("Action executing: " + Brief());
+            if (!IsValid())
+            {
+                Console.WriteLine($"WARNING: action invalid, aborting execution.");
+                return;
+            }
+            
             DoExecute();
         }
 
