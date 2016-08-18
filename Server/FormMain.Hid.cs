@@ -40,7 +40,7 @@ namespace SharpDisplayManager
             // remote device. See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnwmt/html/remote_control.asp
             // for the vendor defined usage page.
 
-            RAWINPUTDEVICE[] rid = new RAWINPUTDEVICE[5];
+            RAWINPUTDEVICE[] rid = new RAWINPUTDEVICE[6];
 
             int i = 0;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.WindowsMediaCenterRemoteControl;
@@ -69,6 +69,12 @@ namespace SharpDisplayManager
             i++;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.GenericDesktopControls;
             rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.GenericDesktop.GamePad;
+            rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
+            rid[i].hwndTarget = Handle;
+
+            i++;
+            rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.GenericDesktopControls;
+            rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.GenericDesktop.Keyboard;
             rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
             rid[i].hwndTarget = Handle;
 
@@ -104,7 +110,7 @@ namespace SharpDisplayManager
         /// <param name="aHidEvent"></param>
         public void HandleHidEventThreadSafe(object aSender, SharpLib.Hid.Event aHidEvent)
         {
-            if (aHidEvent.IsStray)
+            if (aHidEvent.IsStray || !aHidEvent.IsValid)
             {
                 //Stray event just ignore it
                 return;
@@ -118,43 +124,67 @@ namespace SharpDisplayManager
             }
             else
             {
-                if (aHidEvent.Usages.Count == 0)
+                if (aHidEvent.IsGeneric)
                 {
-                    //No usage, nothing to do then
-                    return;
-                }
-
-                //We are in the proper thread
-                if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.WindowsMediaCenterRemoteControl)
-                {
-                    //Trigger events as needed
-                    EventHidWindowsMediaCenter e = new EventHidWindowsMediaCenter { Usage = (Hid.Usage.WindowsMediaCenterRemoteControl)aHidEvent.Usages[0] };
-                    Properties.Settings.Default.EarManager.TriggerEvent(e);
-
-                    //Old legacy hard coded stuff
-                    //TODO: remove it
-                    switch (aHidEvent.Usages[0])
+                    if (aHidEvent.Usages.Count == 0)
                     {
-                        case (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart:
-                            HandleGreenStart();
-                            break;
-                        case (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.Eject:
-                        case (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.Ext2:
-                            HandleEject();
-                            break;
+                        //No usage, nothing to do then
+                        return;
+                    }
+
+                    //We are in the proper thread
+                    if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.WindowsMediaCenterRemoteControl)
+                    {
+                        //Trigger events as needed
+                        EventHidWindowsMediaCenter e = new EventHidWindowsMediaCenter
+                        {
+                            Usage = (Hid.Usage.WindowsMediaCenterRemoteControl) aHidEvent.Usages[0]
+                        };
+                        Properties.Settings.Default.EarManager.TriggerEvent(e);
+
+                        //Old legacy hard coded stuff
+                        //TODO: remove it
+                        switch (aHidEvent.Usages[0])
+                        {
+                            case (ushort) Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart:
+                                HandleGreenStart();
+                                break;
+                            case (ushort) Hid.Usage.WindowsMediaCenterRemoteControl.Eject:
+                            case (ushort) Hid.Usage.WindowsMediaCenterRemoteControl.Ext2:
+                                HandleEject();
+                                break;
+                        }
+                    }
+                    else if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.Consumer)
+                    {
+                        //Trigger matching events if any
+                        EventHidConsumerControl e = new EventHidConsumerControl
+                        {
+                            Usage = (Hid.Usage.ConsumerControl) aHidEvent.Usages[0]
+                        };
+                        Properties.Settings.Default.EarManager.TriggerEvent(e);
+
+                        //Keep this for debug when only ThinkPad keyboard is available
+                        //if (aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
+                        //{
+                        //    HandleEject();
+                        //}
                     }
                 }
-                else if (aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer)
+                else if (aHidEvent.IsKeyboard)
                 {
-                    EventHidConsumerControl e = new EventHidConsumerControl { Usage = (Hid.Usage.ConsumerControl)aHidEvent.Usages[0] };
+                    //Trigger matching events if any
+                    EventHidKeyboard e = new EventHidKeyboard
+                    {
+                        Key = aHidEvent.VirtualKey,
+                        IsKeyUp = aHidEvent.IsButtonUp,
+                        HasModifierAlt = aHidEvent.HasModifierAlt,
+                        HasModifierControl = aHidEvent.HasModifierControl,
+                        HasModifierShift = aHidEvent.HasModifierShift,
+                        HasModifierWindows = aHidEvent.HasModifierWindows,
+                    };
                     Properties.Settings.Default.EarManager.TriggerEvent(e);
-
-                    //Keep this for debug when only ThinkPad keyboard is available
-                    //if (aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
-                    //{
-                    //    HandleEject();
-                    //}
-                }
+                }                
 
             }
         }
