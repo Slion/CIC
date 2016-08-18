@@ -112,7 +112,7 @@
             this.buttonTest.UseVisualStyleBackColor = true;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
-            // FormEditAction
+            // FormEditObject
             // 
             this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -130,10 +130,10 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FormEditAction";
+            this.Name = "FormEditObject";
             this.Text = "Edit action";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEditObject_FormClosing);
             this.Load += new System.EventHandler(this.FormEditAction_Load);
-            this.Validating += new System.ComponentModel.CancelEventHandler(this.FormEditAction_Validating);
             this.ResumeLayout(false);
             this.PerformLayout();
 
