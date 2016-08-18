@@ -8,8 +8,7 @@ using System.Runtime.Serialization;
 namespace SharpLib.Ear
 {
     [DataContract]
-    [KnownType("DerivedTypes")]
-    public abstract class Event
+    public abstract class Event : Object
     {
         [DataMember]
         [AttributeObjectProperty
@@ -24,24 +23,7 @@ namespace SharpLib.Ear
         [DataMember]
         public List<Action> Actions = new List<Action>();
 
-        public string Name
-        {
-            //Get the name of this object attribute
-            get { return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Name; }
-            private set { }
-        }
 
-        public string Description
-        {
-            //Get the description of this object attribute
-            get { return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Description; }
-            private set { }
-        }
-
-        public virtual string Brief()
-        {
-            return Name;
-        }
 
         protected Event()
         {
@@ -66,15 +48,6 @@ namespace SharpLib.Ear
             {
                 action.Execute();
             }
-        }
-
-        /// <summary>
-        /// So that data contract knows all our types.
-        /// </summary>
-        /// <returns></returns>
-        private static IEnumerable<Type> DerivedTypes()
-        {
-            return SharpLib.Utils.Reflection.GetDerivedTypes<Event>();
         }
 
         //

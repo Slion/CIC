@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="ActionCallback.cs" />
+    <Compile Include="ActionLaunchApp.cs" />
     <Compile Include="ActionSleep.cs" />
     <Compile Include="ActionType.cs" />
     <Compile Include="AttributeObject.cs" />
@@ -69,7 +70,9 @@
     <Compile Include="EventMonitorPowerOff.cs" />
     <Compile Include="EventMonitorPowerOn.cs" />
     <Compile Include="Manager.cs" />
+    <Compile Include="Object.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpLibUtils\SharpLibUtils.csproj">

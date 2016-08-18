@@ -36,7 +36,7 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override string Brief()
         {
-            string brief="";
+            string brief="Harmony: ";
 
             if (Program.HarmonyConfig != null)
             {

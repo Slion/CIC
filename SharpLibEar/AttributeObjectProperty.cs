@@ -19,6 +19,8 @@ namespace SharpLib.Ear
         public string Minimum;
         public string Maximum;
         public string Increment;
+        // For file dialog
+        public string Filter;
     }
 
 

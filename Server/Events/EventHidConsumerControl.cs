@@ -42,10 +42,14 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            EventHidConsumerControl e = (EventHidConsumerControl) obj;
-            bool res = (e != null && e.Usage == Usage);
-            return res;
-        }
+            if (obj is EventHidConsumerControl)
+            {
+                EventHidConsumerControl e = (EventHidConsumerControl)obj;
+                bool res = (e.Usage == Usage);
+                return res;
+            }
 
+            return false;
+        }
     }
 }
