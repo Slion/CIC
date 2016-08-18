@@ -127,6 +127,12 @@ namespace SharpDisplayManager
                 //We are in the proper thread
                 if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.WindowsMediaCenterRemoteControl)
                 {
+                    //Trigger events as needed
+                    EventHidWindowsMediaCenter e = new EventHidWindowsMediaCenter { Usage = (Hid.Usage.WindowsMediaCenterRemoteControl)aHidEvent.Usages[0] };
+                    Properties.Settings.Default.EarManager.TriggerEvent(e);
+
+                    //Old legacy hard coded stuff
+                    //TODO: remove it
                     switch (aHidEvent.Usages[0])
                     {
                         case (ushort)Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart:
@@ -140,16 +146,14 @@ namespace SharpDisplayManager
                 }
                 else if (aHidEvent.UsagePage == (ushort)Hid.UsagePage.Consumer)
                 {
+                    EventHidConsumerControl e = new EventHidConsumerControl { Usage = (Hid.Usage.ConsumerControl)aHidEvent.Usages[0] };
+                    Properties.Settings.Default.EarManager.TriggerEvent(e);
+
                     //Keep this for debug when only ThinkPad keyboard is available
                     //if (aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
                     //{
                     //    HandleEject();
                     //}
-
-                    EventHidConsumerControl e = new EventHidConsumerControl {Usage = (Hid.Usage.ConsumerControl)aHidEvent.Usages[0]};
-                    Properties.Settings.Default.EarManager.TriggerEvent(e);
-
-
                 }
 
             }

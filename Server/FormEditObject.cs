@@ -13,6 +13,7 @@ using SharpLib.Ear;
 using System.Reflection;
 using Microsoft.VisualBasic.CompilerServices;
 using SharpLib.Utils;
+using CodeProject.Dialog;
 
 namespace SharpDisplayManager
 {
@@ -146,6 +147,12 @@ namespace SharpDisplayManager
                 TextBox ctrl = (TextBox)aControl;
                 aInfo.SetValue(aObject, ctrl.Text);
             }
+            else if (aInfo.PropertyType == typeof(PropertyFile))
+            {
+                Button ctrl = (Button)aControl;
+                PropertyFile value = new PropertyFile {FullPath=ctrl.Text};
+                aInfo.SetValue(aObject, value);
+            }
             //TODO: add support for other types here
         }
 
@@ -218,6 +225,31 @@ namespace SharpDisplayManager
                 ctrl.Text = (string)aInfo.GetValue(aObject);
                 return ctrl;
             }
+            else if (aInfo.PropertyType == typeof(PropertyFile))
+            {
+                // We have a file property
+                // Create a button that will trigger the open file dialog to select our file.
+                Button ctrl = new Button();
+                ctrl.AutoSize = true;
+                ctrl.Text = ((PropertyFile)aInfo.GetValue(aObject)).FullPath;
+                // Add lambda expression to Click event
+                ctrl.Click += (sender, e) =>
+                {
+                    // Create open file dialog
+                    OpenFileDialog ofd = new OpenFileDialog();
+                    ofd.RestoreDirectory = true;
+                    // Use file filter specified by our property
+                    ofd.Filter = aAttribute.Filter;
+                    // Show our dialog
+                    if (DlgBox.ShowDialog(ofd) == DialogResult.OK)
+                    {
+                        // Fetch selected file name
+                        ctrl.Text = ofd.FileName;
+                    }
+                };
+
+                return ctrl;
+            }
             //TODO: add support for other control type here
 
             return null;
@@ -242,6 +274,10 @@ namespace SharpDisplayManager
                 return true;
             }
             else if (aInfo.PropertyType == typeof(string))
+            {
+                return true;
+            }
+            else if (aInfo.PropertyType == typeof(PropertyFile))
             {
                 return true;
             }
