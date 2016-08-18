@@ -62,6 +62,7 @@
     <Compile Include="Action.cs" />
     <Compile Include="ActionCallback.cs" />
     <Compile Include="ActionLaunchApp.cs" />
+    <Compile Include="ActionOpticalDriveEject.cs" />
     <Compile Include="ActionSleep.cs" />
     <Compile Include="ActionType.cs" />
     <Compile Include="AttributeObject.cs" />
