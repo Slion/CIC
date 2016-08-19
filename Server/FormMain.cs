@@ -178,9 +178,6 @@ namespace SharpDisplayManager
             //Populate device types
             PopulateDeviceTypes();
 
-            //Populate optical drives
-            PopulateOpticalDrives();
-
             //Initial status update 
             UpdateStatus();
 
@@ -645,41 +642,6 @@ namespace SharpDisplayManager
                 comboBoxDisplayType.Items.Add(Display.TypeName((MiniDisplay.Type) i));
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void PopulateOpticalDrives()
-        {
-            //Reset our list of drives
-            comboBoxOpticalDrives.Items.Clear();
-            comboBoxOpticalDrives.Items.Add("None");
-
-            //Go through each drives on our system and collected the optical ones in our list
-            DriveInfo[] allDrives = DriveInfo.GetDrives();
-            foreach (DriveInfo d in allDrives)
-            {
-                Debug.WriteLine("Drive " + d.Name);
-                Debug.WriteLine("  Drive type: {0}", d.DriveType);
-
-                if (d.DriveType == DriveType.CDRom)
-                {
-                    //This is an optical drive, add it now
-                    comboBoxOpticalDrives.Items.Add(d.Name.Substring(0, 2));
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public string OpticalDriveToEject()
-        {
-            return comboBoxOpticalDrives.SelectedItem.ToString();
-        }
-
-
 
         /// <summary>
         ///
@@ -1237,31 +1199,6 @@ namespace SharpDisplayManager
             CheckFontHeight();
             //Check if "run on Windows startup" is enabled
             checkBoxAutoStart.Checked = iStartupManager.Startup;
-            //            
-            labelStartFileName.Text = Properties.Settings.Default.StartFileName;
-
-
-            //Try find our drive in our drive list
-            int opticalDriveItemIndex = 0;
-            bool driveNotFound = true;
-            string opticalDriveToEject = Properties.Settings.Default.OpticalDriveToEject;
-            foreach (object item in comboBoxOpticalDrives.Items)
-            {
-                if (opticalDriveToEject == item.ToString())
-                {
-                    comboBoxOpticalDrives.SelectedIndex = opticalDriveItemIndex;
-                    driveNotFound = false;
-                    break;
-                }
-                opticalDriveItemIndex++;
-            }
-
-            if (driveNotFound)
-            {
-                //We could not find the drive we had saved.
-                //Select "None" then.
-                comboBoxOpticalDrives.SelectedIndex = 0;
-            }
 
             //Harmony settings
             iTextBoxHarmonyHubAddress.Text = Properties.Settings.Default.HarmonyHubAddress;
@@ -2559,39 +2496,6 @@ namespace SharpDisplayManager
             //We need to re-create our bitmap.
             iCreateBitmap = true;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonSelectFile_Click(object sender, EventArgs e)
-        {
-            //openFileDialog1.InitialDirectory = "c:\\";
-            //openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
-            //openFileDialog.FilterIndex = 1;
-            openFileDialog.RestoreDirectory = true;
-
-            if (DlgBox.ShowDialog(openFileDialog) == DialogResult.OK)
-            {
-                labelStartFileName.Text = openFileDialog.FileName;
-                Properties.Settings.Default.StartFileName = openFileDialog.FileName;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void comboBoxOpticalDrives_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Save the optical drive the user selected for ejection
-            Properties.Settings.Default.OpticalDriveToEject = comboBoxOpticalDrives.SelectedItem.ToString();
-            Properties.Settings.Default.Save();
-        }
-
 
         /// <summary>
         /// 

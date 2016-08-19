@@ -20,12 +20,6 @@
     <Setting Name="StartMinimized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="StartFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">None</Value>
-    </Setting>
-    <Setting Name="OpticalDriveToEject" Type="System.String" Scope="User">
-      <Value Profile="(Default)">None</Value>
-    </Setting>
     <Setting Name="CecEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

@@ -21,8 +21,6 @@ namespace SharpDisplayManager
     [System.ComponentModel.DesignerCategory("Code")]
     public class FormMainHid : Form
     {
-        [System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint = "SwitchToThisWindow")]
-        public static extern void SwitchToThisWindow([System.Runtime.InteropServices.InAttribute()] System.IntPtr hwnd, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fUnknown);
         //
         public delegate void OnHidEventDelegate(object aSender, Hid.Event aHidEvent);
 
@@ -141,19 +139,6 @@ namespace SharpDisplayManager
                             Usage = (Hid.Usage.WindowsMediaCenterRemoteControl) aHidEvent.Usages[0]
                         };
                         Properties.Settings.Default.EarManager.TriggerEvent(e);
-
-                        //Old legacy hard coded stuff
-                        //TODO: remove it
-                        switch (aHidEvent.Usages[0])
-                        {
-                            case (ushort) Hid.Usage.WindowsMediaCenterRemoteControl.GreenStart:
-                                HandleGreenStart();
-                                break;
-                            case (ushort) Hid.Usage.WindowsMediaCenterRemoteControl.Eject:
-                            case (ushort) Hid.Usage.WindowsMediaCenterRemoteControl.Ext2:
-                                HandleEject();
-                                break;
-                        }
                     }
                     else if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.Consumer)
                     {
@@ -163,12 +148,6 @@ namespace SharpDisplayManager
                             Usage = (Hid.Usage.ConsumerControl) aHidEvent.Usages[0]
                         };
                         Properties.Settings.Default.EarManager.TriggerEvent(e);
-
-                        //Keep this for debug when only ThinkPad keyboard is available
-                        //if (aHidEvent.Usages[0] == (ushort)Hid.Usage.ConsumerControl.ThinkPadFullscreenMagnifier)
-                        //{
-                        //    HandleEject();
-                        //}
                     }
                 }
                 else if (aHidEvent.IsKeyboard)
@@ -189,259 +168,9 @@ namespace SharpDisplayManager
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="aPrefix"></param>
-        private void CheckLastError(string aPrefix)
-        {
-            string errorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
-            Debug.WriteLine(aPrefix + Marshal.GetLastWin32Error().ToString() + ": " + errorMessage);
-        }
+    
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        private IntPtr MarshalToPointer(object data)
-        {
-            IntPtr buf = Marshal.AllocHGlobal(
-                Marshal.SizeOf(data));
-            Marshal.StructureToPtr(data,
-                buf, false);
-            return buf;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private SafeFileHandle OpenVolume(string aDriveName)
-        {
-            return Function.CreateFile("\\\\.\\" + aDriveName,
-                               SharpLib.Win32.FileAccess.GENERIC_READ,
-                               SharpLib.Win32.FileShare.FILE_SHARE_READ | SharpLib.Win32.FileShare.FILE_SHARE_WRITE,
-                               IntPtr.Zero,
-                               CreationDisposition.OPEN_EXISTING,
-                               0,
-                               IntPtr.Zero);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="aVolume"></param>
-        /// <returns></returns>
-        private bool LockVolume(SafeFileHandle aVolume)
-        {
-            //Hope that's doing what I think it does
-            IntPtr dwBytesReturned=new IntPtr();
-            //Should not be needed but I'm not sure how to pass NULL in there.
-            OVERLAPPED overlapped=new OVERLAPPED();
-
-            int tries = 0;
-            const int KMaxTries = 100;
-            const int KSleepTime = 10;
-            bool success = false;
-
-            while (!success && tries < KMaxTries)
-            {
-                success = Function.DeviceIoControl(aVolume, Const.FSCTL_LOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
-                System.Threading.Thread.Sleep(KSleepTime);
-                tries++;
-            }
-
-            CheckLastError("Lock volume: ");
-
-            return success;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="aVolume"></param>
-        /// <returns></returns>
-        private bool DismountVolume(SafeFileHandle aVolume)
-        {
-            //Hope that's doing what I think it does
-            IntPtr dwBytesReturned = new IntPtr();
-            //Should not be needed but I'm not sure how to pass NULL in there.
-            OVERLAPPED overlapped=new OVERLAPPED();
-
-            bool res = Function.DeviceIoControl(aVolume, Const.FSCTL_DISMOUNT_VOLUME, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
-            CheckLastError("Dismount volume: ");
-            return res;
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="aVolume"></param>
-        /// <param name="aPreventRemoval"></param>
-        /// <returns></returns>
-        private bool PreventRemovalOfVolume(SafeFileHandle aVolume, bool aPreventRemoval)
-        {
-            //Hope that's doing what I think it does
-            IntPtr dwBytesReturned = new IntPtr();
-            //Should not be needed but I'm not sure how to pass NULL in there.
-            OVERLAPPED overlapped = new OVERLAPPED();
-            //
-            PREVENT_MEDIA_REMOVAL preventMediaRemoval = new PREVENT_MEDIA_REMOVAL();
-            preventMediaRemoval.PreventMediaRemoval = Convert.ToByte(aPreventRemoval);
-            IntPtr preventMediaRemovalParam = MarshalToPointer(preventMediaRemoval);
-
-            bool result = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_MEDIA_REMOVAL, preventMediaRemovalParam, Convert.ToUInt32(Marshal.SizeOf(preventMediaRemoval)), IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
-            CheckLastError("Media removal: ");
-            Marshal.FreeHGlobal(preventMediaRemovalParam);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Eject optical drive media opening the tray if any.
-        /// </summary>
-        /// <param name="aVolume"></param>
-        /// <returns></returns>
-        private bool MediaEject(SafeFileHandle aVolume)
-        {
-            //Hope that's doing what I think it does
-            IntPtr dwBytesReturned = new IntPtr();
-            //Should not be needed but I'm not sure how to pass NULL in there.
-            OVERLAPPED overlapped=new OVERLAPPED();
-
-            bool res = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_EJECT_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
-            CheckLastError("Media eject: ");
-            return res;
-        }
-
-        /// <summary>
-        /// Close an optical drive tray.
-        /// </summary>
-        /// <param name="aVolume"></param>
-        /// <returns></returns>
-        private bool MediaLoad(SafeFileHandle aVolume)
-        {
-            //Hope that's doing what I think it does
-            IntPtr dwBytesReturned = new IntPtr();
-            //Should not be needed but I'm not sure how to pass NULL in there.
-            OVERLAPPED overlapped=new OVERLAPPED();
-
-            bool res = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_LOAD_MEDIA, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
-            CheckLastError("Media load: ");
-            return res;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="aVolume"></param>
-        /// <returns></returns>
-        private bool StorageCheckVerify(SafeFileHandle aVolume)
-        {
-            //Hope that's doing what I think it does
-            IntPtr dwBytesReturned = new IntPtr();
-            //Should not be needed but I'm not sure how to pass NULL in there.
-            OVERLAPPED overlapped = new OVERLAPPED();
-
-            bool res = Function.DeviceIoControl(aVolume, Const.IOCTL_STORAGE_CHECK_VERIFY2, IntPtr.Zero, 0, IntPtr.Zero, 0, dwBytesReturned, ref overlapped);
-
-            CheckLastError("Check verify: ");
-
-            return res;
-        }        
-        
-
-
-        /// <summary>
-        /// Perform media ejection.
-        /// </summary>
-        private void HandleEject()
-        {
-            string drive = ((FormMain)this).OpticalDriveToEject();
-            if (drive.Length!=2)
-            {
-                //Not a proper drive spec.
-                //Probably 'None' selected.
-                return;
-            }
-
-            SafeFileHandle handle = OpenVolume(drive);
-            if (handle.IsInvalid)
-            {
-                CheckLastError("ERROR: Failed to open volume: ");
-                return;
-            }
-
-            if (LockVolume(handle) && DismountVolume(handle))
-            {
-                Debug.WriteLine("Volume was dismounted.");
-
-                if (PreventRemovalOfVolume(handle,false))
-                {
-                    //StorageCheckVerify(handle);
-
-                    DateTime before;
-                    before = DateTime.Now;
-                    bool ejectSuccess = MediaEject(handle);
-                    double ms = (DateTime.Now - before).TotalMilliseconds;
-
-                    //We assume that if it take more than a certain time to for eject to execute it means we actually ejected.
-                    //If our eject completes too rapidly we assume the tray is already open and we will try to close it. 
-                    if (ejectSuccess && ms > 100)
-                    {
-                        Debug.WriteLine("Media was ejected");
-                    }
-                    else if (MediaLoad(handle))
-                    {
-                        Debug.WriteLine("Media was loaded");
-                    }                    
-                }
-            }
-            else
-            {
-                Debug.WriteLine("Volume lock or dismount failed.");
-            }
-
-            //This is needed to make sure we can open the volume next time around
-            handle.Dispose();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void HandleGreenStart()
-        {
-            //First check if the process we want to launch already exists
-            string procName = Path.GetFileNameWithoutExtension(Properties.Settings.Default.StartFileName);
-            Process[] existingProcesses = Process.GetProcessesByName(procName);
-            if (existingProcesses == null || existingProcesses.Length == 0)
-            {
-                // Process do not exists just try to launch it
-                ProcessStartInfo start = new ProcessStartInfo();
-                // Enter in the command line arguments, everything you would enter after the executable name itself
-                //start.Arguments = arguments; 
-                // Enter the executable to run, including the complete path
-                start.FileName = Properties.Settings.Default.StartFileName;
-                start.WindowStyle = ProcessWindowStyle.Normal;
-                start.CreateNoWindow = true;
-                start.UseShellExecute = true;
-                // Run the external process & wait for it to finish
-                Process proc = Process.Start(start);
-
-                //SL: We could have used that too
-                //Shell32.Shell shell = new Shell32.Shell();
-                //shell.ShellExecute(Properties.Settings.Default.StartFileName);
-            }
-            else
-            {
-                //This won't work properly until we have a manifest that enables uiAccess.
-                //However uiAccess just won't work with ClickOnce so we will have to use a different deployment system.
-                SwitchToThisWindow(existingProcesses[0].MainWindowHandle, true);
-            }            
-        }
+    
 
 
         /// <summary>
