@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-
+using System.ComponentModel;
 
 namespace SharpLib.Ear
 {
@@ -19,11 +19,11 @@ namespace SharpLib.Ear
     /// </summary>
     [DataContract]
     [KnownType("DerivedTypes")]
-    public abstract class Object: IComparable
+    public abstract class Object: IComparable, INotifyPropertyChanged
     {
         private bool iConstructed = false;
 
-        public Object()
+        protected Object()
         {
             Construct();
         }
@@ -105,6 +105,21 @@ namespace SharpLib.Ear
         {
             return SharpLib.Utils.Reflection.GetDerivedTypes<Object>();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Invoke our event.
+        /// </summary>
+        /// <param name="name"></param>
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
 
     }
 }

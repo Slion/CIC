@@ -170,8 +170,10 @@ namespace SharpDisplayManager
             {
                 ComboBox ctrl = (ComboBox)aControl;
                 string currentItem = ctrl.SelectedItem.ToString();
-                PropertyComboBox pcb = (PropertyComboBox)aInfo.GetValue(aObject);
-                pcb.CurrentItem = currentItem;
+                PropertyComboBox value = (PropertyComboBox)aInfo.GetValue(aObject);
+                value.CurrentItem = currentItem;
+                //Not strictly needed but makes sure the set method is called
+                aInfo.SetValue(aObject, value);                
             }
 
             //TODO: add support for other types here
