@@ -104,22 +104,25 @@ namespace SharpDisplayManager
         private void FetchPropertiesValue(T aObject)
         {
             int ctrlIndex = 0;
+            //For each of our properties
             foreach (PropertyInfo pi in aObject.GetType().GetProperties())
             {
-                AttributeObjectProperty[] attributes =
-                    ((AttributeObjectProperty[]) pi.GetCustomAttributes(typeof(AttributeObjectProperty), true));
+                //Get our property attribute
+                AttributeObjectProperty[] attributes = ((AttributeObjectProperty[]) pi.GetCustomAttributes(typeof(AttributeObjectProperty), true));
                 if (attributes.Length != 1)
                 {
+                    //No attribute, skip this property then.
                     continue;
                 }
-
                 AttributeObjectProperty attribute = attributes[0];
 
+                //Check that we support this type of property
                 if (!IsPropertyTypeSupported(pi))
                 {
                     continue;
                 }
 
+                //Now fetch our property value
                 GetPropertyValueFromControl(iTableLayoutPanel.Controls[ctrlIndex+1], pi, aObject); //+1 otherwise we get the label
 
                 ctrlIndex+=2; //Jump over the label too
@@ -163,6 +166,14 @@ namespace SharpDisplayManager
                 PropertyFile value = new PropertyFile {FullPath=ctrl.Text};
                 aInfo.SetValue(aObject, value);
             }
+            else if (aInfo.PropertyType == typeof(PropertyComboBox))
+            {
+                ComboBox ctrl = (ComboBox)aControl;
+                string currentItem = ctrl.SelectedItem.ToString();
+                PropertyComboBox pcb = (PropertyComboBox)aInfo.GetValue(aObject);
+                pcb.CurrentItem = currentItem;
+            }
+
             //TODO: add support for other types here
         }
 
@@ -191,21 +202,21 @@ namespace SharpDisplayManager
             {
                 //Enum properties are using combo box
                 ComboBox ctrl = new ComboBox();
-                ctrl.AutoSize = true;                
-                ctrl.Sorted = true;                
+                ctrl.AutoSize = true;
+                ctrl.Sorted = true;
                 ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
                 //Data source is fine but it gives us duplicate entries for duplicated enum values
                 //ctrl.DataSource = Enum.GetValues(aInfo.PropertyType);
 
                 //Therefore we need to explicitly create our items
-                Size cbSize = new Size(0,0);
+                Size cbSize = new Size(0, 0);
                 foreach (string name in aInfo.PropertyType.GetEnumNames())
                 {
                     ctrl.Items.Add(name.ToString());
                     Graphics g = this.CreateGraphics();
                     //Since combobox autosize would not work we need to get measure text ourselves
-                    SizeF size=g.MeasureString(name.ToString(), ctrl.Font);
-                    cbSize.Width = Math.Max(cbSize.Width,(int)size.Width);
+                    SizeF size = g.MeasureString(name.ToString(), ctrl.Font);
+                    cbSize.Width = Math.Max(cbSize.Width, (int)size.Width);
                     cbSize.Height = Math.Max(cbSize.Height, (int)size.Height);
                 }
 
@@ -225,7 +236,7 @@ namespace SharpDisplayManager
                 CheckBox ctrl = new CheckBox();
                 ctrl.AutoSize = true;
                 ctrl.Text = aAttribute.Description;
-                ctrl.Checked = (bool)aInfo.GetValue(aObject);                
+                ctrl.Checked = (bool)aInfo.GetValue(aObject);
                 return ctrl;
             }
             else if (aInfo.PropertyType == typeof(string))
@@ -263,8 +274,27 @@ namespace SharpDisplayManager
 
                 return ctrl;
             }
-            //TODO: add support for other control type here
+            else if (aInfo.PropertyType == typeof(PropertyComboBox))
+            {
+                //ComboBox property
+                ComboBox ctrl = new ComboBox();
+                ctrl.AutoSize = true;
+                ctrl.Sorted = true;
+                ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
+                //Data source is such a pain to set the current item
+                //ctrl.DataSource = ((PropertyComboBox)aInfo.GetValue(aObject)).Items;                
 
+                PropertyComboBox pcb = ((PropertyComboBox)aInfo.GetValue(aObject));
+                foreach (string item in pcb.Items)
+                {
+                    ctrl.Items.Add(item);
+                }
+
+                ctrl.SelectedItem = ((PropertyComboBox)aInfo.GetValue(aObject)).CurrentItem;
+                //
+                return ctrl;
+            }
+            //TODO: add support for other control type here
             return null;
         }
 
@@ -294,6 +324,11 @@ namespace SharpDisplayManager
             {
                 return true;
             }
+            else if (aInfo.PropertyType == typeof(PropertyComboBox))
+            {
+                return true;
+            }
+
             //TODO: add support for other type here
 
             return false;

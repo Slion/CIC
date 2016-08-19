@@ -21,6 +21,33 @@ namespace SharpLib.Ear
     [KnownType("DerivedTypes")]
     public abstract class Object: IComparable
     {
+        private bool iConstructed = false;
+
+        public Object()
+        {
+            Construct();
+        }
+
+        /// <summary>
+        /// Needed as our constructor is not called following internalization.
+        /// </summary>
+        public void Construct()
+        {
+            if (!iConstructed)
+            {
+                DoConstruct();
+                iConstructed = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void DoConstruct()
+        {
+
+        }
+
         /// <summary>
         /// Static object name.
         /// </summary>

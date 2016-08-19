@@ -247,7 +247,7 @@
             this.toolStripStatusLabelSpring,
             this.toolStripStatusLabelPower,
             this.toolStripStatusLabelFps});
-            this.statusStrip.Location = new System.Drawing.Point(0, 539);
+            this.statusStrip.Location = new System.Drawing.Point(0, 540);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip.Size = new System.Drawing.Size(784, 22);
@@ -1124,7 +1124,7 @@
             // buttonEventEdit
             // 
             this.buttonEventEdit.Enabled = false;
-            this.buttonEventEdit.Location = new System.Drawing.Point(6, 35);
+            this.buttonEventEdit.Location = new System.Drawing.Point(6, 187);
             this.buttonEventEdit.Name = "buttonEventEdit";
             this.buttonEventEdit.Size = new System.Drawing.Size(96, 23);
             this.buttonEventEdit.TabIndex = 29;
@@ -1135,7 +1135,7 @@
             // buttonEventDelete
             // 
             this.buttonEventDelete.Enabled = false;
-            this.buttonEventDelete.Location = new System.Drawing.Point(6, 64);
+            this.buttonEventDelete.Location = new System.Drawing.Point(6, 216);
             this.buttonEventDelete.Name = "buttonEventDelete";
             this.buttonEventDelete.Size = new System.Drawing.Size(96, 23);
             this.buttonEventDelete.TabIndex = 28;
@@ -1145,7 +1145,7 @@
             // 
             // buttonEventAdd
             // 
-            this.buttonEventAdd.Location = new System.Drawing.Point(6, 6);
+            this.buttonEventAdd.Location = new System.Drawing.Point(6, 158);
             this.buttonEventAdd.Name = "buttonEventAdd";
             this.buttonEventAdd.Size = new System.Drawing.Size(96, 23);
             this.buttonEventAdd.TabIndex = 27;
@@ -1156,7 +1156,7 @@
             // buttonEventTest
             // 
             this.buttonEventTest.Enabled = false;
-            this.buttonEventTest.Location = new System.Drawing.Point(6, 93);
+            this.buttonEventTest.Location = new System.Drawing.Point(6, 245);
             this.buttonEventTest.Name = "buttonEventTest";
             this.buttonEventTest.Size = new System.Drawing.Size(96, 23);
             this.buttonEventTest.TabIndex = 26;
@@ -1167,7 +1167,7 @@
             // buttonActionEdit
             // 
             this.buttonActionEdit.Enabled = false;
-            this.buttonActionEdit.Location = new System.Drawing.Point(6, 190);
+            this.buttonActionEdit.Location = new System.Drawing.Point(6, 35);
             this.buttonActionEdit.Name = "buttonActionEdit";
             this.buttonActionEdit.Size = new System.Drawing.Size(96, 23);
             this.buttonActionEdit.TabIndex = 25;
@@ -1200,7 +1200,7 @@
             // buttonActionTest
             // 
             this.buttonActionTest.Enabled = false;
-            this.buttonActionTest.Location = new System.Drawing.Point(6, 248);
+            this.buttonActionTest.Location = new System.Drawing.Point(6, 93);
             this.buttonActionTest.Name = "buttonActionTest";
             this.buttonActionTest.Size = new System.Drawing.Size(96, 23);
             this.buttonActionTest.TabIndex = 22;
@@ -1211,7 +1211,7 @@
             // buttonActionDelete
             // 
             this.buttonActionDelete.Enabled = false;
-            this.buttonActionDelete.Location = new System.Drawing.Point(6, 219);
+            this.buttonActionDelete.Location = new System.Drawing.Point(6, 64);
             this.buttonActionDelete.Name = "buttonActionDelete";
             this.buttonActionDelete.Size = new System.Drawing.Size(96, 23);
             this.buttonActionDelete.TabIndex = 21;
@@ -1222,9 +1222,9 @@
             // buttonActionAdd
             // 
             this.buttonActionAdd.Enabled = false;
-            this.buttonActionAdd.Location = new System.Drawing.Point(6, 157);
+            this.buttonActionAdd.Location = new System.Drawing.Point(6, 6);
             this.buttonActionAdd.Name = "buttonActionAdd";
-            this.buttonActionAdd.Size = new System.Drawing.Size(96, 27);
+            this.buttonActionAdd.Size = new System.Drawing.Size(96, 23);
             this.buttonActionAdd.TabIndex = 20;
             this.buttonActionAdd.Text = "Add Action";
             this.buttonActionAdd.UseVisualStyleBackColor = true;
@@ -1370,7 +1370,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.labelFontHeight);
             this.Controls.Add(this.labelFontWidth);
             this.Controls.Add(this.labelWarning);

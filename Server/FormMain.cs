@@ -151,7 +151,7 @@ namespace SharpDisplayManager
                 // We loaded events and actions from our settings
                 // Internalizer apparently skips constructor so we need to initialize it here
                 // Though I reckon that should only be needed when loading an empty EAR manager I guess.
-                Properties.Settings.Default.EarManager.Init();
+                Properties.Settings.Default.EarManager.Construct();
             }
             iSkipFrameRendering = false;
             iClosing = false;

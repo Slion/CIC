@@ -18,16 +18,22 @@ namespace SharpLib.Ear
                 Description = "When enabled an event instance can be triggered."
             )
         ]
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = true;
 
         [DataMember]
         public List<Action> Actions = new List<Action>();
 
 
-
-        protected Event()
+        protected override void DoConstruct()
         {
-            Enabled = true;
+            base.DoConstruct();
+
+            // TODO: Construct properties too
+            foreach (Action a in Actions)
+            {
+                a.Construct();
+            }
+
         }
 
 
