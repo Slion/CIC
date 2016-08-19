@@ -96,30 +96,6 @@ namespace SharpDisplayManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("None")]
-        public string StartFileName {
-            get {
-                return ((string)(this["StartFileName"]));
-            }
-            set {
-                this["StartFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("None")]
-        public string OpticalDriveToEject {
-            get {
-                return ((string)(this["OpticalDriveToEject"]));
-            }
-            set {
-                this["OpticalDriveToEject"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool CecEnabled {
             get {

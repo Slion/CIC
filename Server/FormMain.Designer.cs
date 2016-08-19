@@ -92,12 +92,6 @@
             this.checkBoxShowVolumeLabel = new System.Windows.Forms.CheckBox();
             this.checkBoxMute = new System.Windows.Forms.CheckBox();
             this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
-            this.tabPageInput = new System.Windows.Forms.TabPage();
-            this.comboBoxOpticalDrives = new System.Windows.Forms.ComboBox();
-            this.labelOpticalDriveEject = new System.Windows.Forms.Label();
-            this.pictureBoxGreenStart = new System.Windows.Forms.PictureBox();
-            this.labelStartFileName = new System.Windows.Forms.Label();
-            this.buttonSelectFile = new System.Windows.Forms.Button();
             this.tabPageCec = new System.Windows.Forms.TabPage();
             this.groupBoxCecLogOptions = new System.Windows.Forms.GroupBox();
             this.checkBoxCecLogNoPoll = new System.Windows.Forms.CheckBox();
@@ -153,8 +147,6 @@
             this.tabPageDesign.SuspendLayout();
             this.tabPageAudio.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).BeginInit();
-            this.tabPageInput.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).BeginInit();
             this.tabPageCec.SuspendLayout();
             this.groupBoxCecLogOptions.SuspendLayout();
             this.tabPageHarmony.SuspendLayout();
@@ -588,7 +580,6 @@
             this.tabControl.Controls.Add(this.tabPageClients);
             this.tabControl.Controls.Add(this.tabPageDesign);
             this.tabControl.Controls.Add(this.tabPageAudio);
-            this.tabControl.Controls.Add(this.tabPageInput);
             this.tabControl.Controls.Add(this.tabPageCec);
             this.tabControl.Controls.Add(this.tabPageHarmony);
             this.tabControl.Controls.Add(this.tabPageEvent);
@@ -782,69 +773,6 @@
             this.trackBarMasterVolume.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.toolTip.SetToolTip(this.trackBarMasterVolume, "Master Volume");
             this.trackBarMasterVolume.Scroll += new System.EventHandler(this.trackBarMasterVolume_Scroll);
-            // 
-            // tabPageInput
-            // 
-            this.tabPageInput.Controls.Add(this.comboBoxOpticalDrives);
-            this.tabPageInput.Controls.Add(this.labelOpticalDriveEject);
-            this.tabPageInput.Controls.Add(this.pictureBoxGreenStart);
-            this.tabPageInput.Controls.Add(this.labelStartFileName);
-            this.tabPageInput.Controls.Add(this.buttonSelectFile);
-            this.tabPageInput.Location = new System.Drawing.Point(4, 22);
-            this.tabPageInput.Name = "tabPageInput";
-            this.tabPageInput.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInput.Size = new System.Drawing.Size(752, 385);
-            this.tabPageInput.TabIndex = 6;
-            this.tabPageInput.Text = "Input";
-            this.tabPageInput.UseVisualStyleBackColor = true;
-            // 
-            // comboBoxOpticalDrives
-            // 
-            this.comboBoxOpticalDrives.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxOpticalDrives.FormattingEnabled = true;
-            this.comboBoxOpticalDrives.Location = new System.Drawing.Point(113, 53);
-            this.comboBoxOpticalDrives.Name = "comboBoxOpticalDrives";
-            this.comboBoxOpticalDrives.Size = new System.Drawing.Size(55, 21);
-            this.comboBoxOpticalDrives.TabIndex = 18;
-            this.comboBoxOpticalDrives.SelectedIndexChanged += new System.EventHandler(this.comboBoxOpticalDrives_SelectedIndexChanged);
-            // 
-            // labelOpticalDriveEject
-            // 
-            this.labelOpticalDriveEject.AutoSize = true;
-            this.labelOpticalDriveEject.Location = new System.Drawing.Point(0, 56);
-            this.labelOpticalDriveEject.Name = "labelOpticalDriveEject";
-            this.labelOpticalDriveEject.Size = new System.Drawing.Size(107, 13);
-            this.labelOpticalDriveEject.TabIndex = 3;
-            this.labelOpticalDriveEject.Text = "Optical drive to eject:";
-            // 
-            // pictureBoxGreenStart
-            // 
-            this.pictureBoxGreenStart.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxGreenStart.Image")));
-            this.pictureBoxGreenStart.Location = new System.Drawing.Point(3, 6);
-            this.pictureBoxGreenStart.Name = "pictureBoxGreenStart";
-            this.pictureBoxGreenStart.Size = new System.Drawing.Size(32, 32);
-            this.pictureBoxGreenStart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBoxGreenStart.TabIndex = 2;
-            this.pictureBoxGreenStart.TabStop = false;
-            // 
-            // labelStartFileName
-            // 
-            this.labelStartFileName.AutoSize = true;
-            this.labelStartFileName.Location = new System.Drawing.Point(72, 16);
-            this.labelStartFileName.Name = "labelStartFileName";
-            this.labelStartFileName.Size = new System.Drawing.Size(33, 13);
-            this.labelStartFileName.TabIndex = 1;
-            this.labelStartFileName.Text = "None";
-            // 
-            // buttonSelectFile
-            // 
-            this.buttonSelectFile.Location = new System.Drawing.Point(41, 11);
-            this.buttonSelectFile.Name = "buttonSelectFile";
-            this.buttonSelectFile.Size = new System.Drawing.Size(25, 23);
-            this.buttonSelectFile.TabIndex = 0;
-            this.buttonSelectFile.Text = "...";
-            this.buttonSelectFile.UseVisualStyleBackColor = true;
-            this.buttonSelectFile.Click += new System.EventHandler(this.buttonSelectFile_Click);
             // 
             // tabPageCec
             // 
@@ -1401,9 +1329,6 @@
             this.tabPageAudio.ResumeLayout(false);
             this.tabPageAudio.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarMasterVolume)).EndInit();
-            this.tabPageInput.ResumeLayout(false);
-            this.tabPageInput.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGreenStart)).EndInit();
             this.tabPageCec.ResumeLayout(false);
             this.tabPageCec.PerformLayout();
             this.groupBoxCecLogOptions.ResumeLayout(false);
@@ -1480,13 +1405,7 @@
 		private System.Windows.Forms.CheckBox checkBoxMute;
 		private System.Windows.Forms.CheckBox checkBoxShowVolumeLabel;
 		private System.Windows.Forms.Label labelDefaultAudioDevice;
-		private System.Windows.Forms.TabPage tabPageInput;
-		private System.Windows.Forms.Button buttonSelectFile;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
-		private System.Windows.Forms.Label labelStartFileName;
-		private System.Windows.Forms.PictureBox pictureBoxGreenStart;
-        private System.Windows.Forms.ComboBox comboBoxOpticalDrives;
-        private System.Windows.Forms.Label labelOpticalDriveEject;
         private System.Windows.Forms.TabPage tabPageCec;
         private System.Windows.Forms.CheckBox checkBoxCecEnabled;
         private System.Windows.Forms.Label labelHdmiPort;
