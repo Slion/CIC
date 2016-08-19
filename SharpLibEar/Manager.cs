@@ -15,8 +15,7 @@ namespace SharpLib.Ear
     /// Users can implement their own events and actions.
     /// </summary>
     [DataContract]
-    [KnownType("DerivedTypes")]
-    public class Manager
+    public class Manager: Object
     {
         /// <summary>
         /// Our events instances.
@@ -24,22 +23,23 @@ namespace SharpLib.Ear
         [DataMember]
         public List<Event> Events;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Manager()
-        {
-            Init();
-        }
 
         /// <summary>
         /// Executes after internalization took place.
         /// </summary>
-        public void Init()
+        protected override void DoConstruct()
         {
+            base.DoConstruct();
+
             if (Events == null)
             {
                 Events = new List<Event>();
+            }
+
+            // TODO: Object properties should be constructed too
+            foreach (Event e in Events)
+            {
+                e.Construct();
             }
             
         }
@@ -85,16 +85,6 @@ namespace SharpLib.Ear
                     return;
                 }
             }
-        }
-
-        /// <summary>
-        /// Allow extending our data contract.
-        /// See KnownType above.
-        /// </summary>
-        /// <returns></returns>
-        private static IEnumerable<Type> DerivedTypes()
-        {
-            return SharpLib.Utils.Reflection.GetDerivedTypes<Manager>();
         }
     }
 }
