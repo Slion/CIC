@@ -48,6 +48,32 @@ namespace SharpLib.Ear
 
         }
 
+
+        public enum State
+        {
+            Rest=0,
+            Edit
+        }
+
+        State iCurrentState = State.Rest;
+        public State CurrentState { get { return iCurrentState; } set { OnStateLeave(); iCurrentState = value; OnStateEnter(); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void OnStateLeave()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void OnStateEnter()
+        {
+
+        }
+
         /// <summary>
         /// Static object name.
         /// </summary>
@@ -110,6 +136,7 @@ namespace SharpLib.Ear
         /// 
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         /// <summary>
         /// Invoke our event.

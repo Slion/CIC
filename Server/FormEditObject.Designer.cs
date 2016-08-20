@@ -36,6 +36,7 @@
             this.iTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.buttonTest = new System.Windows.Forms.Button();
+            this.labelBrief = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboBoxActionType
@@ -64,7 +65,7 @@
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOk.Location = new System.Drawing.Point(12, 72);
+            this.buttonOk.Location = new System.Drawing.Point(12, 151);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 21;
@@ -76,7 +77,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(93, 72);
+            this.buttonCancel.Location = new System.Drawing.Point(93, 151);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 22;
@@ -93,24 +94,35 @@
             this.iTableLayoutPanel.ColumnCount = 2;
             this.iTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.iTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanel.Location = new System.Drawing.Point(15, 50);
+            this.iTableLayoutPanel.Location = new System.Drawing.Point(15, 72);
             this.iTableLayoutPanel.Name = "iTableLayoutPanel";
             this.iTableLayoutPanel.RowCount = 2;
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanel.Size = new System.Drawing.Size(312, 16);
+            this.iTableLayoutPanel.Size = new System.Drawing.Size(312, 60);
             this.iTableLayoutPanel.TabIndex = 23;
             // 
             // buttonTest
             // 
             this.buttonTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonTest.Location = new System.Drawing.Point(252, 72);
+            this.buttonTest.Location = new System.Drawing.Point(252, 151);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(75, 23);
             this.buttonTest.TabIndex = 24;
             this.buttonTest.Text = "Test";
             this.buttonTest.UseVisualStyleBackColor = true;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
+            // 
+            // labelBrief
+            // 
+            this.labelBrief.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelBrief.AutoSize = true;
+            this.labelBrief.Location = new System.Drawing.Point(12, 45);
+            this.labelBrief.Name = "labelBrief";
+            this.labelBrief.Size = new System.Drawing.Size(28, 13);
+            this.labelBrief.TabIndex = 25;
+            this.labelBrief.Text = "Brief";
             // 
             // FormEditObject
             // 
@@ -120,13 +132,14 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(339, 107);
+            this.ClientSize = new System.Drawing.Size(339, 186);
+            this.Controls.Add(this.labelBrief);
             this.Controls.Add(this.buttonTest);
-            this.Controls.Add(this.iTableLayoutPanel);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.labelActionType);
             this.Controls.Add(this.comboBoxActionType);
+            this.Controls.Add(this.iTableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -148,5 +161,6 @@
         private System.Windows.Forms.TableLayoutPanel iTableLayoutPanel;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button buttonTest;
+        private System.Windows.Forms.Label labelBrief;
     }
 }

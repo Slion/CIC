@@ -20,6 +20,7 @@
 using System;
 using System.Windows.Forms;
 using System.Security.Principal;
+using Hid = SharpLib.Hid;
 
 
 namespace SharpDisplayManager
@@ -40,6 +41,11 @@ namespace SharpDisplayManager
         /// </summary>
         public static HarmonyHub.Config HarmonyConfig { get; set; }
 
+
+        /// <summary>
+        /// Use notably to handle green start key from IR remote control
+        /// </summary>
+        public static Hid.Handler HidHandler;
 
         /// <summary>
         /// The main entry point for the application.
