@@ -24,10 +24,6 @@ namespace SharpDisplayManager
         //
         public delegate void OnHidEventDelegate(object aSender, Hid.Event aHidEvent);
 
-        /// <summary>
-        /// Use notably to handle green start key from IR remote control
-        /// </summary>
-        private Hid.Handler iHidHandler;
 
         /// <summary>
         /// Register HID devices so that we receive corresponding WM_INPUT messages.
@@ -89,12 +85,12 @@ namespace SharpDisplayManager
             //rid[i].hwndTarget = aHWND;
 
 
-            iHidHandler = new SharpLib.Hid.Handler(rid);
-            if (!iHidHandler.IsRegistered)
+            Program.HidHandler = new SharpLib.Hid.Handler(rid);
+            if (!Program.HidHandler.IsRegistered)
             {
                 Debug.WriteLine("Failed to register raw input devices: " + Marshal.GetLastWin32Error().ToString());
             }
-            iHidHandler.OnHidEvent += HandleHidEventThreadSafe;
+            Program.HidHandler.OnHidEvent += HandleHidEventThreadSafe;
 
         }
 
@@ -184,7 +180,7 @@ namespace SharpDisplayManager
                 case Const.WM_INPUT:
                     //Returning zero means we processed that message.
                     message.Result = new IntPtr(0);
-                    iHidHandler.ProcessInput(ref message);
+                    Program.HidHandler.ProcessInput(ref message);
                     break;
             }
 

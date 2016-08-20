@@ -53,7 +53,7 @@ namespace SharpDisplayManager
             else
             {
                 // Editing existing object
-                // Look up our item in our combobox
+                // Look up our item in our object type combobox
                 foreach (ItemObjectType item in comboBoxActionType.Items)
                 {
                     if (item.Type == Object.GetType())
@@ -61,6 +61,7 @@ namespace SharpDisplayManager
                         comboBoxActionType.SelectedItem = item;
                     }
                 }
+
             }
         }
 
@@ -78,6 +79,13 @@ namespace SharpDisplayManager
         private void FormEditObject_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = DialogResult == DialogResult.None;
+
+            if (!e.Cancel)
+            {
+                //Exit edit mode
+                Object.CurrentState = SharpLib.Ear.Object.State.Rest;
+                Object.PropertyChanged -= PropertyChangedEventHandlerThreadSafe;
+            }
         }
 
         private void comboBoxActionType_SelectedIndexChanged(object sender, EventArgs e)
@@ -338,8 +346,7 @@ namespace SharpDisplayManager
 
         /// <summary>
         /// Update our table layout.
-        /// Will instantiated every field control as defined by our action.
-        /// Fields must be specified by rows from the left.
+        /// Will instantiated every field control as defined by our object.
         /// </summary>
         /// <param name="aLayout"></param>
         private void UpdateTableLayoutPanel(T aObject)
@@ -363,9 +370,12 @@ namespace SharpDisplayManager
                 //Just drop it
                 return;
             }
-            
+
             //IEnumerable<PropertyInfo> properties = aObject.GetType().GetProperties().Where(
             //    prop => Attribute.IsDefined(prop, typeof(AttributeObjectProperty)));
+
+            //TODO: Do this whenever a field changes
+            labelBrief.Text = Object.Brief();
 
 
             foreach (PropertyInfo pi in aObject.GetType().GetProperties())
@@ -404,8 +414,34 @@ namespace SharpDisplayManager
                 //Add tooltip to editor too
                 toolTip.SetToolTip(ctrl, attribute.Description);
 
-            }        
+            }
 
+            //Entrer object edit mode
+            Object.CurrentState = SharpLib.Ear.Object.State.Edit;
+            Object.PropertyChanged += PropertyChangedEventHandlerThreadSafe;
+        }
+
+        void PropertyChangedEventHandlerThreadSafe(object sender, PropertyChangedEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                PropertyChangedEventHandler d = new PropertyChangedEventHandler(PropertyChangedEventHandlerThreadSafe);
+                this.Invoke(d, new object[] { sender, e });
+            }
+            else
+            {
+                //Disable ok button if our object is not valid
+                buttonOk.Enabled = Object.IsValid();
+
+                if (e.PropertyName == "Brief")
+                {
+                    labelBrief.Text = Object.Brief();
+                }
+
+                //Create input fields
+                //UpdateTableLayoutPanel(Object);
+            }
         }
 
         private void buttonTest_Click(object sender, EventArgs e)

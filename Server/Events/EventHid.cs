@@ -41,13 +41,13 @@ namespace SharpDisplayManager
         public bool IsKeyUp { get; set; } = false;
 
         [DataMember]
-        public bool IsMouse { get; set; }
+        public bool IsMouse { get; set; } = false;
 
         [DataMember]
-        public bool IsKeyboard { get; set; }
+        public bool IsKeyboard { get; set; } = false;
 
         [DataMember]
-        public bool IsGeneric { get; set; }
+        public bool IsGeneric { get; set; } = false;
 
         [DataMember]
         public bool HasModifierShift { get; set; } = false;
@@ -61,6 +61,10 @@ namespace SharpDisplayManager
         [DataMember]
         public bool HasModifierWindows { get; set; } = false;
 
+        [DataMember]
+        public string PersistedBrief { get; set; } = "Press a key";
+
+
 
         protected override void DoConstruct()
         {
@@ -72,7 +76,6 @@ namespace SharpDisplayManager
         {
             
         }
-
 
         /// <summary>
         /// Make sure we distinguish between various configuration of this event 
@@ -108,7 +111,7 @@ namespace SharpDisplayManager
             }
             else if (IsGeneric)
             {
-                
+                brief += PersistedBrief;
             }
 
             if (IsKeyUp)
@@ -143,5 +146,111 @@ namespace SharpDisplayManager
 
             return false;
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void OnStateLeave()
+        {
+            if (CurrentState == State.Edit)
+            {
+                // Leaving edit mode
+                // Unhook HID events
+                Program.HidHandler.OnHidEvent -= HandleHidEvent;
+
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void OnStateEnter()
+        {
+            if (CurrentState == State.Edit)
+            {
+                // Enter edit mode
+                // Hook-in HID events
+                Program.HidHandler.OnHidEvent += HandleHidEvent;
+
+            }
+        }
+
+        /// <summary>
+        /// Here we receive HID events from our HID library.
+        /// </summary>
+        /// <param name="aSender"></param>
+        /// <param name="aHidEvent"></param>
+        public void HandleHidEvent(object aSender, SharpLib.Hid.Event aHidEvent)
+        {
+            if (CurrentState != State.Edit
+                || aHidEvent.IsMouse
+                || aHidEvent.IsButtonUp
+                || !aHidEvent.IsValid
+                || aHidEvent.IsBackground
+                || aHidEvent.IsRepeat
+                || aHidEvent.IsStray)
+            {
+                return;
+            }
+
+            PrivateCopy(aHidEvent);
+            //
+
+            //Tell observer the object itself changed
+            OnPropertyChanged("Brief");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aHidEvent"></param>
+        public void Copy(Hid.Event aHidEvent)
+        {
+            PrivateCopy(aHidEvent);
+            //We need the key up/down too here
+            IsKeyUp = aHidEvent.IsButtonUp;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aHidEvent"></param>
+        private void PrivateCopy(Hid.Event aHidEvent)
+        {
+            //Copy for scan
+            UsagePage = aHidEvent.UsagePage;
+            UsageCollection = aHidEvent.UsageCollection;
+            IsGeneric = aHidEvent.IsGeneric;
+            IsKeyboard = aHidEvent.IsKeyboard;
+            IsMouse = aHidEvent.IsMouse;
+
+            if (IsGeneric)
+            {
+                if (aHidEvent.Usages.Count > 0)
+                {
+                    Usage = aHidEvent.Usages[0];
+                    PersistedBrief = aHidEvent.UsageName(0);
+                }
+
+                Key = Keys.None;
+                HasModifierAlt = false;
+                HasModifierControl = false;
+                HasModifierShift = false;
+                HasModifierWindows = false;
+            }
+            else if (IsKeyboard)
+            {
+                Usage = 0;
+                Key = aHidEvent.VirtualKey;
+                HasModifierAlt = aHidEvent.HasModifierAlt;
+                HasModifierControl = aHidEvent.HasModifierControl;
+                HasModifierShift = aHidEvent.HasModifierShift;
+                HasModifierWindows = aHidEvent.HasModifierWindows;
+            }
+
+        }
+
+
     }
 }
