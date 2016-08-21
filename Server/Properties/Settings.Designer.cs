@@ -164,5 +164,17 @@ namespace SharpDisplayManager.Properties {
                 this["HarmonyHubAddress"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LogitechUserName {
+            get {
+                return ((string)(this["LogitechUserName"]));
+            }
+            set {
+                this["LogitechUserName"] = value;
+            }
+        }
     }
 }

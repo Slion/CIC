@@ -2576,8 +2576,6 @@ namespace SharpDisplayManager
                 try
                 {
                     await ConnectHarmonyAsync();
-                    //To make sure harmony commands are showing device name instead of device id
-                    PopulateEventsTreeView();
                 }
                 finally
                 {
@@ -3041,6 +3039,9 @@ namespace SharpDisplayManager
             PopulateTreeViewHarmony(Program.HarmonyConfig);
 
             Console.WriteLine("Harmony: Ready");
+
+            //Make sure harmony command actions are showing device name instead of device id
+            PopulateEventsTreeView();
         }
 
         /// <summary>
