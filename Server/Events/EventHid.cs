@@ -85,6 +85,12 @@ namespace SharpDisplayManager
         {
             string brief = Name + ": ";
 
+            if (!IsValid())
+            {
+                brief += "Press a key";
+                return brief;
+            }
+
             if (IsKeyboard)
             {
                 brief += Key.ToString();
