@@ -2576,6 +2576,8 @@ namespace SharpDisplayManager
                 try
                 {
                     await ConnectHarmonyAsync();
+                    //To make sure harmony commands are showing device name instead of device id
+                    PopulateEventsTreeView();
                 }
                 finally
                 {
@@ -2892,6 +2894,11 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonEventAdd_Click(object sender, EventArgs e)
         {
             FormEditObject<Ear.Event> ea = new FormEditObject<Ear.Event>();
@@ -2906,6 +2913,11 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonEventDelete_Click(object sender, EventArgs e)
         {
             Ear.Event currentEvent = CurrentEvent();
@@ -2920,6 +2932,11 @@ namespace SharpDisplayManager
             PopulateEventsTreeView();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonEventEdit_Click(object sender, EventArgs e)
         {
             Ear.Event selectedEvent = CurrentEvent();
@@ -2946,12 +2963,22 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void iTreeViewEvents_Leave(object sender, EventArgs e)
         {
             //Make sure our event tree never looses focus
             ((TreeView) sender).Focus();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void iButtonHarmonyConnect_Click(object sender, EventArgs e)
         {
             //Save hub address
@@ -2970,7 +2997,10 @@ namespace SharpDisplayManager
 
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private async Task ConnectHarmonyAsync()
         {
             if (Program.HarmonyClient != null)

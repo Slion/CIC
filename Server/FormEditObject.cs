@@ -196,6 +196,12 @@ namespace SharpDisplayManager
                 //Not strictly needed but makes sure the set method is called
                 aInfo.SetValue(aObject, value);                
             }
+            else if (aInfo.PropertyType == typeof(PropertyButton))
+            {
+                Button ctrl = (Button)aControl;
+                PropertyButton value = new PropertyButton { Text = ctrl.Text };
+                aInfo.SetValue(aObject, value);
+            }
 
             //TODO: add support for other types here
         }
@@ -324,6 +330,20 @@ namespace SharpDisplayManager
                 //
                 return ctrl;
             }
+            else if (aInfo.PropertyType == typeof(PropertyButton))
+            {
+                // We have a button property
+                // Create a button that will trigger the custom action.
+                Button ctrl = new Button();
+                ctrl.AutoSize = true;
+                ctrl.Text = ((PropertyButton)aInfo.GetValue(aObject)).Text;
+                // Hook in click event
+                ctrl.Click += ((PropertyButton)aInfo.GetValue(aObject)).ClickEventHandler;
+                // Hook-in change notification after setting the value 
+                ctrl.TextChanged += ControlValueChanged;
+                return ctrl;
+            }
+
             //TODO: add support for other control type here
             return null;
         }
@@ -355,6 +375,10 @@ namespace SharpDisplayManager
                 return true;
             }
             else if (aInfo.PropertyType == typeof(PropertyComboBox))
+            {
+                return true;
+            }
+            else if (aInfo.PropertyType == typeof(PropertyButton))
             {
                 return true;
             }
@@ -465,7 +489,17 @@ namespace SharpDisplayManager
 
                 // Our object has changed behind our back.
                 // That's currently only the case for HID events that are listening for inputs.
-                UpdateStaticControls();
+                if (Object is EventHid)
+                {
+                    //HID can't do full control updates for some reason
+                    //We are getting spammed with HID events after a few clicks
+                    //We need to investigate, HID bug?
+                    UpdateStaticControls();
+                }
+                else
+                {
+                    UpdateControls();
+                }
             }
         }
 
