@@ -95,8 +95,6 @@ namespace SharpDisplayManager
         }
 
 
-
-
         /// <summary>
         /// Here we receive HID events from our HID library.
         /// </summary>
@@ -119,62 +117,11 @@ namespace SharpDisplayManager
             else
             {
                 //Trigger corresponding EAR event if any
-                {
-                    EventHid e = new EventHid();
-                    e.Copy(aHidEvent);
-                    Properties.Settings.Default.EarManager.TriggerEvent(e);
-                }
-
-                if (aHidEvent.IsGeneric)
-                {
-                    if (aHidEvent.Usages.Count == 0)
-                    {
-                        //No usage, nothing to do then
-                        return;
-                    }
-
-                    //We are in the proper thread
-                    if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.WindowsMediaCenterRemoteControl)
-                    {
-                        //Trigger events as needed
-                        EventHidWindowsMediaCenter e = new EventHidWindowsMediaCenter
-                        {
-                            Usage = (Hid.Usage.WindowsMediaCenterRemoteControl) aHidEvent.Usages[0]
-                        };
-                        Properties.Settings.Default.EarManager.TriggerEvent(e);
-                    }
-                    else if (aHidEvent.UsagePage == (ushort) Hid.UsagePage.Consumer)
-                    {
-                        //Trigger matching events if any
-                        EventHidConsumerControl e = new EventHidConsumerControl
-                        {
-                            Usage = (Hid.Usage.ConsumerControl) aHidEvent.Usages[0]
-                        };
-                        Properties.Settings.Default.EarManager.TriggerEvent(e);
-                    }
-                }
-                else if (aHidEvent.IsKeyboard)
-                {
-                    //Trigger matching events if any
-                    EventHidKeyboard e = new EventHidKeyboard
-                    {
-                        Key = aHidEvent.VirtualKey,
-                        IsKeyUp = aHidEvent.IsButtonUp,
-                        HasModifierAlt = aHidEvent.HasModifierAlt,
-                        HasModifierControl = aHidEvent.HasModifierControl,
-                        HasModifierShift = aHidEvent.HasModifierShift,
-                        HasModifierWindows = aHidEvent.HasModifierWindows,
-                    };
-                    Properties.Settings.Default.EarManager.TriggerEvent(e);
-                }                
-
+                EventHid e = new EventHid();
+                e.Copy(aHidEvent);
+                Properties.Settings.Default.EarManager.TriggerEvent(e);
             }
         }
-
-    
-
-    
-
 
         /// <summary>
         /// We need to handle WM_INPUT.

@@ -180,9 +180,6 @@
     <Compile Include="ClientData.cs" />
     <Compile Include="EarManager.cs" />
     <Compile Include="Events\EventHid.cs" />
-    <Compile Include="Events\EventHidConsumerControl.cs" />
-    <Compile Include="Events\EventHidKeyboard.cs" />
-    <Compile Include="Events\EventHidWindowsMediaCenter.cs" />
     <Compile Include="FormEditObject.cs">
       <SubType>Form</SubType>
     </Compile>
