@@ -15,20 +15,9 @@ namespace SharpDisplayManager
     class ActionHarmonyCommand : Ear.Action
     {
         [DataMember]
-        [AttributeObjectProperty(
-            Id = "Harmony.Command.DeviceId",
-            Name = "Device ID",
-            Description = "The ID of the device this command is associated with."
-        )]
         public string DeviceId { get; set; } = "";
 
-
         [DataMember]
-        [AttributeObjectProperty(
-        Id = "Harmony.Command.FunctionName",
-        Name = "Function Name",
-        Description = "The name of the function defining this command."
-        )]
         public string FunctionName { get; set; } = "";
 
         [DataMember]
