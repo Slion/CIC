@@ -12,7 +12,7 @@ using Hid = SharpLib.Hid;
 namespace SharpDisplayManager
 {
     [DataContract]
-    [Ear.AttributeObject(Id = "Event.Hid", Name = "HID", Description = "Corresponding HID message received.")]
+    [Ear.AttributeObject(Id = "Event.Hid", Name = "HID", Description = "Handle input from Keyboards and Remotes.")]
     public class EventHid: Ear.Event
     {
         public EventHid()
@@ -62,7 +62,7 @@ namespace SharpDisplayManager
         public bool HasModifierWindows { get; set; } = false;
 
         [DataMember]
-        public string PersistedBrief { get; set; } = "Press a key";
+        public string UsageName { get; set; } = "Press a key";
 
 
 
@@ -111,7 +111,7 @@ namespace SharpDisplayManager
             }
             else if (IsGeneric)
             {
-                brief += PersistedBrief;
+                brief += UsageName;
             }
 
             if (IsKeyUp)
@@ -133,15 +133,21 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj is EventHidKeyboard)
+            if (obj is EventHid)
             {
-                EventHidKeyboard e = (EventHidKeyboard)obj;
+                EventHid e = (EventHid)obj;
                 return e.Key == Key
-                        && e.IsKeyUp == IsKeyUp
-                        && e.HasModifierAlt == HasModifierAlt
-                        && e.HasModifierControl == HasModifierControl
-                        && e.HasModifierShift == HasModifierShift
-                        && e.HasModifierWindows == HasModifierWindows;
+                    && e.Usage == Usage
+                    && e.UsagePage == UsagePage
+                    && e.UsageCollection == UsageCollection
+                    && e.IsKeyUp == IsKeyUp
+                    && e.IsGeneric == IsGeneric
+                    && e.IsKeyboard == IsKeyboard
+                    && e.IsMouse == IsMouse
+                    && e.HasModifierAlt == HasModifierAlt
+                    && e.HasModifierControl == HasModifierControl
+                    && e.HasModifierShift == HasModifierShift
+                    && e.HasModifierWindows == HasModifierWindows;
             }
 
             return false;
@@ -230,7 +236,7 @@ namespace SharpDisplayManager
                 if (aHidEvent.Usages.Count > 0)
                 {
                     Usage = aHidEvent.Usages[0];
-                    PersistedBrief = aHidEvent.UsageName(0);
+                    UsageName = aHidEvent.UsageName(0);
                 }
 
                 Key = Keys.None;
@@ -251,6 +257,13 @@ namespace SharpDisplayManager
 
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool IsValid()
+        {
+            return IsGeneric || IsKeyboard;
+        }
     }
 }

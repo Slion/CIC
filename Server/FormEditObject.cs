@@ -42,42 +42,53 @@ namespace SharpDisplayManager
             foreach (Type type in types)
             {
                 ItemObjectType item = new ItemObjectType(type);
-                comboBoxActionType.Items.Add(item);
+                iComboBoxObjectType.Items.Add(item);
             }
 
             if (Object == null)
             {
                 // Creating new issue, select our first item
-                comboBoxActionType.SelectedIndex = 0;
+                iComboBoxObjectType.SelectedIndex = 0;
             }
             else
             {
                 // Editing existing object
                 // Look up our item in our object type combobox
-                foreach (ItemObjectType item in comboBoxActionType.Items)
+                foreach (ItemObjectType item in iComboBoxObjectType.Items)
                 {
                     if (item.Type == Object.GetType())
                     {
-                        comboBoxActionType.SelectedItem = item;
+                        iComboBoxObjectType.SelectedItem = item;
                     }
                 }
 
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonOk_Click(object sender, EventArgs e)
         {
             FetchPropertiesValue(Object);
             if (!Object.IsValid())
             {
-                // Tell for closing event to abort
+                // Tell closing event to cancel
                 DialogResult = DialogResult.None;
             }
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FormEditObject_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Check if we need to cancel the closing of our form.
             e.Cancel = DialogResult == DialogResult.None;
 
             if (!e.Cancel)
@@ -88,21 +99,23 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void comboBoxActionType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Instantiate an action corresponding to our type
-            Type actionType = ((ItemObjectType) comboBoxActionType.SelectedItem).Type;
+            Type actionType = ((ItemObjectType) iComboBoxObjectType.SelectedItem).Type;
             //Create another type of action only if needed
             if (Object == null || Object.GetType() != actionType)
             {
                 Object = (T)Activator.CreateInstance(actionType);
             }
 
-            //Disable ok button if our object is not valid
-            buttonOk.Enabled = Object.IsValid();
-
             //Create input fields
-            UpdateTableLayoutPanel(Object);
+            UpdateControls();
         }
 
 
@@ -206,6 +219,8 @@ namespace SharpDisplayManager
                 ctrl.Maximum = Int32.Parse(aAttribute.Maximum);
                 ctrl.Increment = Int32.Parse(aAttribute.Increment);
                 ctrl.Value = (int)aInfo.GetValue(aObject);
+                // Hook-in change notification after setting the value 
+                ctrl.ValueChanged += ControlValueChanged;
                 return ctrl;
             }
             else if (aInfo.PropertyType.IsEnum)
@@ -238,6 +253,8 @@ namespace SharpDisplayManager
                 enumValue = aInfo.GetValue(aObject);
                 //Set the current item
                 ctrl.SelectedItem = enumValue.ToString();
+                // Hook-in change notification after setting the value 
+                ctrl.SelectedIndexChanged += ControlValueChanged;
 
                 return ctrl;
             }
@@ -247,6 +264,8 @@ namespace SharpDisplayManager
                 ctrl.AutoSize = true;
                 ctrl.Text = aAttribute.Description;
                 ctrl.Checked = (bool)aInfo.GetValue(aObject);
+                // Hook-in change notification after setting the value 
+                ctrl.CheckedChanged += ControlValueChanged;
                 return ctrl;
             }
             else if (aInfo.PropertyType == typeof(string))
@@ -254,6 +273,8 @@ namespace SharpDisplayManager
                 TextBox ctrl = new TextBox();
                 ctrl.AutoSize = true;
                 ctrl.Text = (string)aInfo.GetValue(aObject);
+                // Hook-in change notification after setting the value 
+                ctrl.TextChanged += ControlValueChanged;
                 return ctrl;
             }
             else if (aInfo.PropertyType == typeof(PropertyFile))
@@ -263,7 +284,6 @@ namespace SharpDisplayManager
                 Button ctrl = new Button();
                 ctrl.AutoSize = true;
                 ctrl.Text = ((PropertyFile)aInfo.GetValue(aObject)).FullPath;
-
                 // Add lambda expression to Click event
                 ctrl.Click += (sender, e) =>
                 {
@@ -277,11 +297,11 @@ namespace SharpDisplayManager
                     {
                         // Fetch selected file name
                         ctrl.Text = ofd.FileName;
-                        //Enable Ok button then
-                        buttonOk.Enabled = Object.IsValid();
                     }
                 };
 
+                // Hook-in change notification after setting the value 
+                ctrl.TextChanged += ControlValueChanged;
                 return ctrl;
             }
             else if (aInfo.PropertyType == typeof(PropertyComboBox))
@@ -349,8 +369,9 @@ namespace SharpDisplayManager
         /// Will instantiated every field control as defined by our object.
         /// </summary>
         /// <param name="aLayout"></param>
-        private void UpdateTableLayoutPanel(T aObject)
+        private void UpdateControls()
         {
+
             toolTip.RemoveAll();
             //Debug.Print("UpdateTableLayoutPanel")
             //First clean our current panel
@@ -365,20 +386,22 @@ namespace SharpDisplayManager
             iTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
 
 
-            if (aObject == null)
+            if (Object == null)
             {
                 //Just drop it
                 return;
             }
 
+            UpdateStaticControls();
+
             //IEnumerable<PropertyInfo> properties = aObject.GetType().GetProperties().Where(
             //    prop => Attribute.IsDefined(prop, typeof(AttributeObjectProperty)));
 
             //TODO: Do this whenever a field changes
-            labelBrief.Text = Object.Brief();
+            iLabelBrief.Text = Object.Brief();
 
 
-            foreach (PropertyInfo pi in aObject.GetType().GetProperties())
+            foreach (PropertyInfo pi in Object.GetType().GetProperties())
             {
                 AttributeObjectProperty[] attributes = ((AttributeObjectProperty[])pi.GetCustomAttributes(typeof(AttributeObjectProperty), true));
                 if (attributes.Length != 1)
@@ -390,7 +413,7 @@ namespace SharpDisplayManager
 
                 //Before anything we need to check if that kind of property is supported by our UI
                 //Create the editor
-                Control ctrl = CreateControlForProperty(pi, attribute, aObject);
+                Control ctrl = CreateControlForProperty(pi, attribute, Object);
                 if (ctrl == null)
                 {
                     //Property type not supported
@@ -421,6 +444,11 @@ namespace SharpDisplayManager
             Object.PropertyChanged += PropertyChangedEventHandlerThreadSafe;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void PropertyChangedEventHandlerThreadSafe(object sender, PropertyChangedEventArgs e)
         {
             if (this.InvokeRequired)
@@ -431,16 +459,13 @@ namespace SharpDisplayManager
             }
             else
             {
-                //Disable ok button if our object is not valid
-                buttonOk.Enabled = Object.IsValid();
+                // We could test the name of the property that has changed as follow
+                // It's currently not needed though
+                //if (e.PropertyName == "Brief")
 
-                if (e.PropertyName == "Brief")
-                {
-                    labelBrief.Text = Object.Brief();
-                }
-
-                //Create input fields
-                //UpdateTableLayoutPanel(Object);
+                // Our object has changed behind our back.
+                // That's currently only the case for HID events that are listening for inputs.
+                UpdateStaticControls();
             }
         }
 
@@ -455,6 +480,61 @@ namespace SharpDisplayManager
                 info.Invoke(Object,null);
             }
 
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ControlValueChanged(object sender, EventArgs e)
+        {
+            UpdateObject();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateObject()
+        {
+            // Update our object with the content of our controls
+            FetchPropertiesValue(Object);
+
+            UpdateStaticControls();
+            //
+            //PerformLayout();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateStaticControls()
+        {
+            // Update OK and test button status
+            iButtonOk.Enabled = Object.IsValid();
+            iButtonTest.Enabled = iButtonOk.Enabled;
+
+            // Update brief title
+            iLabelBrief.Text = Object.Brief();
+
+            // Update object description
+            iLabelDescription.Text = Object.Description;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void iComboBoxObjectType_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Special case for HID events
+            if (Object is EventHid)
+            {
+                //Disable handling of key input as we are using key input for changing our event
+                e.Handled = true;
+            }
         }
     }
 }
