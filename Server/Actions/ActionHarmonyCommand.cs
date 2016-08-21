@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Windows.Forms;
 
 namespace SharpDisplayManager
 {
@@ -29,6 +30,14 @@ namespace SharpDisplayManager
         Description = "The name of the function defining this command."
         )]
         public string FunctionName { get; set; } = "";
+
+        [DataMember]
+        [AttributeObjectProperty(
+        Id = "Harmony.Command.SelectCommand",
+        Name = "Select command",
+        Description = "Click to select a command."
+        )]
+        public PropertyButton SelectCommand { get; set; } = new PropertyButton { Text = "None" };
 
         /// <summary>
         /// 
@@ -54,6 +63,18 @@ namespace SharpDisplayManager
             return brief;
         }
 
+
+        protected override void DoConstruct()
+        {
+            base.DoConstruct();
+
+            if (SelectCommand == null)
+            {
+                SelectCommand = new PropertyButton { Text = "None"};
+            }
+            SelectCommand.ClickEventHandler = ClickEventHandler;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -70,6 +91,53 @@ namespace SharpDisplayManager
                 Console.WriteLine("WARNING: No Harmony client connection.");
             }
             
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool IsValid()
+        {
+            if (Program.HarmonyConfig != null)
+            {
+                foreach (HarmonyHub.Device d in Program.HarmonyConfig.Devices)
+                {
+                    if (d.Id.Equals(DeviceId))
+                    {
+                        foreach (HarmonyHub.ControlGroup cg in d.ControlGroups)
+                        {
+                            foreach (HarmonyHub.Function f in cg.Functions)
+                            {
+                                if (f.Name.Equals(FunctionName))
+                                {
+                                    //We found our device and our function
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        void ClickEventHandler(object sender, EventArgs e)
+        {
+            FormSelectHarmonyCommand dlg = new FormSelectHarmonyCommand();
+            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(dlg);
+            if (res == DialogResult.OK)
+            {
+                DeviceId = dlg.DeviceId;
+                FunctionName = dlg.FunctionName;
+                SelectCommand.Text = Brief();
+                //Tell observer the object itself changed
+                OnPropertyChanged("Brief");
+            }
+
         }
 
     }
