@@ -2932,10 +2932,14 @@ namespace SharpDisplayManager
             FormEditObject<Ear.Event> ea = new FormEditObject<Ear.Event>();
             ea.Text = "Edit event";
             ea.Object = selectedEvent;
-            int actionIndex = iTreeViewEvents.SelectedNode.Index;
+            int index = iTreeViewEvents.SelectedNode.Index;
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
-            {
+            {                
+                //Make sure we keep the same actions as before
+                ea.Object.Actions = Properties.Settings.Default.EarManager.Events[index].Actions;
+                //Update our event
+                Properties.Settings.Default.EarManager.Events[index] = ea.Object;
                 //Save and rebuild our event tree view
                 Properties.Settings.Default.Save();
                 PopulateEventsTreeView();
