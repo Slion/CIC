@@ -1201,7 +1201,7 @@ namespace SharpDisplayManager
             checkBoxAutoStart.Checked = iStartupManager.Startup;
 
             //Harmony settings
-            iTextBoxHarmonyHubAddress.Text = Properties.Settings.Default.HarmonyHubAddress;
+            iButtonHarmonyConnect.Enabled = Properties.Settings.Default.HarmonyEnabled;
 
             //CEC settings
             comboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
@@ -2525,7 +2525,7 @@ namespace SharpDisplayManager
             base.WndProc(ref aMessage);
         }
 
-        private void checkBoxCecEnabled_CheckedChanged(object sender, EventArgs e)
+        private void iCheckBoxCecEnabled_CheckedChanged(object sender, EventArgs e)
         {
             //
             ResetCec();
@@ -2566,22 +2566,43 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        private async void ResetHarmony()
+        private async void ResetHarmony(bool aForceAuth=false)
         {
             // ConnectAsync already if we have an existing session cookie
-            if (Properties.Settings.Default.HarmonyEnabled && File.Exists("SessionToken"))
+            if (Properties.Settings.Default.HarmonyEnabled)
             {
-
-                iButtonHarmonyConnect.Enabled = false;
                 try
                 {
-                    await ConnectHarmonyAsync();
+                    await ConnectHarmonyAsync(aForceAuth);
                 }
-                finally
+                catch (Exception ex)
                 {
-                    iButtonHarmonyConnect.Enabled = true;
+                    Console.WriteLine("Exception thrown by ConnectHarmonyAsync");
+                    Console.WriteLine(ex.ToString());
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void iButtonHarmonyConnect_Click(object sender, EventArgs e)
+        {
+            // User is explicitaly trying to connect
+            //Reset Harmony Hub connection forcing authentication
+            ResetHarmony(true);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void iCheckBoxHarmonyEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            iButtonHarmonyConnect.Enabled = iCheckBoxHarmonyEnabled.Checked;
         }
 
         /// <summary>
@@ -2975,31 +2996,8 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void iButtonHarmonyConnect_Click(object sender, EventArgs e)
-        {
-            //Save hub address
-            Properties.Settings.Default.HarmonyHubAddress = iTextBoxHarmonyHubAddress.Text;
-            Properties.Settings.Default.Save();
-
-            iButtonHarmonyConnect.Enabled = false;
-            try
-            {
-                await ConnectHarmonyAsync();
-            }
-            catch (Exception)
-            {
-                iButtonHarmonyConnect.Enabled = true;
-            }
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <returns></returns>
-        private async Task ConnectHarmonyAsync()
+        private async Task ConnectHarmonyAsync(bool aForceAuth=false)
         {
             if (Program.HarmonyClient != null)
             {
@@ -3013,7 +3011,7 @@ namespace SharpDisplayManager
             Console.WriteLine("Harmony: Connecting... ");
             Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text);
             //First create our client and login
-            if (File.Exists("SessionToken"))
+            if (File.Exists("SessionToken") && !aForceAuth)
             {
                 var sessionToken = File.ReadAllText("SessionToken");
                 Console.WriteLine("Harmony: Reusing token: {0}", sessionToken);
@@ -3087,5 +3085,6 @@ namespace SharpDisplayManager
                 await Program.HarmonyClient.SendCommandAsync(d.Id, f.Name);
             }
         }
+
     }
 }
