@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Threading;
 
@@ -18,16 +19,16 @@ namespace SharpLib.Ear
         /// </summary>
         public void Test()
         {
-            Console.WriteLine("Action test");
+            Trace.WriteLine("Action test");
             Execute();
         }
 
         public void Execute()
         {
-            Console.WriteLine("Action executing: " + Brief());
+            Trace.WriteLine("Action executing: " + Brief());
             if (!IsValid())
             {
-                Console.WriteLine($"WARNING: action invalid, aborting execution.");
+                Trace.WriteLine($"WARNING: action invalid, aborting execution.");
                 return;
             }
             

@@ -2,6 +2,7 @@
 using SharpLib.Ear;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -29,7 +30,7 @@ namespace SharpDisplayManager
         {
             if (Cec.Client.Static == null)
             {
-                Console.WriteLine("WARNING: No CEC client installed.");
+                Trace.WriteLine("WARNING: No CEC client installed.");
                 return;
             }
 

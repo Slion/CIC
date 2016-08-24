@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -73,7 +74,7 @@ namespace SharpDisplayManager
                 HarmonyHub.Function f = tag;
                 HarmonyHub.Device d = (HarmonyHub.Device)e.Node.Parent.Parent.Tag;
 
-                Console.WriteLine($"Harmony: Sending {f.Name} to {d.Label}...");
+                Trace.WriteLine($"Harmony: Sending {f.Name} to {d.Label}...");
 
                 await Program.HarmonyClient.SendCommandAsync(d.Id, f.Name);
             }

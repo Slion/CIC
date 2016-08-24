@@ -60,7 +60,7 @@ namespace SharpLib.Utils
                 //catch (Exception ex)
                 //{
                     //That's not helping with partial loading
-                //    Console.WriteLine("WARNING: Internalize exception -" + ex.ToString() );
+                //    Trace.WriteLine("WARNING: Internalize exception -" + ex.ToString() );
                 //    return null;
                 //}
             }

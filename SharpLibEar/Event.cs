@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace SharpLib.Ear
@@ -42,14 +43,14 @@ namespace SharpLib.Ear
         /// </summary>
         public void Test()
         {
-            Console.WriteLine("Event test");
+            Trace.WriteLine("Event test");
             Trigger();
         }
 
 
         public void Trigger()
         {
-            Console.WriteLine("Event triggered: " + Name);
+            Trace.WriteLine("Event triggered: " + Name);
             foreach (Action action in Actions)
             {
                 action.Execute();
