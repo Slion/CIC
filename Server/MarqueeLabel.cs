@@ -122,7 +122,7 @@ namespace SharpDisplayManager
         private double PixelsLeft { get; set; }
         //DateTime a = new DateTime(2010, 05, 12, 13, 15, 00);
         //DateTime b = new DateTime(2010, 05, 12, 13, 45, 00);
-        //Console.WriteLine(b.Subtract(a).TotalMinutes);
+        //Trace.WriteLine(b.Subtract(a).TotalMinutes);
 
         public MarqueeLabel()
         {

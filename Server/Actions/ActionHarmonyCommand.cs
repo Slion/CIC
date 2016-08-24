@@ -2,6 +2,7 @@
 using SharpLib.Ear;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,7 +78,7 @@ namespace SharpDisplayManager
             }
             else
             {
-                Console.WriteLine("WARNING: No Harmony client connection.");
+                Trace.WriteLine("WARNING: No Harmony client connection.");
             }
             
         }

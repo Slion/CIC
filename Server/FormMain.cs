@@ -131,7 +131,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        RichTextBoxTextWriter iWriter;
+        RichTextBoxTraceListener iWriter;
 
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace SharpDisplayManager
             InitializeComponent();
 
             //Redirect console output
-            iWriter = new RichTextBoxTextWriter(richTextBoxLogs);
-            Console.SetOut(iWriter);
+            iWriter = new RichTextBoxTraceListener(richTextBoxLogs);
+            Trace.Listeners.Add(iWriter);
 
             //Populate device types
             PopulateDeviceTypes();
@@ -993,9 +993,6 @@ namespace SharpDisplayManager
         //This is our timer tick responsible to perform our render
         private void timer_Tick(object sender, EventArgs e)
         {
-            //Not ideal cause this has nothing to do with display render
-            LogsUpdate();
-
             //Update our animations
             DateTime NewTickTime = DateTime.Now;
 
@@ -2498,25 +2495,11 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        private void LogsUpdate()
-        {
-            if (iWriter != null)
-            {
-                iWriter.Flush();
-            }
-
-        }
-
-        /// <summary>
         /// Broadcast messages to subscribers.
         /// </summary>
         /// <param name="message"></param>
         protected override void WndProc(ref Message aMessage)
         {
-            LogsUpdate();
-
             if (OnWndProc != null)
             {
                 OnWndProc(ref aMessage);
@@ -2577,8 +2560,8 @@ namespace SharpDisplayManager
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown by ConnectHarmonyAsync");
-                    Console.WriteLine(ex.ToString());
+                    Trace.WriteLine("Exception thrown by ConnectHarmonyAsync");
+                    Trace.WriteLine(ex.ToString());
                 }
             }
         }
@@ -3008,35 +2991,35 @@ namespace SharpDisplayManager
             Program.HarmonyClient = null;
             Program.HarmonyConfig = null;
 
-            Console.WriteLine("Harmony: Connecting... ");
+            Trace.WriteLine("Harmony: Connecting... ");
             Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text);
             //First create our client and login
             if (File.Exists("SessionToken") && !aForceAuth)
             {
                 var sessionToken = File.ReadAllText("SessionToken");
-                Console.WriteLine("Harmony: Reusing token: {0}", sessionToken);
+                Trace.WriteLine("Harmony: Reusing token: {0}", sessionToken);
                 Program.HarmonyClient.Open(sessionToken);
             }
             else
             {
                 if (string.IsNullOrEmpty(iTextBoxLogitechPassword.Text))
                 {
-                    Console.WriteLine("Harmony: Credentials missing!");
+                    Trace.WriteLine("Harmony: Credentials missing!");
                     return;
                 }
 
-                Console.WriteLine("Harmony: Authenticating with Logitech servers...");
+                Trace.WriteLine("Harmony: Authenticating with Logitech servers...");
                 await Program.HarmonyClient.Open(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
                 File.WriteAllText("SessionToken", Program.HarmonyClient.Token);
             }
 
-            Console.WriteLine("Harmony: Fetching Harmony Hub configuration...");
+            Trace.WriteLine("Harmony: Fetching Harmony Hub configuration...");
 
             //Fetch our config
             Program.HarmonyConfig = await Program.HarmonyClient.GetConfigAsync();
             PopulateTreeViewHarmony(Program.HarmonyConfig);
 
-            Console.WriteLine("Harmony: Ready");
+            Trace.WriteLine("Harmony: Ready");
 
             //Make sure harmony command actions are showing device name instead of device id
             PopulateEventsTreeView();
@@ -3080,7 +3063,7 @@ namespace SharpDisplayManager
                 HarmonyHub.Function f = tag;
                 HarmonyHub.Device d = (HarmonyHub.Device)e.Node.Parent.Parent.Tag;
 
-                Console.WriteLine($"Harmony: Sending {f.Name} to {d.Label}...");
+                Trace.WriteLine($"Harmony: Sending {f.Name} to {d.Label}...");
 
                 await Program.HarmonyClient.SendCommandAsync(d.Id, f.Name);
             }

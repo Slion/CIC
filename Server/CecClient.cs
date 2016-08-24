@@ -34,6 +34,7 @@ using System;
 using System.Text;
 using CecSharp;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Cec
 {
@@ -98,7 +99,7 @@ namespace Cec
 
             if (Static != null)
             {
-                Console.WriteLine("WARNING: CEC client static already exists");
+                Trace.WriteLine("WARNING: CEC client static already exists");
             }
             else
             {
@@ -106,8 +107,8 @@ namespace Cec
             }
             
 
-            //Console.WriteLine("CEC Parser created - libCEC version " + Lib.VersionToString(Config.ServerVersion));
-            Console.WriteLine("INFO: CEC Parser created - libCEC version " + Config.ServerVersion);
+            //Trace.WriteLine("CEC Parser created - libCEC version " + Lib.VersionToString(Config.ServerVersion));
+            Trace.WriteLine("INFO: CEC Parser created - libCEC version " + Config.ServerVersion);
         }
 
 
@@ -125,7 +126,7 @@ namespace Cec
                 log += " " + data.Data;
             }
 
-            Console.WriteLine(log);
+            Trace.WriteLine(log);
 
             Close();
             //Try reconnect
@@ -140,7 +141,7 @@ namespace Cec
         /// <returns></returns>
         public override int ReceiveMenuStateChange(CecMenuState newVal)
         {
-            Console.WriteLine("CEC menu state changed to: " + iLib.ToString(newVal));
+            Trace.WriteLine("CEC menu state changed to: " + iLib.ToString(newVal));
             return 1;
         }
 
@@ -151,13 +152,13 @@ namespace Cec
         /// <param name="activated"></param>
         public override void SourceActivated(CecLogicalAddress logicalAddress, bool activated)
         {
-            Console.WriteLine("CEC source activated: " + iLib.ToString(logicalAddress) + "/" + activated.ToString() );
+            Trace.WriteLine("CEC source activated: " + iLib.ToString(logicalAddress) + "/" + activated.ToString() );
             return;
         }
 
         public override int ReceiveCommand(CecCommand command)
         {
-            Console.WriteLine(string.Format("CEC command '{5}' from {0} to {1} - Ack: {2} Eom: {3} OpcodeSet: {4} Timeout: {6}",
+            Trace.WriteLine(string.Format("CEC command '{5}' from {0} to {1} - Ack: {2} Eom: {3} OpcodeSet: {4} Timeout: {6}",
                 iLib.ToString(command.Initiator),
                 iLib.ToString(command.Destination),
                 command.Ack.ToString(),
@@ -171,7 +172,7 @@ namespace Cec
 
         public override int ReceiveKeypress(CecKeypress key)
         {
-            Console.WriteLine(string.Format("CEC keypress: {0} Duration:{1} Empty: {2}",
+            Trace.WriteLine(string.Format("CEC keypress: {0} Duration:{1} Empty: {2}",
                 key.Keycode.ToString(), key.Duration.ToString(), key.Empty.ToString()));
             return 1;
         }
@@ -207,7 +208,7 @@ namespace Cec
                         break;
                 }
                 string strLog = string.Format("{0} {1} {2}", strLevel, message.Time, message.Message);
-                Console.WriteLine(strLog);
+                Trace.WriteLine(strLog);
                 
             }
             return 1;
@@ -228,7 +229,7 @@ namespace Cec
             }                
             else
             {
-                Console.WriteLine("CEC did not find any adapters");
+                Trace.WriteLine("CEC did not find any adapters");
             }
 
             return iConnected;
@@ -280,7 +281,7 @@ namespace Cec
                         break;
 
                     default:
-                        Console.WriteLine(i.ToString());
+                        Trace.WriteLine(i.ToString());
                         Thread.Sleep(1000);
                         iLib.SendKeypress(CecLogicalAddress.Tv, (CecUserControlCode)i, true);
                         
@@ -343,7 +344,7 @@ namespace Cec
                 scanRes += "===================" + "\n";
             }
 
-            Console.Write(scanRes);
+            Trace.Write(scanRes);
         }
 
         public void ListAdapters()
@@ -351,214 +352,9 @@ namespace Cec
             int iAdapter = 0;
             foreach (CecAdapter adapter in iLib.FindAdapters(string.Empty))
             {
-                Console.WriteLine("Adapter:    " + iAdapter++);
-                Console.WriteLine("Path:         " + adapter.Path);
-                Console.WriteLine("Com port: " + adapter.ComPort);
-            }
-        }
-
-        void ShowConsoleHelp()
-        {
-            Console.WriteLine(
-                "================================================================================" + Environment.NewLine +
-                "Available commands:" + Environment.NewLine +
-                Environment.NewLine +
-                "[tx] {bytes}                            transfer bytes over the CEC line." + Environment.NewLine +
-                "[txn] {bytes}                         transfer bytes but don't wait for transmission ACK." + Environment.NewLine +
-                "[on] {address}                        power on the device with the given logical address." + Environment.NewLine +
-                "[standby] {address}             put the device with the given address in standby mode." + Environment.NewLine +
-                "[la] {logical_address}        change the logical address of the CEC adapter." + Environment.NewLine +
-                "[pa] {physical_address}     change the physical address of the CEC adapter." + Environment.NewLine +
-                "[osd] {addr} {string}         set OSD message on the specified device." + Environment.NewLine +
-                "[ver] {addr}                            get the CEC version of the specified device." + Environment.NewLine +
-                "[ven] {addr}                            get the vendor ID of the specified device." + Environment.NewLine +
-                "[lang] {addr}                         get the menu language of the specified device." + Environment.NewLine +
-                "[pow] {addr}                            get the power status of the specified device." + Environment.NewLine +
-                "[poll] {addr}                         poll the specified device." + Environment.NewLine +
-                "[scan]                                        scan the CEC bus and display device info" + Environment.NewLine +
-                "[mon] {1|0}                             enable or disable CEC bus monitoring." + Environment.NewLine +
-                "[log] {1 - 31}                        change the log level. see cectypes.h for values." + Environment.NewLine +
-                "[ping]                                        send a ping command to the CEC adapter." + Environment.NewLine +
-                "[bl]                                            to let the adapter enter the bootloader, to upgrade" + Environment.NewLine +
-                "                                                    the flash rom." + Environment.NewLine +
-                "[r]                                             reconnect to the CEC adapter." + Environment.NewLine +
-                "[h] or [help]                         show this help." + Environment.NewLine +
-                "[q] or [quit]                         to quit the CEC test client and switch off all" + Environment.NewLine +
-                "                                                    connected CEC devices." + Environment.NewLine +
-                "================================================================================");
-        }
-
-        public void MainLoop()
-        {
-            bool bContinue = true;
-            string command;
-            while (bContinue)
-            {
-                Console.WriteLine("waiting for input");
-
-                command = Console.ReadLine();
-                if (command != null && command.Length == 0)
-                    continue;
-                string[] splitCommand = command.Split(' ');
-                if (splitCommand[0] == "tx" || splitCommand[0] == "txn")
-                {
-                    CecCommand bytes = new CecCommand();
-                    for (int iPtr = 1; iPtr < splitCommand.Length; iPtr++)
-                    {
-                        bytes.PushBack(byte.Parse(splitCommand[iPtr], System.Globalization.NumberStyles.HexNumber));
-                    }
-
-                    if (command == "txn")
-                        bytes.TransmitTimeout = 0;
-
-                    iLib.Transmit(bytes);
-                }
-                else if (splitCommand[0] == "on")
-                {
-                    if (splitCommand.Length > 1)
-                        iLib.PowerOnDevices((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                    else
-                        iLib.PowerOnDevices(CecLogicalAddress.Broadcast);
-                }
-                else if (splitCommand[0] == "standby")
-                {
-                    if (splitCommand.Length > 1)
-                        iLib.StandbyDevices((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                    else
-                        iLib.StandbyDevices(CecLogicalAddress.Broadcast);
-                }
-                else if (splitCommand[0] == "poll")
-                {
-                    bool bSent = false;
-                    if (splitCommand.Length > 1)
-                        bSent = iLib.PollDevice((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                    else
-                        bSent = iLib.PollDevice(CecLogicalAddress.Broadcast);
-                    if (bSent)
-                        Console.WriteLine("POLL message sent");
-                    else
-                        Console.WriteLine("POLL message not sent");
-                }
-                else if (splitCommand[0] == "la")
-                {
-                    if (splitCommand.Length > 1)
-                        iLib.SetLogicalAddress((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                }
-                else if (splitCommand[0] == "pa")
-                {
-                    if (splitCommand.Length > 1)
-                        iLib.SetPhysicalAddress(ushort.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                }
-                else if (splitCommand[0] == "osd")
-                {
-                    if (splitCommand.Length > 2)
-                    {
-                        StringBuilder osdString = new StringBuilder();
-                        for (int iPtr = 1; iPtr < splitCommand.Length; iPtr++)
-                        {
-                            osdString.Append(splitCommand[iPtr]);
-                            if (iPtr != splitCommand.Length - 1)
-                                osdString.Append(" ");
-                        }
-                        iLib.SetOSDString((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber), CecDisplayControl.DisplayForDefaultTime, osdString.ToString());
-                    }
-                }
-                else if (splitCommand[0] == "ping")
-                {
-                    iLib.PingAdapter();
-                }
-                else if (splitCommand[0] == "mon")
-                {
-                    bool enable = splitCommand.Length > 1 ? splitCommand[1] == "1" : false;
-                    iLib.SwitchMonitoring(enable);
-                }
-                else if (splitCommand[0] == "bl")
-                {
-                    iLib.StartBootloader();
-                }
-                else if (splitCommand[0] == "lang")
-                {
-                    if (splitCommand.Length > 1)
-                    {
-                        string language = iLib.GetDeviceMenuLanguage((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                        Console.WriteLine("Menu language: " + language);
-                    }
-                }
-                else if (splitCommand[0] == "ven")
-                {
-                    if (splitCommand.Length > 1)
-                    {
-                        CecVendorId vendor = iLib.GetDeviceVendorId((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                        Console.WriteLine("Vendor ID: " + iLib.ToString(vendor));
-                    }
-                }
-                else if (splitCommand[0] == "ver")
-                {
-                    if (splitCommand.Length > 1)
-                    {
-                        CecVersion version = iLib.GetDeviceCecVersion((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                        Console.WriteLine("CEC version: " + iLib.ToString(version));
-                    }
-                }
-                else if (splitCommand[0] == "pow")
-                {
-                    if (splitCommand.Length > 1)
-                    {
-                        CecPowerStatus power = iLib.GetDevicePowerStatus((CecLogicalAddress)byte.Parse(splitCommand[1], System.Globalization.NumberStyles.HexNumber));
-                        Console.WriteLine("power status: " + iLib.ToString(power));
-                    }
-                }
-                else if (splitCommand[0] == "r")
-                {
-                    Console.WriteLine("closing the connection");
-                    iLib.Close();
-
-                    Console.WriteLine("opening a new connection");
-                    Open(10000);
-
-                    Console.WriteLine("setting active source");
-                    iLib.SetActiveSource(CecDeviceType.PlaybackDevice);
-                }
-                else if (splitCommand[0] == "scan")
-                {
-                    StringBuilder output = new StringBuilder();
-                    output.AppendLine("CEC bus information");
-                    output.AppendLine("===================");
-                    CecLogicalAddresses addresses = iLib.GetActiveDevices();
-                    for (int iPtr = 0; iPtr < addresses.Addresses.Length; iPtr++)
-                    {
-                        CecLogicalAddress address = (CecLogicalAddress)iPtr;
-                        if (!addresses.IsSet(address))
-                            continue;
-
-                        CecVendorId iVendorId = iLib.GetDeviceVendorId(address);
-                        bool bActive = iLib.IsActiveDevice(address);
-                        ushort iPhysicalAddress = iLib.GetDevicePhysicalAddress(address);
-                        string strAddr = "todo: fixme"; //Lib.PhysicalAddressToString(iPhysicalAddress);
-                        CecVersion iCecVersion = iLib.GetDeviceCecVersion(address);
-                        CecPowerStatus power = iLib.GetDevicePowerStatus(address);
-                        string osdName = iLib.GetDeviceOSDName(address);
-                        string lang = iLib.GetDeviceMenuLanguage(address);
-
-                        output.AppendLine("device #" + iPtr + ": " + iLib.ToString(address));
-                        output.AppendLine("address:             " + strAddr);
-                        output.AppendLine("active source: " + (bActive ? "yes" : "no"));
-                        output.AppendLine("vendor:                " + iLib.ToString(iVendorId));
-                        output.AppendLine("osd string:        " + osdName);
-                        output.AppendLine("CEC version:     " + iLib.ToString(iCecVersion));
-                        output.AppendLine("power status:    " + iLib.ToString(power));
-                        if (!string.IsNullOrEmpty(lang))
-                            output.AppendLine("language:            " + lang);
-                        output.AppendLine("");
-                    }
-                    Console.WriteLine(output.ToString());
-                }
-                else if (splitCommand[0] == "h" || splitCommand[0] == "help")
-                    ShowConsoleHelp();
-                else if (splitCommand[0] == "q" || splitCommand[0] == "quit")
-                    bContinue = false;
-                else if (splitCommand[0] == "log" && splitCommand.Length > 1)
-                    LogLevel = int.Parse(splitCommand[1]);                
+                Trace.WriteLine("Adapter:    " + iAdapter++);
+                Trace.WriteLine("Path:         " + adapter.Path);
+                Trace.WriteLine("Com port: " + adapter.ComPort);
             }
         }
        
