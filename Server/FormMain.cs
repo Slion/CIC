@@ -2984,7 +2984,7 @@ namespace SharpDisplayManager
         {
             if (Program.HarmonyClient != null)
             {
-                Program.HarmonyClient.Close();
+                await Program.HarmonyClient.CloseAsync();
             }
 
             //Reset Harmony client & config
@@ -2998,7 +2998,7 @@ namespace SharpDisplayManager
             {
                 var sessionToken = File.ReadAllText("SessionToken");
                 Trace.WriteLine("Harmony: Reusing token: {0}", sessionToken);
-                Program.HarmonyClient.Open(sessionToken);
+                Program.HarmonyClient.OpenAsync(sessionToken);
             }
             else
             {
@@ -3009,7 +3009,7 @@ namespace SharpDisplayManager
                 }
 
                 Trace.WriteLine("Harmony: Authenticating with Logitech servers...");
-                await Program.HarmonyClient.Open(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
+                await Program.HarmonyClient.OpenAsync(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
                 File.WriteAllText("SessionToken", Program.HarmonyClient.Token);
             }
 
