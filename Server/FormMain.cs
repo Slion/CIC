@@ -230,7 +230,7 @@ namespace SharpDisplayManager
             ResetCec();
 
             //Harmony
-            ResetHarmony();
+            ResetHarmonyAsync();
 
             //Setup Events
             PopulateEventsTreeView();
@@ -2549,19 +2549,24 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        private async void ResetHarmony(bool aForceAuth=false)
+        private async void ResetHarmonyAsync(bool aForceAuth=false)
         {
             // ConnectAsync already if we have an existing session cookie
             if (Properties.Settings.Default.HarmonyEnabled)
             {
                 try
                 {
+                    iButtonHarmonyConnect.Enabled = false;
                     await ConnectHarmonyAsync(aForceAuth);
                 }
                 catch (Exception ex)
                 {
                     Trace.WriteLine("Exception thrown by ConnectHarmonyAsync");
                     Trace.WriteLine(ex.ToString());
+                }
+                finally
+                {
+                    iButtonHarmonyConnect.Enabled = true;
                 }
             }
         }
@@ -2575,7 +2580,7 @@ namespace SharpDisplayManager
         {
             // User is explicitaly trying to connect
             //Reset Harmony Hub connection forcing authentication
-            ResetHarmony(true);
+            ResetHarmonyAsync(true);
         }
 
         /// <summary>
@@ -2998,7 +3003,7 @@ namespace SharpDisplayManager
             {
                 var sessionToken = File.ReadAllText("SessionToken");
                 Trace.WriteLine("Harmony: Reusing token: {0}", sessionToken);
-                Program.HarmonyClient.OpenAsync(sessionToken);
+                await Program.HarmonyClient.OpenAsync(sessionToken);
             }
             else
             {
