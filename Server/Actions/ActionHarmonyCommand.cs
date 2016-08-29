@@ -74,13 +74,14 @@ namespace SharpDisplayManager
             //TODO: check if the harmony client connection is opened
             if (Program.HarmonyClient!=null)
             {
-                Program.HarmonyClient.SendCommandAsync(DeviceId, FunctionName);
+                // Wait synchronously for now until we figure out how we could do async stuff in EAR.
+                // TODO: Have an abort option in EAR. For instance we don't want to keep sending Harmony command if one failed.
+                Program.HarmonyClient.TrySendCommandAsync(DeviceId, FunctionName).Wait(10*1000);
             }
             else
             {
                 Trace.WriteLine("WARNING: No Harmony client connection.");
-            }
-            
+            }            
         }
 
 
