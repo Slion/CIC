@@ -2982,6 +2982,18 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
+        /// Called whenever we loose connection with our HarmonyHub.
+        /// </summary>
+        /// <param name="aRequestWasCancelled"></param>
+        private void HarmonyConnectionClosedByServer(object aSender, bool aRequestWasCancelled)
+        {
+            //Try reconnect then
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            ResetHarmonyAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -2997,16 +3009,24 @@ namespace SharpDisplayManager
             Program.HarmonyConfig = null;
 
             Trace.WriteLine("Harmony: Connecting... ");
-            Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text);
             //First create our client and login
+            Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text);
+            Program.HarmonyClient.OnConnectionClosedByServer += HarmonyConnectionClosedByServer;
+            
             if (File.Exists("SessionToken") && !aForceAuth)
             {
                 var sessionToken = File.ReadAllText("SessionToken");
                 Trace.WriteLine("Harmony: Reusing token: {0}", sessionToken);
-                await Program.HarmonyClient.OpenAsync(sessionToken);
+                await Program.HarmonyClient.TryOpenAsync(sessionToken);
             }
-            else
+
+            if (!Program.HarmonyClient.IsReady)
             {
+                //We failed to connect using our token
+                //Delete it then
+                File.Delete("SessionToken");
+
+                //Then try connect using our password
                 if (string.IsNullOrEmpty(iTextBoxLogitechPassword.Text))
                 {
                     Trace.WriteLine("Harmony: Credentials missing!");
@@ -3014,18 +3034,13 @@ namespace SharpDisplayManager
                 }
 
                 Trace.WriteLine("Harmony: Authenticating with Logitech servers...");
-                await Program.HarmonyClient.OpenAsync(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
+                await Program.HarmonyClient.TryOpenAsync(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
                 File.WriteAllText("SessionToken", Program.HarmonyClient.Token);
             }
-
-            Trace.WriteLine("Harmony: Fetching Harmony Hub configuration...");
 
             //Fetch our config
             Program.HarmonyConfig = await Program.HarmonyClient.GetConfigAsync();
             PopulateTreeViewHarmony(Program.HarmonyConfig);
-
-            Trace.WriteLine("Harmony: Ready");
-
             //Make sure harmony command actions are showing device name instead of device id
             PopulateEventsTreeView();
         }
