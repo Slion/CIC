@@ -19,7 +19,7 @@ namespace SharpDisplayManager
         public string DeviceId { get; set; } = "";
 
         [DataMember]
-        public string FunctionName { get; set; } = "";
+        public string Command { get; set; } = "";
 
         [DataMember]
         [AttributeObjectProperty(
@@ -48,7 +48,8 @@ namespace SharpDisplayManager
                 brief += DeviceId;
             }
 
-            brief += " do " + FunctionName;
+            // TODO: Fetch function label from command
+            brief += " do " + Command;
 
             return brief;
         }
@@ -76,7 +77,9 @@ namespace SharpDisplayManager
             {
                 // Wait synchronously for now until we figure out how we could do async stuff in EAR.
                 // TODO: Have an abort option in EAR. For instance we don't want to keep sending Harmony command if one failed.
-                Program.HarmonyClient.TrySendCommandAsync(DeviceId, FunctionName).Wait(10*1000);
+                Task<bool> task = Program.HarmonyClient.TrySendKeyPressAsync(DeviceId, Command);
+                bool result = task.Result; //Synchronously waiting for result
+                Trace.WriteLine("ActionHarmonyCommand.DoExecute result: " + result.ToString());
             }
             else
             {
@@ -101,7 +104,7 @@ namespace SharpDisplayManager
                         {
                             foreach (HarmonyHub.Function f in cg.Functions)
                             {
-                                if (f.Name.Equals(FunctionName))
+                                if (f.Action.Command.Equals(Command))
                                 {
                                     //We found our device and our function
                                     return true;
@@ -115,7 +118,11 @@ namespace SharpDisplayManager
             return false;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void ClickEventHandler(object sender, EventArgs e)
         {
             FormSelectHarmonyCommand dlg = new FormSelectHarmonyCommand();
@@ -123,7 +130,7 @@ namespace SharpDisplayManager
             if (res == DialogResult.OK)
             {
                 DeviceId = dlg.DeviceId;
-                FunctionName = dlg.FunctionName;
+                Command = dlg.Command;
                 SelectCommand.Text = Brief();
                 //Tell observer the object itself changed
                 OnPropertyChanged("Brief");
