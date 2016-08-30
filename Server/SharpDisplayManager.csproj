@@ -34,7 +34,7 @@
     <WebPage>index.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.1.0.0</ApplicationVersion>
+    <ApplicationVersion>1.1.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -112,7 +112,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HarmonyHub, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpLibHarmony.0.6.2\lib\net451\HarmonyHub.dll</HintPath>
+      <HintPath>..\packages\SharpLibHarmony.0.6.3\lib\net451\HarmonyHub.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="LibCecSharp, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
