@@ -2989,7 +2989,7 @@ namespace SharpDisplayManager
         {
             //Try reconnect then
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ResetHarmonyAsync();
+            BeginInvoke(new MethodInvoker(delegate () { ResetHarmonyAsync(); }));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -3010,7 +3010,8 @@ namespace SharpDisplayManager
 
             Trace.WriteLine("Harmony: Connecting... ");
             //First create our client and login
-            Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text);
+            //Tip: Set keep-alive to false when testing reconnection process
+            Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text, true);
             Program.HarmonyClient.OnConnectionClosedByServer += HarmonyConnectionClosedByServer;
             
             if (File.Exists("SessionToken") && !aForceAuth)
