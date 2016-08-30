@@ -107,11 +107,18 @@ namespace SharpDisplayManager
         private void comboBoxActionType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Instantiate an action corresponding to our type
-            Type actionType = ((ItemObjectType) iComboBoxObjectType.SelectedItem).Type;
+            Type objectType = ((ItemObjectType) iComboBoxObjectType.SelectedItem).Type;
             //Create another type of action only if needed
-            if (Object == null || Object.GetType() != actionType)
+            if (Object == null || Object.GetType() != objectType)
             {
-                Object = (T)Activator.CreateInstance(actionType);
+                if (Object != null)
+                {
+                    // Make sure we exit edit mode and unhook from events
+                    Object.CurrentState = SharpLib.Ear.Object.State.Rest;
+                    Object.PropertyChanged -= PropertyChangedEventHandlerThreadSafe;
+                    Object = null;
+                }
+                Object = (T)Activator.CreateInstance(objectType);
             }
 
             //Create input fields
@@ -553,7 +560,7 @@ namespace SharpDisplayManager
             iLabelBrief.Text = Object.Brief();
 
             // Update object description
-            iLabelDescription.Text = Object.Description;
+            iLabelDescription.Text = Object.AttributeDescription;
         }
 
         /// <summary>
@@ -568,6 +575,26 @@ namespace SharpDisplayManager
             {
                 //Disable handling of key input as we are using key input for changing our event
                 e.Handled = true;
+            }
+        }
+
+        private void iComboBoxObjectType_Enter(object sender, EventArgs e)
+        {
+            //Only edit HID event when our type combo box has the focus
+            // TODO: That's an ugly workaround, fix that somehow. Maybe by only doing HID scan when a button property has the focus
+            if (Object is EventHid)
+            {
+                Object.CurrentState = SharpLib.Ear.Object.State.Edit;
+            }
+        }
+
+        private void iComboBoxObjectType_Leave(object sender, EventArgs e)
+        {
+            //Only edit HID event when our type combo box has the focus
+            // TODO: That's an ugly workaround, fix that somehow. Maybe by only doing HID scan when a button property has the focus
+            if (Object is EventHid)
+            {
+                Object.CurrentState = SharpLib.Ear.Object.State.Rest;
             }
         }
     }

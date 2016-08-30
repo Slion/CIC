@@ -52,7 +52,7 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override string Brief()
         {
-            string brief = Name + ": " + PrimaryText;
+            string brief = AttributeName + ": " + PrimaryText;
             if (!string.IsNullOrEmpty(SecondaryText))
             {
                 brief += " - " + SecondaryText;

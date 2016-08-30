@@ -46,7 +46,7 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override string Brief()
         {
-            string brief = Name + ": " + Code.ToString() + " to " + DeviceName;
+            string brief = AttributeName + ": " + Code.ToString() + " to " + DeviceName;
             if (Wait)
             {
                 brief += " (wait)";

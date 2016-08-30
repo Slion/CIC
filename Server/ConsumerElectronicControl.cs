@@ -82,14 +82,14 @@ namespace SharpDisplayManager
         {
             MonitorPowerOn = true;
             //Trigger corresponding event thus executing associated actions
-            Properties.Settings.Default.EarManager.TriggerEvent<EventMonitorPowerOn>();            
+            Properties.Settings.Default.EarManager.TriggerEvents<EventMonitorPowerOn>();            
         }
 
         private void OnMonitorPowerOff()
         {
             MonitorPowerOn = false;
             //Trigger corresponding event thus executing associated actions
-            Properties.Settings.Default.EarManager.TriggerEvent<EventMonitorPowerOff>();
+            Properties.Settings.Default.EarManager.TriggerEvents<EventMonitorPowerOff>();
         }
 
         /// <summary>

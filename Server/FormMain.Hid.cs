@@ -119,7 +119,7 @@ namespace SharpDisplayManager
                 //Trigger corresponding EAR event if any
                 EventHid e = new EventHid();
                 e.Copy(aHidEvent);
-                Properties.Settings.Default.EarManager.TriggerEvent(e);
+                Properties.Settings.Default.EarManager.TriggerEvents(e);
             }
         }
 
