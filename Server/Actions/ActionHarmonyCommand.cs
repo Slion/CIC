@@ -69,17 +69,12 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected override void DoExecute()
+        protected override async Task DoExecute()
         {
-            //Fire and forget our command
-            //TODO: check if the harmony client connection is opened
             if (Program.HarmonyClient!=null)
             {
-                // Wait synchronously for now until we figure out how we could do async stuff in EAR.
-                // TODO: Have an abort option in EAR. For instance we don't want to keep sending Harmony command if one failed.
-                Task<bool> task = Program.HarmonyClient.TrySendKeyPressAsync(DeviceId, Command);
-                bool result = task.Result; //Synchronously waiting for result
-                Trace.WriteLine("ActionHarmonyCommand.DoExecute result: " + result.ToString());
+                // Send our command and wait for it async
+                await Program.HarmonyClient.TrySendKeyPressAsync(DeviceId, Command);               
             }
             else
             {

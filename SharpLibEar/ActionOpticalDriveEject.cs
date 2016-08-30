@@ -47,7 +47,7 @@ namespace SharpLib.Ear
             return Drive.Items.Contains(Drive.CurrentItem);
         }
 
-        protected override void DoExecute()
+        protected override async Task DoExecute()
         {
             DriveEject(Drive.CurrentItem);
         }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace SharpLib.Ear
 {
@@ -48,12 +49,12 @@ namespace SharpLib.Ear
         }
 
 
-        public void Trigger()
+        public async Task Trigger()
         {
             Trace.WriteLine("Event triggered: " + Name);
             foreach (Action action in Actions)
             {
-                action.Execute();
+                await action.Execute();
             }
         }
 
