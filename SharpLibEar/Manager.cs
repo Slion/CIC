@@ -48,12 +48,12 @@ namespace SharpLib.Ear
         /// Trigger the given event.
         /// </summary>
         /// <param name="aEventType"></param>
-        public void TriggerEvent<T>() where T: class
+        public async void TriggerEvents<T>() where T: class
         {
             //Only trigger enabled events matching the desired type
             foreach (Event e in Events.Where(e => e.GetType() == typeof(T) && e.Enabled))
             {
-                e.Trigger();
+                await e.Trigger();
             }
         }
 
@@ -61,14 +61,35 @@ namespace SharpLib.Ear
         /// Trigger the given event.
         /// </summary>
         /// <param name="aEventType"></param>
-        public void TriggerEvent<T>(T aEvent) where T : class
+        public async void TriggerEvents<T>(T aEvent) where T : class
         {
             //Only trigger events matching the desired type
             foreach (Event e in Events.Where(e => e.Equals(aEvent) && e.Enabled))
             {
-                e.Trigger();
+                await e.Trigger();
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="aEvent"></param>
+        public async void TriggerEventsByName(string aName)
+        {
+            if (string.IsNullOrEmpty(aName))
+            {
+                //Just don't do that that would be silly
+                return;
+            }
+            //Only trigger events matching the desired type
+            foreach (Event e in Events.Where(e => e.Name.Equals(aName)))
+            {
+                await e.Trigger();
+            }
+        }
+
+
 
 
         /// <summary>

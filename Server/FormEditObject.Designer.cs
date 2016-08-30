@@ -52,7 +52,9 @@
             this.iComboBoxObjectType.Sorted = true;
             this.iComboBoxObjectType.TabIndex = 18;
             this.iComboBoxObjectType.SelectedIndexChanged += new System.EventHandler(this.comboBoxActionType_SelectedIndexChanged);
+            this.iComboBoxObjectType.Enter += new System.EventHandler(this.iComboBoxObjectType_Enter);
             this.iComboBoxObjectType.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.iComboBoxObjectType_KeyPress);
+            this.iComboBoxObjectType.Leave += new System.EventHandler(this.iComboBoxObjectType_Leave);
             // 
             // labelActionType
             // 
@@ -63,12 +65,12 @@
             this.labelActionType.TabIndex = 20;
             this.labelActionType.Text = "Type :";
             // 
-            // buttonOk
+            // iButtonOk
             // 
             this.iButtonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.iButtonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.iButtonOk.Location = new System.Drawing.Point(12, 157);
-            this.iButtonOk.Name = "buttonOk";
+            this.iButtonOk.Name = "iButtonOk";
             this.iButtonOk.Size = new System.Drawing.Size(75, 23);
             this.iButtonOk.TabIndex = 21;
             this.iButtonOk.Text = "Ok";
@@ -104,11 +106,11 @@
             this.iTableLayoutPanel.Size = new System.Drawing.Size(312, 46);
             this.iTableLayoutPanel.TabIndex = 23;
             // 
-            // buttonTest
+            // iButtonTest
             // 
             this.iButtonTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.iButtonTest.Location = new System.Drawing.Point(252, 157);
-            this.iButtonTest.Name = "buttonTest";
+            this.iButtonTest.Name = "iButtonTest";
             this.iButtonTest.Size = new System.Drawing.Size(75, 23);
             this.iButtonTest.TabIndex = 24;
             this.iButtonTest.Text = "Test";
@@ -160,7 +162,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormEditObject";
-            this.Text = "Edit action";
+            this.Text = "Edit object";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEditObject_FormClosing);
             this.Load += new System.EventHandler(this.FormEditAction_Load);
             this.ResumeLayout(false);

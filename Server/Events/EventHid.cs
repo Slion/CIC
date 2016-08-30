@@ -83,7 +83,7 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override string Brief()
         {
-            string brief = Name + ": ";
+            string brief = AttributeName + ": ";
 
             if (!IsValid())
             {

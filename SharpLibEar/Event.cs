@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace SharpLib.Ear
 {
     [DataContract]
-    public abstract class Event : Object
+    [AttributeObject(Id = "Event", Name = "User Event", Description = "An event that can be triggered by users.")]
+    public class Event : Object
     {
         [DataMember]
         [AttributeObjectProperty
@@ -21,6 +22,16 @@ namespace SharpLib.Ear
             )
         ]
         public bool Enabled { get; set; } = true;
+
+        [DataMember]
+        [AttributeObjectProperty
+            (
+                Id = "Event.Name",
+                Name = "Name",
+                Description = "Given event name. Can be used to trigger it."
+            )
+        ]
+        public string Name { get; set; } = "";
 
         [DataMember]
         public List<Action> Actions = new List<Action>();
@@ -42,16 +53,16 @@ namespace SharpLib.Ear
         /// <summary>
         /// Allows testing from generic edit dialog.
         /// </summary>
-        public void Test()
+        public async void Test()
         {
             Trace.WriteLine("Event test");
-            Trigger();
+            await Trigger();
         }
 
 
         public async Task Trigger()
         {
-            Trace.WriteLine("Event triggered: " + Name);
+            Trace.WriteLine("Event triggered: " + AttributeName);
             foreach (Action action in Actions)
             {
                 await action.Execute();

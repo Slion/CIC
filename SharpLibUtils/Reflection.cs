@@ -12,6 +12,7 @@ namespace SharpLib.Utils
     {
         /// <summary>
         /// Get a list of all the concrete types derived from the given type in all loaded assembly.
+        /// That includes the given type itself if it's intanciable.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -21,8 +22,8 @@ namespace SharpLib.Utils
 
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type type in asm.GetTypes()
-                        .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
+                foreach (Type type in asm.GetTypes()                        
+                        .Where(myType => myType.IsClass && !myType.IsAbstract && (myType.IsSubclassOf(typeof(T)) || myType == typeof(T))))
                 {
                     objects.Add(type);
                 }

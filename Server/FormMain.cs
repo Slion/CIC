@@ -233,7 +233,7 @@ namespace SharpDisplayManager
             ResetHarmonyAsync();
 
             //Setup Events
-            PopulateEventsTreeView();
+            PopulateTreeViewEvents();
 
             //Setup notification icon
             SetupTrayIcon();
@@ -312,7 +312,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// Populate tree view with events and actions
         /// </summary>
-        private void PopulateEventsTreeView()
+        private void PopulateTreeViewEvents()
         {
             //Disable action buttons
             buttonActionAdd.Enabled = false;
@@ -328,7 +328,20 @@ namespace SharpDisplayManager
             foreach (Ear.Event e in Properties.Settings.Default.EarManager.Events)
             {
                 //Create our event node
-                TreeNode eventNode = iTreeViewEvents.Nodes.Add(e.Brief());
+                //Work out the name of our node
+                string eventNodeName = "";
+                if (!string.IsNullOrEmpty(e.Name))
+                {
+                    //That event has a proper name, use it then
+                    eventNodeName = $"{e.Name} - {e.Brief()}";
+                }
+                else
+                {
+                    //Unnamed events just use brief
+                    eventNodeName = e.Brief();
+                }
+                
+                TreeNode eventNode = iTreeViewEvents.Nodes.Add(eventNodeName);
                 eventNode.Tag = e; //For easy access to our event
                 if (!e.Enabled)
                 {
@@ -337,7 +350,7 @@ namespace SharpDisplayManager
                 }
 
                 //Add event description as child node
-                eventNode.Nodes.Add(e.Description).ForeColor = eventNode.ForeColor; 
+                eventNode.Nodes.Add(e.AttributeDescription).ForeColor = eventNode.ForeColor; 
                 //Create child node for actions root
                 TreeNode actionsNodes = eventNode.Nodes.Add("Actions");
                 actionsNodes.ForeColor = eventNode.ForeColor;
@@ -2717,7 +2730,7 @@ namespace SharpDisplayManager
             {
                 selectedEvent.Actions.Add(ea.Object);               
                 Properties.Settings.Default.Save();
-                PopulateEventsTreeView();
+                PopulateTreeViewEvents();
             }
         }
 
@@ -2747,7 +2760,7 @@ namespace SharpDisplayManager
                 selectedEvent.Actions[actionIndex]=ea.Object;
                 //Save and rebuild our event tree view
                 Properties.Settings.Default.Save();
-                PopulateEventsTreeView();
+                PopulateTreeViewEvents();
             }
         }
 
@@ -2768,7 +2781,7 @@ namespace SharpDisplayManager
 
             Properties.Settings.Default.EarManager.RemoveAction(action);
             Properties.Settings.Default.Save();
-            PopulateEventsTreeView();
+            PopulateTreeViewEvents();
         }
 
         /// <summary>
@@ -2811,7 +2824,7 @@ namespace SharpDisplayManager
 
             //Save and populate our tree again
             Properties.Settings.Default.Save();
-            PopulateEventsTreeView();
+            PopulateTreeViewEvents();
 
         }
 
@@ -2840,7 +2853,7 @@ namespace SharpDisplayManager
 
             //Save and populate our tree again
             Properties.Settings.Default.Save();
-            PopulateEventsTreeView();
+            PopulateTreeViewEvents();
         }
 
 
@@ -2915,7 +2928,7 @@ namespace SharpDisplayManager
             {
                 Properties.Settings.Default.EarManager.Events.Add(ea.Object);
                 Properties.Settings.Default.Save();
-                PopulateEventsTreeView();
+                PopulateTreeViewEvents();
                 SelectEvent(ea.Object);
             }
         }
@@ -2936,7 +2949,7 @@ namespace SharpDisplayManager
 
             Properties.Settings.Default.EarManager.Events.Remove(currentEvent);
             Properties.Settings.Default.Save();
-            PopulateEventsTreeView();
+            PopulateTreeViewEvents();
         }
 
         /// <summary>
@@ -2966,7 +2979,7 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.EarManager.Events[index] = ea.Object;
                 //Save and rebuild our event tree view
                 Properties.Settings.Default.Save();
-                PopulateEventsTreeView();
+                PopulateTreeViewEvents();
             }
         }
 
@@ -3043,7 +3056,7 @@ namespace SharpDisplayManager
             Program.HarmonyConfig = await Program.HarmonyClient.GetConfigAsync();
             PopulateTreeViewHarmony(Program.HarmonyConfig);
             //Make sure harmony command actions are showing device name instead of device id
-            PopulateEventsTreeView();
+            PopulateTreeViewEvents();
         }
 
         /// <summary>

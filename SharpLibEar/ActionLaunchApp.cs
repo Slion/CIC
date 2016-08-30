@@ -46,7 +46,7 @@ namespace SharpLib.Ear
 
         public override string Brief()
         {
-            return Name + ": " + Path.GetFileName(File.FullPath);
+            return AttributeName + ": " + Path.GetFileName(File.FullPath);
         }
 
         public override bool IsValid()

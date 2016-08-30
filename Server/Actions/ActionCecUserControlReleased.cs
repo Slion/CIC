@@ -38,7 +38,7 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override string Brief()
         {
-            string brief = Name + " to " + DeviceName;
+            string brief = AttributeName + " to " + DeviceName;
             if (Wait)
             {
                 brief += " (wait)";

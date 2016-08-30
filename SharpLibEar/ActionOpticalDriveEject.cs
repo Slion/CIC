@@ -38,7 +38,7 @@ namespace SharpLib.Ear
 
         public override string Brief()
         {
-            return Name + " " + Drive.CurrentItem ;
+            return AttributeName + " " + Drive.CurrentItem ;
         }
 
         public override bool IsValid()

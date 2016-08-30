@@ -73,7 +73,7 @@ namespace SharpLib.Ear
         /// <summary>
         /// Static object name.
         /// </summary>
-        public string Name
+        public string AttributeName
         {
             //Get the name of this object attribute
             get { return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Name; }
@@ -83,7 +83,7 @@ namespace SharpLib.Ear
         /// <summary>
         /// Static object description.
         /// </summary>
-        public string Description
+        public string AttributeDescription
         {
             //Get the description of this object attribute
             get { return Utils.Reflection.GetAttribute<AttributeObject>(GetType()).Description; }
@@ -96,7 +96,7 @@ namespace SharpLib.Ear
         /// <returns></returns>
         public virtual string Brief()
         {
-            return Name;
+            return AttributeName;
         }
 
         /// <summary>

@@ -39,7 +39,7 @@ namespace SharpLib.Ear
 
         public override string Brief()
         {
-            return Name + " for " + TimeoutInMilliseconds + " ms";
+            return AttributeName + " for " + TimeoutInMilliseconds + " ms";
         }
 
 
