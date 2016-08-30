@@ -43,12 +43,15 @@
             this.buttonLayoutOneTextField = new System.Windows.Forms.Button();
             this.numericUpDownPriority = new System.Windows.Forms.NumericUpDown();
             this.labelPriority = new System.Windows.Forms.Label();
+            this.buttonTriggerEvents = new System.Windows.Forms.Button();
+            this.textBoxEventName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPriority)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonSetText
             // 
-            this.buttonSetText.Location = new System.Drawing.Point(13, 132);
+            this.buttonSetText.Location = new System.Drawing.Point(12, 109);
             this.buttonSetText.Name = "buttonSetText";
             this.buttonSetText.Size = new System.Drawing.Size(75, 23);
             this.buttonSetText.TabIndex = 0;
@@ -72,7 +75,7 @@
             // 
             // buttonAlignRight
             // 
-            this.buttonAlignRight.Location = new System.Drawing.Point(176, 160);
+            this.buttonAlignRight.Location = new System.Drawing.Point(175, 137);
             this.buttonAlignRight.Name = "buttonAlignRight";
             this.buttonAlignRight.Size = new System.Drawing.Size(75, 23);
             this.buttonAlignRight.TabIndex = 23;
@@ -82,7 +85,7 @@
             // 
             // buttonAlignCenter
             // 
-            this.buttonAlignCenter.Location = new System.Drawing.Point(94, 161);
+            this.buttonAlignCenter.Location = new System.Drawing.Point(93, 138);
             this.buttonAlignCenter.Name = "buttonAlignCenter";
             this.buttonAlignCenter.Size = new System.Drawing.Size(75, 23);
             this.buttonAlignCenter.TabIndex = 22;
@@ -92,7 +95,7 @@
             // 
             // buttonAlignLeft
             // 
-            this.buttonAlignLeft.Location = new System.Drawing.Point(12, 161);
+            this.buttonAlignLeft.Location = new System.Drawing.Point(11, 138);
             this.buttonAlignLeft.Name = "buttonAlignLeft";
             this.buttonAlignLeft.Size = new System.Drawing.Size(75, 23);
             this.buttonAlignLeft.TabIndex = 21;
@@ -102,7 +105,7 @@
             // 
             // buttonSetTopText
             // 
-            this.buttonSetTopText.Location = new System.Drawing.Point(94, 132);
+            this.buttonSetTopText.Location = new System.Drawing.Point(93, 109);
             this.buttonSetTopText.Name = "buttonSetTopText";
             this.buttonSetTopText.Size = new System.Drawing.Size(75, 23);
             this.buttonSetTopText.TabIndex = 24;
@@ -112,7 +115,7 @@
             // 
             // buttonLayoutUpdate
             // 
-            this.buttonLayoutUpdate.Location = new System.Drawing.Point(176, 131);
+            this.buttonLayoutUpdate.Location = new System.Drawing.Point(175, 108);
             this.buttonLayoutUpdate.Name = "buttonLayoutUpdate";
             this.buttonLayoutUpdate.Size = new System.Drawing.Size(156, 23);
             this.buttonLayoutUpdate.TabIndex = 25;
@@ -122,7 +125,7 @@
             // 
             // buttonSetBitmap
             // 
-            this.buttonSetBitmap.Location = new System.Drawing.Point(12, 190);
+            this.buttonSetBitmap.Location = new System.Drawing.Point(11, 167);
             this.buttonSetBitmap.Name = "buttonSetBitmap";
             this.buttonSetBitmap.Size = new System.Drawing.Size(75, 23);
             this.buttonSetBitmap.TabIndex = 26;
@@ -132,7 +135,7 @@
             // 
             // buttonBitmapLayout
             // 
-            this.buttonBitmapLayout.Location = new System.Drawing.Point(176, 189);
+            this.buttonBitmapLayout.Location = new System.Drawing.Point(175, 166);
             this.buttonBitmapLayout.Name = "buttonBitmapLayout";
             this.buttonBitmapLayout.Size = new System.Drawing.Size(75, 35);
             this.buttonBitmapLayout.TabIndex = 27;
@@ -142,7 +145,7 @@
             // 
             // buttonIndicatorsLayout
             // 
-            this.buttonIndicatorsLayout.Location = new System.Drawing.Point(94, 189);
+            this.buttonIndicatorsLayout.Location = new System.Drawing.Point(93, 166);
             this.buttonIndicatorsLayout.Name = "buttonIndicatorsLayout";
             this.buttonIndicatorsLayout.Size = new System.Drawing.Size(75, 35);
             this.buttonIndicatorsLayout.TabIndex = 28;
@@ -152,7 +155,7 @@
             // 
             // buttonUpdateTexts
             // 
-            this.buttonUpdateTexts.Location = new System.Drawing.Point(257, 189);
+            this.buttonUpdateTexts.Location = new System.Drawing.Point(256, 166);
             this.buttonUpdateTexts.Name = "buttonUpdateTexts";
             this.buttonUpdateTexts.Size = new System.Drawing.Size(75, 35);
             this.buttonUpdateTexts.TabIndex = 29;
@@ -162,7 +165,7 @@
             // 
             // buttonLayoutOneTextField
             // 
-            this.buttonLayoutOneTextField.Location = new System.Drawing.Point(257, 160);
+            this.buttonLayoutOneTextField.Location = new System.Drawing.Point(256, 137);
             this.buttonLayoutOneTextField.Name = "buttonLayoutOneTextField";
             this.buttonLayoutOneTextField.Size = new System.Drawing.Size(75, 23);
             this.buttonLayoutOneTextField.TabIndex = 30;
@@ -202,11 +205,40 @@
             this.labelPriority.TabIndex = 32;
             this.labelPriority.Text = "Priority:";
             // 
-            // MainForm
+            // buttonTriggerEvents
+            // 
+            this.buttonTriggerEvents.Location = new System.Drawing.Point(11, 257);
+            this.buttonTriggerEvents.Name = "buttonTriggerEvents";
+            this.buttonTriggerEvents.Size = new System.Drawing.Size(75, 23);
+            this.buttonTriggerEvents.TabIndex = 33;
+            this.buttonTriggerEvents.Text = "Trigger Events";
+            this.buttonTriggerEvents.UseVisualStyleBackColor = true;
+            this.buttonTriggerEvents.Click += new System.EventHandler(this.buttonTriggerEvents_Click);
+            // 
+            // textBoxEventName
+            // 
+            this.textBoxEventName.Location = new System.Drawing.Point(11, 231);
+            this.textBoxEventName.Name = "textBoxEventName";
+            this.textBoxEventName.Size = new System.Drawing.Size(202, 20);
+            this.textBoxEventName.TabIndex = 34;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 212);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(67, 13);
+            this.label1.TabIndex = 35;
+            this.label1.Text = "Event name:";
+            // 
+            // FormClientTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(443, 252);
+            this.ClientSize = new System.Drawing.Size(499, 292);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBoxEventName);
+            this.Controls.Add(this.buttonTriggerEvents);
             this.Controls.Add(this.labelPriority);
             this.Controls.Add(this.numericUpDownPriority);
             this.Controls.Add(this.buttonLayoutOneTextField);
@@ -222,7 +254,7 @@
             this.Controls.Add(this.textBoxBottom);
             this.Controls.Add(this.textBoxTop);
             this.Controls.Add(this.buttonSetText);
-            this.Name = "MainForm";
+            this.Name = "FormClientTest";
             this.Text = "Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -249,6 +281,9 @@
 		private System.Windows.Forms.Button buttonLayoutOneTextField;
         private System.Windows.Forms.NumericUpDown numericUpDownPriority;
         private System.Windows.Forms.Label labelPriority;
+        private System.Windows.Forms.Button buttonTriggerEvents;
+        private System.Windows.Forms.TextBox textBoxEventName;
+        private System.Windows.Forms.Label label1;
     }
 }
 
