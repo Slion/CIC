@@ -66,7 +66,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected override void DoExecute()
+        protected override async Task DoExecute()
         {
             StartMessageClient();
         }

@@ -1,7 +1,7 @@
 //
 
 using System.Runtime.Serialization;
-
+using System.Threading.Tasks;
 
 namespace SharpLib.Ear
 {
@@ -17,7 +17,7 @@ namespace SharpLib.Ear
             iCallback = aCallback;
         }
 
-        protected override void DoExecute()
+        protected override async Task DoExecute()
         {
             if (iCallback != null)
             {

@@ -27,7 +27,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected override void DoExecute()
+        protected override async Task DoExecute()
         {
             if (Cec.Client.Static == null)
             {

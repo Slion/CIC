@@ -59,7 +59,7 @@ namespace SharpLib.Ear
         public static extern void SwitchToThisWindow([System.Runtime.InteropServices.InAttribute()] System.IntPtr hwnd, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)] bool fUnknown);
 
 
-        protected override void DoExecute()
+        protected override async Task DoExecute()
         {
             //First check if the process we want to launch already exists
             string procName = Path.GetFileNameWithoutExtension(File.FullPath);

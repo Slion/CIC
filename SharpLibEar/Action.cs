@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SharpLib.Ear
 {
     [DataContract]
     public abstract class Action: Object
     {
-        protected abstract void DoExecute();
+        protected abstract Task DoExecute();
 
         /// <summary>
         /// Allows testing from generic edit dialog.
@@ -23,7 +24,7 @@ namespace SharpLib.Ear
             Execute();
         }
 
-        public void Execute()
+        public async Task Execute()
         {
             Trace.WriteLine("Action executing: " + Brief());
             if (!IsValid())
@@ -32,7 +33,7 @@ namespace SharpLib.Ear
                 return;
             }
             
-            DoExecute();
+            await DoExecute();
         }
 
     }

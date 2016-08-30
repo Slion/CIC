@@ -3,7 +3,7 @@
 
 using System.Runtime.Serialization;
 using System.Threading;
-
+using System.Threading.Tasks;
 
 namespace SharpLib.Ear
 {
@@ -43,9 +43,9 @@ namespace SharpLib.Ear
         }
 
 
-        protected override void DoExecute()
+        protected override async Task DoExecute()
         {
-            Thread.Sleep(TimeoutInMilliseconds);
+            await Task.Delay(TimeoutInMilliseconds);
         }
 
     }
