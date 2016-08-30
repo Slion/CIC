@@ -19,7 +19,7 @@ namespace SharpDisplayManager
         }
 
         public string DeviceId;
-        public string FunctionName;
+        public string Command;
 
         /// <summary>
         /// 
@@ -51,7 +51,7 @@ namespace SharpDisplayManager
 
                     foreach (HarmonyHub.Function f in cg.Functions)
                     {
-                        TreeNode fNode = cgNode.Nodes.Add(f.Name);
+                        TreeNode fNode = cgNode.Nodes.Add(f.Label);
                         fNode.Tag = f;
                     }
                 }
@@ -74,9 +74,9 @@ namespace SharpDisplayManager
                 HarmonyHub.Function f = tag;
                 HarmonyHub.Device d = (HarmonyHub.Device)e.Node.Parent.Parent.Tag;
 
-                Trace.WriteLine($"Harmony: Sending {f.Name} to {d.Label}...");
+                Trace.WriteLine($"Harmony: Sending {f.Label} to {d.Label}...");
 
-                await Program.HarmonyClient.SendCommandAsync(d.Id, f.Name);
+                await Program.HarmonyClient.TrySendKeyPressAsync(d.Id, f.Action.Command);
             }
         }
 
@@ -97,12 +97,12 @@ namespace SharpDisplayManager
                 HarmonyHub.Device d = (HarmonyHub.Device)e.Node.Parent.Parent.Tag;
 
                 DeviceId = d.Id;
-                FunctionName = f.Name;
+                Command = f.Action.Command;
             }
             else
             {
                 DeviceId = "";
-                FunctionName = "";
+                Command = "";
             }
 
         }
