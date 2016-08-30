@@ -400,5 +400,10 @@ namespace SharpDisplayClient
         {
             iClient.SetPriority((uint)numericUpDownPriority.Value);
         }
+
+        private void buttonTriggerEvents_Click(object sender, EventArgs e)
+        {
+            iClient.TriggerEventsByName(textBoxEventName.Text);
+        }
     }
 }

@@ -107,6 +107,10 @@ namespace SharpDisplay
             return SharpDisplayManager.Program.iFormMain.iClients.Count;
         }
 
+        public void  TriggerEventsByName(string aName)
+        {
+            SharpDisplayManager.Properties.Settings.Default.EarManager.TriggerEventsByName(aName);
+        }
 
 
     }
