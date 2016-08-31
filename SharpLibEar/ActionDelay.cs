@@ -35,7 +35,7 @@ namespace SharpLib.Ear
             Milliseconds = aMillisecondsTimeout;
         }
 
-        public override string Brief()
+        public override string BriefBase()
         {
             return AttributeName + " for " + Milliseconds/1000.0 + " seconds";
         }

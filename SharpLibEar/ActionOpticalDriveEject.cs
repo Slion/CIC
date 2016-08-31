@@ -36,7 +36,7 @@ namespace SharpLib.Ear
         }
 
 
-        public override string Brief()
+        public override string BriefBase()
         {
             return AttributeName + " " + Drive.CurrentItem ;
         }
