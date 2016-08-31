@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
+using CodeProject.Dialog;
 
 namespace SharpDisplayManager
 {
@@ -120,6 +121,12 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         void ClickEventHandler(object sender, EventArgs e)
         {
+            if (Program.HarmonyConfig == null)
+            {
+                ErrBox.Show("No Harmony Hub configuration!");
+                return;
+            }
+
             FormSelectHarmonyCommand dlg = new FormSelectHarmonyCommand();
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(dlg);
             if (res == DialogResult.OK)

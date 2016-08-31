@@ -79,11 +79,13 @@ namespace SharpLib.Ear
         {
             if (string.IsNullOrEmpty(aName))
             {
-                //Just don't do that that would be silly
+                //Just don't do that, that would be silly
                 return;
             }
-            //Only trigger events matching the desired type
-            foreach (Event e in Events.Where(e => e.Name.Equals(aName)))
+            // Only trigger events matching the desired type
+            // Doing some safety checks as well to prevent crashing if name was left null for some reason
+            // This was the case when loading existing settings after event Name was introduced
+            foreach (Event e in Events.Where(e => !string.IsNullOrEmpty(e.Name) && aName.Equals(e.Name)))
             {
                 await e.Trigger();
             }

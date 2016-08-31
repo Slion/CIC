@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CodeProject.Dialog;
 
 namespace SharpDisplayManager
 {
@@ -28,7 +29,15 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void FormSelectHarmonyCommand_Load(object sender, EventArgs e)
         {
-            PopulateTreeViewHarmony(Program.HarmonyConfig);
+            if (Program.HarmonyConfig != null)
+            {
+                PopulateTreeViewHarmony(Program.HarmonyConfig);
+            }
+            else
+            {
+                ErrBox.Show("No Harmony Hub configuration!");
+                Close();
+            }           
         }
 
         /// <summary>
