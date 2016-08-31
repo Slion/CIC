@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,8 @@ using System.Threading.Tasks;
 namespace SharpLib.Ear
 {
     [DataContract]
-    public abstract class Action: Object
+    [AttributeObject(Id = "Action", Name = "Action", Description = "An empty action.")]
+    public class Action: Object
     {
         [DataMember]
         [AttributeObjectProperty
@@ -34,7 +36,14 @@ namespace SharpLib.Ear
             get { return Iterations > 0; }
         }
 
-        protected abstract Task DoExecute();
+        /// <summary>
+        /// Basic action just does nothing
+        /// </summary>
+        /// <returns></returns>
+        protected virtual async Task DoExecute()
+        {
+            
+        }
 
         /// <summary>
         /// Allows testing from generic edit dialog.
@@ -66,14 +75,25 @@ namespace SharpLib.Ear
             for (int i = Iterations; i > 0; i--)
             {
                 Trace.WriteLine($"EAR: Action.Execute: [{Iterations - i + 1}/{Iterations}] - {BriefBase()}");
+                //For each iteration
+                //We first execute ourselves
                 await DoExecute();
+
+                //Then our children
+                foreach (Action a in Objects.OfType<Action>())
+                {
+                    await a.Execute();
+                }
             }            
         }
 
-
+        /// <summary>
+        /// For inherited classes to override.
+        /// </summary>
+        /// <returns></returns>
         public virtual string BriefBase()
         {
-            return base.Brief();
+            return Name;
         }
 
         /// <summary>

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
@@ -24,41 +25,6 @@ namespace SharpLib.Ear
         public bool Enabled { get; set; } = true;
 
 
-        /// <summary>
-        /// TODO: Should the name property be moved to our EAR Object?
-        /// </summary>
-        [DataMember]
-        [AttributeObjectProperty
-            (
-                Id = "Event.Name",
-                Name = "Name",
-                Description = "Given event name. Can be used to trigger it."
-            )
-        ]
-        public string Name { get; set; } = "";
-
-
-        [DataMember]
-        public List<Action> Actions = new List<Action>();
-
-
-        protected override void DoConstruct()
-        {
-            base.DoConstruct();
-
-            //Make sure our name is not null
-            if (Name == null)
-            {
-                Name = "";
-            }
-
-            // TODO: Construct properties too
-            foreach (Action a in Actions)
-            {
-                a.Construct();
-            }
-
-        }
 
 
         /// <summary>
@@ -74,7 +40,7 @@ namespace SharpLib.Ear
         public async Task Trigger()
         {
             Trace.WriteLine("Event triggered: " + AttributeName);
-            foreach (Action action in Actions)
+            foreach (Action action in Objects.OfType<Action>())
             {
                 await action.Execute();
             }
