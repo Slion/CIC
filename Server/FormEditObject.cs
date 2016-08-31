@@ -111,14 +111,18 @@ namespace SharpDisplayManager
             //Create another type of action only if needed
             if (Object == null || Object.GetType() != objectType)
             {
+                string name = "";
                 if (Object != null)
                 {
                     // Make sure we exit edit mode and unhook from events
                     Object.CurrentState = SharpLib.Ear.Object.State.Rest;
                     Object.PropertyChanged -= PropertyChangedEventHandlerThreadSafe;
+                    name = Object.Name;
                     Object = null;
                 }
                 Object = (T)Activator.CreateInstance(objectType);
+                //Keep the name when changing the type
+                Object.Name = name;
             }
 
             //Create input fields

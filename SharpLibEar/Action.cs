@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace SharpLib.Ear
 {
     [DataContract]
-    [AttributeObject(Id = "Action", Name = "Action", Description = "An empty action.")]
+    [AttributeObject(Id = "Action", Name = "Action Group", Description = "Use it to group other actions together.")]
     public class Action: Object
     {
         [DataMember]
@@ -35,6 +35,20 @@ namespace SharpLib.Ear
         {
             get { return Iterations > 0; }
         }
+
+
+        public override bool IsValid()
+        {            
+            // We don't want to override this behaviour for derived classes
+            if (GetType() == typeof(Action))
+            {
+                // Avoid having empty actions with no name
+                return !string.IsNullOrEmpty(Name);
+            }
+
+            return base.IsValid();
+        }
+
 
         /// <summary>
         /// Basic action just does nothing
@@ -93,7 +107,7 @@ namespace SharpLib.Ear
         /// <returns></returns>
         public virtual string BriefBase()
         {
-            return Name;
+            return string.IsNullOrEmpty(Name)? AttributeName : Name;
         }
 
         /// <summary>
