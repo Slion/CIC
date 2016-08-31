@@ -44,7 +44,7 @@ namespace SharpLib.Ear
         ]
         public bool MultipleInstance { get; set; } = false;
 
-        public override string Brief()
+        public override string BriefBase()
         {
             return AttributeName + ": " + Path.GetFileName(File.FullPath);
         }

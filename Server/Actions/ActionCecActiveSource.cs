@@ -18,7 +18,7 @@ namespace SharpDisplayManager
         /// Build a user readable string to describe this action.
         /// </summary>
         /// <returns></returns>
-        public override string Brief()
+        public override string BriefBase()
         {
             return "CEC Active Source to " + DeviceType.ToString();
         }

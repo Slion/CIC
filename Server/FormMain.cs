@@ -360,7 +360,8 @@ namespace SharpDisplayManager
                 {
                     TreeNode actionNode = actionsNodes.Nodes.Add(a.Brief());
                     actionNode.Tag = a;
-                    actionNode.ForeColor = eventNode.ForeColor;
+                    //Use color from event unless our action itself is disabled
+                    actionNode.ForeColor = a.Enabled? eventNode.ForeColor: Color.DimGray;
                     if (a == currentAction)
                     {
                         treeNodeToSelect = actionNode;
