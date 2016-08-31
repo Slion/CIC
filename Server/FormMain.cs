@@ -371,13 +371,8 @@ namespace SharpDisplayManager
         /// <summary>
         /// Populate tree view with events and actions
         /// </summary>
-        private void PopulateTreeViewEvents()
+        private void PopulateTreeViewEvents(Ear.Object aSelectedObject=null)
         {
-            //Disable action buttons
-            buttonActionAdd.Enabled = false;
-            buttonActionDelete.Enabled = false;
-
-            
             //Reset our tree
             iTreeViewEvents.Nodes.Clear();
             //Populate registered events
@@ -417,6 +412,12 @@ namespace SharpDisplayManager
 
             iTreeViewEvents.ExpandAll();
 
+            if (aSelectedObject != null)
+            {
+                SelectEarObject(aSelectedObject);
+            }            
+
+            // Just to be safe in case the selection did not work
             UpdateEventView();
         }
 
@@ -2782,8 +2783,8 @@ namespace SharpDisplayManager
             {
                 parent.Objects.Add(ea.Object);               
                 Properties.Settings.Default.Save();
-                PopulateTreeViewEvents();
-                SelectEarObject(ea.Object);
+                // We want to select the parent so that one can easily add another action to the same collection
+                PopulateTreeViewEvents(parent);
             }
         }
 
@@ -2816,8 +2817,7 @@ namespace SharpDisplayManager
                 parent.Objects[actionIndex]=ea.Object;
                 //Save and rebuild our event tree view
                 Properties.Settings.Default.Save();
-                PopulateTreeViewEvents();
-                SelectEarObject(ea.Object);
+                PopulateTreeViewEvents(ea.Object);
             }
         }
 
@@ -2880,9 +2880,7 @@ namespace SharpDisplayManager
 
             //Save and populate our tree again
             Properties.Settings.Default.Save();
-            PopulateTreeViewEvents();
-            SelectEarObject(a);
-
+            PopulateTreeViewEvents(a);
         }
 
         /// <summary>
@@ -2910,8 +2908,7 @@ namespace SharpDisplayManager
 
             //Save and populate our tree again
             Properties.Settings.Default.Save();
-            PopulateTreeViewEvents();
-            SelectEarObject(a);
+            PopulateTreeViewEvents(a);
         }
 
 
@@ -2986,8 +2983,7 @@ namespace SharpDisplayManager
             {
                 Properties.Settings.Default.EarManager.Events.Add(ea.Object);
                 Properties.Settings.Default.Save();
-                PopulateTreeViewEvents();
-                SelectEarObject(ea.Object);
+                PopulateTreeViewEvents(ea.Object);
             }
         }
 
@@ -3037,8 +3033,7 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.EarManager.Events[index] = ea.Object;
                 //Save and rebuild our event tree view
                 Properties.Settings.Default.Save();
-                PopulateTreeViewEvents();
-                SelectEarObject(ea.Object);
+                PopulateTreeViewEvents(ea.Object);
             }
         }
 
@@ -3085,19 +3080,20 @@ namespace SharpDisplayManager
             //Tip: Set keep-alive to false when testing reconnection process
             Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text, true);
             Program.HarmonyClient.OnConnectionClosedByServer += HarmonyConnectionClosedByServer;
-            
-            if (File.Exists("SessionToken") && !aForceAuth)
+
+            string authToken = Properties.Settings.Default.LogitechAuthToken;
+            if (!string.IsNullOrEmpty(authToken) && !aForceAuth)
             {
-                var sessionToken = File.ReadAllText("SessionToken");
-                Trace.WriteLine("Harmony: Reusing token: {0}", sessionToken);
-                await Program.HarmonyClient.TryOpenAsync(sessionToken);
+                Trace.WriteLine("Harmony: Reusing token: {0}", authToken);
+                await Program.HarmonyClient.TryOpenAsync(authToken);
             }
 
             if (!Program.HarmonyClient.IsReady)
             {
                 //We failed to connect using our token
                 //Delete it then
-                File.Delete("SessionToken");
+                Properties.Settings.Default.LogitechAuthToken = "";
+                Properties.Settings.Default.Save();
 
                 //Then try connect using our password
                 if (string.IsNullOrEmpty(iTextBoxLogitechPassword.Text))
@@ -3108,14 +3104,17 @@ namespace SharpDisplayManager
 
                 Trace.WriteLine("Harmony: Authenticating with Logitech servers...");
                 await Program.HarmonyClient.TryOpenAsync(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
-                File.WriteAllText("SessionToken", Program.HarmonyClient.Token);
+                //Persist our authentication token in our setting
+                Properties.Settings.Default.LogitechAuthToken = Program.HarmonyClient.Token;
+                Properties.Settings.Default.Save();
             }
 
             //Fetch our config
             Program.HarmonyConfig = await Program.HarmonyClient.GetConfigAsync();
             PopulateTreeViewHarmony(Program.HarmonyConfig);
+
             //Make sure harmony command actions are showing device name instead of device id
-            PopulateTreeViewEvents();
+            PopulateTreeViewEvents(CurrentEarObject());
         }
 
         /// <summary>

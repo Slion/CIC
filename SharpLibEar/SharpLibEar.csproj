@@ -68,7 +68,6 @@
     <Compile Include="ActionDelay.cs" />
     <Compile Include="ActionLaunchApp.cs" />
     <Compile Include="ActionOpticalDriveEject.cs" />
-    <Compile Include="ActionSleep.cs" />
     <Compile Include="ActionType.cs" />
     <Compile Include="AttributeObject.cs" />
     <Compile Include="AttributeObjectProperty.cs" />
