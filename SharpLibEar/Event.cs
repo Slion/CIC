@@ -23,6 +23,10 @@ namespace SharpLib.Ear
         ]
         public bool Enabled { get; set; } = true;
 
+
+        /// <summary>
+        /// TODO: Should the name property be moved to our EAR Object?
+        /// </summary>
         [DataMember]
         [AttributeObjectProperty
             (
@@ -33,6 +37,7 @@ namespace SharpLib.Ear
         ]
         public string Name { get; set; } = "";
 
+
         [DataMember]
         public List<Action> Actions = new List<Action>();
 
@@ -40,6 +45,12 @@ namespace SharpLib.Ear
         protected override void DoConstruct()
         {
             base.DoConstruct();
+
+            //Make sure our name is not null
+            if (Name == null)
+            {
+                Name = "";
+            }
 
             // TODO: Construct properties too
             foreach (Action a in Actions)
