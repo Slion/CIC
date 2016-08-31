@@ -20,8 +20,8 @@ namespace SharpLib.Ear
                 Name = "Timeout (ms)",
                 Description = "Specifies the number of milliseconds this action will sleep for.",
                 Minimum = "0",
-                Maximum = "10000",
-                Increment =  "1"
+                Maximum = "60000",
+                Increment =  "1000"
             )
         ]
         public int TimeoutInMilliseconds { get; set; }

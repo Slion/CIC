@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="ActionCallback.cs" />
+    <Compile Include="ActionDelay.cs" />
     <Compile Include="ActionLaunchApp.cs" />
     <Compile Include="ActionOpticalDriveEject.cs" />
     <Compile Include="ActionSleep.cs" />
