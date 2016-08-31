@@ -19,6 +19,22 @@ namespace SharpLib.Ear
     {
         private bool iConstructed = false;
 
+        [DataMember]
+        public List<Object> Objects = new List<Object>();
+
+        /// <summary>
+        /// </summary>
+        [DataMember]
+        [AttributeObjectProperty
+            (
+                Id = "Object.Name",
+                Name = "Name",
+                Description = "Given object name."
+            )
+        ]
+        public string Name { get; set; } = "";
+
+
         protected Object()
         {
             Construct();
@@ -29,10 +45,17 @@ namespace SharpLib.Ear
         /// </summary>
         public void Construct()
         {
+            //Construct ourselves first
             if (!iConstructed)
             {
                 DoConstruct();
                 iConstructed = true;
+            }
+
+            //Then construct our children
+            foreach (Object o in Objects)
+            {
+                o.Construct();
             }
         }
 
@@ -41,9 +64,18 @@ namespace SharpLib.Ear
         /// </summary>
         protected virtual void DoConstruct()
         {
+            //Make sure our name is not null
+            if (Name == null)
+            {
+                Name = "";
+            }
 
+            // Makes sure our objects are not null
+            if (Objects == null)
+            {
+                Objects = new List<Object>();
+            }
         }
-
 
         public enum State
         {

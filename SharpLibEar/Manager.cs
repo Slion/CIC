@@ -102,12 +102,38 @@ namespace SharpLib.Ear
         {
             foreach (Event e in Events)
             {
-                if (e.Actions.Remove(aAction))
+                if (RemoveObject(e,aAction))
                 {
                     //We removed our action, we are done here.
                     return;
                 }
             }
         }
+
+        /// <summary>
+        /// Remove the specified action from the event it belongs too.
+        /// </summary>
+        /// <param name="aAction"></param>
+        private static bool RemoveObject(Object aCurrent, Object aToRemove)
+        {
+            //Exit condition
+            if (aCurrent.Objects.Remove(aToRemove))
+            {
+                //We removed our action, we are done here.
+                return true;
+            }
+
+            foreach (Object o in aCurrent.Objects)
+            {
+                bool done = RemoveObject(o, aToRemove);
+                if (done)
+                {
+                    return true;
+                } 
+            }
+
+            return false;
+        }
+
     }
 }
