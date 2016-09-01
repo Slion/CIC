@@ -85,7 +85,7 @@ namespace SharpLib.Ear
             // Only trigger events matching the desired type
             // Doing some safety checks as well to prevent crashing if name was left null for some reason
             // This was the case when loading existing settings after event Name was introduced
-            foreach (Event e in Events.Where(e => !string.IsNullOrEmpty(e.Name) && aName.Equals(e.Name)))
+            foreach (Event e in Events.Where(e => !string.IsNullOrEmpty(e.Name) && e.Enabled && aName.Equals(e.Name)))
             {
                 await e.Trigger();
             }
