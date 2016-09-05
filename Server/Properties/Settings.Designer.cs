@@ -188,5 +188,17 @@ namespace SharpDisplayManager.Properties {
                 this["LogitechAuthToken"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LogitechPassword {
+            get {
+                return ((string)(this["LogitechPassword"]));
+            }
+            set {
+                this["LogitechPassword"] = value;
+            }
+        }
     }
 }

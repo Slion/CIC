@@ -38,6 +38,7 @@ using System.Reflection;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
+using System.Security;
 using CecSharp;
 //Network
 using NETWORKLIST;
@@ -1240,8 +1241,9 @@ namespace SharpDisplayManager
             checkBoxAutoStart.Checked = iStartupManager.Startup;
 
             //Harmony settings
-            iButtonHarmonyConnect.Enabled = Properties.Settings.Default.HarmonyEnabled;
-
+            //Decrypt our password first
+            iTextBoxLogitechPassword.Text = Secure.ToInsecureString(Secure.DecryptString(Properties.Settings.Default.LogitechPassword));
+            
             //CEC settings
             comboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
 
@@ -3071,6 +3073,9 @@ namespace SharpDisplayManager
                 await Program.HarmonyClient.CloseAsync();
             }
 
+
+            SecureString password;
+
             //Reset Harmony client & config
             Program.HarmonyClient = null;
             Program.HarmonyConfig = null;
@@ -3161,5 +3166,11 @@ namespace SharpDisplayManager
             }
         }
 
+        private void iTextBoxLogitechPassword_TextChanged(object sender, EventArgs e)
+        {
+            //Save our password after encryption
+            Properties.Settings.Default.LogitechPassword = Secure.EncryptString(Secure.ToSecureString(iTextBoxLogitechPassword.Text));
+            Properties.Settings.Default.Save();
+        }
     }
 }
