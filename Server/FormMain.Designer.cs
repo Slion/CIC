@@ -991,6 +991,7 @@
             this.iTextBoxLogitechPassword.PasswordChar = '*';
             this.iTextBoxLogitechPassword.Size = new System.Drawing.Size(134, 20);
             this.iTextBoxLogitechPassword.TabIndex = 12;
+            this.iTextBoxLogitechPassword.TextChanged += new System.EventHandler(this.iTextBoxLogitechPassword_TextChanged);
             // 
             // labelLogitechUserName
             // 
