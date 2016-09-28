@@ -3073,9 +3073,6 @@ namespace SharpDisplayManager
                 await Program.HarmonyClient.CloseAsync();
             }
 
-
-            SecureString password;
-
             //Reset Harmony client & config
             Program.HarmonyClient = null;
             Program.HarmonyConfig = null;
