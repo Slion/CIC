@@ -44,7 +44,7 @@
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.fontDialog = new System.Windows.Forms.FontDialog();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.iTimerDisplay = new System.Windows.Forms.Timer(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelConnect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSpring = new System.Windows.Forms.ToolStripStatusLabel();
@@ -227,10 +227,10 @@
             this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.marqueeLabelBottom.UseCompatibleTextRendering = true;
             // 
-            // timer
+            // iTimerDisplay
             // 
-            this.timer.Interval = 50;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.iTimerDisplay.Interval = 50;
+            this.iTimerDisplay.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // statusStrip
             // 
@@ -1352,7 +1352,7 @@
         #endregion
 
         private System.Windows.Forms.FontDialog fontDialog;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer iTimerDisplay;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelConnect;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFps;
