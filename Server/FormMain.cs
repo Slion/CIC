@@ -1033,7 +1033,12 @@ namespace SharpDisplayManager
 
         }
 
-        //This is our timer tick responsible to perform our render
+        /// <summary>
+        /// This is our timer tick responsible to perform our render
+        /// TODO: Use a threading timer instead of a Windows form timer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer_Tick(object sender, EventArgs e)
         {
             //Update our animations
@@ -1095,7 +1100,7 @@ namespace SharpDisplayManager
 
             //Compute instant FPS
             toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " +
-                                           (1000/timer.Interval).ToString() + " FPS";
+                                           (1000/iTimerDisplay.Interval).ToString() + " FPS";
 
             LastTickTime = NewTickTime;
 
@@ -1257,7 +1262,7 @@ namespace SharpDisplayManager
             maskedTextBoxMinFontSize.Text = cds.MinFontSize.ToString();
             maskedTextBoxScrollingSpeed.Text = cds.ScrollingSpeedInPixelsPerSecond.ToString();
             comboBoxDisplayType.SelectedIndex = cds.DisplayType;
-            timer.Interval = cds.TimerInterval;
+            iTimerDisplay.Interval = cds.TimerInterval;
             maskedTextBoxTimerInterval.Text = cds.TimerInterval.ToString();
             textBoxScrollLoopSeparator.Text = cds.Separator;
             //
@@ -1563,27 +1568,27 @@ namespace SharpDisplayManager
         private void StartTimer()
         {
             LastTickTime = DateTime.Now; //Reset timer to prevent jump
-            timer.Enabled = true;
+            iTimerDisplay.Enabled = true;
             UpdateSuspendButton();
         }
 
         private void StopTimer()
         {
             LastTickTime = DateTime.Now; //Reset timer to prevent jump
-            timer.Enabled = false;
+            iTimerDisplay.Enabled = false;
             UpdateSuspendButton();
         }
 
         private void ToggleTimer()
         {
             LastTickTime = DateTime.Now; //Reset timer to prevent jump
-            timer.Enabled = !timer.Enabled;
+            iTimerDisplay.Enabled = !iTimerDisplay.Enabled;
             UpdateSuspendButton();
         }
 
         private void UpdateSuspendButton()
         {
-            if (!timer.Enabled)
+            if (!iTimerDisplay.Enabled)
             {
                 buttonSuspend.Text = "Run";
             }
@@ -2301,8 +2306,8 @@ namespace SharpDisplayManager
 
                 if (interval > 0)
                 {
-                    timer.Interval = interval;
-                    cds.TimerInterval = timer.Interval;
+                    iTimerDisplay.Interval = interval;
+                    cds.TimerInterval = iTimerDisplay.Interval;
                     Properties.Settings.Default.Save();
                 }
             }
@@ -3062,6 +3067,11 @@ namespace SharpDisplayManager
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
+
+
+        int iHarmonyReconnectTries = 0;
+        const int KHarmonyMaxReconnectTries = 10;
+
         /// <summary>
         /// 
         /// </summary>
@@ -3073,9 +3083,12 @@ namespace SharpDisplayManager
                 await Program.HarmonyClient.CloseAsync();
             }
 
+            bool success = false;
+
             //Reset Harmony client & config
             Program.HarmonyClient = null;
             Program.HarmonyConfig = null;
+            iTreeViewHarmony.Nodes.Clear();
 
             Trace.WriteLine("Harmony: Connecting... ");
             //First create our client and login
@@ -3087,13 +3100,17 @@ namespace SharpDisplayManager
             if (!string.IsNullOrEmpty(authToken) && !aForceAuth)
             {
                 Trace.WriteLine("Harmony: Reusing token: {0}", authToken);
-                await Program.HarmonyClient.TryOpenAsync(authToken);
+                success = await Program.HarmonyClient.TryOpenAsync(authToken);
             }
 
-            if (!Program.HarmonyClient.IsReady)
+            if (!Program.HarmonyClient.IsReady || !success 
+                // Only first failure triggers new Harmony server AUTH
+                // That's to avoid calling upon Logitech servers too often
+                && iHarmonyReconnectTries == 0 )
             {
                 //We failed to connect using our token
                 //Delete it then
+                Trace.WriteLine("Harmony: Reseting authentication token!");
                 Properties.Settings.Default.LogitechAuthToken = "";
                 Properties.Settings.Default.Save();
 
@@ -3105,18 +3122,65 @@ namespace SharpDisplayManager
                 }
 
                 Trace.WriteLine("Harmony: Authenticating with Logitech servers...");
-                await Program.HarmonyClient.TryOpenAsync(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
+                success = await Program.HarmonyClient.TryOpenAsync(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
                 //Persist our authentication token in our setting
-                Properties.Settings.Default.LogitechAuthToken = Program.HarmonyClient.Token;
-                Properties.Settings.Default.Save();
+                if (success)
+                {
+                    Trace.WriteLine("Harmony: Saving authentication token.");
+                    Properties.Settings.Default.LogitechAuthToken = Program.HarmonyClient.Token;
+                    Properties.Settings.Default.Save();
+                }
+            }
+           
+            // I've seen this failing with "Policy lookup failed on server".
+            Program.HarmonyConfig = await Program.HarmonyClient.TryGetConfigAsync();
+            if (Program.HarmonyConfig == null)
+            {
+                success = false;
+            }
+            else
+            {
+                // So we now have our Harmony Configuration
+                PopulateTreeViewHarmony(Program.HarmonyConfig);
+                // Make sure harmony command actions are showing device name instead of device id
+                PopulateTreeViewEvents(CurrentEarObject());
             }
 
-            //Fetch our config
-            Program.HarmonyConfig = await Program.HarmonyClient.GetConfigAsync();
-            PopulateTreeViewHarmony(Program.HarmonyConfig);
-
-            //Make sure harmony command actions are showing device name instead of device id
-            PopulateTreeViewEvents(CurrentEarObject());
+            // TODO: Consider putting the retry logic one level higher in ResetHarmonyAsync
+            if (!success)
+            {
+                // See if we need to keep trying 
+                if (iHarmonyReconnectTries < KHarmonyMaxReconnectTries)
+                {
+                    iHarmonyReconnectTries++;
+                    Trace.WriteLine("Harmony: Failed to connect, try again: " + iHarmonyReconnectTries);
+                    await ConnectHarmonyAsync();
+                }
+                else
+                {
+                    Trace.WriteLine("Harmony: Failed to connect, giving up!");
+                    iHarmonyReconnectTries = 0;
+                    // TODO: Could use a data member as timer rather than a new instance.
+                    // Try that again in 5 minutes then.
+                    // Using Windows Form timer to make sure we run in the UI thread.
+                    System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                    timer.Tick += async delegate (object sender, EventArgs e)
+                    {
+                        // Stop our timer first as we won't need it anymore
+                        (sender as System.Windows.Forms.Timer).Stop();
+                        // Then try to connect again
+                        await ConnectHarmonyAsync();
+                    };
+                    timer.Interval = 300000;
+                    timer.Start();
+                }
+            }
+            else
+            {
+                // We are connected with a valid Harmony Configuration
+                // Reset our tries counter then    
+                iHarmonyReconnectTries = 0;
+            }
         }
 
         /// <summary>
