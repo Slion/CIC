@@ -168,36 +168,12 @@ namespace SharpDisplayManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LogitechUserName {
-            get {
-                return ((string)(this["LogitechUserName"]));
-            }
-            set {
-                this["LogitechUserName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LogitechAuthToken {
             get {
                 return ((string)(this["LogitechAuthToken"]));
             }
             set {
                 this["LogitechAuthToken"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LogitechPassword {
-            get {
-                return ((string)(this["LogitechPassword"]));
-            }
-            set {
-                this["LogitechPassword"] = value;
             }
         }
     }

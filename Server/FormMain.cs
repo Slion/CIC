@@ -1244,10 +1244,6 @@ namespace SharpDisplayManager
             CheckFontHeight();
             //Check if "run on Windows startup" is enabled
             checkBoxAutoStart.Checked = iStartupManager.Startup;
-
-            //Harmony settings
-            //Decrypt our password first
-            iTextBoxLogitechPassword.Text = Secure.ToInsecureString(Secure.DecryptString(Properties.Settings.Default.LogitechPassword));
             
             //CEC settings
             comboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
@@ -3059,12 +3055,15 @@ namespace SharpDisplayManager
         /// Called whenever we loose connection with our HarmonyHub.
         /// </summary>
         /// <param name="aRequestWasCancelled"></param>
-        private void HarmonyConnectionClosedByServer(object aSender, bool aRequestWasCancelled)
+        private void HarmonyConnectionClosed(object aSender, bool aClosedByServer)
         {
-            //Try reconnect then
+            if (aClosedByServer)
+            {
+                //Try reconnect then
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            BeginInvoke(new MethodInvoker(delegate () { ResetHarmonyAsync(); }));
+                BeginInvoke(new MethodInvoker(delegate () { ResetHarmonyAsync(); }));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            }
         }
 
 
@@ -3094,7 +3093,7 @@ namespace SharpDisplayManager
             //First create our client and login
             //Tip: Set keep-alive to false when testing reconnection process
             Program.HarmonyClient = new HarmonyHub.Client(iTextBoxHarmonyHubAddress.Text, true);
-            Program.HarmonyClient.OnConnectionClosedByServer += HarmonyConnectionClosedByServer;
+            Program.HarmonyClient.OnConnectionClosed += HarmonyConnectionClosed;
 
             string authToken = Properties.Settings.Default.LogitechAuthToken;
             if (!string.IsNullOrEmpty(authToken) && !aForceAuth)
@@ -3114,15 +3113,8 @@ namespace SharpDisplayManager
                 Properties.Settings.Default.LogitechAuthToken = "";
                 Properties.Settings.Default.Save();
 
-                //Then try connect using our password
-                if (string.IsNullOrEmpty(iTextBoxLogitechPassword.Text))
-                {
-                    Trace.WriteLine("Harmony: Credentials missing!");
-                    return;
-                }
-
                 Trace.WriteLine("Harmony: Authenticating with Logitech servers...");
-                success = await Program.HarmonyClient.TryOpenAsync(iTextBoxLogitechUserName.Text, iTextBoxLogitechPassword.Text);
+                success = await Program.HarmonyClient.TryOpenAsync();
                 //Persist our authentication token in our setting
                 if (success)
                 {
@@ -3227,11 +3219,5 @@ namespace SharpDisplayManager
             }
         }
 
-        private void iTextBoxLogitechPassword_TextChanged(object sender, EventArgs e)
-        {
-            //Save our password after encryption
-            Properties.Settings.Default.LogitechPassword = Secure.EncryptString(Secure.ToSecureString(iTextBoxLogitechPassword.Text));
-            Properties.Settings.Default.Save();
-        }
     }
 }

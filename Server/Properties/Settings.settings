@@ -38,13 +38,7 @@
     <Setting Name="HarmonyHubAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">HarmonyHub</Value>
     </Setting>
-    <Setting Name="LogitechUserName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="LogitechAuthToken" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="LogitechPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
