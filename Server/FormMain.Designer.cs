@@ -107,10 +107,6 @@
             this.iButtonHarmonyConnect = new System.Windows.Forms.Button();
             this.iCheckBoxHarmonyEnabled = new System.Windows.Forms.CheckBox();
             this.iTreeViewHarmony = new System.Windows.Forms.TreeView();
-            this.label2 = new System.Windows.Forms.Label();
-            this.iTextBoxLogitechPassword = new System.Windows.Forms.TextBox();
-            this.labelLogitechUserName = new System.Windows.Forms.Label();
-            this.iTextBoxLogitechUserName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
@@ -925,10 +921,6 @@
             this.tabPageHarmony.Controls.Add(this.iButtonHarmonyConnect);
             this.tabPageHarmony.Controls.Add(this.iCheckBoxHarmonyEnabled);
             this.tabPageHarmony.Controls.Add(this.iTreeViewHarmony);
-            this.tabPageHarmony.Controls.Add(this.label2);
-            this.tabPageHarmony.Controls.Add(this.iTextBoxLogitechPassword);
-            this.tabPageHarmony.Controls.Add(this.labelLogitechUserName);
-            this.tabPageHarmony.Controls.Add(this.iTextBoxLogitechUserName);
             this.tabPageHarmony.Controls.Add(this.label1);
             this.tabPageHarmony.Controls.Add(this.iTextBoxHarmonyHubAddress);
             this.tabPageHarmony.Location = new System.Drawing.Point(4, 22);
@@ -972,46 +964,6 @@
             this.iTreeViewHarmony.Size = new System.Drawing.Size(659, 330);
             this.iTreeViewHarmony.TabIndex = 15;
             this.iTreeViewHarmony.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.iTreeViewHarmony_NodeMouseDoubleClick);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(597, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(99, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Logitech password:";
-            // 
-            // iTextBoxLogitechPassword
-            // 
-            this.iTextBoxLogitechPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTextBoxLogitechPassword.Location = new System.Drawing.Point(600, 23);
-            this.iTextBoxLogitechPassword.Name = "iTextBoxLogitechPassword";
-            this.iTextBoxLogitechPassword.PasswordChar = '*';
-            this.iTextBoxLogitechPassword.Size = new System.Drawing.Size(134, 20);
-            this.iTextBoxLogitechPassword.TabIndex = 12;
-            this.iTextBoxLogitechPassword.TextChanged += new System.EventHandler(this.iTextBoxLogitechPassword_TextChanged);
-            // 
-            // labelLogitechUserName
-            // 
-            this.labelLogitechUserName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelLogitechUserName.AutoSize = true;
-            this.labelLogitechUserName.Location = new System.Drawing.Point(433, 7);
-            this.labelLogitechUserName.Name = "labelLogitechUserName";
-            this.labelLogitechUserName.Size = new System.Drawing.Size(141, 13);
-            this.labelLogitechUserName.TabIndex = 11;
-            this.labelLogitechUserName.Text = "Logitech user name / e-mail:";
-            // 
-            // iTextBoxLogitechUserName
-            // 
-            this.iTextBoxLogitechUserName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTextBoxLogitechUserName.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "LogitechUserName", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iTextBoxLogitechUserName.Location = new System.Drawing.Point(436, 23);
-            this.iTextBoxLogitechUserName.Name = "iTextBoxLogitechUserName";
-            this.iTextBoxLogitechUserName.Size = new System.Drawing.Size(134, 20);
-            this.iTextBoxLogitechUserName.TabIndex = 10;
-            this.iTextBoxLogitechUserName.Text = global::SharpDisplayManager.Properties.Settings.Default.LogitechUserName;
             // 
             // label1
             // 
@@ -1441,10 +1393,6 @@
         private System.Windows.Forms.Button buttonEventEdit;
         private System.Windows.Forms.TabPage tabPageHarmony;
         private System.Windows.Forms.TreeView iTreeViewHarmony;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox iTextBoxLogitechPassword;
-        private System.Windows.Forms.Label labelLogitechUserName;
-        private System.Windows.Forms.TextBox iTextBoxLogitechUserName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox iTextBoxHarmonyHubAddress;
         private System.Windows.Forms.CheckBox iCheckBoxHarmonyEnabled;
