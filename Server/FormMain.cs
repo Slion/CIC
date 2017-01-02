@@ -34,11 +34,12 @@ using System.Threading;
 using System.Diagnostics;
 using System.Deployment.Application;
 using System.Reflection;
-//NAudio
-using NAudio.CoreAudioApi;
-using NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
 using System.Security;
+//CSCore
+using CSCore.CoreAudioAPI;
+
+// CEC
 using CecSharp;
 //Network
 using NETWORKLIST;
@@ -48,6 +49,7 @@ using SharpDisplay;
 using MiniDisplayInterop;
 using SharpLib.Display;
 using Ear = SharpLib.Ear;
+using CSCore.Win32;
 
 namespace SharpDisplayManager
 {
@@ -102,9 +104,10 @@ namespace SharpDisplayManager
         CoordinateTranslationDelegate iScreenX;
         //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
-        //NAudio
+        //CSCore
         private MMDeviceEnumerator iMultiMediaDeviceEnumerator;
         private MMDevice iMultiMediaDevice;
+        private AudioEndpointVolume iAudioEndpointVolume;
         //Network
         private NetworkManager iNetworkManager;
 
@@ -215,7 +218,7 @@ namespace SharpDisplayManager
                 this.Text += " - development";
             }
 
-            //NAudio
+            //CSCore
             iMultiMediaDeviceEnumerator = new MMDeviceEnumerator();
             iMultiMediaDeviceEnumerator.RegisterEndpointNotificationCallback(this);
             UpdateAudioDeviceAndMasterVolumeThreadSafe();
@@ -495,7 +498,7 @@ namespace SharpDisplayManager
         /// Receive volume change notification and reflect changes on our slider.
         /// </summary>
         /// <param name="data"></param>
-        public void OnVolumeNotificationThreadSafe(AudioVolumeNotificationData data)
+        public void OnVolumeNotificationThreadSafe(object sender, AudioEndpointVolumeCallbackEventArgs aEvent)
         {
             UpdateMasterVolumeThreadSafe();
         }
@@ -508,9 +511,9 @@ namespace SharpDisplayManager
         private void trackBarMasterVolume_Scroll(object sender, EventArgs e)
         {
             //Just like Windows Volume Mixer we unmute if the volume is adjusted
-            iMultiMediaDevice.AudioEndpointVolume.Mute = false;
+            iAudioEndpointVolume.IsMuted = false;
             //Set volume level according to our volume slider new position
-            iMultiMediaDevice.AudioEndpointVolume.MasterVolumeLevelScalar = trackBarMasterVolume.Value/100.0f;
+            iAudioEndpointVolume.MasterVolumeLevelScalar = trackBarMasterVolume.Value/100.0f;
         }
 
 
@@ -521,7 +524,7 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void checkBoxMute_CheckedChanged(object sender, EventArgs e)
         {
-            iMultiMediaDevice.AudioEndpointVolume.Mute = checkBoxMute.Checked;
+            iAudioEndpointVolume.IsMuted = checkBoxMute.Checked;
         }
 
         /// <summary>
@@ -585,10 +588,10 @@ namespace SharpDisplayManager
             }
 
             //Update volume slider
-            float volumeLevelScalar = iMultiMediaDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
+            float volumeLevelScalar = iAudioEndpointVolume.MasterVolumeLevelScalar;
             trackBarMasterVolume.Value = Convert.ToInt32(volumeLevelScalar*100);
             //Update mute checkbox
-            checkBoxMute.Checked = iMultiMediaDevice.AudioEndpointVolume.Mute;
+            checkBoxMute.Checked = iAudioEndpointVolume.IsMuted;
 
             //If our display connection is open we need to update its icons
             if (iDisplay.IsOpen())
@@ -630,7 +633,7 @@ namespace SharpDisplayManager
                 }
 
                 //Take care of our mute icon
-                iDisplay.SetIconOnOff(MiniDisplay.IconType.Mute, iMultiMediaDevice.AudioEndpointVolume.Mute);
+                iDisplay.SetIconOnOff(MiniDisplay.IconType.Mute, iAudioEndpointVolume.IsMuted);
             }
 
         }
@@ -651,8 +654,9 @@ namespace SharpDisplayManager
             //We are in the correct thread just go ahead.
             try
             {
-                //Get our master volume            
+                //Get our master volume
                 iMultiMediaDevice = iMultiMediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                iAudioEndpointVolume = AudioEndpointVolume.FromDevice(iMultiMediaDevice);
                 //Update our label
                 labelDefaultAudioDevice.Text = iMultiMediaDevice.FriendlyName;
 
@@ -660,7 +664,10 @@ namespace SharpDisplayManager
                 UpdateMasterVolumeThreadSafe();
 
                 //Register to get volume modifications
-                iMultiMediaDevice.AudioEndpointVolume.OnVolumeNotification += OnVolumeNotificationThreadSafe;
+                AudioEndpointVolumeCallback callback = new AudioEndpointVolumeCallback();
+                callback.NotifyRecived += OnVolumeNotificationThreadSafe;
+                // Do we need to unregister?
+                iAudioEndpointVolume.RegisterControlChangeNotify(callback);                       
                 //
                 trackBarMasterVolume.Enabled = true;
             }
