@@ -174,11 +174,15 @@
     <Compile Include="Actions\ActionCecUserControlReleased.cs" />
     <Compile Include="Actions\ActionDisplayMessage.cs" />
     <Compile Include="Actions\ActionHarmonyCommand.cs" />
+    <Compile Include="Spectrum\BasicSpectrumProvider.cs" />
     <Compile Include="CbtHook.cs" />
     <Compile Include="CecClient.cs" />
     <Compile Include="ConsumerElectronicControl.cs" />
     <Compile Include="ClientData.cs" />
     <Compile Include="EarManager.cs" />
+    <Compile Include="Spectrum\ISpectrumProvider.cs" />
+    <Compile Include="Spectrum\LineSpectrum.cs" />
+    <Compile Include="Spectrum\ScalingStrategy.cs" />
     <Compile Include="Secure.cs" />
     <Compile Include="Events\EventHid.cs" />
     <Compile Include="FormEditObject.cs">
@@ -223,6 +227,7 @@
     <Compile Include="RichTextBoxTraceListener.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Spectrum\SpectrumBase.cs" />
     <Compile Include="StartupManager.cs" />
     <Compile Include="TaskScheduler.cs" />
     <Compile Include="Win32API.cs" />
