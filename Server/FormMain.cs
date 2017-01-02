@@ -37,8 +37,14 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 //CSCore
+using CSCore;
+using CSCore.Win32;
+using CSCore.DSP;
+using CSCore.Streams;
 using CSCore.CoreAudioAPI;
-
+using CSCore.SoundIn;
+// Visualization
+using Visualization;
 // CEC
 using CecSharp;
 //Network
@@ -49,7 +55,7 @@ using SharpDisplay;
 using MiniDisplayInterop;
 using SharpLib.Display;
 using Ear = SharpLib.Ear;
-using CSCore.Win32;
+
 
 namespace SharpDisplayManager
 {
@@ -105,9 +111,15 @@ namespace SharpDisplayManager
         //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
         //CSCore
+        // Volume management
         private MMDeviceEnumerator iMultiMediaDeviceEnumerator;
         private MMDevice iMultiMediaDevice;
         private AudioEndpointVolume iAudioEndpointVolume;
+        // Audio visualization
+        private WasapiCapture iSoundIn;
+        private IWaveSource iWaveSource;
+        private LineSpectrum iLineSpectrum;
+
         //Network
         private NetworkManager iNetworkManager;
 
@@ -641,6 +653,106 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
+        private void StartAudioVisualization()
+        {
+            StopAudioVisualization();
+            //Open the default device 
+            iSoundIn = new WasapiLoopbackCapture();
+            //Our loopback capture opens the default render device by default so the following is not needed
+            //iSoundIn.Device = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Console);
+            iSoundIn.Initialize();
+
+            SoundInSource soundInSource = new SoundInSource(iSoundIn);
+            ISampleSource source = soundInSource.ToSampleSource();
+
+            const FftSize fftSize = FftSize.Fft4096;
+            //create a spectrum provider which provides fft data based on some input
+            BasicSpectrumProvider spectrumProvider = new BasicSpectrumProvider(source.WaveFormat.Channels, source.WaveFormat.SampleRate, fftSize);
+
+            //linespectrum and voiceprint3dspectrum used for rendering some fft data
+            //in oder to get some fft data, set the previously created spectrumprovider 
+            iLineSpectrum = new LineSpectrum(fftSize)
+            {
+                SpectrumProvider = spectrumProvider,
+                UseAverage = true,
+                BarCount = 32,
+                BarSpacing = 0,
+                IsXLogScale = true,
+                ScalingStrategy = ScalingStrategy.Sqrt
+            };
+
+
+            //the SingleBlockNotificationStream is used to intercept the played samples
+            var notificationSource = new SingleBlockNotificationStream(source);
+            //pass the intercepted samples as input data to the spectrumprovider (which will calculate a fft based on them)
+            notificationSource.SingleBlockRead += (s, a) => spectrumProvider.Add(a.Left, a.Right);
+
+            iWaveSource = notificationSource.ToWaveSource(16);
+
+
+            // We need to read from our source otherwise SingleBlockRead is never called and our spectrum provider is not populated
+            byte[] buffer = new byte[iWaveSource.WaveFormat.BytesPerSecond / 2];
+            soundInSource.DataAvailable += (s, aEvent) =>
+            {
+                int read;
+                while ((read = iWaveSource.Read(buffer, 0, buffer.Length)) > 0) ;
+            };
+
+
+            //Start recording
+            iSoundIn.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StopAudioVisualization()
+        {
+
+            if (iSoundIn != null)
+            {
+                iSoundIn.Stop();
+                iSoundIn.Dispose();
+                iSoundIn = null;
+            }
+            if (iWaveSource != null)
+            {
+                iWaveSource.Dispose();
+                iWaveSource = null;
+            }
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void GenerateAudioVisualization()
+        {
+            // For demo draft purposes just fetch the firt picture box control and update it with current audio spectrum
+            foreach (Control ctrl in iTableLayoutPanel.Controls)
+            {
+                if (ctrl is PictureBox)
+                {
+                    PictureBox pb = (PictureBox)ctrl;
+                    Image image = pb.Image;
+                    var newImage = iLineSpectrum.CreateSpectrumLine(pb.Size, Color.Black, Color.Black, Color.White, false);
+                    if (newImage != null)
+                    {
+                        pb.Image = newImage;
+                        if (image != null)
+                            image.Dispose();
+                    }
+
+                    break;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateAudioDeviceAndMasterVolumeThreadSafe()
         {
             if (this.InvokeRequired)
@@ -657,6 +769,7 @@ namespace SharpDisplayManager
                 //Get our master volume
                 iMultiMediaDevice = iMultiMediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
                 iAudioEndpointVolume = AudioEndpointVolume.FromDevice(iMultiMediaDevice);
+                
                 //Update our label
                 labelDefaultAudioDevice.Text = iMultiMediaDevice.FriendlyName;
 
@@ -667,7 +780,9 @@ namespace SharpDisplayManager
                 AudioEndpointVolumeCallback callback = new AudioEndpointVolumeCallback();
                 callback.NotifyRecived += OnVolumeNotificationThreadSafe;
                 // Do we need to unregister?
-                iAudioEndpointVolume.RegisterControlChangeNotify(callback);                       
+                iAudioEndpointVolume.RegisterControlChangeNotify(callback);
+                //
+                StartAudioVisualization();
                 //
                 trackBarMasterVolume.Enabled = true;
             }
@@ -1105,8 +1220,10 @@ namespace SharpDisplayManager
                 }
             }
 
+            GenerateAudioVisualization();
+
             //Compute instant FPS
-            toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " +
+      toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " +
                                            (1000/iTimerDisplay.Interval).ToString() + " FPS";
 
             LastTickTime = NewTickTime;
@@ -1441,6 +1558,8 @@ namespace SharpDisplayManager
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //TODO: discard other CSCore audio objects
+            StopAudioVisualization();
             iCecManager.Stop();
             iNetworkManager.Dispose();
             CloseDisplayConnection();
