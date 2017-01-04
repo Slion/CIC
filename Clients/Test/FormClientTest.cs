@@ -405,5 +405,69 @@ namespace SharpDisplayClient
         {
             iClient.TriggerEventsByName(textBoxEventName.Text);
         }
+
+        private void buttonLayoutAudioVisualizer_Click(object sender, EventArgs e)
+        {
+            SetLayoutAudioVisualizer();
+        }
+
+        /// <summary>
+        /// Define a layout with a single full screen visualizer.
+        /// </summary>
+        private void SetLayoutAudioVisualizer()
+        {
+            //Define layout dimension column by row (x,y)
+            TableLayout layout = new TableLayout(1, 1);
+            //First column take 100%
+            layout.Columns[0].Width = 100F;
+            //Send layout to server
+            iClient.SetLayout(layout);
+
+            //Create our full screen audio visualizer field 
+            AudioVisualizerField field = new AudioVisualizerField();
+
+            //Set fields
+            iClient.CreateFields(new DataField[]
+            {
+                field,
+            });
+
+        }
+
+        private void buttonLayoutMultipleAudioVisualizers_Click(object sender, EventArgs e)
+        {
+            SetLayoutMultipleAudioVisualizers();
+        }
+
+        /// <summary>
+        /// Define a layout with a single full screen visualizer.
+        /// </summary>
+        private void SetLayoutMultipleAudioVisualizers()
+        {
+            //Define layout dimension column by row (x,y)
+            TableLayout layout = new TableLayout(2, 2);
+            //First column take 100%
+            layout.Columns[0].Width = 25F;
+            layout.Columns[1].Width = 75F;
+            //Send layout to server
+            iClient.SetLayout(layout);
+
+            //Create our full screen audio visualizer field 
+            AudioVisualizerField field1 = new AudioVisualizerField(0, 0);
+            AudioVisualizerField field2 = new AudioVisualizerField(0, 1);
+            AudioVisualizerField field3 = new AudioVisualizerField(1, 0);
+            AudioVisualizerField field4 = new AudioVisualizerField(1, 1);
+
+            //Set fields
+            iClient.CreateFields(new DataField[]
+            {
+                field1,
+                field2,
+                field3,
+                field4,
+            });
+
+        }
+
     }
 }

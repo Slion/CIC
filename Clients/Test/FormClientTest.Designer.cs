@@ -46,6 +46,8 @@
             this.buttonTriggerEvents = new System.Windows.Forms.Button();
             this.textBoxEventName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.buttonLayoutAudioVisualizer = new System.Windows.Forms.Button();
+            this.buttonLayoutMultipleAudioVisualizers = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPriority)).BeginInit();
             this.SuspendLayout();
             // 
@@ -207,7 +209,7 @@
             // 
             // buttonTriggerEvents
             // 
-            this.buttonTriggerEvents.Location = new System.Drawing.Point(11, 257);
+            this.buttonTriggerEvents.Location = new System.Drawing.Point(8, 317);
             this.buttonTriggerEvents.Name = "buttonTriggerEvents";
             this.buttonTriggerEvents.Size = new System.Drawing.Size(75, 23);
             this.buttonTriggerEvents.TabIndex = 33;
@@ -217,7 +219,7 @@
             // 
             // textBoxEventName
             // 
-            this.textBoxEventName.Location = new System.Drawing.Point(11, 231);
+            this.textBoxEventName.Location = new System.Drawing.Point(8, 291);
             this.textBoxEventName.Name = "textBoxEventName";
             this.textBoxEventName.Size = new System.Drawing.Size(202, 20);
             this.textBoxEventName.TabIndex = 34;
@@ -225,17 +227,39 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 212);
+            this.label1.Location = new System.Drawing.Point(8, 272);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 35;
             this.label1.Text = "Event name:";
             // 
+            // buttonLayoutAudioVisualizer
+            // 
+            this.buttonLayoutAudioVisualizer.Location = new System.Drawing.Point(11, 207);
+            this.buttonLayoutAudioVisualizer.Name = "buttonLayoutAudioVisualizer";
+            this.buttonLayoutAudioVisualizer.Size = new System.Drawing.Size(94, 35);
+            this.buttonLayoutAudioVisualizer.TabIndex = 36;
+            this.buttonLayoutAudioVisualizer.Text = "Audio Visualizer Layout";
+            this.buttonLayoutAudioVisualizer.UseVisualStyleBackColor = true;
+            this.buttonLayoutAudioVisualizer.Click += new System.EventHandler(this.buttonLayoutAudioVisualizer_Click);
+            // 
+            // buttonLayoutMultipleAudioVisualizers
+            // 
+            this.buttonLayoutMultipleAudioVisualizers.Location = new System.Drawing.Point(111, 207);
+            this.buttonLayoutMultipleAudioVisualizers.Name = "buttonLayoutMultipleAudioVisualizers";
+            this.buttonLayoutMultipleAudioVisualizers.Size = new System.Drawing.Size(94, 35);
+            this.buttonLayoutMultipleAudioVisualizers.TabIndex = 37;
+            this.buttonLayoutMultipleAudioVisualizers.Text = "Multiple Audio Visualizers Layout";
+            this.buttonLayoutMultipleAudioVisualizers.UseVisualStyleBackColor = true;
+            this.buttonLayoutMultipleAudioVisualizers.Click += new System.EventHandler(this.buttonLayoutMultipleAudioVisualizers_Click);
+            // 
             // FormClientTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(499, 292);
+            this.ClientSize = new System.Drawing.Size(564, 351);
+            this.Controls.Add(this.buttonLayoutMultipleAudioVisualizers);
+            this.Controls.Add(this.buttonLayoutAudioVisualizer);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxEventName);
             this.Controls.Add(this.buttonTriggerEvents);
@@ -284,6 +308,8 @@
         private System.Windows.Forms.Button buttonTriggerEvents;
         private System.Windows.Forms.TextBox textBoxEventName;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonLayoutAudioVisualizer;
+        private System.Windows.Forms.Button buttonLayoutMultipleAudioVisualizers;
     }
 }
 
