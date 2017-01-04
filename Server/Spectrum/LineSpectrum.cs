@@ -13,10 +13,11 @@ namespace Visualization
         private double _barSpacing;
         private double _barWidth;
         private Size _currentSize;
-
+        
+        
         public LineSpectrum(FftSize fftSize)
         {
-            FftSize = fftSize;
+            FftSize = fftSize;            
         }
 
         [Browsable(false)]
@@ -67,38 +68,54 @@ namespace Visualization
             }
         }
 
+        /// <summary>
+        /// Update our math.
+        /// </summary>
+        /// <returns></returns>
+        public bool Update()
+        {
+            return SpectrumProvider.GetFftData(iFftBuffer, this);
+        }
+
         public Bitmap CreateSpectrumLine(Size size, Brush brush, Color background, bool highQuality)
         {
             if (!UpdateFrequencyMappingIfNessesary(size))
-                return null;
-
-            var fftBuffer = new float[(int)FftSize];
-
-            //get the fft result from the spectrum provider
-            if (SpectrumProvider.GetFftData(fftBuffer, this))
             {
-                using (var pen = new Pen(brush, (float)_barWidth))
-                {
-                    var bitmap = new Bitmap(size.Width, size.Height);
-
-                    using (Graphics graphics = Graphics.FromImage(bitmap))
-                    {
-                        PrepareGraphics(graphics, highQuality);
-                        graphics.Clear(background);
-
-                        CreateSpectrumLineInternal(graphics, pen, fftBuffer, size);
-                    }
-
-                    return bitmap;
-                }
+                return null;
             }
-            return null;
+
+            //get the fft result from the spectrum provider            
+            using (var pen = new Pen(brush, (float)_barWidth))
+            {
+                var bitmap = new Bitmap(size.Width, size.Height);
+
+                using (Graphics graphics = Graphics.FromImage(bitmap))
+                {
+                    PrepareGraphics(graphics, highQuality);
+                    graphics.Clear(background);
+
+                    CreateSpectrumLineInternal(graphics, pen, iFftBuffer, size);
+                }
+
+            return bitmap;   
+            }            
         }
 
-        public Bitmap CreateSpectrumLine(Size size, Color color1, Color color2, Color background, bool highQuality)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="color1"></param>
+        /// <param name="color2"></param>
+        /// <param name="background"></param>
+        /// <param name="highQuality"></param>
+        /// <returns></returns>
+        public Bitmap Render(Size size, Color color1, Color color2, Color background, bool highQuality)
         {
             if (!UpdateFrequencyMappingIfNessesary(size))
+            {
                 return null;
+            }
 
             using (
                 Brush brush = new LinearGradientBrush(new RectangleF(0, 0, (float)_barWidth, size.Height), color2,

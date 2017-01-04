@@ -674,11 +674,11 @@ namespace SharpDisplayManager
             iLineSpectrum = new LineSpectrum(fftSize)
             {
                 SpectrumProvider = spectrumProvider,
-                UseAverage = true,
-                BarCount = 32,
-                BarSpacing = 0,
+                UseAverage = false,
+                BarCount = 16,
+                BarSpacing = 1,
                 IsXLogScale = true,
-                ScalingStrategy = ScalingStrategy.Sqrt
+                ScalingStrategy = ScalingStrategy.Decibel
             };
 
 
@@ -727,24 +727,44 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        private void GenerateAudioVisualization()
+        private void UpdateAudioVisualization()
         {
             // For demo draft purposes just fetch the firt picture box control and update it with current audio spectrum
-            foreach (Control ctrl in iTableLayoutPanel.Controls)
-            {
-                if (ctrl is PictureBox)
-                {
-                    PictureBox pb = (PictureBox)ctrl;
-                    Image image = pb.Image;
-                    var newImage = iLineSpectrum.CreateSpectrumLine(pb.Size, Color.Black, Color.Black, Color.White, false);
-                    if (newImage != null)
-                    {
-                        pb.Image = newImage;
-                        if (image != null)
-                            image.Dispose();
-                    }
 
-                    break;
+            if (iCurrentClientData == null)
+            {
+                return;
+            }
+
+            // Update our math
+            if (!iLineSpectrum.Update())
+            {
+                //Nothing changed no need to render
+                return;
+            }
+
+            // Check if our current client has an Audio Visualizer field
+            // and render them as needed
+            foreach (DataField f in iCurrentClientData.Fields)
+            {
+                if (f is AudioVisualizerField)
+                {
+                    AudioVisualizerField avf = (AudioVisualizerField)f;
+                    Control ctrl = iTableLayoutPanel.GetControlFromPosition(avf.Column, avf.Row);
+
+                    if (ctrl is PictureBox)
+                    {
+                        PictureBox pb = (PictureBox)ctrl;
+                        Image image = pb.Image;
+                        // TODO: recycle images
+                        var newImage = iLineSpectrum.Render(pb.Size, Color.Black, Color.Black, Color.White, false);
+                        if (newImage != null)
+                        {
+                            pb.Image = newImage;
+                            if (image != null)
+                                image.Dispose();
+                        }
+                    }
                 }
             }
         }
@@ -1220,10 +1240,10 @@ namespace SharpDisplayManager
                 }
             }
 
-            GenerateAudioVisualization();
+            UpdateAudioVisualization();
 
             //Compute instant FPS
-      toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " +
+            toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " +
                                            (1000/iTimerDisplay.Interval).ToString() + " FPS";
 
             LastTickTime = NewTickTime;
@@ -1948,20 +1968,24 @@ namespace SharpDisplayManager
                     Control ctrl = iTableLayoutPanel.GetControlFromPosition(tableField.Column, tableField.Row);
                     if (aField.IsTextField && ctrl is MarqueeLabel)
                     {
-                        TextField textField = (TextField) aField;
+                        TextField textField = (TextField)aField;
                         //Text field control already in place, just change the text
-                        MarqueeLabel label = (MarqueeLabel) ctrl;
+                        MarqueeLabel label = (MarqueeLabel)ctrl;
                         contentChanged = (label.Text != textField.Text || label.TextAlign != textField.Alignment);
                         label.Text = textField.Text;
                         label.TextAlign = textField.Alignment;
                     }
                     else if (aField.IsBitmapField && ctrl is PictureBox)
                     {
-                        BitmapField bitmapField = (BitmapField) aField;
+                        BitmapField bitmapField = (BitmapField)aField;
                         contentChanged = true; //TODO: Bitmap comp or should we leave that to clients?
                         //Bitmap field control already in place just change the bitmap
-                        PictureBox pictureBox = (PictureBox) ctrl;
+                        PictureBox pictureBox = (PictureBox)ctrl;
                         pictureBox.Image = bitmapField.Bitmap;
+                    }
+                    else if (aField is AudioVisualizerField && ctrl is PictureBox)
+                    {
+                        contentChanged = false; // Since nothing was changed
                     }
                     else
                     {
@@ -2234,6 +2258,10 @@ namespace SharpDisplayManager
                         {
                             textsRoot.Nodes.Add(new TreeNode("[Bitmap]"));
                         }
+                        else if (field is AudioVisualizerField)
+                        {
+                            textsRoot.Nodes.Add(new TreeNode("[Audio Visualizer]"));
+                        }
                         else if (field.IsRecordingField)
                         {
                             RecordingField recordingField = (RecordingField) field;
@@ -2368,7 +2396,7 @@ namespace SharpDisplayManager
                 //control.TabIndex = 2;
                 label.Font = cds.Font;
 
-                TextField field = (TextField) aField;
+                TextField field = (TextField)aField;
                 label.TextAlign = field.Alignment;
                 label.UseCompatibleTextRendering = true;
                 label.Text = field.Text;
@@ -2386,11 +2414,24 @@ namespace SharpDisplayManager
                 picture.Margin = new System.Windows.Forms.Padding(0);
                 picture.Name = "pictureBox" + aField;
                 //Set our image
-                BitmapField field = (BitmapField) aField;
+                BitmapField field = (BitmapField)aField;
                 picture.Image = field.Bitmap;
                 //
                 control = picture;
             }
+            else if (aField is AudioVisualizerField)
+            {
+                //Create picture box
+                PictureBox picture = new PictureBox();
+                picture.AutoSize = true;
+                picture.BackColor = System.Drawing.Color.Transparent;
+                picture.Dock = System.Windows.Forms.DockStyle.Fill;
+                picture.Location = new System.Drawing.Point(1, 1);
+                picture.Margin = new System.Windows.Forms.Padding(0);
+                picture.Name = "pictureBox" + aField;
+                control = picture;
+            }
+
             //TODO: Handle recording field?
 
             return control;

@@ -15,7 +15,9 @@ namespace Visualization
         protected const double MaxDbValue = 0;
         protected const double DbScale = (MaxDbValue - MinDbValue);
 
-        private int _fftSize;
+
+        protected float[] iFftBuffer;
+        private int _fftSize;        
         private bool _isXLogScale;
         private int _maxFftIndex;
         private int _maximumFrequency = 20000;
@@ -117,6 +119,7 @@ namespace Visualization
 
                 _fftSize = (int) value;
                 _maxFftIndex = _fftSize / 2 - 1;
+                iFftBuffer = new float[_fftSize];
 
                 RaisePropertyChanged("FFTSize");
             }
