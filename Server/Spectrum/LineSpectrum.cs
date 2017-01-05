@@ -77,28 +77,21 @@ namespace Visualization
             return SpectrumProvider.GetFftData(iFftBuffer, this);
         }
 
-        public Bitmap CreateSpectrumLine(Size size, Brush brush, Color background, bool highQuality)
+        private bool CreateSpectrumLine(Image aImage, Brush brush, Color background, bool highQuality)
         {
-            if (!UpdateFrequencyMappingIfNessesary(size))
-            {
-                return null;
-            }
-
             //get the fft result from the spectrum provider            
             using (var pen = new Pen(brush, (float)_barWidth))
             {
-                var bitmap = new Bitmap(size.Width, size.Height);
-
-                using (Graphics graphics = Graphics.FromImage(bitmap))
+                using (Graphics graphics = Graphics.FromImage(aImage))
                 {
                     PrepareGraphics(graphics, highQuality);
                     graphics.Clear(background);
 
-                    CreateSpectrumLineInternal(graphics, pen, iFftBuffer, size);
+                    CreateSpectrumLineInternal(graphics, pen, iFftBuffer, aImage.Size);
                 }
+            }
 
-            return bitmap;   
-            }            
+            return true;         
         }
 
         /// <summary>
@@ -110,21 +103,26 @@ namespace Visualization
         /// <param name="background"></param>
         /// <param name="highQuality"></param>
         /// <returns></returns>
-        public Bitmap Render(Size size, Color color1, Color color2, Color background, bool highQuality)
+        public bool Render(Image aImage, Color color1, Color color2, Color background, bool highQuality)
         {
-            if (!UpdateFrequencyMappingIfNessesary(size))
+            if (!UpdateFrequencyMappingIfNessesary(aImage.Size))
             {
-                return null;
+                return false;
             }
 
-            using (
-                Brush brush = new LinearGradientBrush(new RectangleF(0, 0, (float)_barWidth, size.Height), color2,
-                    color1, LinearGradientMode.Vertical))
+            using (Brush brush = new LinearGradientBrush(new RectangleF(0, 0, (float)_barWidth, aImage.Size.Height), color2, color1, LinearGradientMode.Vertical))
             {
-                return CreateSpectrumLine(size, brush, background, highQuality);
+                return CreateSpectrumLine(aImage, brush, background, highQuality);
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="pen"></param>
+        /// <param name="fftBuffer"></param>
+        /// <param name="size"></param>
         private void CreateSpectrumLineInternal(Graphics graphics, Pen pen, float[] fftBuffer, Size size)
         {
             int height = size.Height;

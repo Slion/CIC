@@ -93,6 +93,7 @@ namespace SharpDisplayManager
         DateTime LastTickTime;
         Display iDisplay;
         System.Drawing.Bitmap iBmp;
+        //TODO: Align that with what we did from Audio Visualizers bitmaps?
         bool iCreateBitmap; //Workaround render to bitmap issues when minimized
         ServiceHost iServiceHost;
         // Our collection of clients sorted by session id.
@@ -729,8 +730,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void UpdateAudioVisualization()
         {
-            // For demo draft purposes just fetch the firt picture box control and update it with current audio spectrum
-
+            // No point if we don't have a current client
             if (iCurrentClientData == null)
             {
                 return;
@@ -755,14 +755,9 @@ namespace SharpDisplayManager
                     if (ctrl is PictureBox)
                     {
                         PictureBox pb = (PictureBox)ctrl;
-                        Image image = pb.Image;
-                        // TODO: recycle images
-                        var newImage = iLineSpectrum.Render(pb.Size, Color.Black, Color.Black, Color.White, false);
-                        if (newImage != null)
+                        if (iLineSpectrum.Render(pb.Image, Color.Black, Color.Black, Color.White, false))
                         {
-                            pb.Image = newImage;
-                            if (image != null)
-                                image.Dispose();
+                            pb.Invalidate();
                         }
                     }
                 }
@@ -1197,6 +1192,8 @@ namespace SharpDisplayManager
                 }
             }
 
+            UpdateAudioVisualization();
+
             //Update our display
             if (iDisplay.IsOpen())
             {
@@ -1238,9 +1235,7 @@ namespace SharpDisplayManager
 
                     iDisplay.SwapBuffers();
                 }
-            }
-
-            UpdateAudioVisualization();
+            }            
 
             //Compute instant FPS
             toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " +
@@ -2429,6 +2424,19 @@ namespace SharpDisplayManager
                 picture.Location = new System.Drawing.Point(1, 1);
                 picture.Margin = new System.Windows.Forms.Padding(0);
                 picture.Name = "pictureBox" + aField;
+                picture.SizeChanged += (sender, e) =>
+                {
+                    // Somehow bitmap created when our from is invisible are not working
+                    // Mark our form visibility status
+                    bool visible = Visible;
+                    // Make sure it's visible
+                    Visible = true;
+                    // Adjust our bitmap size when control size changes
+                    picture.Image = new System.Drawing.Bitmap(picture.Width, picture.Height, PixelFormat.Format32bppArgb);
+                    // Restore our form visibility
+                    Visible = visible;
+                };
+                
                 control = picture;
             }
 
