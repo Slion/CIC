@@ -666,7 +666,7 @@ namespace SharpDisplayManager
             SoundInSource soundInSource = new SoundInSource(iSoundIn);
             ISampleSource source = soundInSource.ToSampleSource();
 
-            const FftSize fftSize = FftSize.Fft4096;
+            const FftSize fftSize = FftSize.Fft2048;
             //create a spectrum provider which provides fft data based on some input
             BasicSpectrumProvider spectrumProvider = new BasicSpectrumProvider(source.WaveFormat.Channels, source.WaveFormat.SampleRate, fftSize);
 

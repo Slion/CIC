@@ -137,7 +137,7 @@ namespace Visualization
                 double xCoord = BarSpacing * (barIndex + 1) + (_barWidth * barIndex) + _barWidth / 2;
 
                 var p1 = new PointF((float)xCoord, height);
-                var p2 = new PointF((float)xCoord, height - (float)p.Value - 1);
+                var p2 = new PointF((float)xCoord, height - (float)p.Value);
 
                 graphics.DrawLine(pen, p1, p2);
             }

@@ -167,6 +167,33 @@ namespace Visualization
             double actualMaxValue = maxValue;
             int spectrumPointIndex = 0;
 
+            int b0 = _minimumFrequencyIndex;
+            int x, y;
+            for (x = 0; x < SpectrumResolution; x++)
+            {
+                float peak = 0;
+                //SL: We should have to compute that only once for a given resolution.
+                // Try using the existing pre-computed array we have and refactor that whole mess.
+                int b1 = (int)Math.Pow(2, x * 10.0 / (SpectrumResolution - 1)); 
+                //int b1 = (IsXLogScale ? _spectrumLogScaleIndexMax[x] : _spectrumIndexMax[x]);
+                if (b1 > _maximumFrequencyIndex) b1 = _maximumFrequencyIndex;
+                if (b1 <= b0) b1 = b0 + 1;
+                for (; b0 < b1; b0++)
+                {
+                    if (peak < fftBuffer[1 + b0]) peak = fftBuffer[1 + b0];
+                }
+                
+                const int KHeightScaleFactor = 5; // SL: You can play with that scale factor to tune the height of the bars
+                y = (int)(Math.Sqrt(peak) * KHeightScaleFactor * maxValue); 
+                if (y > maxValue) y = (int)maxValue;
+                if (y < 0) y = 0;
+
+                dataPoints.Add(new SpectrumPointData { SpectrumPointIndex = x, Value = y });
+                //_spectrumdata.Add((byte)y);
+                //Console.Write("{0, 3} ", y);
+            }
+
+            /*
             for (int i = _minimumFrequencyIndex; i <= _maximumFrequencyIndex; i++)
             {
                 switch (ScalingStrategy)
@@ -211,6 +238,8 @@ namespace Visualization
 
                 //value = 0;
             }
+            */
+
 
             return dataPoints.ToArray();
         }
