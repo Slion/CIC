@@ -88,7 +88,7 @@
             this.checkBoxInverseColors = new System.Windows.Forms.CheckBox();
             this.checkBoxReverseScreen = new System.Windows.Forms.CheckBox();
             this.tabPageAudio = new System.Windows.Forms.TabPage();
-            this.labelDefaultAudioDevice = new System.Windows.Forms.Label();
+            this.iLabelDefaultAudioDevice = new System.Windows.Forms.Label();
             this.checkBoxShowVolumeLabel = new System.Windows.Forms.CheckBox();
             this.checkBoxMute = new System.Windows.Forms.CheckBox();
             this.trackBarMasterVolume = new System.Windows.Forms.TrackBar();
@@ -708,7 +708,7 @@
             // 
             // tabPageAudio
             // 
-            this.tabPageAudio.Controls.Add(this.labelDefaultAudioDevice);
+            this.tabPageAudio.Controls.Add(this.iLabelDefaultAudioDevice);
             this.tabPageAudio.Controls.Add(this.checkBoxShowVolumeLabel);
             this.tabPageAudio.Controls.Add(this.checkBoxMute);
             this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
@@ -720,15 +720,15 @@
             this.tabPageAudio.Text = "Audio";
             this.tabPageAudio.UseVisualStyleBackColor = true;
             // 
-            // labelDefaultAudioDevice
+            // iLabelDefaultAudioDevice
             // 
-            this.labelDefaultAudioDevice.AutoSize = true;
-            this.labelDefaultAudioDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelDefaultAudioDevice.Location = new System.Drawing.Point(3, 6);
-            this.labelDefaultAudioDevice.Name = "labelDefaultAudioDevice";
-            this.labelDefaultAudioDevice.Size = new System.Drawing.Size(120, 13);
-            this.labelDefaultAudioDevice.TabIndex = 19;
-            this.labelDefaultAudioDevice.Text = "Audio Device Unknown";
+            this.iLabelDefaultAudioDevice.AutoSize = true;
+            this.iLabelDefaultAudioDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.iLabelDefaultAudioDevice.Location = new System.Drawing.Point(3, 6);
+            this.iLabelDefaultAudioDevice.Name = "iLabelDefaultAudioDevice";
+            this.iLabelDefaultAudioDevice.Size = new System.Drawing.Size(120, 13);
+            this.iLabelDefaultAudioDevice.TabIndex = 19;
+            this.iLabelDefaultAudioDevice.Text = "Audio Device Unknown";
             // 
             // checkBoxShowVolumeLabel
             // 
@@ -1361,7 +1361,7 @@
 		private System.Windows.Forms.TrackBar trackBarMasterVolume;
 		private System.Windows.Forms.CheckBox checkBoxMute;
 		private System.Windows.Forms.CheckBox checkBoxShowVolumeLabel;
-		private System.Windows.Forms.Label labelDefaultAudioDevice;
+		private System.Windows.Forms.Label iLabelDefaultAudioDevice;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TabPage tabPageCec;
         private System.Windows.Forms.CheckBox iCheckBoxCecEnabled;
