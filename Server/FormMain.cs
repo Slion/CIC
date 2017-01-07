@@ -79,15 +79,13 @@ namespace SharpDisplayManager
 
     public delegate void SetClientPriorityDelegate(string aSessionId, uint aPriority);
 
-    public delegate void PlainUpdateDelegate();
-
     public delegate void WndProcDelegate(ref Message aMessage);
 
     /// <summary>
     /// Our Display manager main form
     /// </summary>
     [System.ComponentModel.DesignerCategory("Form")]
-    public partial class FormMain : FormMainHid, IMMNotificationClient
+    public partial class FormMain : FormMainHid
     {
         //public Manager iManager = new Manager();        
         DateTime LastTickTime;
@@ -111,15 +109,8 @@ namespace SharpDisplayManager
         CoordinateTranslationDelegate iScreenX;
         //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
-        //CSCore
-        // Volume management
-        private MMDeviceEnumerator iMultiMediaDeviceEnumerator;
-        private MMDevice iMultiMediaDevice;
-        private AudioEndpointVolume iAudioEndpointVolume;
-        // Audio visualization
-        private WasapiCapture iSoundIn;
-        private IWaveSource iWaveSource;
-        private LineSpectrum iLineSpectrum;
+        //Audio
+        private AudioManager iAudioManager;
 
         //Network
         private NetworkManager iNetworkManager;
@@ -232,9 +223,7 @@ namespace SharpDisplayManager
             }
 
             //CSCore
-            iMultiMediaDeviceEnumerator = new MMDeviceEnumerator();
-            iMultiMediaDeviceEnumerator.RegisterEndpointNotificationCallback(this);
-            UpdateAudioDeviceAndMasterVolumeThreadSafe();
+            CreateAudioManager();
 
             //Network
             iNetworkManager = new NetworkManager();
@@ -289,6 +278,54 @@ namespace SharpDisplayManager
             {
                 StartIdleClient();
             }
+        }
+
+
+        private void CreateAudioManager()
+        {
+            iAudioManager = new AudioManager();
+            iAudioManager.Open(OnDefaultMultiMediaDeviceChanged, OnVolumeNotification);
+            UpdateAudioDeviceAndMasterVolumeThreadSafe();
+        }
+
+        private void DestroyAudioManager()
+        {
+            if (iAudioManager != null)
+            {
+                iAudioManager.Close();
+                iAudioManager = null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="aEvent"></param>
+        public void OnDefaultMultiMediaDeviceChanged(object sender, DefaultDeviceChangedEventArgs aEvent)
+        {
+            if (aEvent.DataFlow == DataFlow.Render && aEvent.Role == Role.Multimedia)
+            {
+                ResetAudioManagerThreadSafe();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ResetAudioManagerThreadSafe()
+        {
+            if (InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                BeginInvoke(new Action<FormMain>((sender) => { ResetAudioManagerThreadSafe(); }), this);
+                return;
+            }
+
+            //Proper thread, go ahead
+            DestroyAudioManager();
+            CreateAudioManager();
+
         }
 
         /// <summary>
@@ -511,7 +548,7 @@ namespace SharpDisplayManager
         /// Receive volume change notification and reflect changes on our slider.
         /// </summary>
         /// <param name="data"></param>
-        public void OnVolumeNotificationThreadSafe(object sender, AudioEndpointVolumeCallbackEventArgs aEvent)
+        public void OnVolumeNotification(object sender, AudioEndpointVolumeCallbackEventArgs aEvent)
         {
             UpdateMasterVolumeThreadSafe();
         }
@@ -524,9 +561,9 @@ namespace SharpDisplayManager
         private void trackBarMasterVolume_Scroll(object sender, EventArgs e)
         {
             //Just like Windows Volume Mixer we unmute if the volume is adjusted
-            iAudioEndpointVolume.IsMuted = false;
+            iAudioManager.Volume.IsMuted = false;
             //Set volume level according to our volume slider new position
-            iAudioEndpointVolume.MasterVolumeLevelScalar = trackBarMasterVolume.Value/100.0f;
+            iAudioManager.Volume.MasterVolumeLevelScalar = trackBarMasterVolume.Value/100.0f;
         }
 
 
@@ -537,53 +574,8 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void checkBoxMute_CheckedChanged(object sender, EventArgs e)
         {
-            iAudioEndpointVolume.IsMuted = checkBoxMute.Checked;
+            iAudioManager.Volume.IsMuted = checkBoxMute.Checked;
         }
-
-        /// <summary>
-        /// Device State Changed
-        /// </summary>
-        public void OnDeviceStateChanged([MarshalAs(UnmanagedType.LPWStr)] string deviceId,
-            [MarshalAs(UnmanagedType.I4)] DeviceState newState)
-        {
-        }
-
-        /// <summary>
-        /// Device Added
-        /// </summary>
-        public void OnDeviceAdded([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId)
-        {
-        }
-
-        /// <summary>
-        /// Device Removed
-        /// </summary>
-        public void OnDeviceRemoved([MarshalAs(UnmanagedType.LPWStr)] string deviceId)
-        {
-        }
-
-        /// <summary>
-        /// Default Device Changed
-        /// </summary>
-        public void OnDefaultDeviceChanged(DataFlow flow, Role role,
-            [MarshalAs(UnmanagedType.LPWStr)] string defaultDeviceId)
-        {
-            if (role == Role.Multimedia && flow == DataFlow.Render)
-            {
-                UpdateAudioDeviceAndMasterVolumeThreadSafe();
-            }
-        }
-
-        /// <summary>
-        /// Property Value Changed
-        /// </summary>
-        /// <param name="pwstrDeviceId"></param>
-        /// <param name="key"></param>
-        public void OnPropertyValueChanged([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId, PropertyKey key)
-        {
-        }
-
-
 
 
         /// <summary>
@@ -592,19 +584,18 @@ namespace SharpDisplayManager
         /// </summary>
         private void UpdateMasterVolumeThreadSafe()
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                PlainUpdateDelegate d = new PlainUpdateDelegate(UpdateMasterVolumeThreadSafe);
-                this.Invoke(d, new object[] {});
+                BeginInvoke(new Action<FormMain>((sender) => { UpdateMasterVolumeThreadSafe(); }), this);
                 return;
             }
 
             //Update volume slider
-            float volumeLevelScalar = iAudioEndpointVolume.MasterVolumeLevelScalar;
+            float volumeLevelScalar = iAudioManager.Volume.MasterVolumeLevelScalar;
             trackBarMasterVolume.Value = Convert.ToInt32(volumeLevelScalar*100);
             //Update mute checkbox
-            checkBoxMute.Checked = iAudioEndpointVolume.IsMuted;
+            checkBoxMute.Checked = iAudioManager.Volume.IsMuted;
 
             //If our display connection is open we need to update its icons
             if (iDisplay.IsOpen())
@@ -646,83 +637,11 @@ namespace SharpDisplayManager
                 }
 
                 //Take care of our mute icon
-                iDisplay.SetIconOnOff(MiniDisplay.IconType.Mute, iAudioEndpointVolume.IsMuted);
+                iDisplay.SetIconOnOff(MiniDisplay.IconType.Mute, iAudioManager.Volume.IsMuted);
             }
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void StartAudioVisualization()
-        {
-            StopAudioVisualization();
-            //Open the default device 
-            iSoundIn = new WasapiLoopbackCapture();
-            //Our loopback capture opens the default render device by default so the following is not needed
-            //iSoundIn.Device = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Console);
-            iSoundIn.Initialize();
-
-            SoundInSource soundInSource = new SoundInSource(iSoundIn);
-            ISampleSource source = soundInSource.ToSampleSource();
-
-            const FftSize fftSize = FftSize.Fft2048;
-            //create a spectrum provider which provides fft data based on some input
-            BasicSpectrumProvider spectrumProvider = new BasicSpectrumProvider(source.WaveFormat.Channels, source.WaveFormat.SampleRate, fftSize);
-
-            //linespectrum and voiceprint3dspectrum used for rendering some fft data
-            //in oder to get some fft data, set the previously created spectrumprovider 
-            iLineSpectrum = new LineSpectrum(fftSize)
-            {
-                SpectrumProvider = spectrumProvider,
-                UseAverage = false,
-                BarCount = 16,
-                BarSpacing = 1,
-                IsXLogScale = true,
-                ScalingStrategy = ScalingStrategy.Decibel
-            };
-
-
-            //the SingleBlockNotificationStream is used to intercept the played samples
-            var notificationSource = new SingleBlockNotificationStream(source);
-            //pass the intercepted samples as input data to the spectrumprovider (which will calculate a fft based on them)
-            notificationSource.SingleBlockRead += (s, a) => spectrumProvider.Add(a.Left, a.Right);
-
-            iWaveSource = notificationSource.ToWaveSource(16);
-
-
-            // We need to read from our source otherwise SingleBlockRead is never called and our spectrum provider is not populated
-            byte[] buffer = new byte[iWaveSource.WaveFormat.BytesPerSecond / 2];
-            soundInSource.DataAvailable += (s, aEvent) =>
-            {
-                int read;
-                while ((read = iWaveSource.Read(buffer, 0, buffer.Length)) > 0) ;
-            };
-
-
-            //Start recording
-            iSoundIn.Start();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void StopAudioVisualization()
-        {
-
-            if (iSoundIn != null)
-            {
-                iSoundIn.Stop();
-                iSoundIn.Dispose();
-                iSoundIn = null;
-            }
-            if (iWaveSource != null)
-            {
-                iWaveSource.Dispose();
-                iWaveSource = null;
-            }
-
-        }
 
 
         /// <summary>
@@ -737,7 +656,7 @@ namespace SharpDisplayManager
             }
 
             // Update our math
-            if (!iLineSpectrum.Update())
+            if (iAudioManager==null || !iAudioManager.Spectrum.Update())
             {
                 //Nothing changed no need to render
                 return;
@@ -755,7 +674,7 @@ namespace SharpDisplayManager
                     if (ctrl is PictureBox)
                     {
                         PictureBox pb = (PictureBox)ctrl;
-                        if (iLineSpectrum.Render(pb.Image, Color.Black, Color.Black, Color.White, false))
+                        if (iAudioManager.Spectrum.Render(pb.Image, Color.Black, Color.Black, Color.White, false))
                         {
                             pb.Invalidate();
                         }
@@ -769,35 +688,24 @@ namespace SharpDisplayManager
         /// 
         /// </summary>
         private void UpdateAudioDeviceAndMasterVolumeThreadSafe()
-        {
-            if (this.InvokeRequired)
+        {            
+            if (InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                PlainUpdateDelegate d = new PlainUpdateDelegate(UpdateAudioDeviceAndMasterVolumeThreadSafe);
-                this.Invoke(d, new object[] {});
+                BeginInvoke(new Action<FormMain>((sender) => { UpdateAudioDeviceAndMasterVolumeThreadSafe(); }), this);
                 return;
             }
 
             //We are in the correct thread just go ahead.
             try
             {
-                //Get our master volume
-                iMultiMediaDevice = iMultiMediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-                iAudioEndpointVolume = AudioEndpointVolume.FromDevice(iMultiMediaDevice);
-                
+                  
                 //Update our label
-                labelDefaultAudioDevice.Text = iMultiMediaDevice.FriendlyName;
+                iLabelDefaultAudioDevice.Text = iAudioManager.DefaultDevice.FriendlyName;
 
                 //Show our volume in our track bar
                 UpdateMasterVolumeThreadSafe();
 
-                //Register to get volume modifications
-                AudioEndpointVolumeCallback callback = new AudioEndpointVolumeCallback();
-                callback.NotifyRecived += OnVolumeNotificationThreadSafe;
-                // Do we need to unregister?
-                iAudioEndpointVolume.RegisterControlChangeNotify(callback);
-                //
-                StartAudioVisualization();
                 //
                 trackBarMasterVolume.Enabled = true;
             }
@@ -1573,10 +1481,9 @@ namespace SharpDisplayManager
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //TODO: discard other CSCore audio objects
-            StopAudioVisualization();
             iCecManager.Stop();
             iNetworkManager.Dispose();
+            DestroyAudioManager();
             CloseDisplayConnection();
             StopServer();
             e.Cancel = iClosing;
