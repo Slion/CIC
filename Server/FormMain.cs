@@ -256,6 +256,7 @@ namespace SharpDisplayManager
 #if !DEBUG
     //When not debugging we want the screen to be empty until a client takes over
 			ClearLayout();
+            iCurrentClientData = null;
 #else
             //When developing we want at least one client for testing
             StartNewClient("abcdefghijklmnopqrst-0123456789", "ABCDEFGHIJKLMNOPQRST-0123456789");
@@ -656,7 +657,7 @@ namespace SharpDisplayManager
             }
 
             // Update our math
-            if (iAudioManager==null || !iAudioManager.Spectrum.Update())
+            if (iAudioManager==null || iAudioManager.Spectrum==null || !iAudioManager.Spectrum.Update())
             {
                 //Nothing changed no need to render
                 return;
@@ -1560,6 +1561,7 @@ namespace SharpDisplayManager
             if (iClients.Count == 0)
             {
                 ClearLayout();
+                iCurrentClientData = null;
             }
         }
 
@@ -1568,10 +1570,22 @@ namespace SharpDisplayManager
         /// </summary>
         private void ClearLayout()
         {
+            // For each loop did not work as calling Dispose on a control removes it from the collection.
+            // We make sure every control are disposed of notably to turn off visualizer when no more needed.
+            // That's the only way we found to make sure Control.Disposed is called in a timely fashion.
+            // Though that loop is admetitly dangerous as if one of the control does not removes itself from the list we end up with infinite loop.
+            // That's what happened with our MarqueeLabel until we fixed it's Dispose override.
+            while (iTableLayoutPanel.Controls.Count>0)
+            {
+                // Dispose our last item
+                iTableLayoutPanel.Controls[iTableLayoutPanel.Controls.Count-1].Dispose();
+            }
+
             iTableLayoutPanel.Controls.Clear();
             iTableLayoutPanel.RowStyles.Clear();
             iTableLayoutPanel.ColumnStyles.Clear();
-            iCurrentClientData = null;
+            iTableLayoutPanel.RowCount = 0;
+            iTableLayoutPanel.ColumnCount = 0;            
         }
 
         /// <summary>
@@ -1751,6 +1765,7 @@ namespace SharpDisplayManager
                 {
                     //Clear our screen when last client disconnects
                     ClearLayout();
+                    iCurrentClientData = null;
 
                     if (iClosing)
                     {
@@ -2208,11 +2223,7 @@ namespace SharpDisplayManager
             TableLayout layout = aClient.Layout;
 
             //First clean our current panel
-            iTableLayoutPanel.Controls.Clear();
-            iTableLayoutPanel.RowStyles.Clear();
-            iTableLayoutPanel.ColumnStyles.Clear();
-            iTableLayoutPanel.RowCount = 0;
-            iTableLayoutPanel.ColumnCount = 0;
+            ClearLayout();
 
             //Then recreate our rows...
             while (iTableLayoutPanel.RowCount < layout.Rows.Count)
@@ -2331,6 +2342,21 @@ namespace SharpDisplayManager
                 picture.Location = new System.Drawing.Point(1, 1);
                 picture.Margin = new System.Windows.Forms.Padding(0);
                 picture.Name = "pictureBox" + aField;
+
+                // Make sure visualization is running
+                iAudioManager.AddVisualizer();
+
+                // Notify audio manager when we don't need audio visualizer anymore
+                picture.Disposed += (sender, e) =>
+                {
+                    if (iAudioManager != null)
+                    {
+                        // Make sure we stop visualization when not needed
+                        iAudioManager.RemoveVisualizer();
+                    }
+                };
+
+                // Create a new bitmap when control size changes
                 picture.SizeChanged += (sender, e) =>
                 {
                     // Somehow bitmap created when our from is invisible are not working

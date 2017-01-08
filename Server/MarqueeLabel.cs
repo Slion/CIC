@@ -411,12 +411,23 @@ namespace SharpDisplayManager
             return false;
         }
 
+        /// <summary>
+        /// See Dispose Pattern reference:
+        /// https://msdn.microsoft.com/en-us/library/b1yfkh5e%28v=vs.110%29.aspx?f=255&MSPPError=-2147217396
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
+            // My sure we hook the rest of the framework.
+            // That's most important for controls since they do things like removing themselves from containers upon disposal.
+            base.Dispose(disposing);
+            // My understanding is that one is not supose to Dispose other objects unless disposing is true.
             if (disposing)
             {
                 if (Timer != null)
+                {
                     Timer.Dispose();
+                }
             }
             Timer = null;
         }
