@@ -32,11 +32,45 @@ namespace SharpDisplayManager
         private WasapiCapture iSoundIn;
         private IWaveSource iWaveSource;
         private LineSpectrum iLineSpectrum;
-
+        private int iVisualizerCount = 0;
 
         public LineSpectrum Spectrum { get { return iLineSpectrum; } }
         public AudioEndpointVolume Volume { get { return iAudioEndpointVolume; } }
         public MMDevice DefaultDevice { get { return iMultiMediaDevice; } }
+
+        /// <summary>
+        /// Increment our visualizer count
+        /// </summary>
+        public void AddVisualizer()
+        {
+            if (iVisualizerCount == 0)
+            {
+                // If we need at least one visualizer then we need to start our engine.
+                StartAudioVisualization();
+            }
+
+            //TODO: Check bounds?
+            iVisualizerCount++;
+        }
+
+        /// <summary>
+        /// Decrement our visualizer counter.
+        /// </summary>
+        public void RemoveVisualizer()
+        {
+            if (iVisualizerCount == 1)
+            {
+                // When reaching zero visualization is not need and we stop our engine
+                StopAudioVisualization();
+                iVisualizerCount = 0;
+            }
+            // Defensive: Make sure we don't go below zero
+            else if (iVisualizerCount>0)
+            {
+                iVisualizerCount--;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -57,7 +91,11 @@ namespace SharpDisplayManager
             iAudioEndpointVolumeCallback.NotifyRecived += iVolumeChangedHandler = aVolumeChangedHandler;
             iAudioEndpointVolume.RegisterControlChangeNotify(iAudioEndpointVolumeCallback);
 
-            StartAudioVisualization();
+            if (iVisualizerCount > 0)
+            {
+                // We probably got restarted, make sure visualization is running if needed
+                StartAudioVisualization();
+            }
         }
 
         /// <summary>
@@ -130,11 +168,11 @@ namespace SharpDisplayManager
             iLineSpectrum = new LineSpectrum(fftSize)
             {
                 SpectrumProvider = spectrumProvider,
-                UseAverage = false,
+                UseAverage = false, // Does not matter since we hacked it
                 BarCount = 16,
                 BarSpacing = 1,
-                IsXLogScale = true,
-                ScalingStrategy = ScalingStrategy.Decibel
+                IsXLogScale = true, // Does not matter since we hacked it
+                ScalingStrategy = ScalingStrategy.Decibel // Does not matter since we hacked it
             };
 
 
@@ -164,7 +202,12 @@ namespace SharpDisplayManager
         /// </summary>
         private void StopAudioVisualization()
         {
-            if (iWaveSource != null)
+            if (iSoundIn != null)
+            {
+                iSoundIn.Stop();
+            }
+
+                if (iWaveSource != null)
             {
                 iWaveSource.Dispose();
                 iWaveSource = null;
@@ -172,11 +215,11 @@ namespace SharpDisplayManager
 
             if (iSoundIn != null)
             {
-                iSoundIn.Stop();
                 iSoundIn.Dispose();
                 iSoundIn = null;
             }
 
+            iLineSpectrum = null;
         }
 
 

@@ -162,10 +162,10 @@ namespace Visualization
         {
             var dataPoints = new List<SpectrumPointData>();
 
-            double value0 = 0, value = 0;
-            double lastValue = 0;
-            double actualMaxValue = maxValue;
-            int spectrumPointIndex = 0;
+            //double value0 = 0, value = 0;
+            //double lastValue = 0;
+            //double actualMaxValue = maxValue;
+            //int spectrumPointIndex = 0;
 
             int b0 = _minimumFrequencyIndex;
             int x, y;
