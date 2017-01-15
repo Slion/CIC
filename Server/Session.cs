@@ -41,6 +41,7 @@ namespace SharpDisplay
         public string SessionId { get; set; }
         public string Name { get; set; }
         public uint Priority { get; set; }
+        public Target Target { get; set; }
 
         Session()
         {
@@ -83,6 +84,13 @@ namespace SharpDisplay
             Priority = aPriority;
             SharpDisplayManager.Program.iFormMain.SetClientPriorityThreadSafe(SessionId, Priority);
         }
+
+        public void SetTarget(Target aTarget)
+        {
+            Target = aTarget;
+            SharpDisplayManager.Program.iFormMain.SetClientTargetThreadSafe(SessionId, Target);
+        }
+
 
         public void SetLayout(TableLayout aLayout)
         {

@@ -69,16 +69,6 @@ namespace SharpDisplayManager
 
     public delegate void RemoveClientDelegate(string aSessionId);
 
-    public delegate void SetFieldDelegate(string SessionId, DataField aField);
-
-    public delegate void SetFieldsDelegate(string SessionId, System.Collections.Generic.IList<DataField> aFields);
-
-    public delegate void SetLayoutDelegate(string SessionId, TableLayout aLayout);
-
-    public delegate void SetClientNameDelegate(string aSessionId, string aName);
-
-    public delegate void SetClientPriorityDelegate(string aSessionId, uint aPriority);
-
     public delegate void WndProcDelegate(ref Message aMessage);
 
     /// <summary>
@@ -99,6 +89,13 @@ namespace SharpDisplayManager
         // The name of the client which informations are currently displayed.
         public string iCurrentClientSessionId;
         ClientData iCurrentClientData;
+        /// <summary>
+        /// Define our display view including layout and fields.
+        /// Display view should include one ClientField that will show on client View.
+        /// </summary>
+        SharpLib.Display.View iDisplayView;
+
+        bool iHasNewDisplayLayout;
         //
         public bool iClosing;
         //
@@ -175,6 +172,10 @@ namespace SharpDisplayManager
             iStartupManager = new StartupManager();
             iNotifyIcon = new SharpLib.Notification.Control();
             iRecordingNotification = new SharpLib.Notification.Control();
+            iDisplayView = new SharpLib.Display.View();
+            // Default to a single field showing our client
+            iDisplayView.Layout = new TableLayout(1, 1);
+            iDisplayView.Fields.Add(new ClientField());
 
             //Have our designer initialize its controls
             InitializeComponent();
@@ -191,7 +192,7 @@ namespace SharpDisplayManager
 
             //We have a bug when drawing minimized and reusing our bitmap
             //Though I could not reproduce it on Windows 10
-            iBmp = new System.Drawing.Bitmap(iTableLayoutPanel.Width, iTableLayoutPanel.Height,
+            iBmp = new System.Drawing.Bitmap(iTableLayoutPanelDisplay.Width, iTableLayoutPanelDisplay.Height,
                 PixelFormat.Format32bppArgb);
             iCreateBitmap = false;
 
@@ -255,7 +256,7 @@ namespace SharpDisplayManager
 
 #if !DEBUG
     //When not debugging we want the screen to be empty until a client takes over
-			ClearLayout();
+			ClearLayout(iTableLayoutPanelCurrentClient);
             iCurrentClientData = null;
 #else
             //When developing we want at least one client for testing
@@ -344,7 +345,7 @@ namespace SharpDisplayManager
             //panelDisplay needs an extra 2 pixels for borders on each sides
             //tableLayoutPanel will eventually be the exact size of our display
             Size size = new Size(iDisplay.WidthInPixels() + 2, iDisplay.HeightInPixels() + 2);
-            panelDisplay.Size = size;
+            iPanelDisplay.Size = size;
 
             //Our display was just opened, update our UI
             UpdateStatus();
@@ -665,12 +666,12 @@ namespace SharpDisplayManager
 
             // Check if our current client has an Audio Visualizer field
             // and render them as needed
-            foreach (DataField f in iCurrentClientData.Fields)
+            foreach (DataField f in iCurrentClientData.View.Fields)
             {
                 if (f is AudioVisualizerField)
                 {
                     AudioVisualizerField avf = (AudioVisualizerField)f;
-                    Control ctrl = iTableLayoutPanel.GetControlFromPosition(avf.Column, avf.Row);
+                    Control ctrl = iTableLayoutPanelCurrentClient.GetControlFromPosition(avf.Column, avf.Row);
 
                     if (ctrl is PictureBox)
                     {
@@ -853,7 +854,7 @@ namespace SharpDisplayManager
             //Fetch and set current client data.
             iCurrentClientData = requestedClientData;
             //Apply layout and set data fields.
-            UpdateTableLayoutPanel(iCurrentClientData);
+            UpdateTableLayoutPanel(iCurrentClientData.View, iTableLayoutPanelCurrentClient);
         }
 
         private void buttonFont_Click(object sender, EventArgs e)
@@ -878,25 +879,19 @@ namespace SharpDisplayManager
             //if (fontDialog.ShowDialog(this) != DialogResult.Cancel)
             if (DlgBox.ShowDialog(fontDialog) != DialogResult.Cancel)
             {
-                //Set the fonts to all our labels in our layout
-                foreach (Control ctrl in iTableLayoutPanel.Controls)
-                {
-                    if (ctrl is MarqueeLabel)
-                    {
-                        ((MarqueeLabel) ctrl).Font = fontDialog.Font;
-                    }
-                }
-
                 //Save font settings
                 cds.Font = fontDialog.Font;
                 Properties.Settings.Default.Save();
+                //
+                //Set the fonts to all our labels in our layout
+                UpdateFonts(iTableLayoutPanelDisplay);
                 //
                 CheckFontHeight();
             }
         }
 
         /// <summary>
-        ///
+        /// TODO: review this in respect to our logical font feature when we get there.
         /// </summary>
         void CheckFontHeight()
         {
@@ -915,7 +910,7 @@ namespace SharpDisplayManager
 
             MarqueeLabel label = null;
             //Get the first label control we can find
-            foreach (Control ctrl in iTableLayoutPanel.Controls)
+            foreach (Control ctrl in iTableLayoutPanelCurrentClient.Controls)
             {
                 if (ctrl is MarqueeLabel)
                 {
@@ -940,12 +935,10 @@ namespace SharpDisplayManager
 
         private void buttonCapture_Click(object sender, EventArgs e)
         {
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(iTableLayoutPanel.Width, iTableLayoutPanel.Height);
-            iTableLayoutPanel.DrawToBitmap(bmp, iTableLayoutPanel.ClientRectangle);
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(iTableLayoutPanelDisplay.Width, iTableLayoutPanelDisplay.Height);
+            iTableLayoutPanelDisplay.DrawToBitmap(bmp, iTableLayoutPanelDisplay.ClientRectangle);
             //Bitmap bmpToSave = new Bitmap(bmp);
             bmp.Save("D:\\capture.png");
-
-            ((MarqueeLabel) iTableLayoutPanel.Controls[0]).Text = "Captured";
 
             /*
             string outputFileName = "d:\\capture.png";
@@ -1092,15 +1085,10 @@ namespace SharpDisplayManager
 
             UpdateNetworkSignal(LastTickTime, NewTickTime);
 
-            //Update animation for all our marquees
-            foreach (Control ctrl in iTableLayoutPanel.Controls)
-            {
-                if (ctrl is MarqueeLabel)
-                {
-                    ((MarqueeLabel) ctrl).UpdateAnimation(LastTickTime, NewTickTime);
-                }
-            }
+            // Update animation for all our marquees
+            UpdateMarqueesAnimations(iTableLayoutPanelDisplay, LastTickTime, NewTickTime);
 
+            // Update audio visualization
             UpdateAudioVisualization();
 
             //Update our display
@@ -1115,11 +1103,11 @@ namespace SharpDisplayManager
                     //Draw to bitmap
                     if (iCreateBitmap)
                     {
-                        iBmp = new System.Drawing.Bitmap(iTableLayoutPanel.Width, iTableLayoutPanel.Height,
+                        iBmp = new System.Drawing.Bitmap(iTableLayoutPanelDisplay.Width, iTableLayoutPanelDisplay.Height,
                             PixelFormat.Format32bppArgb);
                         iCreateBitmap = false;
                     }
-                    iTableLayoutPanel.DrawToBitmap(iBmp, iTableLayoutPanel.ClientRectangle);
+                    iTableLayoutPanelDisplay.DrawToBitmap(iBmp, iTableLayoutPanelDisplay.ClientRectangle);
                     //iBmp.Save("D:\\capture.png");
 
                     //Send it to our display
@@ -1152,6 +1140,25 @@ namespace SharpDisplayManager
 
             LastTickTime = NewTickTime;
 
+        }
+
+        /// <summary>
+        /// Update marquee animation children of the given control.
+        /// </summary>
+        static private void UpdateMarqueesAnimations(Control aControl, DateTime aLastTickTime, DateTime aNewTickTime)
+        {
+            // For each our children
+            foreach (Control ctrl in aControl.Controls)
+            {
+                // Update animation if it is a marquee control
+                if (ctrl is MarqueeLabel)
+                {
+                    ((MarqueeLabel)ctrl).UpdateAnimation(aLastTickTime, aNewTickTime);
+                }
+
+                // Go one level deeper by recursion
+                UpdateMarqueesAnimations(ctrl, aLastTickTime, aNewTickTime);
+            }
         }
 
         /// <summary>
@@ -1273,21 +1280,56 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
+        /// Update fonts in our control tree.
+        /// </summary>
+        /// <param name="aControls"></param>
+        private void UpdateFonts(Control aControl)
+        {
+            foreach (Control ctrl in aControl.Controls)
+            {
+                if (ctrl is MarqueeLabel)
+                {
+                    MarqueeLabel marquee = (MarqueeLabel)ctrl;
+                    marquee.Font = cds.Font;
+                }
+
+                // Recurse
+                UpdateFonts(ctrl);
+            }
+        }
+
+        /// <summary>
+        /// Update marquees separator in our control tree.
+        /// </summary>
+        /// <param name="aControls"></param>
+        private void UpdateMarqueesSeparator(Control aControl)
+        {
+            foreach (Control ctrl in aControl.Controls)
+            {
+                if (ctrl is MarqueeLabel)
+                {
+                    MarqueeLabel marquee = (MarqueeLabel)ctrl;
+                    marquee.Separator = cds.Separator;
+                }
+
+                // Recurse
+                UpdateMarqueesSeparator(ctrl);
+            }
+        }
+
+        /// <summary>
         /// Synchronize UI with settings
         /// </summary>
         private void UpdateStatus()
         {
             //Load settings
             checkBoxShowBorders.Checked = cds.ShowBorders;
-            iTableLayoutPanel.CellBorderStyle = (cds.ShowBorders
+            iTableLayoutPanelCurrentClient.CellBorderStyle = (cds.ShowBorders
                 ? TableLayoutPanelCellBorderStyle.Single
                 : TableLayoutPanelCellBorderStyle.None);
 
             //Set the proper font to each of our labels
-            foreach (MarqueeLabel ctrl in iTableLayoutPanel.Controls)
-            {
-                ctrl.Font = cds.Font;
-            }
+            UpdateFonts(iTableLayoutPanelDisplay);
 
             CheckFontHeight();
             //Check if "run on Windows startup" is enabled
@@ -1318,8 +1360,9 @@ namespace SharpDisplayManager
                 //Reflect that in our UI
                 StartTimer();
 
-                iTableLayoutPanel.Enabled = true;
-                panelDisplay.Enabled = true;
+                iTableLayoutPanelDisplay.Enabled = true;
+                iTableLayoutPanelCurrentClient.Enabled = true;
+                iPanelDisplay.Enabled = true;
 
                 //Only setup brightness if display is open
                 trackBarBrightness.Minimum = iDisplay.MinBrightness();
@@ -1397,8 +1440,9 @@ namespace SharpDisplayManager
                 StopTimer();
 #endif
                 checkBoxShowVolumeLabel.Enabled = false;
-                iTableLayoutPanel.Enabled = false;
-                panelDisplay.Enabled = false;
+                iTableLayoutPanelDisplay.Enabled = false;
+                iTableLayoutPanelCurrentClient.Enabled = false;
+                iPanelDisplay.Enabled = false;
                 buttonFill.Enabled = false;
                 buttonClear.Enabled = false;
                 buttonOpen.Enabled = true;
@@ -1430,7 +1474,7 @@ namespace SharpDisplayManager
         private void checkBoxShowBorders_CheckedChanged(object sender, EventArgs e)
         {
             //Save our show borders setting
-            iTableLayoutPanel.CellBorderStyle = (checkBoxShowBorders.Checked
+            iTableLayoutPanelCurrentClient.CellBorderStyle = (checkBoxShowBorders.Checked
                 ? TableLayoutPanelCellBorderStyle.Single
                 : TableLayoutPanelCellBorderStyle.None);
             cds.ShowBorders = checkBoxShowBorders.Checked;
@@ -1527,6 +1571,9 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void BroadcastCloseEvent()
         {
             Trace.TraceInformation("BroadcastCloseEvent - start");
@@ -1560,7 +1607,7 @@ namespace SharpDisplayManager
 
             if (iClients.Count == 0)
             {
-                ClearLayout();
+                ClearLayout(iTableLayoutPanelCurrentClient);
                 iCurrentClientData = null;
             }
         }
@@ -1568,24 +1615,24 @@ namespace SharpDisplayManager
         /// <summary>
         /// Just remove all our fields.
         /// </summary>
-        private void ClearLayout()
+        static private void ClearLayout(TableLayoutPanel aPanel)
         {
             // For each loop did not work as calling Dispose on a control removes it from the collection.
             // We make sure every control are disposed of notably to turn off visualizer when no more needed.
             // That's the only way we found to make sure Control.Disposed is called in a timely fashion.
             // Though that loop is admetitly dangerous as if one of the control does not removes itself from the list we end up with infinite loop.
             // That's what happened with our MarqueeLabel until we fixed it's Dispose override.
-            while (iTableLayoutPanel.Controls.Count>0)
+            while (aPanel.Controls.Count>0)
             {
                 // Dispose our last item
-                iTableLayoutPanel.Controls[iTableLayoutPanel.Controls.Count-1].Dispose();
+                aPanel.Controls[aPanel.Controls.Count-1].Dispose();
             }
 
-            iTableLayoutPanel.Controls.Clear();
-            iTableLayoutPanel.RowStyles.Clear();
-            iTableLayoutPanel.ColumnStyles.Clear();
-            iTableLayoutPanel.RowCount = 0;
-            iTableLayoutPanel.ColumnCount = 0;            
+            aPanel.Controls.Clear();
+            aPanel.RowStyles.Clear();
+            aPanel.ColumnStyles.Clear();
+            aPanel.RowCount = 0;
+            aPanel.ColumnCount = 0;            
         }
 
         /// <summary>
@@ -1764,7 +1811,7 @@ namespace SharpDisplayManager
                 if (iClients.Count == 0)
                 {
                     //Clear our screen when last client disconnects
-                    ClearLayout();
+                    ClearLayout(iTableLayoutPanelCurrentClient);
                     iCurrentClientData = null;
 
                     if (iClosing)
@@ -1789,32 +1836,43 @@ namespace SharpDisplayManager
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetLayoutDelegate d = new SetLayoutDelegate(SetClientLayoutThreadSafe);
-                this.Invoke(d, new object[] {aSessionId, aLayout});
+                Invoke(new Action<FormMain>((sender) => { SetClientLayoutThreadSafe(aSessionId, aLayout); }), this);
+                return;
             }
-            else
+
+            ClientData client = iClients[aSessionId];
+            if (client == null)
             {
-                ClientData client = iClients[aSessionId];
-                if (client != null)
+                //TODO: logs
+                return;
+            }
+
+            // If we have a matching client and we want to change the client layout
+            if (client.Target == Target.Client)
+            {
+                //Don't change a thing if the layout is the same
+                if (!client.View.Layout.IsSameAs(aLayout))
                 {
-                    //Don't change a thing if the layout is the same
-                    if (!client.Layout.IsSameAs(aLayout))
-                    {
-                        Debug.Print("SetClientLayoutThreadSafe: Layout updated.");
-                        //Set our client layout then
-                        client.Layout = aLayout;
-                        //So that next time we update all our fields at ones
-                        client.HasNewLayout = true;
-                        //Layout has changed clear our fields then
-                        client.Fields.Clear();
-                        //
-                        UpdateClientTreeViewNode(client);
-                    }
-                    else
-                    {
-                        Debug.Print("SetClientLayoutThreadSafe: Layout has not changed.");
-                    }
+                    Debug.Print("SetClientLayoutThreadSafe: Layout updated.");
+                    //Set our client layout then
+                    client.View.Layout = aLayout;
+                    //So that next time we update all our fields at ones
+                    client.HasNewLayout = true;
+                    //Layout has changed clear our fields then
+                    client.View.Fields.Clear();
+                    //
+                    UpdateClientTreeViewNode(client);
                 }
+                else
+                {
+                    Debug.Print("SetClientLayoutThreadSafe: Layout has not changed.");
+                }
+            }
+            else if (client.Target == Target.Display)
+            {
+                // Mark our display layout has updated and wait for the fields.
+                // Is display layout a property from our client?
+                //iTableLayoutPanelDisplay. = aLayout;
             }
         }
 
@@ -1828,8 +1886,7 @@ namespace SharpDisplayManager
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetFieldDelegate d = new SetFieldDelegate(SetClientFieldThreadSafe);
-                this.Invoke(d, new object[] {aSessionId, aField});
+                Invoke(new Action<FormMain>((sender) => { SetClientFieldThreadSafe(aSessionId, aField); }), this);
             }
             else
             {
@@ -1856,7 +1913,7 @@ namespace SharpDisplayManager
             bool contentChanged = true;
 
             //Fetch our field index
-            int fieldIndex = client.FindSameFieldIndex(aField);
+            int fieldIndex = client.View.FindSameFieldIndex(aField);
 
             if (fieldIndex < 0)
             {
@@ -1865,9 +1922,9 @@ namespace SharpDisplayManager
             }
 
             //Keep our previous field in there
-            DataField previousField = client.Fields[fieldIndex];
+            DataField previousField = client.View.Fields[fieldIndex];
             //Just update that field then 
-            client.Fields[fieldIndex] = aField;
+            client.View.Fields[fieldIndex] = aField;
 
             if (!aField.IsTableField)
             {
@@ -1882,7 +1939,7 @@ namespace SharpDisplayManager
                 //If we are updating a field in our current client we need to update it in our panel
                 if (aSessionId == iCurrentClientSessionId)
                 {
-                    Control ctrl = iTableLayoutPanel.GetControlFromPosition(tableField.Column, tableField.Row);
+                    Control ctrl = iTableLayoutPanelCurrentClient.GetControlFromPosition(tableField.Column, tableField.Row);
                     if (aField.IsTextField && ctrl is MarqueeLabel)
                     {
                         TextField textField = (TextField)aField;
@@ -1927,7 +1984,7 @@ namespace SharpDisplayManager
                     if (aSessionId == iCurrentClientSessionId)
                     {
                         //Apply layout and set data fields.
-                        UpdateTableLayoutPanel(iCurrentClientData);
+                        UpdateTableLayoutPanel(iCurrentClientData.View, iTableLayoutPanelCurrentClient);
                     }
                 }
                 else
@@ -1953,8 +2010,7 @@ namespace SharpDisplayManager
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetFieldsDelegate d = new SetFieldsDelegate(SetClientFieldsThreadSafe);
-                this.Invoke(d, new object[] {aSessionId, aFields});
+                Invoke(new Action<FormMain>((sender) => { SetClientFieldsThreadSafe(aSessionId, aFields); }), this);
             }
             else
             {
@@ -1967,7 +2023,7 @@ namespace SharpDisplayManager
                     //Do some special handling to avoid re-creating our panel N times, once for each fields
                     client.HasNewLayout = false;
                     //Just set all our fields then
-                    client.Fields.AddRange(aFields);
+                    client.View.Fields.AddRange(aFields);
                     //Try switch to that client
                     SetCurrentClient(aSessionId);
 
@@ -1975,7 +2031,7 @@ namespace SharpDisplayManager
                     if (aSessionId == iCurrentClientSessionId)
                     {
                         //Apply layout and set data fields.
-                        UpdateTableLayoutPanel(iCurrentClientData);
+                        UpdateTableLayoutPanel(iCurrentClientData.View, iTableLayoutPanelCurrentClient);
                     }
 
                     UpdateClientTreeViewNode(client);
@@ -2001,8 +2057,7 @@ namespace SharpDisplayManager
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetClientNameDelegate d = new SetClientNameDelegate(SetClientNameThreadSafe);
-                this.Invoke(d, new object[] {aSessionId, aName});
+                Invoke(new Action<FormMain>((sender) => { SetClientNameThreadSafe(aSessionId, aName); }), this);
             }
             else
             {
@@ -2025,8 +2080,7 @@ namespace SharpDisplayManager
             if (this.InvokeRequired)
             {
                 //Not in the proper thread, invoke ourselves
-                SetClientPriorityDelegate d = new SetClientPriorityDelegate(SetClientPriorityThreadSafe);
-                this.Invoke(d, new object[] {aSessionId, aPriority});
+                Invoke(new Action<FormMain>((sender) => { SetClientPriorityThreadSafe(aSessionId, aPriority); }), this);
             }
             else
             {
@@ -2035,7 +2089,7 @@ namespace SharpDisplayManager
                 ClientData client = iClients[aSessionId];
                 if (client != null)
                 {
-                    //Set its name
+                    //Set its priority
                     client.Priority = aPriority;
                     //Update our tree-view
                     UpdateClientTreeViewNode(client);
@@ -2045,6 +2099,33 @@ namespace SharpDisplayManager
                     {
                         SetCurrentClient(newCurrentClient.SessionId);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aSessionId"></param>
+        /// <param name="aPriority"></param>
+        public void SetClientTargetThreadSafe(string aSessionId, Target aTarget)
+        {
+            if (this.InvokeRequired)
+            {
+                //Not in the proper thread, invoke ourselves
+                Invoke(new Action<FormMain>((sender) => { SetClientTargetThreadSafe(aSessionId, aTarget); }), this);
+            }
+            else
+            {
+                //We are in the proper thread
+                //Get our client
+                ClientData client = iClients[aSessionId];
+                if (client != null)
+                {
+                    //Set its priority
+                    client.Target = aTarget;
+                    //Update our tree-view
+                    //UpdateClientTreeViewNode(client);
                 }
             }
         }
@@ -2071,7 +2152,7 @@ namespace SharpDisplayManager
             RecordingField recField = new RecordingField();
             foreach (var client in iClients)
             {
-                RecordingField rec = (RecordingField) client.Value.FindSameFieldAs(recField);
+                RecordingField rec = (RecordingField) client.Value.View.FindSameFieldAs(recField);
                 if (rec != null && rec.IsActive)
                 {
                     activeRecording = true;
@@ -2158,13 +2239,13 @@ namespace SharpDisplayManager
                 //Display client priority
                 node.Nodes.Add(new TreeNode("Priority: " + aClient.Priority));
 
-                if (aClient.Fields.Count > 0)
+                if (aClient.View.Fields.Count > 0)
                 {
                     //Create root node for our texts
                     TreeNode textsRoot = new TreeNode("Fields");
                     node.Nodes.Add(textsRoot);
                     //For each text add a new entry
-                    foreach (DataField field in aClient.Fields)
+                    foreach (DataField field in aClient.View.Fields)
                     {
                         if (field.IsTextField)
                         {
@@ -2192,64 +2273,52 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// Update our table layout row styles to make sure each rows have similar height
-        /// </summary>
-        private void UpdateTableLayoutRowStyles()
-        {
-            foreach (RowStyle rowStyle in iTableLayoutPanel.RowStyles)
-            {
-                rowStyle.SizeType = SizeType.Percent;
-                rowStyle.Height = 100/iTableLayoutPanel.RowCount;
-            }
-        }
-
-        /// <summary>
         /// Update our display table layout.
         /// Will instanciated every field control as defined by our client.
         /// Fields must be specified by rows from the left.
         /// </summary>
         /// <param name="aLayout"></param>
-        private void UpdateTableLayoutPanel(ClientData aClient)
+        private void UpdateTableLayoutPanel(SharpLib.Display.View aView, TableLayoutPanel aPanel)
         {
             Debug.Print("UpdateTableLayoutPanel");
 
-            if (aClient == null)
+            if (aView == null)
             {
                 //Just drop it
                 return;
             }
 
 
-            TableLayout layout = aClient.Layout;
+            TableLayout layout = aView.Layout;
 
             //First clean our current panel
-            ClearLayout();
+            ClearLayout(aPanel);
 
             //Then recreate our rows...
-            while (iTableLayoutPanel.RowCount < layout.Rows.Count)
+            while (aPanel.RowCount < layout.Rows.Count)
             {
-                iTableLayoutPanel.RowCount++;
+                aPanel.RowCount++;
             }
 
             // ...and columns 
-            while (iTableLayoutPanel.ColumnCount < layout.Columns.Count)
+            while (aPanel.ColumnCount < layout.Columns.Count)
             {
-                iTableLayoutPanel.ColumnCount++;
+                aPanel.ColumnCount++;
             }
 
             //For each column
-            for (int i = 0; i < iTableLayoutPanel.ColumnCount; i++)
+            for (int i = 0; i < aPanel.ColumnCount; i++)
             {
                 //Create our column styles
-                this.iTableLayoutPanel.ColumnStyles.Add(layout.Columns[i]);
+                aPanel.ColumnStyles.Add(layout.Columns[i]);
 
                 //For each rows
-                for (int j = 0; j < iTableLayoutPanel.RowCount; j++)
+                for (int j = 0; j < aPanel.RowCount; j++)
                 {
                     if (i == 0)
                     {
                         //Create our row styles
-                        this.iTableLayoutPanel.RowStyles.Add(layout.Rows[j]);
+                        aPanel.RowStyles.Add(layout.Rows[j]);
                     }
                     else
                     {
@@ -2259,7 +2328,7 @@ namespace SharpDisplayManager
             }
 
             //For each field
-            foreach (DataField field in aClient.Fields)
+            foreach (DataField field in aView.Fields)
             {
                 if (!field.IsTableField)
                 {
@@ -2273,10 +2342,10 @@ namespace SharpDisplayManager
                 Control control = CreateControlForDataField(tableField);
 
                 //Add newly created control to our table layout at the specified row and column
-                iTableLayoutPanel.Controls.Add(control, tableField.Column, tableField.Row);
+                aPanel.Controls.Add(control, tableField.Column, tableField.Row);
                 //Make sure we specify column and row span for that new control
-                iTableLayoutPanel.SetColumnSpan(control, tableField.ColumnSpan);
-                iTableLayoutPanel.SetRowSpan(control, tableField.RowSpan);
+                aPanel.SetColumnSpan(control, tableField.ColumnSpan);
+                aPanel.SetRowSpan(control, tableField.RowSpan);
             }
 
 
@@ -2428,7 +2497,10 @@ namespace SharpDisplayManager
                     cds.MinFontSize = minFontSize;
                     Properties.Settings.Default.Save();
                     //We need to recreate our layout for that change to take effect
-                    UpdateTableLayoutPanel(iCurrentClientData);
+                    if (iCurrentClientData != null)
+                    {
+                        UpdateTableLayoutPanel(iCurrentClientData.View, iTableLayoutPanelCurrentClient);
+                    }
                 }
             }
         }
@@ -2445,22 +2517,26 @@ namespace SharpDisplayManager
                     cds.ScrollingSpeedInPixelsPerSecond = scrollingSpeed;
                     Properties.Settings.Default.Save();
                     //We need to recreate our layout for that change to take effect
-                    UpdateTableLayoutPanel(iCurrentClientData);
+                    if (iCurrentClientData != null)
+                    {
+                        UpdateTableLayoutPanel(iCurrentClientData.View, iTableLayoutPanelCurrentClient);
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBoxScrollLoopSeparator_TextChanged(object sender, EventArgs e)
         {
             cds.Separator = textBoxScrollLoopSeparator.Text;
             Properties.Settings.Default.Save();
 
             //Update our text fields
-            foreach (MarqueeLabel ctrl in iTableLayoutPanel.Controls)
-            {
-                ctrl.Separator = cds.Separator;
-            }
-
+            UpdateMarqueesSeparator(iTableLayoutPanelDisplay);
         }
 
         private void buttonPowerOn_Click(object sender, EventArgs e)

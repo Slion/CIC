@@ -39,8 +39,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            this.panelDisplay = new System.Windows.Forms.Panel();
-            this.iTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.iPanelDisplay = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.iTableLayoutPanelDisplay = new System.Windows.Forms.TableLayoutPanel();
+            this.iTableLayoutPanelCurrentClient = new System.Windows.Forms.TableLayoutPanel();
             this.marqueeLabelTop = new SharpDisplayManager.MarqueeLabel();
             this.marqueeLabelBottom = new SharpDisplayManager.MarqueeLabel();
             this.fontDialog = new System.Windows.Forms.FontDialog();
@@ -133,8 +135,10 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.panelDisplay.SuspendLayout();
-            this.iTableLayoutPanel.SuspendLayout();
+            this.iPanelDisplay.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.iTableLayoutPanelDisplay.SuspendLayout();
+            this.iTableLayoutPanelCurrentClient.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabPageClients.SuspendLayout();
             this.tabPageDisplay.SuspendLayout();
@@ -153,36 +157,69 @@
             // 
             // panelDisplay
             // 
-            this.panelDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelDisplay.Controls.Add(this.iTableLayoutPanel);
-            this.panelDisplay.Location = new System.Drawing.Point(173, 40);
-            this.panelDisplay.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDisplay.Name = "panelDisplay";
-            this.panelDisplay.Size = new System.Drawing.Size(258, 66);
-            this.panelDisplay.TabIndex = 12;
+            this.iPanelDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.iPanelDisplay.Controls.Add(this.panel1);
+            this.iPanelDisplay.Location = new System.Drawing.Point(173, 40);
+            this.iPanelDisplay.Margin = new System.Windows.Forms.Padding(0);
+            this.iPanelDisplay.Name = "panelDisplay";
+            this.iPanelDisplay.Size = new System.Drawing.Size(258, 66);
+            this.iPanelDisplay.TabIndex = 12;
             // 
-            // iTableLayoutPanel
+            // panel1
             // 
-            this.iTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.iTableLayoutPanelDisplay);
+            this.panel1.Location = new System.Drawing.Point(-1, -1);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(258, 66);
+            this.panel1.TabIndex = 22;
+            // 
+            // iTableLayoutPanelDisplay
+            // 
+            this.iTableLayoutPanelDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.iTableLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.iTableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.iTableLayoutPanel.ColumnCount = 1;
-            this.iTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.iTableLayoutPanel.Controls.Add(this.marqueeLabelTop, 0, 0);
-            this.iTableLayoutPanel.Controls.Add(this.marqueeLabelBottom, 0, 1);
-            this.iTableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.iTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.iTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.iTableLayoutPanel.Name = "iTableLayoutPanel";
-            this.iTableLayoutPanel.RowCount = 2;
-            this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanel.Size = new System.Drawing.Size(256, 64);
-            this.iTableLayoutPanel.TabIndex = 5;
-            this.iTableLayoutPanel.SizeChanged += new System.EventHandler(this.tableLayoutPanel_SizeChanged);
+            this.iTableLayoutPanelDisplay.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.iTableLayoutPanelDisplay.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.iTableLayoutPanelDisplay.ColumnCount = 2;
+            this.iTableLayoutPanelDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 88.88889F));
+            this.iTableLayoutPanelDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.iTableLayoutPanelDisplay.Controls.Add(this.iTableLayoutPanelCurrentClient, 0, 0);
+            this.iTableLayoutPanelDisplay.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.iTableLayoutPanelDisplay.Location = new System.Drawing.Point(0, 0);
+            this.iTableLayoutPanelDisplay.Margin = new System.Windows.Forms.Padding(0);
+            this.iTableLayoutPanelDisplay.Name = "iTableLayoutPanelDisplay";
+            this.iTableLayoutPanelDisplay.RowCount = 4;
+            this.iTableLayoutPanelDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.iTableLayoutPanelDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.iTableLayoutPanelDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.iTableLayoutPanelDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.iTableLayoutPanelDisplay.Size = new System.Drawing.Size(256, 64);
+            this.iTableLayoutPanelDisplay.TabIndex = 5;
+            // 
+            // iTableLayoutPanelCurrentClient
+            // 
+            this.iTableLayoutPanelCurrentClient.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTableLayoutPanelCurrentClient.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.iTableLayoutPanelCurrentClient.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.iTableLayoutPanelCurrentClient.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.iTableLayoutPanelCurrentClient.ColumnCount = 1;
+            this.iTableLayoutPanelCurrentClient.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.iTableLayoutPanelCurrentClient.Controls.Add(this.marqueeLabelTop, 0, 0);
+            this.iTableLayoutPanelCurrentClient.Controls.Add(this.marqueeLabelBottom, 0, 1);
+            this.iTableLayoutPanelCurrentClient.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.iTableLayoutPanelCurrentClient.Location = new System.Drawing.Point(0, 0);
+            this.iTableLayoutPanelCurrentClient.Margin = new System.Windows.Forms.Padding(0);
+            this.iTableLayoutPanelCurrentClient.Name = "iTableLayoutPanelCurrentClient";
+            this.iTableLayoutPanelCurrentClient.RowCount = 2;
+            this.iTableLayoutPanelDisplay.SetRowSpan(this.iTableLayoutPanelCurrentClient, 4);
+            this.iTableLayoutPanelCurrentClient.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.iTableLayoutPanelCurrentClient.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.iTableLayoutPanelCurrentClient.Size = new System.Drawing.Size(227, 64);
+            this.iTableLayoutPanelCurrentClient.TabIndex = 6;
             // 
             // marqueeLabelTop
             // 
@@ -198,7 +235,7 @@
             this.marqueeLabelTop.PixelsPerSecond = 64;
             this.marqueeLabelTop.ScaleToFit = true;
             this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(254, 30);
+            this.marqueeLabelTop.Size = new System.Drawing.Size(225, 30);
             this.marqueeLabelTop.TabIndex = 2;
             this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
             this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -217,7 +254,7 @@
             this.marqueeLabelBottom.PixelsPerSecond = 64;
             this.marqueeLabelBottom.ScaleToFit = true;
             this.marqueeLabelBottom.Separator = "|";
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(254, 31);
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(225, 31);
             this.marqueeLabelBottom.TabIndex = 3;
             this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
             this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1261,7 +1298,7 @@
             this.Controls.Add(this.labelWarning);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.tabControl);
-            this.Controls.Add(this.panelDisplay);
+            this.Controls.Add(this.iPanelDisplay);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormMain";
@@ -1270,9 +1307,11 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
-            this.panelDisplay.ResumeLayout(false);
-            this.iTableLayoutPanel.ResumeLayout(false);
-            this.iTableLayoutPanel.PerformLayout();
+            this.iPanelDisplay.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.iTableLayoutPanelDisplay.ResumeLayout(false);
+            this.iTableLayoutPanelCurrentClient.ResumeLayout(false);
+            this.iTableLayoutPanelCurrentClient.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabPageClients.ResumeLayout(false);
@@ -1310,10 +1349,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFps;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSpring;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelPower;
-        private System.Windows.Forms.Panel panelDisplay;
-        private System.Windows.Forms.TableLayoutPanel iTableLayoutPanel;
-        private MarqueeLabel marqueeLabelTop;
-        private MarqueeLabel marqueeLabelBottom;
+        private System.Windows.Forms.Panel iPanelDisplay;
         private System.Windows.Forms.TabPage tabPageClients;
         private System.Windows.Forms.TreeView iTreeViewClients;
         private System.Windows.Forms.TabPage tabPageDisplay;
@@ -1397,6 +1433,11 @@
         private System.Windows.Forms.TextBox iTextBoxHarmonyHubAddress;
         private System.Windows.Forms.CheckBox iCheckBoxHarmonyEnabled;
         private System.Windows.Forms.Button iButtonHarmonyConnect;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TableLayoutPanel iTableLayoutPanelDisplay;
+        private System.Windows.Forms.TableLayoutPanel iTableLayoutPanelCurrentClient;
+        private MarqueeLabel marqueeLabelTop;
+        private MarqueeLabel marqueeLabelBottom;
     }
 }
 

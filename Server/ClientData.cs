@@ -19,62 +19,24 @@ namespace SharpDisplayManager
             SessionId = aSessionId;
             Name = "";
             Priority = Priorities.Default;
-            Fields = new List<DataField>();
-            Layout = new TableLayout(1, 2); //Default to one column and two rows
             Callback = aCallback;
-            HasNewLayout = true;            
+            HasNewLayout = true;
+            View = new View();       
         }
 
         public string SessionId { get; set; }
         public string Name { get; set; }
         public uint Priority { get; set; }
-        public List<DataField> Fields { get; set; }
-        public TableLayout Layout { get; set; }
+        public Target Target { get; set; }
+        public View View { get; set; }
         public ICallback Callback { get; set; }
+        
 
         public bool HasNewLayout { get; set; }
 
         //Client management
         public DateTime LastSwitchTime { get; set; }
 
-        /// <summary>
-        /// Look up the corresponding field in our field collection.
-        /// </summary>
-        /// <param name="aField"></param>
-        /// <returns></returns>
-        public DataField FindSameFieldAs(DataField aField)
-        {
-            foreach (DataField field in Fields)
-            {
-                if (field.IsSameAs(aField))
-                {
-                    return field;
-                }                
-            }
-
-            return null;
-        }
-
-
-        /// <summary>
-        /// Look up the corresponding field in our field collection.
-        /// </summary>
-        /// <param name="aField"></param>
-        /// <returns></returns>
-        public int FindSameFieldIndex(DataField aField)
-        {
-            int i = 0;
-            foreach (DataField field in Fields)
-            {
-                if (field.IsSameAs(aField))
-                {
-                    return i;
-                }
-                i++;
-            }
-
-            return -1;
-        }
 
 
     }
