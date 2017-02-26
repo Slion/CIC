@@ -34,11 +34,11 @@
     <WebPage>index.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.4.3.0</ApplicationVersion>
+    <ApplicationVersion>1.4.5.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -88,10 +88,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5BAED0690B4D99A5D9E89E562A8B9A2BE342929E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>83A2785F3A22E7BD2E504F7D873075F2903F7812</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SharpDisplayManager_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SharpDisplayManager_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
