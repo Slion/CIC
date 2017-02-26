@@ -255,8 +255,22 @@ namespace SharpDisplayManager
             }
 
 #if !DEBUG
-    //When not debugging we want the screen to be empty until a client takes over
+            // When not debugging we want the screen to be empty until a client takes over
 			ClearLayout(iTableLayoutPanelCurrentClient);
+
+            // Display layout should be empty too
+            // TODO: Eventually we will need to dynamically create and destroy our client table layout
+            DoClearLayout(iTableLayoutPanelDisplay);
+            iTableLayoutPanelDisplay.ColumnCount = 1;
+            iTableLayoutPanelDisplay.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            iTableLayoutPanelDisplay.RowCount = 1;
+            iTableLayoutPanelDisplay.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            //
+            iTableLayoutPanelDisplay.SetRowSpan(iTableLayoutPanelCurrentClient, 1);
+            iTableLayoutPanelDisplay.SetColumnSpan(iTableLayoutPanelCurrentClient, 1);
+            iTableLayoutPanelDisplay.Controls.Add(iTableLayoutPanelCurrentClient,0,0);
+
+            // Is that needed? Why just in release?
             iCurrentClientData = null;
 #else
             //When developing we want at least one client for testing
@@ -1625,14 +1639,23 @@ namespace SharpDisplayManager
             while (aPanel.Controls.Count>0)
             {
                 // Dispose our last item
-                aPanel.Controls[aPanel.Controls.Count-1].Dispose();
+                aPanel.Controls[aPanel.Controls.Count - 1].Dispose();
             }
 
+            DoClearLayout(aPanel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aPanel"></param>
+        static private void DoClearLayout(TableLayoutPanel aPanel)
+        {
             aPanel.Controls.Clear();
             aPanel.RowStyles.Clear();
             aPanel.ColumnStyles.Clear();
             aPanel.RowCount = 0;
-            aPanel.ColumnCount = 0;            
+            aPanel.ColumnCount = 0;
         }
 
         /// <summary>
@@ -2274,7 +2297,7 @@ namespace SharpDisplayManager
 
         /// <summary>
         /// Update our display table layout.
-        /// Will instanciated every field control as defined by our client.
+        /// Will instanciate every field control as defined by our client.
         /// Fields must be specified by rows from the left.
         /// </summary>
         /// <param name="aLayout"></param>
@@ -2412,8 +2435,11 @@ namespace SharpDisplayManager
                 picture.Margin = new System.Windows.Forms.Padding(0);
                 picture.Name = "pictureBox" + aField;
 
-                // Make sure visualization is running
-                iAudioManager.AddVisualizer();
+                // Make sure visualization is running                
+                if (iAudioManager != null) // When closing main form with multiple client audio manager can be null. I guess we should fix the core issue instead.
+                {
+                    iAudioManager.AddVisualizer();
+                }
 
                 // Notify audio manager when we don't need audio visualizer anymore
                 picture.Disposed += (sender, e) =>
