@@ -220,7 +220,12 @@ namespace SharpDisplayManager
             else
             {
                 //Not a proper Click Once installation, assuming development build then
-                this.Text += " - development";
+                var assembly = Assembly.GetExecutingAssembly();
+                var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+                this.Text += " - v" + versionInfo.ProductVersion;
+                // Update not supported for non Click Once installation
+                buttonUpdate.Visible = false;
+                //this.Text += " - development";
             }
 
             //CSCore
