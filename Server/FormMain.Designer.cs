@@ -155,13 +155,13 @@
             this.tabPageLogs.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panelDisplay
+            // iPanelDisplay
             // 
             this.iPanelDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.iPanelDisplay.Controls.Add(this.panel1);
             this.iPanelDisplay.Location = new System.Drawing.Point(173, 40);
             this.iPanelDisplay.Margin = new System.Windows.Forms.Padding(0);
-            this.iPanelDisplay.Name = "panelDisplay";
+            this.iPanelDisplay.Name = "iPanelDisplay";
             this.iPanelDisplay.Size = new System.Drawing.Size(258, 66);
             this.iPanelDisplay.TabIndex = 12;
             // 
@@ -1302,7 +1302,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormMain";
-            this.Text = "Sharp Display Manager";
+            this.Text = "Home Theatre Command & Information Center";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
