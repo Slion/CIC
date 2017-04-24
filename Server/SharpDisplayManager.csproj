@@ -91,7 +91,7 @@
     <ManifestCertificateThumbprint>83A2785F3A22E7BD2E504F7D873075F2903F7812</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SharpDisplayManager_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SharpDisplayManager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
