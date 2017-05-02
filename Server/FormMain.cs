@@ -52,7 +52,7 @@ using NETWORKLIST;
 //
 using SharpDisplayClient;
 using SharpDisplay;
-using MiniDisplayInterop;
+using SharpLib.MiniDisplay;
 using SharpLib.Display;
 using Ear = SharpLib.Ear;
 
@@ -519,9 +519,9 @@ namespace SharpDisplayManager
         {
             if (iDisplay.IsOpen())
             {
-                iDisplay.SetIconOnOff(MiniDisplay.IconType.Internet,
+                iDisplay.SetIconOnOff(IconType.Internet,
                     iNetworkManager.NetworkListManager.IsConnectedToInternet);
-                iDisplay.SetIconOnOff(MiniDisplay.IconType.NetworkSignal, iNetworkManager.NetworkListManager.IsConnected);
+                iDisplay.SetIconOnOff(IconType.NetworkSignal, iNetworkManager.NetworkListManager.IsConnected);
             }
         }
 
@@ -540,7 +540,7 @@ namespace SharpDisplayManager
             if (iDisplay.IsOpen() && iNetworkManager.NetworkListManager.IsConnected &&
                 iUpdateCountSinceLastNetworkAnimation == 0)
             {
-                int iconCount = iDisplay.IconCount(MiniDisplay.IconType.NetworkSignal);
+                int iconCount = iDisplay.IconCount(IconType.NetworkSignal);
                 if (iconCount <= 0)
                 {
                     //Prevents div by zero and other undefined behavior
@@ -553,11 +553,11 @@ namespace SharpDisplayManager
                     if (i < iLastNetworkIconIndex && !(i == 0 && iLastNetworkIconIndex > 3) &&
                         !(i == 1 && iLastNetworkIconIndex > 4))
                     {
-                        iDisplay.SetIconOn(MiniDisplay.IconType.NetworkSignal, i);
+                        iDisplay.SetIconOn(IconType.NetworkSignal, i);
                     }
                     else
                     {
-                        iDisplay.SetIconOff(MiniDisplay.IconType.NetworkSignal, i);
+                        iDisplay.SetIconOff(IconType.NetworkSignal, i);
                     }
                 }
             }
@@ -622,7 +622,7 @@ namespace SharpDisplayManager
             if (iDisplay.IsOpen())
             {
                 //First take care our our volume level icons
-                int volumeIconCount = iDisplay.IconCount(MiniDisplay.IconType.Volume);
+                int volumeIconCount = iDisplay.IconCount(IconType.Volume);
                 if (volumeIconCount > 0)
                 {
                     //Compute current volume level from system level and the number of segments in our display volume bar.
@@ -640,25 +640,25 @@ namespace SharpDisplayManager
                             if (i == segmentOnCount - 1 && roundedUp)
                             {
                                 //Half brightness
-                                iDisplay.SetIconStatus(MiniDisplay.IconType.Volume, i,
-                                    (iDisplay.IconStatusCount(MiniDisplay.IconType.Volume) - 1)/2);
+                                iDisplay.SetIconStatus(IconType.Volume, i,
+                                    (iDisplay.IconStatusCount(IconType.Volume) - 1)/2);
                             }
                             else
                             {
                                 //Full brightness
-                                iDisplay.SetIconStatus(MiniDisplay.IconType.Volume, i,
-                                    iDisplay.IconStatusCount(MiniDisplay.IconType.Volume) - 1);
+                                iDisplay.SetIconStatus(IconType.Volume, i,
+                                    iDisplay.IconStatusCount(IconType.Volume) - 1);
                             }
                         }
                         else
                         {
-                            iDisplay.SetIconStatus(MiniDisplay.IconType.Volume, i, 0);
+                            iDisplay.SetIconStatus(IconType.Volume, i, 0);
                         }
                     }
                 }
 
                 //Take care of our mute icon
-                iDisplay.SetIconOnOff(MiniDisplay.IconType.Mute, iAudioManager.Volume.IsMuted);
+                iDisplay.SetIconOnOff(IconType.Mute, iAudioManager.Volume.IsMuted);
             }
 
         }
@@ -748,7 +748,7 @@ namespace SharpDisplayManager
 
             for (int i = 0; i < count; i++)
             {
-                comboBoxDisplayType.Items.Add(Display.TypeName((MiniDisplay.Type) i));
+                comboBoxDisplayType.Items.Add(Display.TypeName((SharpLib.MiniDisplay.Type) i));
             }
         }
 
@@ -980,13 +980,13 @@ namespace SharpDisplayManager
             {
                 switch (iDisplay.AttemptRequestCompletion())
                 {
-                    case MiniDisplay.Request.FirmwareRevision:
+                    case Request.FirmwareRevision:
                         toolStripStatusLabelConnect.Text += " v" + iDisplay.FirmwareRevision();
                         //Issue next request then
                         iDisplay.RequestPowerSupplyStatus();
                         break;
 
-                    case MiniDisplay.Request.PowerSupplyStatus:
+                    case Request.PowerSupplyStatus:
                         if (iDisplay.PowerSupplyStatus())
                         {
                             toolStripStatusLabelPower.Text = "ON";
@@ -999,7 +999,7 @@ namespace SharpDisplayManager
                         iDisplay.RequestDeviceId();
                         break;
 
-                    case MiniDisplay.Request.DeviceId:
+                    case Request.DeviceId:
                         toolStripStatusLabelConnect.Text += " - " + iDisplay.DeviceId();
                         //No more request to issue
                         break;
@@ -1187,7 +1187,7 @@ namespace SharpDisplayManager
         {
             CloseDisplayConnection();
 
-            if (!iDisplay.Open((MiniDisplay.Type) cds.DisplayType))
+            if (!iDisplay.Open((SharpLib.MiniDisplay.Type) cds.DisplayType))
             {
                 UpdateStatus();
                 toolStripStatusLabelConnect.Text = "Connection error";
@@ -1436,15 +1436,15 @@ namespace SharpDisplayManager
 
 
                 //Check if Volume Label is supported. To date only MDM166AA supports that crap :)
-                checkBoxShowVolumeLabel.Enabled = iDisplay.IconCount(MiniDisplay.IconType.VolumeLabel) > 0;
+                checkBoxShowVolumeLabel.Enabled = iDisplay.IconCount(IconType.VolumeLabel) > 0;
 
                 if (cds.ShowVolumeLabel)
                 {
-                    iDisplay.SetIconOn(MiniDisplay.IconType.VolumeLabel);
+                    iDisplay.SetIconOn(IconType.VolumeLabel);
                 }
                 else
                 {
-                    iDisplay.SetIconOff(MiniDisplay.IconType.VolumeLabel);
+                    iDisplay.SetIconOff(IconType.VolumeLabel);
                 }
             }
             else
@@ -2209,7 +2209,7 @@ namespace SharpDisplayManager
                 //Take care of our REC icon
                 if (iDisplay.IsOpen())
                 {
-                    iDisplay.SetIconOnOff(MiniDisplay.IconType.Recording, activeRecording);
+                    iDisplay.SetIconOnOff(IconType.Recording, activeRecording);
                 }
             }
         }
