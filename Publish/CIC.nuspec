@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This NuGet package is designed to be used from MSBuild.
+	 Paths won't match when trying to open it with NuGet Package Manager.
+ -->
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>CIC</id>
+        <version>$version$</version>
+        <title>Command &amp; Information Center</title>
+        <authors>Stephane Lenclud</authors>
+        <iconUrl>http://publish.slions.net/CIC/favicon.ico</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Command &amp; Information Center for Home Theaters.</description>
+        <copyright>Copyright (c) 2013-2017, Stephane Lenclud</copyright>
+        <language>en-US</language>
+    </metadata>
+    <files>
+        <!-- Squirrel dependencies -->
+        <file src="DeltaCompressionDotNet.dll" target="lib\net45\DeltaCompressionDotNet.dll" />
+        <file src="DeltaCompressionDotNet.MsDelta.dll" target="lib\net45\DeltaCompressionDotNet.MsDelta.dll" />
+        <file src="DeltaCompressionDotNet.PatchApi.dll" target="lib\net45\DeltaCompressionDotNet.PatchApi.dll" />
+        <file src="ICSharpCode.SharpZipLib.dll" target="lib\net45\ICSharpCode.SharpZipLib.dll" />
+        <file src="ICSharpCode.SharpZipLib.xml" target="lib\net45\ICSharpCode.SharpZipLib.xml" />
+        <file src="Mono.Cecil.dll" target="lib\net45\Mono.Cecil.dll" />
+        <file src="Mono.Cecil.Mdb.dll" target="lib\net45\Mono.Cecil.Mdb.dll" />
+        <file src="Mono.Cecil.Pdb.dll" target="lib\net45\Mono.Cecil.Pdb.dll" />
+        <file src="Mono.Cecil.Rocks.dll" target="lib\net45\Mono.Cecil.Rocks.dll" />
+        <file src="NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />        
+        <file src="Splat.dll" target="lib\net45\Splat.dll" />
+        <file src="Squirrel.dll" target="lib\net45\Squirrel.dll" />
+		<file src="Squirrel.dll" target="lib\net45\Squirrel.dll" />
+        <!-- ======== CIC dependencies ======== -->
+        <!-- XMPP client for communication with Logitech Harmony -->
+        <file src="agsXMPP.dll" target="lib\net45\agsXMPP.dll" />
+        <!-- Home grown Logitech Harmony client -->
+        <file src="HarmonyHub.dll" target="lib\net45\HarmonyHub.dll" />
+        <!-- Pulse-Eight HDMI-CEC driver -->
+        <file src="cec.dll" target="lib\net45\cec.dll" />
+        <file src="LibCecSharp.dll" target="lib\net45\LibCecSharp.dll" />
+        <!-- CSCore audio API for volume notifications and audio spectrum rendering -->
+        <file src="CSCore.dll" target="lib\net45\CSCore.dll" />
+        <!-- PowerManager to get notified when power events such as monitor standby -->
+        <file src="PowerManager.dll" target="lib\net45\PowerManager.dll" />
+        <!-- CIC core -->
+        <file src="SharpDisplayManager.exe" target="lib\net45\SharpDisplayManager.exe" />
+        <file src="SharpDisplayManager.exe.config" target="lib\net45\SharpDisplayManager.exe.config" />
+        <file src="SharpDisplayClientIdle.exe" target="lib\net45\SharpDisplayClientIdle.exe" />
+        <file src="SharpDisplayClientMessage.exe" target="lib\net45\SharpDisplayClientMessage.exe" />
+        <file src="SharpDisplayClientTest.exe" target="lib\net45\SharpDisplayClientTest.exe" />
+        <!-- SharpLibs built-in or otherwise -->
+        <file src="SharpLibDisplay.dll" target="lib\net45\SharpLibDisplay.dll" />
+        <file src="SharpLibEar.dll" target="lib\net45\SharpLibEar.dll" />
+        <file src="SharpLibHid.dll" target="lib\net45\SharpLibHid.dll" />
+        <file src="SharpLibMiniDisplay.dll" target="lib\net45\SharpLibMiniDisplay.dll" />
+        <file src="SharpLibNotification.dll" target="lib\net45\SharpLibNotification.dll" />
+        <file src="SharpLibUtils.dll" target="lib\net45\SharpLibUtils.dll" />
+        <file src="SharpLibWin32.dll" target="lib\net45\SharpLibWin32.dll" />
+
+        <!-- Add Windows Visual Studio redist -->
+        <!-- VS 2013 - needed for HDMI-CEC -->
+        <!-- C Run-Time Libraries (CRT) -->
+        <file src="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcr120.dll" target="lib\net45\msvcr120.dll" />
+        <!-- Standard C++ Library -->
+        <file src="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\redist\x86\Microsoft.VC120.CRT\msvcp120.dll" target="lib\net45\msvcp120.dll" />        
+        <!-- VS 2015 -->
+        <!-- C Run-Time Libraries (CRT) -->
+		<file src="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\vcruntime140.dll" target="lib\net45\vcruntime140.dll" />
+		<!-- Standard C++ Library -->
+		<file src="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvcp140.dll" target="lib\net45\msvcp140.dll" />				
+    </files>
+</package>
