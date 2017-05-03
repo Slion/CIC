@@ -21,6 +21,7 @@ using System;
 using System.Windows.Forms;
 using System.Security.Principal;
 using Hid = SharpLib.Hid;
+using Squirrel;
 
 
 namespace SharpDisplayManager
@@ -46,6 +47,8 @@ namespace SharpDisplayManager
         /// Use notably to handle green start key from IR remote control
         /// </summary>
         public static Hid.Handler HidHandler;
+
+        public const string KSquirrelUpdateUrl = "http://publish.slions.net/CIC";
 
         /// <summary>
         /// The main entry point for the application.
@@ -79,7 +82,27 @@ namespace SharpDisplayManager
 				return;
 				//Application.Current.Shutdown();
 			}*/
-          
+
+#if !DEBUG
+            // SL: Do Squirrel admin stuff.
+            // NB: Note here that HandleEvents is being called as early in startup
+            // as possible in the app. This is very important! Do _not_ call this
+            // method as part of your app's "check for updates" code.
+            using (var mgr = new UpdateManager(KSquirrelUpdateUrl))
+            {
+                // Note, in most of these scenarios, the app exits after this method
+                // completes!
+                SquirrelAwareApp.HandleEvents(
+                  onInitialInstall: v => mgr.CreateShortcutForThisExe(),
+                  onAppUpdate: v => mgr.CreateShortcutForThisExe(),
+                  onAppUninstall: v => mgr.RemoveShortcutForThisExe()
+                  /*onFirstRun: () => ShowTheWelcomeWizard = true*/);
+            }
+#endif
+
+
+
+
             Application.ApplicationExit += new EventHandler(OnApplicationExit);
 			//
             Application.EnableVisualStyles();

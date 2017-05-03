@@ -55,6 +55,7 @@ using SharpDisplay;
 using SharpLib.MiniDisplay;
 using SharpLib.Display;
 using Ear = SharpLib.Ear;
+using Squirrel;
 
 
 namespace SharpDisplayManager
@@ -212,6 +213,7 @@ namespace SharpDisplayManager
         private void MainForm_Load(object sender, EventArgs e)
         {
             //Check if we are running a Click Once deployed application
+            //TODO: remove ClickOnce stuff 
             if (ApplicationDeployment.IsNetworkDeployed)
             {
                 //This is a proper Click Once installation, fetch and show our version number
@@ -224,7 +226,7 @@ namespace SharpDisplayManager
                 var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
                 this.Text += " - v" + versionInfo.ProductVersion;
                 // Update not supported for non Click Once installation
-                buttonUpdate.Visible = false;
+                //buttonUpdate.Visible = false;
                 //this.Text += " - development";
             }
 
@@ -300,6 +302,55 @@ namespace SharpDisplayManager
                 StartIdleClient();
             }
         }
+
+        /// <summary>
+        /// Check for application update and ask the user to proceed if any.
+        /// </summary>
+        async void SquirrelUpdate()
+        {
+            // Check for Squirrel application update
+#if !DEBUG
+            ReleaseEntry release = null;
+            using (var mgr = new UpdateManager(Program.KSquirrelUpdateUrl))
+            {
+                // We have an update ask our user if he wants it
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                //
+                UpdateInfo updateInfo = await mgr.CheckForUpdate();
+                if (updateInfo.ReleasesToApply.Any()) // Check if we have any update
+                {
+
+                    string msg = "New version available!" +
+                                    "\n\nCurrent version: " + updateInfo.CurrentlyInstalledVersion.Version +
+                                    "\nNew version: " + updateInfo.FutureReleaseEntry.Version +
+                                    "\n\nUpdate application now?";
+                    DialogResult dialogResult = MessageBox.Show(msg, fvi.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        // User wants it, do the update
+                        release = await mgr.UpdateApp();
+                    }
+                    else
+                    {
+                        // User cancel an update enable manual update option
+                        //iToolStripMenuItemUpdate.Visible = true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("You are already running the latest version.", fvi.ProductName);
+                }
+            }
+
+            // Restart the app
+            if (release != null)
+            {
+                UpdateManager.RestartApp();
+            }
+#endif
+        }
+
 
 
         private void CreateAudioManager()
@@ -2590,9 +2641,10 @@ namespace SharpDisplayManager
             HideClock();
         }
 
-        private void buttonUpdate_Click(object sender, EventArgs e)
+        async private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            InstallUpdateSyncWithInfo();
+            //InstallUpdateSyncWithInfo();
+            SquirrelUpdate();
         }
 
         /// <summary>
@@ -2629,6 +2681,10 @@ namespace SharpDisplayManager
             iDisplay.HideClock();
         }
 
+        ///
+        /// ClickOnce update trigger.
+        /// TODO: Remove this now that we migrated to Squirrel.
+        ///
         private void InstallUpdateSyncWithInfo()
         {
             UpdateCheckInfo info = null;
