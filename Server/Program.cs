@@ -18,11 +18,14 @@
 //
 
 using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Security.Principal;
 using Hid = SharpLib.Hid;
 using Squirrel;
-
+using System.Configuration;
+using System.IO;
 
 namespace SharpDisplayManager
 {
@@ -93,15 +96,37 @@ namespace SharpDisplayManager
                 // Note, in most of these scenarios, the app exits after this method
                 // completes!
                 SquirrelAwareApp.HandleEvents(
-                  onInitialInstall: v => mgr.CreateShortcutForThisExe(),
-                  onAppUpdate: v => mgr.CreateShortcutForThisExe(),
-                  onAppUninstall: v => mgr.RemoveShortcutForThisExe()
-                  /*onFirstRun: () => ShowTheWelcomeWizard = true*/);
+                  onInitialInstall: v =>
+                  {
+                      MessageBox.Show("onInitialInstall " + v + " Current:" + mgr.CurrentlyInstalledVersion());
+                      mgr.CreateShortcutForThisExe();
+                  },
+                  onAppUpdate: v =>
+                  {
+                      mgr.CreateShortcutForThisExe();
+
+                      //Not a proper Click Once installation, assuming development build then
+                      //var assembly = Assembly.GetExecutingAssembly();
+                      //var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+                      //string version = " - v" + versionInfo.ProductVersion;
+                      //MessageBox.Show("onAppUpdate " + v + " Current:" + mgr.CurrentlyInstalledVersion() + version);
+                  },
+                  onAppObsoleted: v =>
+                  {
+                      //MessageBox.Show("onAppObsoleted " + v + " Current:" + mgr.CurrentlyInstalledVersion());
+                  },
+                  onAppUninstall: v =>
+                  {
+                      //MessageBox.Show("onAppUninstall " + v + " Current:" + mgr.CurrentlyInstalledVersion());
+                      mgr.RemoveShortcutForThisExe();
+                  },
+                  onFirstRun: () =>
+                  {
+                      //MessageBox.Show("onFirstRun " + mgr.CurrentlyInstalledVersion());
+                  });
             }
 #endif
-
-
-
+            RestoreSettings();
 
             Application.ApplicationExit += new EventHandler(OnApplicationExit);
 			//
@@ -111,9 +136,71 @@ namespace SharpDisplayManager
             Application.Run(iFormMain);
         }
 
+        /// <summary>
+        /// Make a backup of our settings.
+        /// Used to persist settings across updates.
+        /// </summary>
+        public static void BackupSettings()
+        {
+            string settingsFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+            string destination = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\..\\last.config";
+            File.Copy(settingsFile, destination, true);
+        }
+
+        /// <summary>
+        /// Restore our settings backup if any.
+        /// Used to persist settings across updates.
+        /// </summary>
+        private static void RestoreSettings()
+        {
+            //Restore settings after application update            
+            string destFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+            string sourceFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\..\\last.config";
+            // Check if we have settings that we need to restore
+            if (!File.Exists(sourceFile))
+            {
+                // Nothing we need to do
+                return;
+            }
+
+            //MessageBox.Show("Source: " + sourceFile);
+            //MessageBox.Show("Dest: " + destFile);
+
+            // Create directory as needed
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(destFile));
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
+
+            // Copy our backup file in place 
+            try
+            {
+                File.Copy(sourceFile, destFile, true);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
+
+            // Delete backup file
+            try
+            {
+                File.Delete(sourceFile);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
+
+            //MessageBox.Show("After copy");
+        }
 
 
-		static private bool IsRunAsAdministrator()
+        private static bool IsRunAsAdministrator()
 		{
 		  var wi = WindowsIdentity.GetCurrent();
 		  var wp = new WindowsPrincipal(wi);
@@ -126,7 +213,7 @@ namespace SharpDisplayManager
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		static private void OnApplicationExit(object sender, EventArgs e)
+		private static void OnApplicationExit(object sender, EventArgs e)
 		{
 
 		}

@@ -56,7 +56,7 @@ using SharpLib.MiniDisplay;
 using SharpLib.Display;
 using Ear = SharpLib.Ear;
 using Squirrel;
-
+using System.Configuration;
 
 namespace SharpDisplayManager
 {
@@ -201,8 +201,7 @@ namespace SharpDisplayManager
             if (Properties.Settings.Default.StartMinimized)
             {
                 WindowState = FormWindowState.Minimized;
-            }
-
+            }            
         }
 
         /// <summary>
@@ -330,6 +329,8 @@ namespace SharpDisplayManager
                     {
                         // User wants it, do the update
                         release = await mgr.UpdateApp();
+                        // Backup our users settings
+                        Program.BackupSettings();
                     }
                     else
                     {
