@@ -159,20 +159,20 @@
             // 
             this.iPanelDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.iPanelDisplay.Controls.Add(this.panel1);
-            this.iPanelDisplay.Location = new System.Drawing.Point(173, 40);
+            this.iPanelDisplay.Location = new System.Drawing.Point(260, 62);
             this.iPanelDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.iPanelDisplay.Name = "iPanelDisplay";
-            this.iPanelDisplay.Size = new System.Drawing.Size(258, 66);
+            this.iPanelDisplay.Size = new System.Drawing.Size(386, 100);
             this.iPanelDisplay.TabIndex = 12;
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.iTableLayoutPanelDisplay);
-            this.panel1.Location = new System.Drawing.Point(-1, -1);
+            this.panel1.Location = new System.Drawing.Point(-2, -2);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(258, 66);
+            this.panel1.Size = new System.Drawing.Size(386, 100);
             this.panel1.TabIndex = 22;
             // 
             // iTableLayoutPanelDisplay
@@ -195,7 +195,7 @@
             this.iTableLayoutPanelDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.iTableLayoutPanelDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.iTableLayoutPanelDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.iTableLayoutPanelDisplay.Size = new System.Drawing.Size(256, 64);
+            this.iTableLayoutPanelDisplay.Size = new System.Drawing.Size(384, 98);
             this.iTableLayoutPanelDisplay.TabIndex = 5;
             // 
             // iTableLayoutPanelCurrentClient
@@ -218,7 +218,7 @@
             this.iTableLayoutPanelDisplay.SetRowSpan(this.iTableLayoutPanelCurrentClient, 4);
             this.iTableLayoutPanelCurrentClient.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.iTableLayoutPanelCurrentClient.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanelCurrentClient.Size = new System.Drawing.Size(227, 64);
+            this.iTableLayoutPanelCurrentClient.Size = new System.Drawing.Size(341, 98);
             this.iTableLayoutPanelCurrentClient.TabIndex = 6;
             // 
             // marqueeLabelTop
@@ -235,7 +235,7 @@
             this.marqueeLabelTop.PixelsPerSecond = 64;
             this.marqueeLabelTop.ScaleToFit = true;
             this.marqueeLabelTop.Separator = "|";
-            this.marqueeLabelTop.Size = new System.Drawing.Size(225, 30);
+            this.marqueeLabelTop.Size = new System.Drawing.Size(339, 47);
             this.marqueeLabelTop.TabIndex = 2;
             this.marqueeLabelTop.Text = "ABCDEFGHIJKLMNOPQRST-0123456789";
             this.marqueeLabelTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -246,7 +246,7 @@
             this.marqueeLabelBottom.AutoEllipsis = true;
             this.marqueeLabelBottom.AutoSize = true;
             this.marqueeLabelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 32);
+            this.marqueeLabelBottom.Location = new System.Drawing.Point(1, 49);
             this.marqueeLabelBottom.Margin = new System.Windows.Forms.Padding(0);
             this.marqueeLabelBottom.MinFontSize = 15F;
             this.marqueeLabelBottom.Name = "marqueeLabelBottom";
@@ -254,7 +254,7 @@
             this.marqueeLabelBottom.PixelsPerSecond = 64;
             this.marqueeLabelBottom.ScaleToFit = true;
             this.marqueeLabelBottom.Separator = "|";
-            this.marqueeLabelBottom.Size = new System.Drawing.Size(225, 31);
+            this.marqueeLabelBottom.Size = new System.Drawing.Size(339, 48);
             this.marqueeLabelBottom.TabIndex = 3;
             this.marqueeLabelBottom.Text = "abcdefghijklmnopqrst-0123456789";
             this.marqueeLabelBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -267,40 +267,42 @@
             // 
             // statusStrip
             // 
+            this.statusStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelConnect,
             this.toolStripStatusLabelSpring,
             this.toolStripStatusLabelPower,
             this.toolStripStatusLabelFps});
-            this.statusStrip.Location = new System.Drawing.Point(0, 540);
+            this.statusStrip.Location = new System.Drawing.Point(0, 835);
             this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip.Size = new System.Drawing.Size(784, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1176, 30);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip";
             // 
             // toolStripStatusLabelConnect
             // 
             this.toolStripStatusLabelConnect.Name = "toolStripStatusLabelConnect";
-            this.toolStripStatusLabelConnect.Size = new System.Drawing.Size(86, 17);
+            this.toolStripStatusLabelConnect.Size = new System.Drawing.Size(129, 25);
             this.toolStripStatusLabelConnect.Text = "Not connected";
             // 
             // toolStripStatusLabelSpring
             // 
             this.toolStripStatusLabelSpring.Name = "toolStripStatusLabelSpring";
-            this.toolStripStatusLabelSpring.Size = new System.Drawing.Size(633, 17);
+            this.toolStripStatusLabelSpring.Size = new System.Drawing.Size(946, 25);
             this.toolStripStatusLabelSpring.Spring = true;
             // 
             // toolStripStatusLabelPower
             // 
             this.toolStripStatusLabelPower.Name = "toolStripStatusLabelPower";
-            this.toolStripStatusLabelPower.Size = new System.Drawing.Size(24, 17);
+            this.toolStripStatusLabelPower.Size = new System.Drawing.Size(37, 25);
             this.toolStripStatusLabelPower.Text = "NA";
             // 
             // toolStripStatusLabelFps
             // 
             this.toolStripStatusLabelFps.Name = "toolStripStatusLabelFps";
-            this.toolStripStatusLabelFps.Size = new System.Drawing.Size(26, 17);
+            this.toolStripStatusLabelFps.Size = new System.Drawing.Size(41, 25);
             this.toolStripStatusLabelFps.Text = "FPS";
             // 
             // tabPageClients
@@ -310,10 +312,11 @@
             this.tabPageClients.Controls.Add(this.buttonCloseClients);
             this.tabPageClients.Controls.Add(this.buttonStartClient);
             this.tabPageClients.Controls.Add(this.iTreeViewClients);
-            this.tabPageClients.Location = new System.Drawing.Point(4, 22);
+            this.tabPageClients.Location = new System.Drawing.Point(4, 29);
+            this.tabPageClients.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageClients.Name = "tabPageClients";
-            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageClients.Size = new System.Drawing.Size(752, 385);
+            this.tabPageClients.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageClients.Size = new System.Drawing.Size(1132, 599);
             this.tabPageClients.TabIndex = 2;
             this.tabPageClients.Text = "Clients";
             this.tabPageClients.UseVisualStyleBackColor = true;
@@ -325,18 +328,20 @@
             this.iCheckBoxStartIdleClient.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartIdleClient;
             this.iCheckBoxStartIdleClient.CheckState = System.Windows.Forms.CheckState.Checked;
             this.iCheckBoxStartIdleClient.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartIdleClient", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 340);
+            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(162, 525);
+            this.iCheckBoxStartIdleClient.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iCheckBoxStartIdleClient.Name = "iCheckBoxStartIdleClient";
-            this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(145, 17);
+            this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(215, 24);
             this.iCheckBoxStartIdleClient.TabIndex = 22;
             this.iCheckBoxStartIdleClient.Text = "Start idle client on startup";
             this.iCheckBoxStartIdleClient.UseVisualStyleBackColor = true;
             // 
             // iButtonStartIdleClient
             // 
-            this.iButtonStartIdleClient.Location = new System.Drawing.Point(6, 35);
+            this.iButtonStartIdleClient.Location = new System.Drawing.Point(9, 54);
+            this.iButtonStartIdleClient.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iButtonStartIdleClient.Name = "iButtonStartIdleClient";
-            this.iButtonStartIdleClient.Size = new System.Drawing.Size(96, 23);
+            this.iButtonStartIdleClient.Size = new System.Drawing.Size(144, 35);
             this.iButtonStartIdleClient.TabIndex = 21;
             this.iButtonStartIdleClient.Text = "Start Idle Client";
             this.iButtonStartIdleClient.UseVisualStyleBackColor = true;
@@ -345,9 +350,10 @@
             // buttonCloseClients
             // 
             this.buttonCloseClients.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCloseClients.Location = new System.Drawing.Point(6, 336);
+            this.buttonCloseClients.Location = new System.Drawing.Point(9, 517);
+            this.buttonCloseClients.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonCloseClients.Name = "buttonCloseClients";
-            this.buttonCloseClients.Size = new System.Drawing.Size(96, 23);
+            this.buttonCloseClients.Size = new System.Drawing.Size(144, 35);
             this.buttonCloseClients.TabIndex = 20;
             this.buttonCloseClients.Text = "Close Clients";
             this.buttonCloseClients.UseVisualStyleBackColor = true;
@@ -355,9 +361,10 @@
             // 
             // buttonStartClient
             // 
-            this.buttonStartClient.Location = new System.Drawing.Point(6, 6);
+            this.buttonStartClient.Location = new System.Drawing.Point(9, 9);
+            this.buttonStartClient.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonStartClient.Name = "buttonStartClient";
-            this.buttonStartClient.Size = new System.Drawing.Size(96, 23);
+            this.buttonStartClient.Size = new System.Drawing.Size(144, 35);
             this.buttonStartClient.TabIndex = 19;
             this.buttonStartClient.Text = "Start Test Client";
             this.buttonStartClient.UseVisualStyleBackColor = true;
@@ -368,9 +375,10 @@
             this.iTreeViewClients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTreeViewClients.Location = new System.Drawing.Point(108, 6);
+            this.iTreeViewClients.Location = new System.Drawing.Point(162, 9);
+            this.iTreeViewClients.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iTreeViewClients.Name = "iTreeViewClients";
-            this.iTreeViewClients.Size = new System.Drawing.Size(638, 328);
+            this.iTreeViewClients.Size = new System.Drawing.Size(955, 502);
             this.iTreeViewClients.TabIndex = 0;
             this.iTreeViewClients.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewClients_AfterSelect);
             // 
@@ -391,19 +399,21 @@
             this.tabPageDisplay.Controls.Add(this.buttonClose);
             this.tabPageDisplay.Controls.Add(this.buttonOpen);
             this.tabPageDisplay.Controls.Add(this.buttonCapture);
-            this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDisplay.Location = new System.Drawing.Point(4, 29);
+            this.tabPageDisplay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageDisplay.Name = "tabPageDisplay";
-            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDisplay.Size = new System.Drawing.Size(752, 385);
+            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageDisplay.Size = new System.Drawing.Size(1132, 599);
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
             // 
             // buttonShowClock
             // 
-            this.buttonShowClock.Location = new System.Drawing.Point(6, 122);
+            this.buttonShowClock.Location = new System.Drawing.Point(9, 188);
+            this.buttonShowClock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonShowClock.Name = "buttonShowClock";
-            this.buttonShowClock.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowClock.Size = new System.Drawing.Size(112, 35);
             this.buttonShowClock.TabIndex = 23;
             this.buttonShowClock.Text = "Show Clock";
             this.buttonShowClock.UseVisualStyleBackColor = true;
@@ -411,9 +421,10 @@
             // 
             // buttonHideClock
             // 
-            this.buttonHideClock.Location = new System.Drawing.Point(6, 151);
+            this.buttonHideClock.Location = new System.Drawing.Point(9, 232);
+            this.buttonHideClock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonHideClock.Name = "buttonHideClock";
-            this.buttonHideClock.Size = new System.Drawing.Size(75, 23);
+            this.buttonHideClock.Size = new System.Drawing.Size(112, 35);
             this.buttonHideClock.TabIndex = 22;
             this.buttonHideClock.Text = "Hide Clock";
             this.buttonHideClock.UseVisualStyleBackColor = true;
@@ -421,9 +432,10 @@
             // 
             // buttonPowerOff
             // 
-            this.buttonPowerOff.Location = new System.Drawing.Point(6, 209);
+            this.buttonPowerOff.Location = new System.Drawing.Point(9, 322);
+            this.buttonPowerOff.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonPowerOff.Name = "buttonPowerOff";
-            this.buttonPowerOff.Size = new System.Drawing.Size(75, 23);
+            this.buttonPowerOff.Size = new System.Drawing.Size(112, 35);
             this.buttonPowerOff.TabIndex = 21;
             this.buttonPowerOff.Text = "OFF";
             this.buttonPowerOff.UseVisualStyleBackColor = true;
@@ -431,9 +443,10 @@
             // 
             // buttonPowerOn
             // 
-            this.buttonPowerOn.Location = new System.Drawing.Point(6, 180);
+            this.buttonPowerOn.Location = new System.Drawing.Point(9, 277);
+            this.buttonPowerOn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonPowerOn.Name = "buttonPowerOn";
-            this.buttonPowerOn.Size = new System.Drawing.Size(75, 23);
+            this.buttonPowerOn.Size = new System.Drawing.Size(112, 35);
             this.buttonPowerOn.TabIndex = 20;
             this.buttonPowerOn.Text = "ON";
             this.buttonPowerOn.UseVisualStyleBackColor = true;
@@ -442,19 +455,21 @@
             // labelTimerInterval
             // 
             this.labelTimerInterval.AutoSize = true;
-            this.labelTimerInterval.Location = new System.Drawing.Point(184, 45);
+            this.labelTimerInterval.Location = new System.Drawing.Point(276, 69);
+            this.labelTimerInterval.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTimerInterval.Name = "labelTimerInterval";
-            this.labelTimerInterval.Size = new System.Drawing.Size(98, 13);
+            this.labelTimerInterval.Size = new System.Drawing.Size(145, 20);
             this.labelTimerInterval.TabIndex = 19;
             this.labelTimerInterval.Text = "Timer interval (ms) :";
             // 
             // maskedTextBoxTimerInterval
             // 
-            this.maskedTextBoxTimerInterval.Location = new System.Drawing.Point(288, 42);
+            this.maskedTextBoxTimerInterval.Location = new System.Drawing.Point(432, 65);
+            this.maskedTextBoxTimerInterval.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maskedTextBoxTimerInterval.Mask = "000";
             this.maskedTextBoxTimerInterval.Name = "maskedTextBoxTimerInterval";
             this.maskedTextBoxTimerInterval.PromptChar = ' ';
-            this.maskedTextBoxTimerInterval.Size = new System.Drawing.Size(24, 20);
+            this.maskedTextBoxTimerInterval.Size = new System.Drawing.Size(34, 26);
             this.maskedTextBoxTimerInterval.TabIndex = 18;
             this.maskedTextBoxTimerInterval.TextChanged += new System.EventHandler(this.maskedTextBoxTimerInterval_TextChanged);
             // 
@@ -462,18 +477,20 @@
             // 
             this.comboBoxDisplayType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDisplayType.FormattingEnabled = true;
-            this.comboBoxDisplayType.Location = new System.Drawing.Point(187, 9);
+            this.comboBoxDisplayType.Location = new System.Drawing.Point(280, 14);
+            this.comboBoxDisplayType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxDisplayType.Name = "comboBoxDisplayType";
-            this.comboBoxDisplayType.Size = new System.Drawing.Size(181, 21);
+            this.comboBoxDisplayType.Size = new System.Drawing.Size(270, 28);
             this.comboBoxDisplayType.TabIndex = 17;
             this.comboBoxDisplayType.SelectedIndexChanged += new System.EventHandler(this.comboBoxDisplayType_SelectedIndexChanged);
             // 
             // buttonSuspend
             // 
             this.buttonSuspend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSuspend.Location = new System.Drawing.Point(6, 317);
+            this.buttonSuspend.Location = new System.Drawing.Point(9, 488);
+            this.buttonSuspend.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonSuspend.Name = "buttonSuspend";
-            this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
+            this.buttonSuspend.Size = new System.Drawing.Size(112, 35);
             this.buttonSuspend.TabIndex = 16;
             this.buttonSuspend.Text = "Pause";
             this.buttonSuspend.UseVisualStyleBackColor = true;
@@ -485,9 +502,10 @@
             this.checkBoxConnectOnStartup.AutoSize = true;
             this.checkBoxConnectOnStartup.Checked = global::SharpDisplayManager.Properties.Settings.Default.DisplayConnectOnStartup;
             this.checkBoxConnectOnStartup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "DisplayConnectOnStartup", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
+            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(170, 541);
+            this.checkBoxConnectOnStartup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
-            this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
+            this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(175, 24);
             this.checkBoxConnectOnStartup.TabIndex = 13;
             this.checkBoxConnectOnStartup.Text = "Connect on stratup ";
             this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
@@ -497,10 +515,11 @@
             this.trackBarBrightness.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarBrightness.BackColor = System.Drawing.SystemColors.Window;
-            this.trackBarBrightness.Location = new System.Drawing.Point(704, 9);
+            this.trackBarBrightness.Location = new System.Drawing.Point(1056, 14);
+            this.trackBarBrightness.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.trackBarBrightness.Name = "trackBarBrightness";
             this.trackBarBrightness.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarBrightness.Size = new System.Drawing.Size(45, 358);
+            this.trackBarBrightness.Size = new System.Drawing.Size(69, 551);
             this.trackBarBrightness.TabIndex = 10;
             this.trackBarBrightness.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.toolTip.SetToolTip(this.trackBarBrightness, "Brightness adjustment");
@@ -508,9 +527,10 @@
             // 
             // buttonFill
             // 
-            this.buttonFill.Location = new System.Drawing.Point(6, 93);
+            this.buttonFill.Location = new System.Drawing.Point(9, 143);
+            this.buttonFill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonFill.Name = "buttonFill";
-            this.buttonFill.Size = new System.Drawing.Size(75, 23);
+            this.buttonFill.Size = new System.Drawing.Size(112, 35);
             this.buttonFill.TabIndex = 9;
             this.buttonFill.Text = "Fill";
             this.buttonFill.UseVisualStyleBackColor = true;
@@ -518,9 +538,10 @@
             // 
             // buttonClear
             // 
-            this.buttonClear.Location = new System.Drawing.Point(6, 64);
+            this.buttonClear.Location = new System.Drawing.Point(9, 98);
+            this.buttonClear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(75, 23);
+            this.buttonClear.Size = new System.Drawing.Size(112, 35);
             this.buttonClear.TabIndex = 8;
             this.buttonClear.Text = "Clear";
             this.buttonClear.UseVisualStyleBackColor = true;
@@ -528,9 +549,10 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(6, 35);
+            this.buttonClose.Location = new System.Drawing.Point(9, 54);
+            this.buttonClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.Size = new System.Drawing.Size(112, 35);
             this.buttonClose.TabIndex = 7;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -538,9 +560,10 @@
             // 
             // buttonOpen
             // 
-            this.buttonOpen.Location = new System.Drawing.Point(6, 6);
+            this.buttonOpen.Location = new System.Drawing.Point(9, 9);
+            this.buttonOpen.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonOpen.Name = "buttonOpen";
-            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpen.Size = new System.Drawing.Size(112, 35);
             this.buttonOpen.TabIndex = 6;
             this.buttonOpen.Text = "Open";
             this.buttonOpen.UseVisualStyleBackColor = true;
@@ -549,9 +572,10 @@
             // buttonCapture
             // 
             this.buttonCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCapture.Location = new System.Drawing.Point(6, 346);
+            this.buttonCapture.Location = new System.Drawing.Point(9, 532);
+            this.buttonCapture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonCapture.Name = "buttonCapture";
-            this.buttonCapture.Size = new System.Drawing.Size(75, 23);
+            this.buttonCapture.Size = new System.Drawing.Size(112, 35);
             this.buttonCapture.TabIndex = 5;
             this.buttonCapture.Text = "Capture";
             this.buttonCapture.UseVisualStyleBackColor = true;
@@ -562,9 +586,10 @@
             this.labelWarning.AutoSize = true;
             this.labelWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWarning.ForeColor = System.Drawing.Color.Red;
-            this.labelWarning.Location = new System.Drawing.Point(9, 9);
+            this.labelWarning.Location = new System.Drawing.Point(14, 14);
+            this.labelWarning.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelWarning.Name = "labelWarning";
-            this.labelWarning.Size = new System.Drawing.Size(80, 16);
+            this.labelWarning.Size = new System.Drawing.Size(114, 25);
             this.labelWarning.TabIndex = 18;
             this.labelWarning.Text = "WARNING";
             this.labelWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -574,9 +599,10 @@
             // 
             this.checkBoxFixedPitchFontOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxFixedPitchFontOnly.AutoSize = true;
-            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(87, 362);
+            this.checkBoxFixedPitchFontOnly.Location = new System.Drawing.Point(130, 559);
+            this.checkBoxFixedPitchFontOnly.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxFixedPitchFontOnly.Name = "checkBoxFixedPitchFontOnly";
-            this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(120, 17);
+            this.checkBoxFixedPitchFontOnly.Size = new System.Drawing.Size(175, 24);
             this.checkBoxFixedPitchFontOnly.TabIndex = 17;
             this.checkBoxFixedPitchFontOnly.Text = "Fixed pitch font only";
             this.checkBoxFixedPitchFontOnly.UseVisualStyleBackColor = true;
@@ -585,9 +611,10 @@
             // 
             this.checkBoxShowBorders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxShowBorders.AutoSize = true;
-            this.checkBoxShowBorders.Location = new System.Drawing.Point(645, 29);
+            this.checkBoxShowBorders.Location = new System.Drawing.Point(971, 45);
+            this.checkBoxShowBorders.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxShowBorders.Name = "checkBoxShowBorders";
-            this.checkBoxShowBorders.Size = new System.Drawing.Size(91, 17);
+            this.checkBoxShowBorders.Size = new System.Drawing.Size(133, 24);
             this.checkBoxShowBorders.TabIndex = 11;
             this.checkBoxShowBorders.Text = "Show borders";
             this.checkBoxShowBorders.UseVisualStyleBackColor = true;
@@ -596,9 +623,10 @@
             // buttonFont
             // 
             this.buttonFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonFont.Location = new System.Drawing.Point(6, 356);
+            this.buttonFont.Location = new System.Drawing.Point(9, 548);
+            this.buttonFont.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonFont.Name = "buttonFont";
-            this.buttonFont.Size = new System.Drawing.Size(75, 23);
+            this.buttonFont.Size = new System.Drawing.Size(112, 35);
             this.buttonFont.TabIndex = 0;
             this.buttonFont.Text = "Select Font";
             this.buttonFont.UseVisualStyleBackColor = true;
@@ -618,10 +646,11 @@
             this.tabControl.Controls.Add(this.tabPageEvent);
             this.tabControl.Controls.Add(this.tabPageApp);
             this.tabControl.Controls.Add(this.tabPageLogs);
-            this.tabControl.Location = new System.Drawing.Point(12, 125);
+            this.tabControl.Location = new System.Drawing.Point(18, 192);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(760, 411);
+            this.tabControl.Size = new System.Drawing.Size(1140, 632);
             this.tabControl.TabIndex = 0;
             // 
             // tabPageDesign
@@ -638,10 +667,11 @@
             this.tabPageDesign.Controls.Add(this.buttonFont);
             this.tabPageDesign.Controls.Add(this.checkBoxReverseScreen);
             this.tabPageDesign.Controls.Add(this.checkBoxShowBorders);
-            this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDesign.Location = new System.Drawing.Point(4, 29);
+            this.tabPageDesign.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageDesign.Name = "tabPageDesign";
-            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDesign.Size = new System.Drawing.Size(752, 385);
+            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageDesign.Size = new System.Drawing.Size(1132, 599);
             this.tabPageDesign.TabIndex = 3;
             this.tabPageDesign.Text = "Design";
             this.tabPageDesign.UseVisualStyleBackColor = true;
@@ -650,20 +680,22 @@
             // 
             this.labelScrollingSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelScrollingSpeed.AutoSize = true;
-            this.labelScrollingSpeed.Location = new System.Drawing.Point(92, 248);
+            this.labelScrollingSpeed.Location = new System.Drawing.Point(138, 382);
+            this.labelScrollingSpeed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelScrollingSpeed.Name = "labelScrollingSpeed";
-            this.labelScrollingSpeed.Size = new System.Drawing.Size(115, 13);
+            this.labelScrollingSpeed.Size = new System.Drawing.Size(167, 20);
             this.labelScrollingSpeed.TabIndex = 28;
             this.labelScrollingSpeed.Text = "Scrolling speed (px/s) :";
             // 
             // maskedTextBoxScrollingSpeed
             // 
             this.maskedTextBoxScrollingSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.maskedTextBoxScrollingSpeed.Location = new System.Drawing.Point(213, 245);
+            this.maskedTextBoxScrollingSpeed.Location = new System.Drawing.Point(320, 377);
+            this.maskedTextBoxScrollingSpeed.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maskedTextBoxScrollingSpeed.Mask = "000";
             this.maskedTextBoxScrollingSpeed.Name = "maskedTextBoxScrollingSpeed";
             this.maskedTextBoxScrollingSpeed.PromptChar = ' ';
-            this.maskedTextBoxScrollingSpeed.Size = new System.Drawing.Size(24, 20);
+            this.maskedTextBoxScrollingSpeed.Size = new System.Drawing.Size(34, 26);
             this.maskedTextBoxScrollingSpeed.TabIndex = 27;
             this.maskedTextBoxScrollingSpeed.TextChanged += new System.EventHandler(this.maskedTextBoxScrollingSpeed_TextChanged);
             // 
@@ -671,18 +703,20 @@
             // 
             this.labelScrollLoopSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelScrollLoopSeparator.AutoSize = true;
-            this.labelScrollLoopSeparator.Location = new System.Drawing.Point(98, 274);
+            this.labelScrollLoopSeparator.Location = new System.Drawing.Point(147, 422);
+            this.labelScrollLoopSeparator.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelScrollLoopSeparator.Name = "labelScrollLoopSeparator";
-            this.labelScrollLoopSeparator.Size = new System.Drawing.Size(109, 13);
+            this.labelScrollLoopSeparator.Size = new System.Drawing.Size(162, 20);
             this.labelScrollLoopSeparator.TabIndex = 26;
             this.labelScrollLoopSeparator.Text = "Scroll loop separator :";
             // 
             // textBoxScrollLoopSeparator
             // 
             this.textBoxScrollLoopSeparator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxScrollLoopSeparator.Location = new System.Drawing.Point(213, 271);
+            this.textBoxScrollLoopSeparator.Location = new System.Drawing.Point(320, 417);
+            this.textBoxScrollLoopSeparator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxScrollLoopSeparator.Name = "textBoxScrollLoopSeparator";
-            this.textBoxScrollLoopSeparator.Size = new System.Drawing.Size(74, 20);
+            this.textBoxScrollLoopSeparator.Size = new System.Drawing.Size(109, 26);
             this.textBoxScrollLoopSeparator.TabIndex = 25;
             this.textBoxScrollLoopSeparator.TextChanged += new System.EventHandler(this.textBoxScrollLoopSeparator_TextChanged);
             // 
@@ -690,20 +724,22 @@
             // 
             this.labelMinFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelMinFontSize.AutoSize = true;
-            this.labelMinFontSize.Location = new System.Drawing.Point(88, 323);
+            this.labelMinFontSize.Location = new System.Drawing.Point(132, 497);
+            this.labelMinFontSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelMinFontSize.Name = "labelMinFontSize";
-            this.labelMinFontSize.Size = new System.Drawing.Size(119, 13);
+            this.labelMinFontSize.Size = new System.Drawing.Size(180, 20);
             this.labelMinFontSize.TabIndex = 24;
             this.labelMinFontSize.Text = "Minimum font size (pts) :";
             // 
             // maskedTextBoxMinFontSize
             // 
             this.maskedTextBoxMinFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.maskedTextBoxMinFontSize.Location = new System.Drawing.Point(213, 320);
+            this.maskedTextBoxMinFontSize.Location = new System.Drawing.Point(320, 492);
+            this.maskedTextBoxMinFontSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maskedTextBoxMinFontSize.Mask = "000";
             this.maskedTextBoxMinFontSize.Name = "maskedTextBoxMinFontSize";
             this.maskedTextBoxMinFontSize.PromptChar = ' ';
-            this.maskedTextBoxMinFontSize.Size = new System.Drawing.Size(24, 20);
+            this.maskedTextBoxMinFontSize.Size = new System.Drawing.Size(34, 26);
             this.maskedTextBoxMinFontSize.TabIndex = 23;
             this.maskedTextBoxMinFontSize.TextChanged += new System.EventHandler(this.maskedTextBoxMinFontSize_TextChanged);
             // 
@@ -711,9 +747,10 @@
             // 
             this.checkBoxScaleToFit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxScaleToFit.AutoSize = true;
-            this.checkBoxScaleToFit.Location = new System.Drawing.Point(86, 297);
+            this.checkBoxScaleToFit.Location = new System.Drawing.Point(129, 459);
+            this.checkBoxScaleToFit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxScaleToFit.Name = "checkBoxScaleToFit";
-            this.checkBoxScaleToFit.Size = new System.Drawing.Size(201, 17);
+            this.checkBoxScaleToFit.Size = new System.Drawing.Size(291, 24);
             this.checkBoxScaleToFit.TabIndex = 22;
             this.checkBoxScaleToFit.Text = "Try scale font down to avoid scrolling";
             this.checkBoxScaleToFit.UseVisualStyleBackColor = true;
@@ -723,9 +760,10 @@
             // 
             this.checkBoxInverseColors.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxInverseColors.AutoSize = true;
-            this.checkBoxInverseColors.Location = new System.Drawing.Point(645, 52);
+            this.checkBoxInverseColors.Location = new System.Drawing.Point(973, 80);
+            this.checkBoxInverseColors.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxInverseColors.Name = "checkBoxInverseColors";
-            this.checkBoxInverseColors.Size = new System.Drawing.Size(92, 17);
+            this.checkBoxInverseColors.Size = new System.Drawing.Size(133, 24);
             this.checkBoxInverseColors.TabIndex = 21;
             this.checkBoxInverseColors.Text = "Inverse colors";
             this.checkBoxInverseColors.UseVisualStyleBackColor = true;
@@ -735,9 +773,10 @@
             // 
             this.checkBoxReverseScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxReverseScreen.AutoSize = true;
-            this.checkBoxReverseScreen.Location = new System.Drawing.Point(645, 6);
+            this.checkBoxReverseScreen.Location = new System.Drawing.Point(973, 9);
+            this.checkBoxReverseScreen.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxReverseScreen.Name = "checkBoxReverseScreen";
-            this.checkBoxReverseScreen.Size = new System.Drawing.Size(101, 17);
+            this.checkBoxReverseScreen.Size = new System.Drawing.Size(146, 24);
             this.checkBoxReverseScreen.TabIndex = 14;
             this.checkBoxReverseScreen.Text = "Reverse screen";
             this.checkBoxReverseScreen.UseVisualStyleBackColor = true;
@@ -749,10 +788,11 @@
             this.tabPageAudio.Controls.Add(this.checkBoxShowVolumeLabel);
             this.tabPageAudio.Controls.Add(this.checkBoxMute);
             this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
-            this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAudio.Location = new System.Drawing.Point(4, 29);
+            this.tabPageAudio.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageAudio.Name = "tabPageAudio";
-            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAudio.Size = new System.Drawing.Size(752, 385);
+            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageAudio.Size = new System.Drawing.Size(1132, 599);
             this.tabPageAudio.TabIndex = 5;
             this.tabPageAudio.Text = "Audio";
             this.tabPageAudio.UseVisualStyleBackColor = true;
@@ -761,9 +801,10 @@
             // 
             this.iLabelDefaultAudioDevice.AutoSize = true;
             this.iLabelDefaultAudioDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.iLabelDefaultAudioDevice.Location = new System.Drawing.Point(3, 6);
+            this.iLabelDefaultAudioDevice.Location = new System.Drawing.Point(4, 9);
+            this.iLabelDefaultAudioDevice.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.iLabelDefaultAudioDevice.Name = "iLabelDefaultAudioDevice";
-            this.iLabelDefaultAudioDevice.Size = new System.Drawing.Size(120, 13);
+            this.iLabelDefaultAudioDevice.Size = new System.Drawing.Size(181, 20);
             this.iLabelDefaultAudioDevice.TabIndex = 19;
             this.iLabelDefaultAudioDevice.Text = "Audio Device Unknown";
             // 
@@ -771,9 +812,10 @@
             // 
             this.checkBoxShowVolumeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxShowVolumeLabel.AutoSize = true;
-            this.checkBoxShowVolumeLabel.Location = new System.Drawing.Point(3, 329);
+            this.checkBoxShowVolumeLabel.Location = new System.Drawing.Point(4, 508);
+            this.checkBoxShowVolumeLabel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxShowVolumeLabel.Name = "checkBoxShowVolumeLabel";
-            this.checkBoxShowVolumeLabel.Size = new System.Drawing.Size(115, 17);
+            this.checkBoxShowVolumeLabel.Size = new System.Drawing.Size(166, 24);
             this.checkBoxShowVolumeLabel.TabIndex = 18;
             this.checkBoxShowVolumeLabel.Text = "Show volume label";
             this.checkBoxShowVolumeLabel.UseVisualStyleBackColor = true;
@@ -783,9 +825,10 @@
             // 
             this.checkBoxMute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxMute.AutoSize = true;
-            this.checkBoxMute.Location = new System.Drawing.Point(3, 352);
+            this.checkBoxMute.Location = new System.Drawing.Point(4, 544);
+            this.checkBoxMute.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxMute.Name = "checkBoxMute";
-            this.checkBoxMute.Size = new System.Drawing.Size(50, 17);
+            this.checkBoxMute.Size = new System.Drawing.Size(71, 24);
             this.checkBoxMute.TabIndex = 17;
             this.checkBoxMute.Text = "Mute";
             this.checkBoxMute.UseVisualStyleBackColor = true;
@@ -796,11 +839,12 @@
             this.trackBarMasterVolume.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarMasterVolume.BackColor = System.Drawing.SystemColors.Window;
-            this.trackBarMasterVolume.Location = new System.Drawing.Point(701, 6);
+            this.trackBarMasterVolume.Location = new System.Drawing.Point(1052, 9);
+            this.trackBarMasterVolume.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.trackBarMasterVolume.Maximum = 100;
             this.trackBarMasterVolume.Name = "trackBarMasterVolume";
             this.trackBarMasterVolume.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarMasterVolume.Size = new System.Drawing.Size(45, 373);
+            this.trackBarMasterVolume.Size = new System.Drawing.Size(69, 574);
             this.trackBarMasterVolume.TabIndex = 0;
             this.trackBarMasterVolume.TickFrequency = 10;
             this.trackBarMasterVolume.TickStyle = System.Windows.Forms.TickStyle.Both;
@@ -813,10 +857,11 @@
             this.tabPageCec.Controls.Add(this.labelHdmiPort);
             this.tabPageCec.Controls.Add(this.comboBoxHdmiPort);
             this.tabPageCec.Controls.Add(this.iCheckBoxCecEnabled);
-            this.tabPageCec.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCec.Location = new System.Drawing.Point(4, 29);
+            this.tabPageCec.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageCec.Name = "tabPageCec";
-            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCec.Size = new System.Drawing.Size(752, 385);
+            this.tabPageCec.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageCec.Size = new System.Drawing.Size(1132, 599);
             this.tabPageCec.TabIndex = 7;
             this.tabPageCec.Text = "CEC";
             this.tabPageCec.UseVisualStyleBackColor = true;
@@ -830,9 +875,11 @@
             this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogNotice);
             this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogError);
             this.groupBoxCecLogOptions.Controls.Add(this.checkBoxCecLogWarning);
-            this.groupBoxCecLogOptions.Location = new System.Drawing.Point(6, 239);
+            this.groupBoxCecLogOptions.Location = new System.Drawing.Point(9, 368);
+            this.groupBoxCecLogOptions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBoxCecLogOptions.Name = "groupBoxCecLogOptions";
-            this.groupBoxCecLogOptions.Size = new System.Drawing.Size(165, 140);
+            this.groupBoxCecLogOptions.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBoxCecLogOptions.Size = new System.Drawing.Size(248, 215);
             this.groupBoxCecLogOptions.TabIndex = 25;
             this.groupBoxCecLogOptions.TabStop = false;
             this.groupBoxCecLogOptions.Text = "Log options";
@@ -842,9 +889,10 @@
             this.checkBoxCecLogNoPoll.AutoSize = true;
             this.checkBoxCecLogNoPoll.Checked = true;
             this.checkBoxCecLogNoPoll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCecLogNoPoll.Location = new System.Drawing.Point(76, 24);
+            this.checkBoxCecLogNoPoll.Location = new System.Drawing.Point(114, 37);
+            this.checkBoxCecLogNoPoll.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxCecLogNoPoll.Name = "checkBoxCecLogNoPoll";
-            this.checkBoxCecLogNoPoll.Size = new System.Drawing.Size(59, 17);
+            this.checkBoxCecLogNoPoll.Size = new System.Drawing.Size(83, 24);
             this.checkBoxCecLogNoPoll.TabIndex = 30;
             this.checkBoxCecLogNoPoll.Text = "No poll";
             this.checkBoxCecLogNoPoll.UseVisualStyleBackColor = true;
@@ -853,9 +901,10 @@
             // checkBoxCecLogTraffic
             // 
             this.checkBoxCecLogTraffic.AutoSize = true;
-            this.checkBoxCecLogTraffic.Location = new System.Drawing.Point(6, 93);
+            this.checkBoxCecLogTraffic.Location = new System.Drawing.Point(9, 143);
+            this.checkBoxCecLogTraffic.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxCecLogTraffic.Name = "checkBoxCecLogTraffic";
-            this.checkBoxCecLogTraffic.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxCecLogTraffic.Size = new System.Drawing.Size(79, 24);
             this.checkBoxCecLogTraffic.TabIndex = 29;
             this.checkBoxCecLogTraffic.Text = "Traffic";
             this.checkBoxCecLogTraffic.UseVisualStyleBackColor = true;
@@ -864,9 +913,10 @@
             // checkBoxCecLogDebug
             // 
             this.checkBoxCecLogDebug.AutoSize = true;
-            this.checkBoxCecLogDebug.Location = new System.Drawing.Point(6, 116);
+            this.checkBoxCecLogDebug.Location = new System.Drawing.Point(9, 178);
+            this.checkBoxCecLogDebug.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxCecLogDebug.Name = "checkBoxCecLogDebug";
-            this.checkBoxCecLogDebug.Size = new System.Drawing.Size(58, 17);
+            this.checkBoxCecLogDebug.Size = new System.Drawing.Size(83, 24);
             this.checkBoxCecLogDebug.TabIndex = 28;
             this.checkBoxCecLogDebug.Text = "Debug";
             this.checkBoxCecLogDebug.UseVisualStyleBackColor = true;
@@ -877,9 +927,10 @@
             this.checkBoxCecLogNotice.AutoSize = true;
             this.checkBoxCecLogNotice.Checked = true;
             this.checkBoxCecLogNotice.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCecLogNotice.Location = new System.Drawing.Point(6, 70);
+            this.checkBoxCecLogNotice.Location = new System.Drawing.Point(9, 108);
+            this.checkBoxCecLogNotice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxCecLogNotice.Name = "checkBoxCecLogNotice";
-            this.checkBoxCecLogNotice.Size = new System.Drawing.Size(57, 17);
+            this.checkBoxCecLogNotice.Size = new System.Drawing.Size(80, 24);
             this.checkBoxCecLogNotice.TabIndex = 27;
             this.checkBoxCecLogNotice.Text = "Notice";
             this.checkBoxCecLogNotice.UseVisualStyleBackColor = true;
@@ -890,9 +941,10 @@
             this.checkBoxCecLogError.AutoSize = true;
             this.checkBoxCecLogError.Checked = true;
             this.checkBoxCecLogError.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCecLogError.Location = new System.Drawing.Point(6, 24);
+            this.checkBoxCecLogError.Location = new System.Drawing.Point(9, 37);
+            this.checkBoxCecLogError.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxCecLogError.Name = "checkBoxCecLogError";
-            this.checkBoxCecLogError.Size = new System.Drawing.Size(48, 17);
+            this.checkBoxCecLogError.Size = new System.Drawing.Size(70, 24);
             this.checkBoxCecLogError.TabIndex = 26;
             this.checkBoxCecLogError.Text = "Error";
             this.checkBoxCecLogError.UseVisualStyleBackColor = true;
@@ -903,9 +955,10 @@
             this.checkBoxCecLogWarning.AutoSize = true;
             this.checkBoxCecLogWarning.Checked = true;
             this.checkBoxCecLogWarning.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCecLogWarning.Location = new System.Drawing.Point(6, 47);
+            this.checkBoxCecLogWarning.Location = new System.Drawing.Point(9, 72);
+            this.checkBoxCecLogWarning.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxCecLogWarning.Name = "checkBoxCecLogWarning";
-            this.checkBoxCecLogWarning.Size = new System.Drawing.Size(66, 17);
+            this.checkBoxCecLogWarning.Size = new System.Drawing.Size(94, 24);
             this.checkBoxCecLogWarning.TabIndex = 25;
             this.checkBoxCecLogWarning.Text = "Warning";
             this.checkBoxCecLogWarning.UseVisualStyleBackColor = true;
@@ -914,9 +967,10 @@
             // labelHdmiPort
             // 
             this.labelHdmiPort.AutoSize = true;
-            this.labelHdmiPort.Location = new System.Drawing.Point(3, 26);
+            this.labelHdmiPort.Location = new System.Drawing.Point(4, 40);
+            this.labelHdmiPort.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelHdmiPort.Name = "labelHdmiPort";
-            this.labelHdmiPort.Size = new System.Drawing.Size(182, 13);
+            this.labelHdmiPort.Size = new System.Drawing.Size(267, 20);
             this.labelHdmiPort.TabIndex = 20;
             this.labelHdmiPort.Text = "TV HDMI port connected to your PC:";
             // 
@@ -934,9 +988,10 @@
             "HDMI 7",
             "HDMI 8",
             "HDMI 9"});
-            this.comboBoxHdmiPort.Location = new System.Drawing.Point(6, 42);
+            this.comboBoxHdmiPort.Location = new System.Drawing.Point(9, 65);
+            this.comboBoxHdmiPort.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxHdmiPort.Name = "comboBoxHdmiPort";
-            this.comboBoxHdmiPort.Size = new System.Drawing.Size(87, 21);
+            this.comboBoxHdmiPort.Size = new System.Drawing.Size(128, 28);
             this.comboBoxHdmiPort.TabIndex = 19;
             this.comboBoxHdmiPort.SelectedIndexChanged += new System.EventHandler(this.comboBoxHdmiPort_SelectedIndexChanged);
             // 
@@ -945,9 +1000,10 @@
             this.iCheckBoxCecEnabled.AutoSize = true;
             this.iCheckBoxCecEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.CecEnabled;
             this.iCheckBoxCecEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "CecEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
+            this.iCheckBoxCecEnabled.Location = new System.Drawing.Point(9, 9);
+            this.iCheckBoxCecEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iCheckBoxCecEnabled.Name = "iCheckBoxCecEnabled";
-            this.iCheckBoxCecEnabled.Size = new System.Drawing.Size(83, 17);
+            this.iCheckBoxCecEnabled.Size = new System.Drawing.Size(122, 24);
             this.iCheckBoxCecEnabled.TabIndex = 21;
             this.iCheckBoxCecEnabled.Text = "Enable CEC";
             this.iCheckBoxCecEnabled.UseVisualStyleBackColor = true;
@@ -960,19 +1016,21 @@
             this.tabPageHarmony.Controls.Add(this.iTreeViewHarmony);
             this.tabPageHarmony.Controls.Add(this.label1);
             this.tabPageHarmony.Controls.Add(this.iTextBoxHarmonyHubAddress);
-            this.tabPageHarmony.Location = new System.Drawing.Point(4, 22);
+            this.tabPageHarmony.Location = new System.Drawing.Point(4, 29);
+            this.tabPageHarmony.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageHarmony.Name = "tabPageHarmony";
-            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageHarmony.Size = new System.Drawing.Size(752, 385);
+            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageHarmony.Size = new System.Drawing.Size(1132, 599);
             this.tabPageHarmony.TabIndex = 10;
             this.tabPageHarmony.Text = "Harmony";
             this.tabPageHarmony.UseVisualStyleBackColor = true;
             // 
             // iButtonHarmonyConnect
             // 
-            this.iButtonHarmonyConnect.Location = new System.Drawing.Point(6, 49);
+            this.iButtonHarmonyConnect.Location = new System.Drawing.Point(9, 75);
+            this.iButtonHarmonyConnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iButtonHarmonyConnect.Name = "iButtonHarmonyConnect";
-            this.iButtonHarmonyConnect.Size = new System.Drawing.Size(75, 23);
+            this.iButtonHarmonyConnect.Size = new System.Drawing.Size(112, 35);
             this.iButtonHarmonyConnect.TabIndex = 23;
             this.iButtonHarmonyConnect.Text = "Open";
             this.iButtonHarmonyConnect.UseVisualStyleBackColor = true;
@@ -983,9 +1041,10 @@
             this.iCheckBoxHarmonyEnabled.AutoSize = true;
             this.iCheckBoxHarmonyEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.HarmonyEnabled;
             this.iCheckBoxHarmonyEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxHarmonyEnabled.Location = new System.Drawing.Point(6, 6);
+            this.iCheckBoxHarmonyEnabled.Location = new System.Drawing.Point(9, 9);
+            this.iCheckBoxHarmonyEnabled.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iCheckBoxHarmonyEnabled.Name = "iCheckBoxHarmonyEnabled";
-            this.iCheckBoxHarmonyEnabled.Size = new System.Drawing.Size(104, 17);
+            this.iCheckBoxHarmonyEnabled.Size = new System.Drawing.Size(153, 24);
             this.iCheckBoxHarmonyEnabled.TabIndex = 22;
             this.iCheckBoxHarmonyEnabled.Text = "Enable Harmony";
             this.iCheckBoxHarmonyEnabled.UseVisualStyleBackColor = true;
@@ -996,9 +1055,10 @@
             this.iTreeViewHarmony.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTreeViewHarmony.Location = new System.Drawing.Point(87, 49);
+            this.iTreeViewHarmony.Location = new System.Drawing.Point(130, 75);
+            this.iTreeViewHarmony.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iTreeViewHarmony.Name = "iTreeViewHarmony";
-            this.iTreeViewHarmony.Size = new System.Drawing.Size(659, 330);
+            this.iTreeViewHarmony.Size = new System.Drawing.Size(986, 506);
             this.iTreeViewHarmony.TabIndex = 15;
             this.iTreeViewHarmony.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.iTreeViewHarmony_NodeMouseDoubleClick);
             // 
@@ -1006,9 +1066,10 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(279, 7);
+            this.label1.Location = new System.Drawing.Point(418, 11);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 13);
+            this.label1.Size = new System.Drawing.Size(174, 20);
             this.label1.TabIndex = 9;
             this.label1.Text = "Harmony Hub Address:";
             // 
@@ -1016,9 +1077,10 @@
             // 
             this.iTextBoxHarmonyHubAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.iTextBoxHarmonyHubAddress.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyHubAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iTextBoxHarmonyHubAddress.Location = new System.Drawing.Point(282, 23);
+            this.iTextBoxHarmonyHubAddress.Location = new System.Drawing.Point(423, 35);
+            this.iTextBoxHarmonyHubAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iTextBoxHarmonyHubAddress.Name = "iTextBoxHarmonyHubAddress";
-            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(100, 20);
+            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(148, 26);
             this.iTextBoxHarmonyHubAddress.TabIndex = 8;
             this.iTextBoxHarmonyHubAddress.Text = global::SharpDisplayManager.Properties.Settings.Default.HarmonyHubAddress;
             // 
@@ -1035,10 +1097,11 @@
             this.tabPageEvent.Controls.Add(this.buttonActionDelete);
             this.tabPageEvent.Controls.Add(this.buttonActionAdd);
             this.tabPageEvent.Controls.Add(this.iTreeViewEvents);
-            this.tabPageEvent.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEvent.Location = new System.Drawing.Point(4, 29);
+            this.tabPageEvent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageEvent.Name = "tabPageEvent";
-            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEvent.Size = new System.Drawing.Size(752, 385);
+            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageEvent.Size = new System.Drawing.Size(1132, 599);
             this.tabPageEvent.TabIndex = 9;
             this.tabPageEvent.Text = "Events";
             this.tabPageEvent.UseVisualStyleBackColor = true;
@@ -1046,9 +1109,10 @@
             // buttonEventEdit
             // 
             this.buttonEventEdit.Enabled = false;
-            this.buttonEventEdit.Location = new System.Drawing.Point(6, 187);
+            this.buttonEventEdit.Location = new System.Drawing.Point(9, 288);
+            this.buttonEventEdit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonEventEdit.Name = "buttonEventEdit";
-            this.buttonEventEdit.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventEdit.Size = new System.Drawing.Size(144, 35);
             this.buttonEventEdit.TabIndex = 29;
             this.buttonEventEdit.Text = "Edit Event";
             this.buttonEventEdit.UseVisualStyleBackColor = true;
@@ -1057,9 +1121,10 @@
             // buttonEventDelete
             // 
             this.buttonEventDelete.Enabled = false;
-            this.buttonEventDelete.Location = new System.Drawing.Point(6, 216);
+            this.buttonEventDelete.Location = new System.Drawing.Point(9, 332);
+            this.buttonEventDelete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonEventDelete.Name = "buttonEventDelete";
-            this.buttonEventDelete.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventDelete.Size = new System.Drawing.Size(144, 35);
             this.buttonEventDelete.TabIndex = 28;
             this.buttonEventDelete.Text = "Delete Event";
             this.buttonEventDelete.UseVisualStyleBackColor = true;
@@ -1067,9 +1132,10 @@
             // 
             // buttonEventAdd
             // 
-            this.buttonEventAdd.Location = new System.Drawing.Point(6, 158);
+            this.buttonEventAdd.Location = new System.Drawing.Point(9, 243);
+            this.buttonEventAdd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonEventAdd.Name = "buttonEventAdd";
-            this.buttonEventAdd.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventAdd.Size = new System.Drawing.Size(144, 35);
             this.buttonEventAdd.TabIndex = 27;
             this.buttonEventAdd.Text = "Add Event";
             this.buttonEventAdd.UseVisualStyleBackColor = true;
@@ -1078,9 +1144,10 @@
             // buttonEventTest
             // 
             this.buttonEventTest.Enabled = false;
-            this.buttonEventTest.Location = new System.Drawing.Point(6, 245);
+            this.buttonEventTest.Location = new System.Drawing.Point(9, 377);
+            this.buttonEventTest.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonEventTest.Name = "buttonEventTest";
-            this.buttonEventTest.Size = new System.Drawing.Size(96, 23);
+            this.buttonEventTest.Size = new System.Drawing.Size(144, 35);
             this.buttonEventTest.TabIndex = 26;
             this.buttonEventTest.Text = "Test Event";
             this.buttonEventTest.UseVisualStyleBackColor = true;
@@ -1089,9 +1156,10 @@
             // buttonActionEdit
             // 
             this.buttonActionEdit.Enabled = false;
-            this.buttonActionEdit.Location = new System.Drawing.Point(6, 35);
+            this.buttonActionEdit.Location = new System.Drawing.Point(9, 54);
+            this.buttonActionEdit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonActionEdit.Name = "buttonActionEdit";
-            this.buttonActionEdit.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionEdit.Size = new System.Drawing.Size(144, 35);
             this.buttonActionEdit.TabIndex = 25;
             this.buttonActionEdit.Text = "Edit Action";
             this.buttonActionEdit.UseVisualStyleBackColor = true;
@@ -1100,9 +1168,10 @@
             // buttonActionMoveUp
             // 
             this.buttonActionMoveUp.Enabled = false;
-            this.buttonActionMoveUp.Location = new System.Drawing.Point(6, 327);
+            this.buttonActionMoveUp.Location = new System.Drawing.Point(9, 503);
+            this.buttonActionMoveUp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonActionMoveUp.Name = "buttonActionMoveUp";
-            this.buttonActionMoveUp.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionMoveUp.Size = new System.Drawing.Size(144, 35);
             this.buttonActionMoveUp.TabIndex = 24;
             this.buttonActionMoveUp.Text = "Move Up";
             this.buttonActionMoveUp.UseVisualStyleBackColor = true;
@@ -1111,9 +1180,10 @@
             // buttonActionMoveDown
             // 
             this.buttonActionMoveDown.Enabled = false;
-            this.buttonActionMoveDown.Location = new System.Drawing.Point(6, 356);
+            this.buttonActionMoveDown.Location = new System.Drawing.Point(9, 548);
+            this.buttonActionMoveDown.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonActionMoveDown.Name = "buttonActionMoveDown";
-            this.buttonActionMoveDown.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionMoveDown.Size = new System.Drawing.Size(144, 35);
             this.buttonActionMoveDown.TabIndex = 23;
             this.buttonActionMoveDown.Text = "Move Down";
             this.buttonActionMoveDown.UseVisualStyleBackColor = true;
@@ -1122,9 +1192,10 @@
             // buttonActionTest
             // 
             this.buttonActionTest.Enabled = false;
-            this.buttonActionTest.Location = new System.Drawing.Point(6, 93);
+            this.buttonActionTest.Location = new System.Drawing.Point(9, 143);
+            this.buttonActionTest.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonActionTest.Name = "buttonActionTest";
-            this.buttonActionTest.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionTest.Size = new System.Drawing.Size(144, 35);
             this.buttonActionTest.TabIndex = 22;
             this.buttonActionTest.Text = "Test Action";
             this.buttonActionTest.UseVisualStyleBackColor = true;
@@ -1133,9 +1204,10 @@
             // buttonActionDelete
             // 
             this.buttonActionDelete.Enabled = false;
-            this.buttonActionDelete.Location = new System.Drawing.Point(6, 64);
+            this.buttonActionDelete.Location = new System.Drawing.Point(9, 98);
+            this.buttonActionDelete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonActionDelete.Name = "buttonActionDelete";
-            this.buttonActionDelete.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionDelete.Size = new System.Drawing.Size(144, 35);
             this.buttonActionDelete.TabIndex = 21;
             this.buttonActionDelete.Text = "Delete Action";
             this.buttonActionDelete.UseVisualStyleBackColor = true;
@@ -1144,9 +1216,10 @@
             // buttonActionAdd
             // 
             this.buttonActionAdd.Enabled = false;
-            this.buttonActionAdd.Location = new System.Drawing.Point(6, 6);
+            this.buttonActionAdd.Location = new System.Drawing.Point(9, 9);
+            this.buttonActionAdd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonActionAdd.Name = "buttonActionAdd";
-            this.buttonActionAdd.Size = new System.Drawing.Size(96, 23);
+            this.buttonActionAdd.Size = new System.Drawing.Size(144, 35);
             this.buttonActionAdd.TabIndex = 20;
             this.buttonActionAdd.Text = "Add Action";
             this.buttonActionAdd.UseVisualStyleBackColor = true;
@@ -1158,9 +1231,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.iTreeViewEvents.HideSelection = false;
-            this.iTreeViewEvents.Location = new System.Drawing.Point(111, 3);
+            this.iTreeViewEvents.Location = new System.Drawing.Point(166, 5);
+            this.iTreeViewEvents.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.iTreeViewEvents.Name = "iTreeViewEvents";
-            this.iTreeViewEvents.Size = new System.Drawing.Size(638, 376);
+            this.iTreeViewEvents.Size = new System.Drawing.Size(955, 576);
             this.iTreeViewEvents.TabIndex = 1;
             this.iTreeViewEvents.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.iTreeViewEvents_AfterSelect);
             this.iTreeViewEvents.Leave += new System.EventHandler(this.iTreeViewEvents_Leave);
@@ -1171,10 +1245,11 @@
             this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
             this.tabPageApp.Controls.Add(this.checkBoxAutoStart);
             this.tabPageApp.Controls.Add(this.buttonUpdate);
-            this.tabPageApp.Location = new System.Drawing.Point(4, 22);
+            this.tabPageApp.Location = new System.Drawing.Point(4, 29);
+            this.tabPageApp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageApp.Name = "tabPageApp";
-            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageApp.Size = new System.Drawing.Size(752, 385);
+            this.tabPageApp.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageApp.Size = new System.Drawing.Size(1132, 599);
             this.tabPageApp.TabIndex = 4;
             this.tabPageApp.Text = "Application";
             this.tabPageApp.UseVisualStyleBackColor = true;
@@ -1185,9 +1260,10 @@
             this.checkBoxStartMinimized.AutoSize = true;
             this.checkBoxStartMinimized.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartMinimized;
             this.checkBoxStartMinimized.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartMinimized", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 285);
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(9, 441);
+            this.checkBoxStartMinimized.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
-            this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxStartMinimized.Size = new System.Drawing.Size(144, 24);
             this.checkBoxStartMinimized.TabIndex = 16;
             this.checkBoxStartMinimized.Text = "Start minimized";
             this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
@@ -1198,9 +1274,10 @@
             this.checkBoxMinimizeToTray.AutoSize = true;
             this.checkBoxMinimizeToTray.Checked = global::SharpDisplayManager.Properties.Settings.Default.MinimizeToTray;
             this.checkBoxMinimizeToTray.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(6, 308);
+            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(9, 476);
+            this.checkBoxMinimizeToTray.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
-            this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
+            this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(198, 24);
             this.checkBoxMinimizeToTray.TabIndex = 15;
             this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
             this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
@@ -1209,9 +1286,10 @@
             // 
             this.checkBoxAutoStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxAutoStart.AutoSize = true;
-            this.checkBoxAutoStart.Location = new System.Drawing.Point(6, 331);
+            this.checkBoxAutoStart.Location = new System.Drawing.Point(9, 511);
+            this.checkBoxAutoStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxAutoStart.Name = "checkBoxAutoStart";
-            this.checkBoxAutoStart.Size = new System.Drawing.Size(143, 17);
+            this.checkBoxAutoStart.Size = new System.Drawing.Size(209, 24);
             this.checkBoxAutoStart.TabIndex = 14;
             this.checkBoxAutoStart.Text = "Run on Windows startup";
             this.checkBoxAutoStart.UseVisualStyleBackColor = true;
@@ -1220,9 +1298,10 @@
             // buttonUpdate
             // 
             this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonUpdate.Location = new System.Drawing.Point(6, 354);
+            this.buttonUpdate.Location = new System.Drawing.Point(9, 545);
+            this.buttonUpdate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdate.Size = new System.Drawing.Size(112, 35);
             this.buttonUpdate.TabIndex = 0;
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.UseVisualStyleBackColor = true;
@@ -1232,19 +1311,21 @@
             // 
             this.tabPageLogs.Controls.Add(this.buttonClearLogs);
             this.tabPageLogs.Controls.Add(this.richTextBoxLogs);
-            this.tabPageLogs.Location = new System.Drawing.Point(4, 22);
+            this.tabPageLogs.Location = new System.Drawing.Point(4, 29);
+            this.tabPageLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageLogs.Name = "tabPageLogs";
-            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLogs.Size = new System.Drawing.Size(752, 385);
+            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageLogs.Size = new System.Drawing.Size(1132, 599);
             this.tabPageLogs.TabIndex = 8;
             this.tabPageLogs.Text = "Logs";
             this.tabPageLogs.UseVisualStyleBackColor = true;
             // 
             // buttonClearLogs
             // 
-            this.buttonClearLogs.Location = new System.Drawing.Point(671, 6);
+            this.buttonClearLogs.Location = new System.Drawing.Point(1006, 9);
+            this.buttonClearLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonClearLogs.Name = "buttonClearLogs";
-            this.buttonClearLogs.Size = new System.Drawing.Size(75, 23);
+            this.buttonClearLogs.Size = new System.Drawing.Size(112, 35);
             this.buttonClearLogs.TabIndex = 2;
             this.buttonClearLogs.Text = "Clear";
             this.buttonClearLogs.UseVisualStyleBackColor = true;
@@ -1258,10 +1339,11 @@
             this.richTextBoxLogs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBoxLogs.DetectUrls = false;
             this.richTextBoxLogs.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBoxLogs.Location = new System.Drawing.Point(6, 6);
+            this.richTextBoxLogs.Location = new System.Drawing.Point(9, 9);
+            this.richTextBoxLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.richTextBoxLogs.Name = "richTextBoxLogs";
             this.richTextBoxLogs.ReadOnly = true;
-            this.richTextBoxLogs.Size = new System.Drawing.Size(740, 373);
+            this.richTextBoxLogs.Size = new System.Drawing.Size(1110, 574);
             this.richTextBoxLogs.TabIndex = 1;
             this.richTextBoxLogs.Text = "";
             this.richTextBoxLogs.WordWrap = false;
@@ -1269,18 +1351,20 @@
             // labelFontWidth
             // 
             this.labelFontWidth.AutoSize = true;
-            this.labelFontWidth.Location = new System.Drawing.Point(13, 29);
+            this.labelFontWidth.Location = new System.Drawing.Point(20, 45);
+            this.labelFontWidth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelFontWidth.Name = "labelFontWidth";
-            this.labelFontWidth.Size = new System.Drawing.Size(56, 13);
+            this.labelFontWidth.Size = new System.Drawing.Size(83, 20);
             this.labelFontWidth.TabIndex = 19;
             this.labelFontWidth.Text = "Font width";
             // 
             // labelFontHeight
             // 
             this.labelFontHeight.AutoSize = true;
-            this.labelFontHeight.Location = new System.Drawing.Point(13, 46);
+            this.labelFontHeight.Location = new System.Drawing.Point(20, 71);
+            this.labelFontHeight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelFontHeight.Name = "labelFontHeight";
-            this.labelFontHeight.Size = new System.Drawing.Size(60, 13);
+            this.labelFontHeight.Size = new System.Drawing.Size(90, 20);
             this.labelFontHeight.TabIndex = 20;
             this.labelFontHeight.Text = "Font height";
             // 
@@ -1290,9 +1374,9 @@
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.ClientSize = new System.Drawing.Size(1176, 865);
             this.Controls.Add(this.labelFontHeight);
             this.Controls.Add(this.labelFontWidth);
             this.Controls.Add(this.labelWarning);
@@ -1300,7 +1384,8 @@
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.iPanelDisplay);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(800, 600);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MinimumSize = new System.Drawing.Size(1189, 893);
             this.Name = "FormMain";
             this.Text = "Command & Information Center";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);

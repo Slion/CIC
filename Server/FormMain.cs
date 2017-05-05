@@ -809,8 +809,8 @@ namespace SharpDisplayManager
         /// </summary>
         private void SetupTrayIcon()
         {
-            iNotifyIcon.Icon = GetIcon("vfd.ico");
-            iNotifyIcon.Text = "Sharp Display Manager";
+            iNotifyIcon.Icon = GetIcon("icon-white.ico");
+            iNotifyIcon.Text = "CIC";
             iNotifyIcon.Visible = true;
 
             //Double click toggles visibility - typically brings up the application
