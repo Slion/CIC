@@ -809,7 +809,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void SetupTrayIcon()
         {
-            iNotifyIcon.Icon = GetIcon("icon-white.ico");
+            iNotifyIcon.Icon = GetIcon("icon-black.ico");
             iNotifyIcon.Text = "CIC";
             iNotifyIcon.Visible = true;
 

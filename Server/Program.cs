@@ -98,7 +98,7 @@ namespace SharpDisplayManager
                 SquirrelAwareApp.HandleEvents(
                   onInitialInstall: v =>
                   {
-                      MessageBox.Show("onInitialInstall " + v + " Current:" + mgr.CurrentlyInstalledVersion());
+                      //MessageBox.Show("onInitialInstall " + v + " Current:" + mgr.CurrentlyInstalledVersion());
                       mgr.CreateShortcutForThisExe();
                   },
                   onAppUpdate: v =>
