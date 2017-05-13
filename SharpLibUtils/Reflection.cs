@@ -1,15 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
-
 
 namespace SharpLib.Utils
 {
     public class Reflection
     {
+
+        /// <summary>
+        /// Returned array can contain null entries.
+        /// We had to add that try after moving to Squirrel since GetTypes can throw an exception.
+        /// That was only an issue in the deployed application. It worked just fine without in debug.
+        /// </summary>
+        /// <param name="aAssembly"></param>
+        /// <returns></returns>
+        public static Type[] TryGetTypes(Assembly aAssembly)
+        {
+            // See the docs for Assembly.GetTypes
+            try
+            {
+                return aAssembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types;
+            }            
+        }
+
         /// <summary>
         /// Get a list of all the concrete types derived from the given type in all loaded assembly.
         /// That includes the given type itself if it's intanciable.
@@ -21,9 +39,9 @@ namespace SharpLib.Utils
             List<Type> objects = new List<Type>();
 
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type type in asm.GetTypes()                        
-                        .Where(myType => myType.IsClass && !myType.IsAbstract && (myType.IsSubclassOf(typeof(T)) || myType == typeof(T))))
+            {                
+                foreach (Type type in TryGetTypes(asm)
+                        .Where(myType => myType != null && myType.IsClass && !myType.IsAbstract && (myType.IsSubclassOf(typeof(T)) || myType == typeof(T))))
                 {
                     objects.Add(type);
                 }
@@ -42,8 +60,8 @@ namespace SharpLib.Utils
             Dictionary<string, Type> objects = new Dictionary<string, Type>();
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type type in asm.GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
+                foreach (Type type in TryGetTypes(asm)
+                .Where(myType => myType != null && myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
                 {
                     objects.Add(type.Name, type);
                 }
@@ -61,8 +79,8 @@ namespace SharpLib.Utils
             List<T> objects = new List<T>();
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type type in asm.GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
+                foreach (Type type in TryGetTypes(asm)
+                .Where(myType => myType != null && myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
                 {
                     objects.Add((T)Activator.CreateInstance(type));
                 }
@@ -87,8 +105,8 @@ namespace SharpLib.Utils
             Dictionary<string, T> objects = new Dictionary<string, T>();
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type type in asm.GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
+                foreach (Type type in TryGetTypes(asm)
+                .Where(myType => myType != null && myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
                 {
                     objects.Add(type.Name, (T)Activator.CreateInstance(type));
                 }
@@ -132,8 +150,8 @@ namespace SharpLib.Utils
             List<Type> types = new List<Type>();
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type type in asm.GetTypes()
-                .Where(myType => myType.IsClass && myType.IsSubclassOf(typeof(T))))
+                foreach (Type type in TryGetTypes(asm)
+                .Where(myType => myType != null && myType.IsClass && myType.IsSubclassOf(typeof(T))))
                 {
                     types.Add(type);
                 }
