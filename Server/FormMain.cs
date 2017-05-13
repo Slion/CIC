@@ -3491,5 +3491,16 @@ namespace SharpDisplayManager
             }
         }
 
+        private void iButtonOpenDataFolder_Click(object sender, EventArgs e)
+        {
+            string directory = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
+            Process.Start(directory);
+        }
+
+        private void iButtonOpenExeFolder_Click(object sender, EventArgs e)
+        {
+            string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Process.Start(directory);
+        }
     }
 }

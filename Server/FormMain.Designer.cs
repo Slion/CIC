@@ -124,6 +124,7 @@
             this.buttonActionAdd = new System.Windows.Forms.Button();
             this.iTreeViewEvents = new System.Windows.Forms.TreeView();
             this.tabPageApp = new System.Windows.Forms.TabPage();
+            this.iButtonOpenDataFolder = new System.Windows.Forms.Button();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
@@ -135,6 +136,7 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.iButtonOpenExeFolder = new System.Windows.Forms.Button();
             this.iPanelDisplay.SuspendLayout();
             this.panel1.SuspendLayout();
             this.iTableLayoutPanelDisplay.SuspendLayout();
@@ -313,7 +315,7 @@
             this.tabPageClients.Controls.Add(this.iTreeViewClients);
             this.tabPageClients.Location = new System.Drawing.Point(4, 22);
             this.tabPageClients.Name = "tabPageClients";
-            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageClients.Size = new System.Drawing.Size(752, 385);
             this.tabPageClients.TabIndex = 2;
             this.tabPageClients.Text = "Clients";
@@ -394,7 +396,7 @@
             this.tabPageDisplay.Controls.Add(this.buttonCapture);
             this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
             this.tabPageDisplay.Name = "tabPageDisplay";
-            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageDisplay.Size = new System.Drawing.Size(752, 385);
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
@@ -641,7 +643,7 @@
             this.tabPageDesign.Controls.Add(this.checkBoxShowBorders);
             this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
             this.tabPageDesign.Name = "tabPageDesign";
-            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageDesign.Size = new System.Drawing.Size(752, 385);
             this.tabPageDesign.TabIndex = 3;
             this.tabPageDesign.Text = "Design";
@@ -752,7 +754,7 @@
             this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
             this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
             this.tabPageAudio.Name = "tabPageAudio";
-            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageAudio.Size = new System.Drawing.Size(752, 385);
             this.tabPageAudio.TabIndex = 5;
             this.tabPageAudio.Text = "Audio";
@@ -816,7 +818,7 @@
             this.tabPageCec.Controls.Add(this.iCheckBoxCecEnabled);
             this.tabPageCec.Location = new System.Drawing.Point(4, 22);
             this.tabPageCec.Name = "tabPageCec";
-            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageCec.Size = new System.Drawing.Size(752, 385);
             this.tabPageCec.TabIndex = 7;
             this.tabPageCec.Text = "CEC";
@@ -963,7 +965,7 @@
             this.tabPageHarmony.Controls.Add(this.iTextBoxHarmonyHubAddress);
             this.tabPageHarmony.Location = new System.Drawing.Point(4, 22);
             this.tabPageHarmony.Name = "tabPageHarmony";
-            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageHarmony.Size = new System.Drawing.Size(752, 385);
             this.tabPageHarmony.TabIndex = 10;
             this.tabPageHarmony.Text = "Harmony";
@@ -1038,7 +1040,7 @@
             this.tabPageEvent.Controls.Add(this.iTreeViewEvents);
             this.tabPageEvent.Location = new System.Drawing.Point(4, 22);
             this.tabPageEvent.Name = "tabPageEvent";
-            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageEvent.Size = new System.Drawing.Size(752, 385);
             this.tabPageEvent.TabIndex = 9;
             this.tabPageEvent.Text = "Events";
@@ -1168,17 +1170,30 @@
             // 
             // tabPageApp
             // 
+            this.tabPageApp.Controls.Add(this.iButtonOpenExeFolder);
+            this.tabPageApp.Controls.Add(this.iButtonOpenDataFolder);
             this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
             this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
             this.tabPageApp.Controls.Add(this.checkBoxAutoStart);
             this.tabPageApp.Controls.Add(this.buttonUpdate);
             this.tabPageApp.Location = new System.Drawing.Point(4, 22);
             this.tabPageApp.Name = "tabPageApp";
-            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageApp.Size = new System.Drawing.Size(752, 385);
             this.tabPageApp.TabIndex = 4;
             this.tabPageApp.Text = "Application";
             this.tabPageApp.UseVisualStyleBackColor = true;
+            // 
+            // iButtonOpenDataFolder
+            // 
+            this.iButtonOpenDataFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.iButtonOpenDataFolder.Location = new System.Drawing.Point(637, 354);
+            this.iButtonOpenDataFolder.Name = "iButtonOpenDataFolder";
+            this.iButtonOpenDataFolder.Size = new System.Drawing.Size(109, 23);
+            this.iButtonOpenDataFolder.TabIndex = 17;
+            this.iButtonOpenDataFolder.Text = "Open Data Folder";
+            this.iButtonOpenDataFolder.UseVisualStyleBackColor = true;
+            this.iButtonOpenDataFolder.Click += new System.EventHandler(this.iButtonOpenDataFolder_Click);
             // 
             // checkBoxStartMinimized
             // 
@@ -1235,7 +1250,7 @@
             this.tabPageLogs.Controls.Add(this.richTextBoxLogs);
             this.tabPageLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageLogs.Name = "tabPageLogs";
-            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageLogs.Size = new System.Drawing.Size(752, 385);
             this.tabPageLogs.TabIndex = 8;
             this.tabPageLogs.Text = "Logs";
@@ -1288,6 +1303,17 @@
             // openFileDialog
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
+            // 
+            // iButtonOpenExeFolder
+            // 
+            this.iButtonOpenExeFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.iButtonOpenExeFolder.Location = new System.Drawing.Point(637, 327);
+            this.iButtonOpenExeFolder.Name = "iButtonOpenExeFolder";
+            this.iButtonOpenExeFolder.Size = new System.Drawing.Size(109, 23);
+            this.iButtonOpenExeFolder.TabIndex = 18;
+            this.iButtonOpenExeFolder.Text = "Open Exe Folder";
+            this.iButtonOpenExeFolder.UseVisualStyleBackColor = true;
+            this.iButtonOpenExeFolder.Click += new System.EventHandler(this.iButtonOpenExeFolder_Click);
             // 
             // FormMain
             // 
@@ -1439,6 +1465,8 @@
         private System.Windows.Forms.TableLayoutPanel iTableLayoutPanelCurrentClient;
         private MarqueeLabel marqueeLabelTop;
         private MarqueeLabel marqueeLabelBottom;
+        private System.Windows.Forms.Button iButtonOpenDataFolder;
+        private System.Windows.Forms.Button iButtonOpenExeFolder;
     }
 }
 
