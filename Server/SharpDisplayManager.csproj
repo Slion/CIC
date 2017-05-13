@@ -97,7 +97,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon-black.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\cic.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>SharpDisplayManager.Program</StartupObject>
@@ -400,9 +400,7 @@
     <Content Include="cec.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="icon-black.ico" />
-    <EmbeddedResource Include="Resources\icon-black.ico" />
-    <EmbeddedResource Include="Resources\icon-white.ico" />
+    <EmbeddedResource Include="Resources\cic.ico" />
     <EmbeddedResource Include="Resources\record.ico" />
   </ItemGroup>
   <ItemGroup />
