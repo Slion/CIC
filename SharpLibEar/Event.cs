@@ -46,11 +46,15 @@ namespace SharpLib.Ear
             }
         }
 
-        //
-        public override bool Equals(object obj)
+        /// <summary>
+        /// Check if this event matches the given one.
+        /// </summary>
+        /// <param name="aObject"></param>
+        /// <returns></returns>
+        public virtual bool Matches(object aObject)
         {
             //Default implementation assumes event are the same if types are the same
-            bool res=  obj.GetType() == GetType();
+            bool res= aObject.GetType() == GetType();
             return res;
         }
     };

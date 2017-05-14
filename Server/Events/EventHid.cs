@@ -137,7 +137,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Matches(object obj)
         {
             if (obj is EventHid)
             {
