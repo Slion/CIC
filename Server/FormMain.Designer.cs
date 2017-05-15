@@ -124,6 +124,7 @@
             this.buttonActionAdd = new System.Windows.Forms.Button();
             this.iTreeViewEvents = new System.Windows.Forms.TreeView();
             this.tabPageApp = new System.Windows.Forms.TabPage();
+            this.iButtonOpenExeFolder = new System.Windows.Forms.Button();
             this.iButtonOpenDataFolder = new System.Windows.Forms.Button();
             this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
             this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
@@ -136,7 +137,6 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.iButtonOpenExeFolder = new System.Windows.Forms.Button();
             this.iPanelDisplay.SuspendLayout();
             this.panel1.SuspendLayout();
             this.iTableLayoutPanelDisplay.SuspendLayout();
@@ -1184,6 +1184,17 @@
             this.tabPageApp.Text = "Application";
             this.tabPageApp.UseVisualStyleBackColor = true;
             // 
+            // iButtonOpenExeFolder
+            // 
+            this.iButtonOpenExeFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.iButtonOpenExeFolder.Location = new System.Drawing.Point(637, 327);
+            this.iButtonOpenExeFolder.Name = "iButtonOpenExeFolder";
+            this.iButtonOpenExeFolder.Size = new System.Drawing.Size(109, 23);
+            this.iButtonOpenExeFolder.TabIndex = 18;
+            this.iButtonOpenExeFolder.Text = "Open Exe Folder";
+            this.iButtonOpenExeFolder.UseVisualStyleBackColor = true;
+            this.iButtonOpenExeFolder.Click += new System.EventHandler(this.iButtonOpenExeFolder_Click);
+            // 
             // iButtonOpenDataFolder
             // 
             this.iButtonOpenDataFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1304,17 +1315,6 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
-            // iButtonOpenExeFolder
-            // 
-            this.iButtonOpenExeFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.iButtonOpenExeFolder.Location = new System.Drawing.Point(637, 327);
-            this.iButtonOpenExeFolder.Name = "iButtonOpenExeFolder";
-            this.iButtonOpenExeFolder.Size = new System.Drawing.Size(109, 23);
-            this.iButtonOpenExeFolder.TabIndex = 18;
-            this.iButtonOpenExeFolder.Text = "Open Exe Folder";
-            this.iButtonOpenExeFolder.UseVisualStyleBackColor = true;
-            this.iButtonOpenExeFolder.Click += new System.EventHandler(this.iButtonOpenExeFolder_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1332,6 +1332,7 @@
             this.Text = "Command & Information Center";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.iPanelDisplay.ResumeLayout(false);

@@ -17,6 +17,7 @@ using System.Security;
 using System.Security.Principal;
 using System.Windows.Forms;
 using System.Deployment.Application;
+using System.Diagnostics;
 
 namespace SharpDisplayManager
 {
@@ -186,13 +187,20 @@ namespace SharpDisplayManager
 		string LaunchCommand
 		{
 			get
-			{	
-				//Executable path won't launch ClickOnce Application with deployment enabled.
-				//return Application.ExecutablePath;
-				//Instead we need to launch the application using the .appref-ms shortcut.
-				//That shortcut is located at <programs>\<publisher>\<suite>\<product>.appref-ms
-				return string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "\\", "Slions", "\\", "Sharp Display Manager" , "\\" ,"Sharp Display Manager", ".appref-ms");
-			}
+			{
+                //Executable path won't launch ClickOnce Application with deployment enabled.
+                //return Application.ExecutablePath;
+                //Instead we need to launch the application using the .appref-ms shortcut.
+                //That shortcut is located at <programs>\<publisher>\<suite>\<product>.appref-ms
+                //return string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "\\", "Slions", "\\", "Sharp Display Manager" , "\\" ,"Sharp Display Manager", ".appref-ms");
+
+                //For Squirrel
+                string path = Path.GetDirectoryName(Application.ExecutablePath);
+                string parentPath = Path.GetDirectoryName(path);
+                string cmd = parentPath + Path.DirectorySeparatorChar + Path.GetFileName(Application.ExecutablePath);
+                Trace.TraceInformation("StartupManager.LaunchCommand: " + cmd);
+                return cmd;
+            }
 		}
 
 		private void CreateRegistryRun()

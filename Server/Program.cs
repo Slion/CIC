@@ -104,7 +104,6 @@ namespace SharpDisplayManager
                   onAppUpdate: v =>
                   {
                       mgr.CreateShortcutForThisExe();
-
                       //Not a proper Click Once installation, assuming development build then
                       //var assembly = Assembly.GetExecutingAssembly();
                       //var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);

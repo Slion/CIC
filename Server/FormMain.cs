@@ -305,7 +305,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// Check for application update and ask the user to proceed if any.
         /// </summary>
-        async void SquirrelUpdate()
+        async void SquirrelUpdate(bool aAutoCheck=false)
         {
             // Check for Squirrel application update
 #if !DEBUG
@@ -340,7 +340,12 @@ namespace SharpDisplayManager
                 }
                 else
                 {
-                    MessageBox.Show("You are already running the latest version.", fvi.ProductName);
+                    // Don't display intrusive message for auto checks
+                    if (!aAutoCheck)
+                    {
+                        MessageBox.Show("You are already running the latest version.", fvi.ProductName);
+                    }
+                    
                 }
             }
 
@@ -3501,6 +3506,13 @@ namespace SharpDisplayManager
         {
             string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Process.Start(directory);
+        }
+
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            // Check for update
+            // I reckon this happens only once per session.
+            SquirrelUpdate(true);
         }
     }
 }
