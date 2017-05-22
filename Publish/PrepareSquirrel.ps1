@@ -1,9 +1,10 @@
+param($aDir,$aVersion)
 # Work out current path
-$dir = Split-Path $MyInvocation.MyCommand.Path 
-$dir += "\"
+#$dir = Split-Path $MyInvocation.MyCommand.Path 
+$aDir += "\"
 
 # Download RELEASES file
-$localFileName = $dir + "RELEASES"
+$localFileName = $aDir + "RELEASES"
 $remoteFileName = "http://publish.slions.net/CIC/RELEASES"
 Invoke-WebRequest -OutFile $localFileName $remoteFileName;
 
@@ -20,11 +21,16 @@ $major = $version.Split(".")[0]
 $minor = $version.Split(".")[1]
 $build = $version.Split(".")[2]
 
+if ($aVersion -eq $version)
+{
+    Write-Error ("Version $version already published!")
+    exit 1
+}
+
 # Download last package
-$localFileName = $dir + $lastFileName
+$localFileName = $aDir + $lastFileName
 $remoteFileName = "http://publish.slions.net/CIC/" + $lastFileName
 Invoke-WebRequest -OutFile $localFileName $remoteFileName;
 
-#
- Write-Error ("Some error")
- exit 1
+# Success
+exit 0

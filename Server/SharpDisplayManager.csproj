@@ -463,6 +463,7 @@
       <Output TaskParameter="FriendlyVersion" PropertyName="ReleaseFriendlyVersion" />
     </GetVersionParts>
     <Exec Command="@(nuGetPackage->'%(fullpath)') pack ..\Publish\CIC.nuspec -Properties Configuration=Release;Version=$(ReleaseFriendlyVersion) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
+    <Exec Command="powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file ..\Publish\PrepareSquirrel.ps1 $(OutDir)Squirrel $(ReleaseFriendlyVersion)" />  
     <Exec Command="@(squirrelPackage->'%(fullpath)') --r $(OutDir)Squirrel --releasify $(OutDir)CIC.$(ReleaseFriendlyVersion).nupkg" />
   </Target>
 </Project>
