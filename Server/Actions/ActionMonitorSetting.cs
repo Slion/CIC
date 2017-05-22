@@ -51,6 +51,11 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override bool IsValid()
         {
+            if (PhysicalMonitor==null)
+            {
+                return false;
+            }
+
             // Check if modifier is whithin range.
             // Though it is a rather dumb approach.
             Setting setting = GetSetting();

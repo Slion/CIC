@@ -91,19 +91,18 @@ namespace SharpDisplayManager
                 //Current item unknown, reset it then
                 Monitor.CurrentItem = Monitor.Items[0];
             }
-            else
+
+            int i = 0;
+            // Current monitor exist locate it then
+            foreach (VirtualMonitor vm in Monitors.VirtualMonitors)
             {
-                int i = 0;
-                // Current monitor exist locate it then
-                foreach (VirtualMonitor vm in Monitors.VirtualMonitors)
+                i++;
+                if (Supported(vm.PhysicalMonitors[0]) && MonitorId(i,vm).Equals(Monitor.CurrentItem))
                 {
-                    i++;
-                    if (Supported(vm.PhysicalMonitors[0]) && MonitorId(i,vm).Equals(Monitor.CurrentItem))
-                    {
-                        PhysicalMonitor = vm.PhysicalMonitors[0];
-                    }
+                    PhysicalMonitor = vm.PhysicalMonitors[0];
                 }
             }
+
         }
 
 
