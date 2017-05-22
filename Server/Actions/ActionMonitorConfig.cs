@@ -42,10 +42,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aPhysicalMonitor"></param>
         /// <returns></returns>
-        public virtual bool Supported(PhysicalMonitor aPhysicalMonitor)
-        {
-            return false;
-        }
+        protected abstract bool Supported(PhysicalMonitor aPhysicalMonitor);
 
         /// <summary>
         /// 

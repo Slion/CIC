@@ -55,7 +55,8 @@
         <file src="SharpLibNotification.dll" target="lib\net45\SharpLibNotification.dll" />
         <file src="SharpLibUtils.dll" target="lib\net45\SharpLibUtils.dll" />
         <file src="SharpLibWin32.dll" target="lib\net45\SharpLibWin32.dll" />
-
+        <file src="SharpLibMonitorConfig.dll" target="lib\net45\SharpLibMonitorConfig.dll" />
+		
         <!-- Add Windows Visual Studio redist -->
         <!-- VS 2013 - needed for HDMI-CEC -->
         <!-- C Run-Time Libraries (CRT) -->

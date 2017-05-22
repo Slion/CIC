@@ -37,22 +37,31 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override string BriefBase()
         {
-            string brief = AttributeName + ": " + (Modifier > 0 ? "+" : "") + Modifier;
+            string brief = AttributeName + ": " + (Modifier > 0 ? "+" : "") + Modifier + " on " + Monitor.CurrentItem;
             return brief;
         }
 
-        /// <summary>
-        /// Tell if a monitor support that feature
-        /// </summary>
-        /// <param name="aPhysicalMonitor"></param>
-        /// <returns></returns>
-        public override bool Supported(PhysicalMonitor aPhysicalMonitor)
-        {
-            return aPhysicalMonitor.SupportsBrightness;
-        }
 
         protected abstract Setting GetSetting();
         protected abstract void SetSetting(Setting aSetting);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool IsValid()
+        {
+            // Check if modifier is whithin range.
+            // Though it is a rather dumb approach.
+            Setting setting = GetSetting();
+
+            if ((setting.Max - setting.Min) < Math.Abs(Modifier))
+            {
+                return false;
+            }
+
+            return true;
+        }
 
 
         /// <summary>
