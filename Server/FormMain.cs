@@ -309,6 +309,9 @@ namespace SharpDisplayManager
         {
             // Check for Squirrel application update
 #if !DEBUG
+            // Prevent user from starting an update while one is already running
+            buttonUpdate.Enabled = false; 
+
             ReleaseEntry release = null;
             using (var mgr = new UpdateManager(Program.KSquirrelUpdateUrl))
             {
@@ -354,11 +357,16 @@ namespace SharpDisplayManager
             {
                 UpdateManager.RestartApp();
             }
+
+            // Our update is completed re-enable the update button then
+            buttonUpdate.Enabled = true;
 #endif
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void CreateAudioManager()
         {
             iAudioManager = new AudioManager();
@@ -366,6 +374,9 @@ namespace SharpDisplayManager
             UpdateAudioDeviceAndMasterVolumeThreadSafe();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void DestroyAudioManager()
         {
             if (iAudioManager != null)
