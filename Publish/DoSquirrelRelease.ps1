@@ -38,8 +38,12 @@ $build = $version.Split(".")[2]
 
 if ($aVersion -eq $version)
 {
-    Write-Error ("Version $version already published!")
-    exit 1
+    # Warn
+    Write-Warning ("Version $version already published!")
+    # Delete downloaded RELEASES to avoid uploading them back pointlesly 
+    Remove-Item $localFileName
+    # Still a successful exit as this should not fail the build
+    exit 0
 }
 
 # Download last package
