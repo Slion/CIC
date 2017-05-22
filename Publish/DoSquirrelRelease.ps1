@@ -10,10 +10,16 @@ Write-Output("Generating nupkg...")
 # Work out current path
 #$dir = Split-Path $MyInvocation.MyCommand.Path 
 
+# Create download folder if needed
+$squirrelReleaseDir = $aDir + "Squirrel\";
+if (-not(Test-Path $squirrelReleaseDir))
+{
+    New-Item $squirrelReleaseDir -ItemType Directory | Out-Null;
+}
 
 # Download RELEASES file
 Write-Output("Downloading Squirrel RELEASES...")
-$localFileName = $aDir + "\Squirrel\RELEASES"
+$localFileName = $squirrelReleaseDir + "RELEASES"
 $remoteFileName = "http://publish.slions.net/CIC/RELEASES"
 Invoke-WebRequest -OutFile $localFileName $remoteFileName;
 
@@ -38,14 +44,14 @@ if ($aVersion -eq $version)
 
 # Download last package
 Write-Output("Downloading last Squirrel package...")
-$localFileName = $aDir + "\Squirrel\" + $lastFileName
+$localFileName = $squirrelReleaseDir + $lastFileName
 $remoteFileName = "http://publish.slions.net/CIC/" + $lastFileName
 Invoke-WebRequest -OutFile $localFileName $remoteFileName;
 
 # Do our Squirrel release
 Write-Output("Generate Squirrel release...")
 [System.Diagnostics.Process]::Start($aSquirrelExe,
-" --r $aDir\Squirrel --releasify $aDir" + "CIC.$aVersion.nupkg").WaitForExit()
+" --r $squirrelReleaseDir --releasify $aDir" + "CIC.$aVersion.nupkg").WaitForExit()
 
 # Clean-up by removing the downloaded Squirrel package
 Remove-Item $localFileName
