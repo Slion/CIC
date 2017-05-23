@@ -458,9 +458,6 @@
   </ItemGroup>
   <!-- Target to build Squirrel release -->
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release'">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
-    </GetAssemblyIdentity>
     <!-- Get our version number -->
     <GetVersionParts AssemblyPath="$(TargetPath)">
       <Output TaskParameter="MajorVersion" PropertyName="MajorVersionNumber" />
@@ -468,6 +465,7 @@
       <Output TaskParameter="BuildVersion" PropertyName="BuildVersionNumber" />
       <Output TaskParameter="FriendlyVersion" PropertyName="ReleaseFriendlyVersion" />
     </GetVersionParts>
-    <Exec Command="powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file ..\Publish\DoSquirrelRelease.ps1 @(nuGetPackage->'%(fullpath)') @(squirrelPackage->'%(fullpath)') $(OutDir) $(ReleaseFriendlyVersion)" />
+    <!-- Call our powershell script that will generate our Squirrel release -->      
+    <Exec Command="powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file ..\Publish\DoSquirrelRelease.ps1 @(nuGetPackage->'%(fullpath)') @(squirrelPackage->'%(fullpath)') $(OutDir) $(ReleaseFriendlyVersion) ..\Publish\CIC.nuspec http://publish.slions.net/CIC/ CIC" />
   </Target>
 </Project>

@@ -1021,7 +1021,7 @@
             this.iTextBoxHarmonyHubAddress.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyHubAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.iTextBoxHarmonyHubAddress.Location = new System.Drawing.Point(282, 23);
             this.iTextBoxHarmonyHubAddress.Name = "iTextBoxHarmonyHubAddress";
-            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(100, 20);
+            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(191, 20);
             this.iTextBoxHarmonyHubAddress.TabIndex = 8;
             this.iTextBoxHarmonyHubAddress.Text = global::SharpDisplayManager.Properties.Settings.Default.HarmonyHubAddress;
             // 
