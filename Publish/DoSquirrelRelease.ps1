@@ -40,7 +40,7 @@ if ($aVersion -eq $version)
 {
     # Warn
     Write-Warning ("Version $version already published!")
-    # Delete downloaded RELEASES to avoid uploading them back pointlesly 
+    # Delete downloaded RELEASES to avoid uploading them back pointlessly 
     Remove-Item $localFileName
     # Still a successful exit as this should not fail the build
     exit 0

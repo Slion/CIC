@@ -25,8 +25,8 @@
     <UpdatePeriodically>true</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://publish.slions.net/SharpDisplayManager/</InstallUrl>
-    <SupportUrl>http://publish.slions.net/SharpDisplayManager/</SupportUrl>
+    <InstallUrl>http://publish.slions.net/CIC/</InstallUrl>
+    <SupportUrl>http://publish.slions.net/CIC/</SupportUrl>
     <ProductName>Sharp Display Manager</ProductName>
     <PublisherName>Slions</PublisherName>
     <SuiteName>Sharp Display Manager</SuiteName>
@@ -408,6 +408,12 @@
     <Content Include="cec.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\Publish\CIC.nuspec">
+      <Link>Publish\CIC.nuspec</Link>
+    </Content>
+    <Content Include="..\Publish\DoSquirrelRelease.ps1">
+      <Link>Publish\DoSquirrelRelease.ps1</Link>
+    </Content>
     <EmbeddedResource Include="Resources\cic.ico" />
     <EmbeddedResource Include="Resources\record.ico" />
   </ItemGroup>
@@ -461,7 +467,7 @@
       <Output TaskParameter="MinorVersion" PropertyName="MinorVersionNumber" />
       <Output TaskParameter="BuildVersion" PropertyName="BuildVersionNumber" />
       <Output TaskParameter="FriendlyVersion" PropertyName="ReleaseFriendlyVersion" />
-    </GetVersionParts>    
+    </GetVersionParts>
     <Exec Command="powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file ..\Publish\DoSquirrelRelease.ps1 @(nuGetPackage->'%(fullpath)') @(squirrelPackage->'%(fullpath)') $(OutDir) $(ReleaseFriendlyVersion)" />
   </Target>
 </Project>
