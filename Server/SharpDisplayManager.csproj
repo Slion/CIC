@@ -72,6 +72,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\bin\x86\Release\</OutputPath>
@@ -83,6 +84,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -168,8 +170,8 @@
       <HintPath>..\packages\SharpLibHid.1.4.2\lib\net40\SharpLibHid.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpLibMiniDisplay, Version=1.0.6331.41217, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\SharpLibMiniDisplay.0.0.2\lib\net40\SharpLibMiniDisplay.dll</HintPath>
+    <Reference Include="SharpLibMiniDisplay, Version=1.0.6368.18883, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\SharpLibMiniDisplay.1.0.1\lib\net40\SharpLibMiniDisplay.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpLibMonitorConfig, Version=1.0.6349.34423, Culture=neutral, processorArchitecture=x86">
@@ -465,7 +467,7 @@
       <Output TaskParameter="BuildVersion" PropertyName="BuildVersionNumber" />
       <Output TaskParameter="FriendlyVersion" PropertyName="ReleaseFriendlyVersion" />
     </GetVersionParts>
-    <!-- Call our powershell script that will generate our Squirrel release -->      
+    <!-- Call our powershell script that will generate our Squirrel release -->
     <Exec Command="powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file ..\Publish\DoSquirrelRelease.ps1 @(nuGetPackage->'%(fullpath)') @(squirrelPackage->'%(fullpath)') $(OutDir) $(ReleaseFriendlyVersion) ..\Publish\CIC.nuspec http://publish.slions.net/CIC/ CIC" />
   </Target>
 </Project>

@@ -79,9 +79,10 @@ namespace SharpDisplayManager
     public partial class FormMain : FormMainHid
     {
         //public Manager iManager = new Manager();        
-        DateTime LastTickTime;
+        DateTime iLastTickTime;
         Display iDisplay;
-        System.Drawing.Bitmap iBmp;
+        System.Drawing.Bitmap iBitmap;
+        Rectangle iBitmapRect;
         //TODO: Align that with what we did from Audio Visualizers bitmaps?
         bool iCreateBitmap; //Workaround render to bitmap issues when minimized
         ServiceHost iServiceHost;
@@ -163,7 +164,7 @@ namespace SharpDisplayManager
             iClosing = false;
             iCurrentClientSessionId = "";
             iCurrentClientData = null;
-            LastTickTime = DateTime.Now;
+            iLastTickTime = DateTime.Now;
             //Instantiate our display and register for events notifications
             iDisplay = new Display();
             iDisplay.OnOpened += OnDisplayOpened;
@@ -193,8 +194,8 @@ namespace SharpDisplayManager
 
             //We have a bug when drawing minimized and reusing our bitmap
             //Though I could not reproduce it on Windows 10
-            iBmp = new System.Drawing.Bitmap(iTableLayoutPanelDisplay.Width, iTableLayoutPanelDisplay.Height,
-                PixelFormat.Format32bppArgb);
+            iBitmap = new System.Drawing.Bitmap(iTableLayoutPanelDisplay.Width, iTableLayoutPanelDisplay.Height, PixelFormat.Format32bppArgb);
+            iBitmapRect = new Rectangle(new Point(0, 0), iBitmap.Size);
             iCreateBitmap = false;
 
             //Minimize our window if desired
@@ -1115,7 +1116,7 @@ namespace SharpDisplayManager
 
         public int ScreenReversedY(System.Drawing.Bitmap aBmp, int aY)
         {
-            return iBmp.Height - aY - 1;
+            return iBitmap.Height - aY - 1;
         }
 
         public int ScreenX(System.Drawing.Bitmap aBmp, int aX)
@@ -1168,12 +1169,12 @@ namespace SharpDisplayManager
         private void timer_Tick(object sender, EventArgs e)
         {
             //Update our animations
-            DateTime NewTickTime = DateTime.Now;
+            DateTime newTickTime = DateTime.Now;
 
-            UpdateNetworkSignal(LastTickTime, NewTickTime);
+            UpdateNetworkSignal(iLastTickTime, newTickTime);
 
             // Update animation for all our marquees
-            UpdateMarqueesAnimations(iTableLayoutPanelDisplay, LastTickTime, NewTickTime);
+            UpdateMarqueesAnimations(iTableLayoutPanelDisplay, iLastTickTime, newTickTime);
 
             // Update audio visualization
             UpdateAudioVisualization();
@@ -1190,42 +1191,49 @@ namespace SharpDisplayManager
                     //Draw to bitmap
                     if (iCreateBitmap)
                     {
-                        iBmp = new System.Drawing.Bitmap(iTableLayoutPanelDisplay.Width, iTableLayoutPanelDisplay.Height,
-                            PixelFormat.Format32bppArgb);
+                        iBitmap = new System.Drawing.Bitmap(iTableLayoutPanelDisplay.Width, iTableLayoutPanelDisplay.Height, PixelFormat.Format32bppArgb);
+                        iBitmapRect = new Rectangle(new Point(0, 0), iBitmap.Size);
                         iCreateBitmap = false;
                     }
-                    iTableLayoutPanelDisplay.DrawToBitmap(iBmp, iTableLayoutPanelDisplay.ClientRectangle);
+                    iTableLayoutPanelDisplay.DrawToBitmap(iBitmap, iTableLayoutPanelDisplay.ClientRectangle);
                     //iBmp.Save("D:\\capture.png");
 
-                    //Send it to our display
-                    for (int i = 0; i < iBmp.Width; i++)
+                    unsafe
                     {
-                        for (int j = 0; j < iBmp.Height; j++)
+                        BitmapData bitmap = iBitmap.LockBits(iBitmapRect, ImageLockMode.ReadOnly, iBitmap.PixelFormat);
+                        uint* pixels = (uint*)bitmap.Scan0.ToPointer(); // Assuming 4 bytes per pixel since we specified the format ourselves
+
+                        //Send it to our display
+                        for (int i = 0; i < bitmap.Width; i++)
                         {
-                            unchecked
+                            for (int j = 0; j < bitmap.Height; j++)
                             {
                                 //Get our processed pixel coordinates
-                                int x = iScreenX(iBmp, i);
-                                int y = iScreenY(iBmp, j);
+                                int x = iScreenX(iBitmap, i);
+                                int y = iScreenY(iBitmap, j);
                                 //Get pixel color
-                                uint color = (uint) iBmp.GetPixel(i, j).ToArgb();
+                                uint color = pixels[j*bitmap.Width+i];
                                 //Apply color effects
                                 color = iColorFx(x, y, color);
                                 //Now set our pixel
                                 iDisplay.SetPixel(x, y, color);
                             }
                         }
+                        iBitmap.UnlockBits(bitmap);
                     }
 
                     iDisplay.SwapBuffers();
                 }
-            }            
+            }
+
+            DateTime afterRenderTime = DateTime.Now;
 
             //Compute instant FPS
-            toolStripStatusLabelFps.Text = (1.0/NewTickTime.Subtract(LastTickTime).TotalSeconds).ToString("F0") + " / " +
-                                           (1000/iTimerDisplay.Interval).ToString() + " FPS";
+            toolStripStatusLabelFps.Text = (1.0/newTickTime.Subtract(iLastTickTime).TotalSeconds).ToString("F0") + " / " +
+                                           (1000/iTimerDisplay.Interval).ToString() + " FPS - " +
+                                           afterRenderTime.Subtract(newTickTime).TotalMilliseconds.ToString("F0") + " ms";
 
-            LastTickTime = NewTickTime;
+            iLastTickTime = newTickTime;
 
         }
 
@@ -1768,21 +1776,21 @@ namespace SharpDisplayManager
 
         private void StartTimer()
         {
-            LastTickTime = DateTime.Now; //Reset timer to prevent jump
+            iLastTickTime = DateTime.Now; //Reset timer to prevent jump
             iTimerDisplay.Enabled = true;
             UpdateSuspendButton();
         }
 
         private void StopTimer()
         {
-            LastTickTime = DateTime.Now; //Reset timer to prevent jump
+            iLastTickTime = DateTime.Now; //Reset timer to prevent jump
             iTimerDisplay.Enabled = false;
             UpdateSuspendButton();
         }
 
         private void ToggleTimer()
         {
-            LastTickTime = DateTime.Now; //Reset timer to prevent jump
+            iLastTickTime = DateTime.Now; //Reset timer to prevent jump
             iTimerDisplay.Enabled = !iTimerDisplay.Enabled;
             UpdateSuspendButton();
         }
