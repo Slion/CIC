@@ -280,7 +280,7 @@
             this.Controls.Add(this.buttonSetText);
             this.Name = "FormClientTest";
             this.Text = "Client";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormClientTest_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPriority)).EndInit();
             this.ResumeLayout(false);

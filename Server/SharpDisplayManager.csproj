@@ -141,6 +141,8 @@
       <HintPath>.\LibCecSharp.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Speech, Version=11.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.dll</HintPath>
@@ -229,6 +231,9 @@
     <Compile Include="Actions\ActionMonitorContrast.cs" />
     <Compile Include="Actions\ActionMonitorSetting.cs" />
     <Compile Include="AudioManager.cs" />
+    <Compile Include="Events\EventSpeech.cs" />
+    <Compile Include="KinectAudioStream.cs" />
+    <Compile Include="KinectManager.cs" />
     <Compile Include="Spectrum\BasicSpectrumProvider.cs" />
     <Compile Include="CbtHook.cs" />
     <Compile Include="CecClient.cs" />

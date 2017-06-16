@@ -55,6 +55,7 @@ using SharpDisplay;
 using SharpLib.MiniDisplay;
 using SharpLib.Display;
 using Ear = SharpLib.Ear;
+using SharpLib.Win32;
 using Squirrel;
 using System.Configuration;
 
@@ -108,8 +109,10 @@ namespace SharpDisplayManager
         CoordinateTranslationDelegate iScreenX;
         //Function pointer for pixel Y coordinate intercept
         CoordinateTranslationDelegate iScreenY;
-        //Audio
+        // Audio
         private AudioManager iAudioManager;
+        // Kinect
+        public KinectManager iKinectManager;
 
         //Network
         private NetworkManager iNetworkManager;
@@ -160,6 +163,11 @@ namespace SharpDisplayManager
                 // Though I reckon that should only be needed when loading an empty EAR manager I guess.
                 Properties.Settings.Default.EarManager.Construct();
             }
+
+            // Register for property change event
+            Properties.Settings.Default.PropertyChanged += PropertyChangedEventHandler;
+
+
             iSkipFrameRendering = false;
             iClosing = false;
             iCurrentClientSessionId = "";
@@ -232,6 +240,9 @@ namespace SharpDisplayManager
 
             //CSCore
             CreateAudioManager();
+
+            //Kinect
+            CreateKinectManagerIfNeeded();
 
             //Network
             iNetworkManager = new NetworkManager();
@@ -365,6 +376,16 @@ namespace SharpDisplayManager
         }
 
 
+        private void PropertyChangedEventHandler(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Trace.WriteLine($"Settings: property changed {e.PropertyName}");
+
+            if (e.PropertyName.Equals("KinectEnabled"))
+            {
+                CreateKinectManagerIfNeeded();
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -385,6 +406,32 @@ namespace SharpDisplayManager
                 iAudioManager.Close();
                 iAudioManager = null;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void CreateKinectManagerIfNeeded()
+        {
+            // First clean things up
+            DestroyKinectManager();
+
+            if (Properties.Settings.Default.KinectEnabled)
+            {
+                iKinectManager = new KinectManager();
+                iKinectManager.StartSpeechRecognition();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void DestroyKinectManager()
+        {
+            if (iKinectManager != null)
+            {
+                iKinectManager.StopSpeechRecognition();
+            }            
         }
 
         /// <summary>
@@ -1619,14 +1666,29 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// Usually called twice due to our client shutdown process.
+        /// The first one is canceled to give time for our clients to shutdown.
+        /// When all clients are shutdown we Close our form again.
+        /// TODO: This is messy and should be reworked.
+        /// Should StopServer come first?
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             iCecManager.Stop();
             iNetworkManager.Dispose();
             DestroyAudioManager();
+            DestroyKinectManager();
             CloseDisplayConnection();
             StopServer();
             e.Cancel = iClosing;
+            if (e.Cancel)
+            {
+                // TODO: Have a function
+                Properties.Settings.Default.PropertyChanged += PropertyChangedEventHandler;
+            }
         }
 
         public void StartServer()
@@ -2846,7 +2908,17 @@ namespace SharpDisplayManager
                 OnWndProc(ref aMessage);
             }
 
+            if (aMessage.Msg==Const.WM_CLOSE)
+            {
+                // If a settings was changed durring this session for some reason the chnaged handler will be called again when closing
+                // To work around this we remove our handler now.
+                // If our closing is cancel we put it back on see _FormClosing
+                Properties.Settings.Default.PropertyChanged -= PropertyChangedEventHandler;
+            }
+
             base.WndProc(ref aMessage);
+
+
         }
 
         private void iCheckBoxCecEnabled_CheckedChanged(object sender, EventArgs e)
@@ -3533,5 +3605,6 @@ namespace SharpDisplayManager
             // I reckon this happens only once per session.
             SquirrelUpdate(true);
         }
+
     }
 }

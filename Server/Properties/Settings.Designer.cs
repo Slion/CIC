@@ -176,5 +176,17 @@ namespace SharpDisplayManager.Properties {
                 this["LogitechAuthToken"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool KinectEnabled {
+            get {
+                return ((bool)(this["KinectEnabled"]));
+            }
+            set {
+                this["KinectEnabled"] = value;
+            }
+        }
     }
 }
