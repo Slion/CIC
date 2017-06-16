@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Slions.Microsoft.Speech.11</id>
+        <version>1.0.0</version>
+        <authors>Microsoft</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Distribution package for Microsoft.Speech. Convenient if you are using Hosted build agents on Visual Studio Team Services since they don't have the Microsoft Speech Platform SDK installed.</description>
+    </metadata>
+    <files>
+        <file src="..\..\..\..\..\Program Files (x86)\Microsoft SDKs\Speech\v11.0\Assembly\Microsoft.Speech.dll" target="lib\Microsoft.Speech.dll" />
+    </files>
+</package>
