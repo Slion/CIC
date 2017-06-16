@@ -44,9 +44,9 @@ namespace SharpDisplayManager
             Id = "Speech.Confidence",
             Name = "Confidence",
             Description = "Confidence threshold, the lower the more false positive you could get.\n Set it too high and you will have to repeat yourself.",
-            Maximum = "1.0",
-            Minimum = "0.0",
-            Increment = "0.01",
+            Maximum = 1.0,
+            Minimum = 0.0,
+            Increment = 0.01,
             DecimalPlaces = 2
             )]
         public float Confidence { get; set; } = 0.3f;

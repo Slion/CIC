@@ -21,9 +21,9 @@ namespace SharpLib.Ear
             Id = "Action.Iterations",
             Name = "Iterations",
             Description = "Specifies the number of time this action should execute.",
-            Minimum = "0",
-            Maximum = "10000",
-            Increment = "1"
+            Minimum = 0,
+            Maximum = 10000,
+            Increment = 1
             )
         ]
         public int Iterations { get; set; } = 1;

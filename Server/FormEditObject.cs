@@ -248,9 +248,9 @@ namespace SharpDisplayManager
                 NumericUpDown ctrl = new NumericUpDown();
                 ctrl.AutoSize = true;
                 //ctrl.Dock = DockStyle.Fill; // Fill the whole table cell
-                ctrl.Minimum = decimal.Parse(aAttribute.Minimum);
-                ctrl.Maximum = decimal.Parse(aAttribute.Maximum);
-                ctrl.Increment = decimal.Parse(aAttribute.Increment);
+                ctrl.Minimum = (decimal)aAttribute.Minimum;
+                ctrl.Maximum = (decimal)aAttribute.Maximum;
+                ctrl.Increment = (decimal)aAttribute.Increment;
                 ctrl.DecimalPlaces = aAttribute.DecimalPlaces;
                 ctrl.Value = decimal.Parse(aInfo.GetValue(aObject).ToString());                
                 // Hook-in change notification after setting the value 

@@ -24,9 +24,9 @@ namespace SharpDisplayManager
             Id = "MonitorSetting.Modifier",
             Name = "Setting modifier",
             Description = "Monitor setting modifier, can be negative.",
-            Minimum = "-1000",
-            Maximum = "1000",
-            Increment = "1"
+            Minimum = -1000,
+            Maximum = 1000,
+            Increment = 1
             )
         ]
         public int Modifier { get; set; }

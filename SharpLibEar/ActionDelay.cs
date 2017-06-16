@@ -17,9 +17,9 @@ namespace SharpLib.Ear
                 Id = "Task.Delay.Milliseconds",
                 Name = "Delay (ms)",
                 Description = "Specifies the delay in milliseconds.",
-                Minimum = "0",
-                Maximum = "60000",
-                Increment = "1000"
+                Minimum = 0,
+                Maximum = 60000,
+                Increment = 1000
             )
         ]
         public int Milliseconds { get; set; }

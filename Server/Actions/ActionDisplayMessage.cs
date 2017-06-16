@@ -22,9 +22,9 @@ namespace SharpDisplayManager
             Id = "Display.Message.Duration",
             Name = "Duration (ms)",
             Description = "Specifies the number of milliseconds this message should be displayed.",
-            Minimum = "1", //Otherwise time throws an exception
-            Maximum = "30000",
-            Increment = "1000"
+            Minimum = 1, //Otherwise time throws an exception
+            Maximum = 30000,
+            Increment = 1000
             )]
         public int DurationInMilliseconds { get; set; } = 5000;
 
