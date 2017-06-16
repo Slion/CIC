@@ -20,22 +20,25 @@
 using System;
 using System.Diagnostics;
 
-namespace SharpDisplayManager.Properties {
-    
-    
+namespace SharpDisplayManager.Properties
+{
+
+
     // This class allows you to handle specific events on the settings class:
     //  The SettingChanging event is raised before a setting's value is changed.
     //  The PropertyChanged event is raised after a setting's value is changed.
     //  The SettingsLoaded event is raised after the setting values are loaded.
     //  The SettingsSaving event is raised before the setting values are saved.
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        public Settings() : base("default") {
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+    {
+
+        public Settings() : base("default")
+        {
             // // To add event handlers for saving and changing settings, uncomment the lines below:
             //
-             this.SettingChanging += this.SettingChangingEventHandler;
+            this.SettingChanging += this.SettingChangingEventHandler;
             //
-             this.SettingsSaving += this.SettingsSavingEventHandler;
+            this.SettingsSaving += this.SettingsSavingEventHandler;
             //
             this.SettingsLoaded += this.SettingsLoadedEventHandler;
             //
@@ -48,7 +51,8 @@ namespace SharpDisplayManager.Properties {
             Default.Save();
         }
 
-        private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e) {
+        private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e)
+        {
             // Add code to handle the SettingChangingEvent event here.
             Trace.WriteLine($"Settings: changing {e.SettingKey}.{e.SettingName}");
         }
@@ -58,7 +62,8 @@ namespace SharpDisplayManager.Properties {
             Trace.WriteLine($"Settings: loaded {e.Provider.ApplicationName}");
         }
 
-        private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
+        private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e)
+        {
             // Add code to handle the SettingsSaving event here.
             Trace.WriteLine("Settings: saving");
         }

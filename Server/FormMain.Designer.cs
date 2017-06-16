@@ -111,6 +111,8 @@
             this.iTreeViewHarmony = new System.Windows.Forms.TreeView();
             this.label1 = new System.Windows.Forms.Label();
             this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
+            this.tabPageKinect = new System.Windows.Forms.TabPage();
+            this.iCheckBoxKinectEnabled = new System.Windows.Forms.CheckBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
             this.buttonEventEdit = new System.Windows.Forms.Button();
             this.buttonEventDelete = new System.Windows.Forms.Button();
@@ -152,6 +154,7 @@
             this.tabPageCec.SuspendLayout();
             this.groupBoxCecLogOptions.SuspendLayout();
             this.tabPageHarmony.SuspendLayout();
+            this.tabPageKinect.SuspendLayout();
             this.tabPageEvent.SuspendLayout();
             this.tabPageApp.SuspendLayout();
             this.tabPageLogs.SuspendLayout();
@@ -315,7 +318,7 @@
             this.tabPageClients.Controls.Add(this.iTreeViewClients);
             this.tabPageClients.Location = new System.Drawing.Point(4, 22);
             this.tabPageClients.Name = "tabPageClients";
-            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageClients.Size = new System.Drawing.Size(752, 385);
             this.tabPageClients.TabIndex = 2;
             this.tabPageClients.Text = "Clients";
@@ -396,7 +399,7 @@
             this.tabPageDisplay.Controls.Add(this.buttonCapture);
             this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
             this.tabPageDisplay.Name = "tabPageDisplay";
-            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageDisplay.Size = new System.Drawing.Size(752, 385);
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
@@ -618,6 +621,7 @@
             this.tabControl.Controls.Add(this.tabPageAudio);
             this.tabControl.Controls.Add(this.tabPageCec);
             this.tabControl.Controls.Add(this.tabPageHarmony);
+            this.tabControl.Controls.Add(this.tabPageKinect);
             this.tabControl.Controls.Add(this.tabPageEvent);
             this.tabControl.Controls.Add(this.tabPageApp);
             this.tabControl.Controls.Add(this.tabPageLogs);
@@ -643,7 +647,7 @@
             this.tabPageDesign.Controls.Add(this.checkBoxShowBorders);
             this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
             this.tabPageDesign.Name = "tabPageDesign";
-            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageDesign.Size = new System.Drawing.Size(752, 385);
             this.tabPageDesign.TabIndex = 3;
             this.tabPageDesign.Text = "Design";
@@ -754,7 +758,7 @@
             this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
             this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
             this.tabPageAudio.Name = "tabPageAudio";
-            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageAudio.Size = new System.Drawing.Size(752, 385);
             this.tabPageAudio.TabIndex = 5;
             this.tabPageAudio.Text = "Audio";
@@ -818,7 +822,7 @@
             this.tabPageCec.Controls.Add(this.iCheckBoxCecEnabled);
             this.tabPageCec.Location = new System.Drawing.Point(4, 22);
             this.tabPageCec.Name = "tabPageCec";
-            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageCec.Size = new System.Drawing.Size(752, 385);
             this.tabPageCec.TabIndex = 7;
             this.tabPageCec.Text = "CEC";
@@ -965,7 +969,7 @@
             this.tabPageHarmony.Controls.Add(this.iTextBoxHarmonyHubAddress);
             this.tabPageHarmony.Location = new System.Drawing.Point(4, 22);
             this.tabPageHarmony.Name = "tabPageHarmony";
-            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageHarmony.Size = new System.Drawing.Size(752, 385);
             this.tabPageHarmony.TabIndex = 10;
             this.tabPageHarmony.Text = "Harmony";
@@ -1025,6 +1029,31 @@
             this.iTextBoxHarmonyHubAddress.TabIndex = 8;
             this.iTextBoxHarmonyHubAddress.Text = global::SharpDisplayManager.Properties.Settings.Default.HarmonyHubAddress;
             // 
+            // tabPageKinect
+            // 
+            this.tabPageKinect.Controls.Add(this.iCheckBoxKinectEnabled);
+            this.tabPageKinect.Location = new System.Drawing.Point(4, 22);
+            this.tabPageKinect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageKinect.Name = "tabPageKinect";
+            this.tabPageKinect.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageKinect.Size = new System.Drawing.Size(752, 385);
+            this.tabPageKinect.TabIndex = 11;
+            this.tabPageKinect.Text = "Kinect";
+            this.tabPageKinect.UseVisualStyleBackColor = true;
+            // 
+            // iCheckBoxKinectEnabled
+            // 
+            this.iCheckBoxKinectEnabled.AutoSize = true;
+            this.iCheckBoxKinectEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.KinectEnabled;
+            this.iCheckBoxKinectEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.iCheckBoxKinectEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "KinectEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxKinectEnabled.Location = new System.Drawing.Point(5, 5);
+            this.iCheckBoxKinectEnabled.Name = "iCheckBoxKinectEnabled";
+            this.iCheckBoxKinectEnabled.Size = new System.Drawing.Size(92, 17);
+            this.iCheckBoxKinectEnabled.TabIndex = 23;
+            this.iCheckBoxKinectEnabled.Text = "Enable Kinect";
+            this.iCheckBoxKinectEnabled.UseVisualStyleBackColor = true;
+            // 
             // tabPageEvent
             // 
             this.tabPageEvent.Controls.Add(this.buttonEventEdit);
@@ -1040,7 +1069,7 @@
             this.tabPageEvent.Controls.Add(this.iTreeViewEvents);
             this.tabPageEvent.Location = new System.Drawing.Point(4, 22);
             this.tabPageEvent.Name = "tabPageEvent";
-            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageEvent.Size = new System.Drawing.Size(752, 385);
             this.tabPageEvent.TabIndex = 9;
             this.tabPageEvent.Text = "Events";
@@ -1172,13 +1201,13 @@
             // 
             this.tabPageApp.Controls.Add(this.iButtonOpenExeFolder);
             this.tabPageApp.Controls.Add(this.iButtonOpenDataFolder);
-            this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
-            this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
             this.tabPageApp.Controls.Add(this.checkBoxAutoStart);
             this.tabPageApp.Controls.Add(this.buttonUpdate);
+            this.tabPageApp.Controls.Add(this.checkBoxStartMinimized);
+            this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
             this.tabPageApp.Location = new System.Drawing.Point(4, 22);
             this.tabPageApp.Name = "tabPageApp";
-            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageApp.Size = new System.Drawing.Size(752, 385);
             this.tabPageApp.TabIndex = 4;
             this.tabPageApp.Text = "Application";
@@ -1261,7 +1290,7 @@
             this.tabPageLogs.Controls.Add(this.richTextBoxLogs);
             this.tabPageLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageLogs.Name = "tabPageLogs";
-            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPageLogs.Size = new System.Drawing.Size(752, 385);
             this.tabPageLogs.TabIndex = 8;
             this.tabPageLogs.Text = "Logs";
@@ -1359,6 +1388,8 @@
             this.groupBoxCecLogOptions.PerformLayout();
             this.tabPageHarmony.ResumeLayout(false);
             this.tabPageHarmony.PerformLayout();
+            this.tabPageKinect.ResumeLayout(false);
+            this.tabPageKinect.PerformLayout();
             this.tabPageEvent.ResumeLayout(false);
             this.tabPageApp.ResumeLayout(false);
             this.tabPageApp.PerformLayout();
@@ -1468,6 +1499,8 @@
         private MarqueeLabel marqueeLabelBottom;
         private System.Windows.Forms.Button iButtonOpenDataFolder;
         private System.Windows.Forms.Button iButtonOpenExeFolder;
+        private System.Windows.Forms.TabPage tabPageKinect;
+        private System.Windows.Forms.CheckBox iCheckBoxKinectEnabled;
     }
 }
 

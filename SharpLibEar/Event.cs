@@ -24,9 +24,6 @@ namespace SharpLib.Ear
         ]
         public bool Enabled { get; set; } = true;
 
-
-
-
         /// <summary>
         /// Allows testing from generic edit dialog.
         /// </summary>
@@ -36,7 +33,10 @@ namespace SharpLib.Ear
             await Trigger();
         }
 
-
+        /// <summary>
+        /// Run the actions associated with this event.
+        /// </summary>
+        /// <returns></returns>
         public async Task Trigger()
         {
             Trace.WriteLine("Event triggered: " + AttributeName);
@@ -48,6 +48,7 @@ namespace SharpLib.Ear
 
         /// <summary>
         /// Check if this event matches the given one.
+        /// This is used to trigger events.
         /// </summary>
         /// <param name="aObject"></param>
         /// <returns></returns>

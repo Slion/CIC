@@ -152,7 +152,7 @@ namespace SharpDisplayClient
         }
 
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void FormClientTest_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseConnectionThreadSafe();
         }
