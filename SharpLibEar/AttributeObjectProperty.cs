@@ -8,6 +8,7 @@ namespace SharpLib.Ear
 {
     /// <summary>
     /// To expose an action property thus enabling user to edit it.
+    /// TODO: Fix our types?
     /// </summary>
     [System.AttributeUsage(System.AttributeTargets.Property)]
     public class AttributeObjectProperty : System.Attribute
@@ -19,6 +20,7 @@ namespace SharpLib.Ear
         public string Minimum;
         public string Maximum;
         public string Increment;
+        public int DecimalPlaces = 0;
         // For file dialog
         public string Filter;
     }

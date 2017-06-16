@@ -176,6 +176,11 @@ namespace SharpDisplayManager
                 NumericUpDown ctrl=(NumericUpDown)aControl;
                 aInfo.SetValue(aObject,(int)ctrl.Value);
             }
+            else if (aInfo.PropertyType == typeof(float))
+            {
+                NumericUpDown ctrl = (NumericUpDown)aControl;
+                aInfo.SetValue(aObject, (float)ctrl.Value);
+            }
             else if (aInfo.PropertyType.IsEnum)
             {
                 // Instantiate our enum
@@ -237,15 +242,17 @@ namespace SharpDisplayManager
         /// <returns></returns>
         private Control CreateControlForProperty(PropertyInfo aInfo, AttributeObjectProperty aAttribute, T aObject)
         {
-            if (aInfo.PropertyType == typeof(int))
+            if (aInfo.PropertyType == typeof(int) || aInfo.PropertyType == typeof(float))
             {
                 //Integer properties are using numeric editor
                 NumericUpDown ctrl = new NumericUpDown();
                 ctrl.AutoSize = true;
-                ctrl.Minimum = Int32.Parse(aAttribute.Minimum);
-                ctrl.Maximum = Int32.Parse(aAttribute.Maximum);
-                ctrl.Increment = Int32.Parse(aAttribute.Increment);
-                ctrl.Value = (int)aInfo.GetValue(aObject);
+                //ctrl.Dock = DockStyle.Fill; // Fill the whole table cell
+                ctrl.Minimum = decimal.Parse(aAttribute.Minimum);
+                ctrl.Maximum = decimal.Parse(aAttribute.Maximum);
+                ctrl.Increment = decimal.Parse(aAttribute.Increment);
+                ctrl.DecimalPlaces = aAttribute.DecimalPlaces;
+                ctrl.Value = decimal.Parse(aInfo.GetValue(aObject).ToString());                
                 // Hook-in change notification after setting the value 
                 ctrl.ValueChanged += ControlValueChanged;
                 return ctrl;
@@ -400,6 +407,10 @@ namespace SharpDisplayManager
         private bool IsPropertyTypeSupported(PropertyInfo aInfo)
         {
             if (aInfo.PropertyType == typeof(int))
+            {
+                return true;
+            }
+            else if (aInfo.PropertyType == typeof(float))
             {
                 return true;
             }

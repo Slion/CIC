@@ -185,16 +185,11 @@ namespace SharpDisplayManager
         /// <param name="e">event arguments.</param>
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            // Speech utterance confidence below which we treat speech as if it hadn't been heard
-            const double ConfidenceThreshold = 0.3;
-
-            if (e.Result.Confidence >= ConfidenceThreshold)
-            {
-                // Set our search clue semantic
-                iEventSpeechMatching.Semantic = e.Result.Semantics.Value.ToString();
-                // Trigger any matching events
-                Properties.Settings.Default.EarManager.TriggerEvents(iEventSpeechMatching);
-            }
+            // Set our search clue semantic
+            iEventSpeechMatching.Semantic = e.Result.Semantics.Value.ToString();
+            iEventSpeechMatching.Confidence = e.Result.Confidence;
+            // Trigger any matching events
+            Properties.Settings.Default.EarManager.TriggerEvents(iEventSpeechMatching);
         }
 
         /// <summary>
