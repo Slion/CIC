@@ -542,6 +542,37 @@ namespace SharpDisplayManager
             return null;
         }
 
+        /// <summary>
+        /// Recursive function to expand paht to a node
+        /// </summary>
+        /// <param name="aNode"></param>
+        static void TreeViewExpandPathTo(TreeNode aNode)
+        {
+            if (aNode.Parent!=null)
+            {
+                TreeViewExpandPathTo(aNode.Parent);
+            }
+            aNode.Expand();
+        }
+
+        /// <summary>
+        /// Expand the given node and all its children to the given depth.
+        /// </summary>
+        /// <param name="aDepth"></param>
+        static void TreeViewExpandAll(TreeNode aNode, int aDepth)
+        {
+            if (aDepth<0)
+            {
+                return;
+            }
+
+            aNode.Expand();
+
+            foreach (TreeNode n in aNode.Nodes)
+            {                
+                TreeViewExpandAll(n, aDepth - 1);
+            }
+        }
 
         /// <summary>
         /// 
@@ -554,6 +585,13 @@ namespace SharpDisplayManager
                 TreeNode found = FindTreeNodeForEarObject(aObject, n);
                 if (found != null)
                 {
+                    // Expand all parents on our path
+                    TreeViewExpandPathTo(found);
+                    // Show all our children and their first level of children.
+                    // That works well for events node thus we show the first level of actions.
+                    // It could be improved for nested actions I guess but we can't bother for now.
+                    TreeViewExpandAll(found, 1);
+                    // Select and focus it
                     iTreeViewEvents.SelectedNode=found;
                     iTreeViewEvents.Focus();
                     return;
@@ -603,7 +641,7 @@ namespace SharpDisplayManager
                 AddActionsToTreeNode(actionsNode,e);
             }
 
-            iTreeViewEvents.ExpandAll();
+            //iTreeViewEvents.ExpandAll();
 
             if (aSelectedObject != null)
             {
