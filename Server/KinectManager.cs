@@ -195,8 +195,8 @@ namespace SharpDisplayManager
             iEventSpeech.Semantic = e.Result.Semantics.Value.ToString();
             iEventSpeech.Confidence = e.Result.Confidence;
             iEventSpeech.Context.Variables.Clear();
-            iEventSpeech.Context.Variables.Add("$confidence", iEventSpeech.Confidence.ToString("0.00"));
-            iEventSpeech.Context.Variables.Add("$semantic", iEventSpeech.Semantic);
+            iEventSpeech.Context.Variables["$confidence"] = iEventSpeech.Confidence.ToString("0.00");
+            iEventSpeech.Context.Variables["$semantic"] = iEventSpeech.Semantic;
             // Trigger any matching events
             Properties.Settings.Default.EarManager.TriggerEvents(iEventSpeech);
         }

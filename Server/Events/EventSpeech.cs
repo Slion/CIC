@@ -83,7 +83,7 @@ namespace SharpDisplayManager
             if (obj is EventSpeech)
             {
                 EventSpeech e = (EventSpeech)obj;
-                e.Context.Variables.Add("$targetConfidence", Confidence.ToString("0.00"));
+                e.Context.Variables["$targetConfidence"]= Confidence.ToString("0.00");
                 // Speech events are matching if they have the same semantic and we are confident enough
                 if (e.Semantic.Equals(Semantic))
                 {
