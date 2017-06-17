@@ -89,6 +89,9 @@ namespace SharpDisplayManager
                 {
                     if (e.Confidence >= Confidence)
                     {
+                        EventSpeechRecognized recognizedEvent = new EventSpeechRecognized();
+                        recognizedEvent.Context = e.Context;
+                        Properties.Settings.Default.EarManager.TriggerEvents(recognizedEvent);
                         return true;
                     }
                     else
