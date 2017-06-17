@@ -48,12 +48,21 @@ namespace SharpDisplayManager.Properties
         private void PropertyChangedEventHandler(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Trace.WriteLine($"Settings: property changed {e.PropertyName}");
+            // That ensures we always save our settings when something actually changed
             Default.Save();
         }
 
         private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e)
         {
-            // Add code to handle the SettingChangingEvent event here.
+            // Check if our value actually changed
+            // We would hit that when changing a control bound setting and then changing tab
+            object currentValue=this[e.SettingName];
+            if (e.NewValue.Equals(currentValue))
+            {
+                // No actual change
+                e.Cancel = true;
+                return;
+            }
             Trace.WriteLine($"Settings: changing {e.SettingKey}.{e.SettingName}");
         }
 

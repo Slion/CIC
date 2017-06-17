@@ -128,10 +128,10 @@
             this.tabPageApp = new System.Windows.Forms.TabPage();
             this.iButtonOpenExeFolder = new System.Windows.Forms.Button();
             this.iButtonOpenDataFolder = new System.Windows.Forms.Button();
-            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
-            this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
+            this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.tabPageLogs = new System.Windows.Forms.TabPage();
             this.buttonClearLogs = new System.Windows.Forms.Button();
             this.richTextBoxLogs = new System.Windows.Forms.RichTextBox();
@@ -318,7 +318,7 @@
             this.tabPageClients.Controls.Add(this.iTreeViewClients);
             this.tabPageClients.Location = new System.Drawing.Point(4, 22);
             this.tabPageClients.Name = "tabPageClients";
-            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageClients.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageClients.Size = new System.Drawing.Size(752, 385);
             this.tabPageClients.TabIndex = 2;
             this.tabPageClients.Text = "Clients";
@@ -399,7 +399,7 @@
             this.tabPageDisplay.Controls.Add(this.buttonCapture);
             this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
             this.tabPageDisplay.Name = "tabPageDisplay";
-            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageDisplay.Size = new System.Drawing.Size(752, 385);
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
@@ -647,7 +647,7 @@
             this.tabPageDesign.Controls.Add(this.checkBoxShowBorders);
             this.tabPageDesign.Location = new System.Drawing.Point(4, 22);
             this.tabPageDesign.Name = "tabPageDesign";
-            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageDesign.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageDesign.Size = new System.Drawing.Size(752, 385);
             this.tabPageDesign.TabIndex = 3;
             this.tabPageDesign.Text = "Design";
@@ -758,7 +758,7 @@
             this.tabPageAudio.Controls.Add(this.trackBarMasterVolume);
             this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
             this.tabPageAudio.Name = "tabPageAudio";
-            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageAudio.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageAudio.Size = new System.Drawing.Size(752, 385);
             this.tabPageAudio.TabIndex = 5;
             this.tabPageAudio.Text = "Audio";
@@ -822,7 +822,7 @@
             this.tabPageCec.Controls.Add(this.iCheckBoxCecEnabled);
             this.tabPageCec.Location = new System.Drawing.Point(4, 22);
             this.tabPageCec.Name = "tabPageCec";
-            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageCec.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageCec.Size = new System.Drawing.Size(752, 385);
             this.tabPageCec.TabIndex = 7;
             this.tabPageCec.Text = "CEC";
@@ -969,7 +969,7 @@
             this.tabPageHarmony.Controls.Add(this.iTextBoxHarmonyHubAddress);
             this.tabPageHarmony.Location = new System.Drawing.Point(4, 22);
             this.tabPageHarmony.Name = "tabPageHarmony";
-            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageHarmony.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageHarmony.Size = new System.Drawing.Size(752, 385);
             this.tabPageHarmony.TabIndex = 10;
             this.tabPageHarmony.Text = "Harmony";
@@ -1033,9 +1033,9 @@
             // 
             this.tabPageKinect.Controls.Add(this.iCheckBoxKinectEnabled);
             this.tabPageKinect.Location = new System.Drawing.Point(4, 22);
-            this.tabPageKinect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageKinect.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageKinect.Name = "tabPageKinect";
-            this.tabPageKinect.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPageKinect.Padding = new System.Windows.Forms.Padding(2);
             this.tabPageKinect.Size = new System.Drawing.Size(752, 385);
             this.tabPageKinect.TabIndex = 11;
             this.tabPageKinect.Text = "Kinect";
@@ -1069,7 +1069,7 @@
             this.tabPageEvent.Controls.Add(this.iTreeViewEvents);
             this.tabPageEvent.Location = new System.Drawing.Point(4, 22);
             this.tabPageEvent.Name = "tabPageEvent";
-            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageEvent.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageEvent.Size = new System.Drawing.Size(752, 385);
             this.tabPageEvent.TabIndex = 9;
             this.tabPageEvent.Text = "Events";
@@ -1207,7 +1207,7 @@
             this.tabPageApp.Controls.Add(this.checkBoxMinimizeToTray);
             this.tabPageApp.Location = new System.Drawing.Point(4, 22);
             this.tabPageApp.Name = "tabPageApp";
-            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageApp.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageApp.Size = new System.Drawing.Size(752, 385);
             this.tabPageApp.TabIndex = 4;
             this.tabPageApp.Text = "Application";
@@ -1235,6 +1235,29 @@
             this.iButtonOpenDataFolder.UseVisualStyleBackColor = true;
             this.iButtonOpenDataFolder.Click += new System.EventHandler(this.iButtonOpenDataFolder_Click);
             // 
+            // checkBoxAutoStart
+            // 
+            this.checkBoxAutoStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxAutoStart.AutoSize = true;
+            this.checkBoxAutoStart.Location = new System.Drawing.Point(6, 331);
+            this.checkBoxAutoStart.Name = "checkBoxAutoStart";
+            this.checkBoxAutoStart.Size = new System.Drawing.Size(143, 17);
+            this.checkBoxAutoStart.TabIndex = 14;
+            this.checkBoxAutoStart.Text = "Run on Windows startup";
+            this.checkBoxAutoStart.UseVisualStyleBackColor = true;
+            this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
+            // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonUpdate.Location = new System.Drawing.Point(6, 354);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdate.TabIndex = 0;
+            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            // 
             // checkBoxStartMinimized
             // 
             this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1261,36 +1284,13 @@
             this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
             this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
             // 
-            // checkBoxAutoStart
-            // 
-            this.checkBoxAutoStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxAutoStart.AutoSize = true;
-            this.checkBoxAutoStart.Location = new System.Drawing.Point(6, 331);
-            this.checkBoxAutoStart.Name = "checkBoxAutoStart";
-            this.checkBoxAutoStart.Size = new System.Drawing.Size(143, 17);
-            this.checkBoxAutoStart.TabIndex = 14;
-            this.checkBoxAutoStart.Text = "Run on Windows startup";
-            this.checkBoxAutoStart.UseVisualStyleBackColor = true;
-            this.checkBoxAutoStart.CheckedChanged += new System.EventHandler(this.checkBoxAutoStart_CheckedChanged);
-            // 
-            // buttonUpdate
-            // 
-            this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonUpdate.Location = new System.Drawing.Point(6, 354);
-            this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
-            this.buttonUpdate.TabIndex = 0;
-            this.buttonUpdate.Text = "Update";
-            this.buttonUpdate.UseVisualStyleBackColor = true;
-            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
-            // 
             // tabPageLogs
             // 
             this.tabPageLogs.Controls.Add(this.buttonClearLogs);
             this.tabPageLogs.Controls.Add(this.richTextBoxLogs);
             this.tabPageLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageLogs.Name = "tabPageLogs";
-            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageLogs.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageLogs.Size = new System.Drawing.Size(752, 385);
             this.tabPageLogs.TabIndex = 8;
             this.tabPageLogs.Text = "Logs";

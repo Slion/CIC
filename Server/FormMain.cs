@@ -101,6 +101,8 @@ namespace SharpDisplayManager
         bool iHasNewDisplayLayout;
         //
         public bool iClosing;
+        // True if we are currently loading settings into our UI
+        private bool iUpdatingStatus = false;
         //
         public bool iSkipFrameRendering;
         //Function pointer for pixel color filtering
@@ -1464,6 +1466,8 @@ namespace SharpDisplayManager
         /// </summary>
         private void UpdateStatus()
         {
+            // Set that flag to avoid feedback loop
+            iUpdatingStatus = true;
             //Load settings
             checkBoxShowBorders.Checked = cds.ShowBorders;
             iTableLayoutPanelCurrentClient.CellBorderStyle = (cds.ShowBorders
@@ -1598,6 +1602,8 @@ namespace SharpDisplayManager
                 toolStripStatusLabelPower.Text = "N/A";
             }
 
+            //
+            iUpdatingStatus = false;
         }
 
 
@@ -1616,11 +1622,14 @@ namespace SharpDisplayManager
         private void checkBoxShowBorders_CheckedChanged(object sender, EventArgs e)
         {
             //Save our show borders setting
-            iTableLayoutPanelCurrentClient.CellBorderStyle = (checkBoxShowBorders.Checked
+            if (!iUpdatingStatus)
+            {
+                iTableLayoutPanelCurrentClient.CellBorderStyle = (checkBoxShowBorders.Checked
                 ? TableLayoutPanelCellBorderStyle.Single
                 : TableLayoutPanelCellBorderStyle.None);
-            cds.ShowBorders = checkBoxShowBorders.Checked;
-            Properties.Settings.Default.Save();
+                cds.ShowBorders = checkBoxShowBorders.Checked;
+                Properties.Settings.Default.Save();
+            }
             CheckFontHeight();
         }
 
@@ -1633,24 +1642,33 @@ namespace SharpDisplayManager
         private void checkBoxReverseScreen_CheckedChanged(object sender, EventArgs e)
         {
             //Save our reverse screen setting
-            cds.ReverseScreen = checkBoxReverseScreen.Checked;
-            Properties.Settings.Default.Save();
+            if (!iUpdatingStatus)
+            {
+                cds.ReverseScreen = checkBoxReverseScreen.Checked;
+                Properties.Settings.Default.Save();
+            }
             SetupPixelDelegates();
         }
 
         private void checkBoxInverseColors_CheckedChanged(object sender, EventArgs e)
         {
             //Save our inverse colors setting
-            cds.InverseColors = checkBoxInverseColors.Checked;
-            Properties.Settings.Default.Save();
+            if (!iUpdatingStatus)
+            {
+                cds.InverseColors = checkBoxInverseColors.Checked;
+                Properties.Settings.Default.Save();
+            }
             SetupPixelDelegates();
         }
 
         private void checkBoxScaleToFit_CheckedChanged(object sender, EventArgs e)
         {
             //Save our scale to fit setting
-            cds.ScaleToFit = checkBoxScaleToFit.Checked;
-            Properties.Settings.Default.Save();
+            if (!iUpdatingStatus)
+            {
+                cds.ScaleToFit = checkBoxScaleToFit.Checked;
+                Properties.Settings.Default.Save();
+            }
             //
             labelMinFontSize.Enabled = cds.ScaleToFit;
             maskedTextBoxMinFontSize.Enabled = cds.ScaleToFit;
@@ -2624,10 +2642,12 @@ namespace SharpDisplayManager
         private void comboBoxDisplayType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Store the selected display type in our settings
-            Properties.Settings.Default.CurrentDisplayIndex = comboBoxDisplayType.SelectedIndex;
-            cds.DisplayType = comboBoxDisplayType.SelectedIndex;
-            Properties.Settings.Default.Save();
-
+            if (!iUpdatingStatus)
+            {
+                Properties.Settings.Default.CurrentDisplayIndex = comboBoxDisplayType.SelectedIndex;
+                cds.DisplayType = comboBoxDisplayType.SelectedIndex;
+                Properties.Settings.Default.Save();
+            }
             //Try re-opening the display connection if we were already connected.
             //Otherwise just update our status to reflect display type change.
             if (iDisplay.IsOpen())
@@ -2649,8 +2669,11 @@ namespace SharpDisplayManager
                 if (interval > 0)
                 {
                     iTimerDisplay.Interval = interval;
-                    cds.TimerInterval = iTimerDisplay.Interval;
-                    Properties.Settings.Default.Save();
+                    if (!iUpdatingStatus)
+                    {
+                        cds.TimerInterval = iTimerDisplay.Interval;
+                        Properties.Settings.Default.Save();
+                    }
                 }
             }
         }
@@ -2663,8 +2686,11 @@ namespace SharpDisplayManager
 
                 if (minFontSize > 0)
                 {
-                    cds.MinFontSize = minFontSize;
-                    Properties.Settings.Default.Save();
+                    if (!iUpdatingStatus)
+                    {
+                        cds.MinFontSize = minFontSize;
+                        Properties.Settings.Default.Save();
+                    }
                     //We need to recreate our layout for that change to take effect
                     if (iCurrentClientData != null)
                     {
@@ -2683,8 +2709,11 @@ namespace SharpDisplayManager
 
                 if (scrollingSpeed > 0)
                 {
-                    cds.ScrollingSpeedInPixelsPerSecond = scrollingSpeed;
-                    Properties.Settings.Default.Save();
+                    if (!iUpdatingStatus)
+                    {
+                        cds.ScrollingSpeedInPixelsPerSecond = scrollingSpeed;
+                        Properties.Settings.Default.Save();
+                    }
                     //We need to recreate our layout for that change to take effect
                     if (iCurrentClientData != null)
                     {
@@ -2701,8 +2730,11 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void textBoxScrollLoopSeparator_TextChanged(object sender, EventArgs e)
         {
-            cds.Separator = textBoxScrollLoopSeparator.Text;
-            Properties.Settings.Default.Save();
+            if (!iUpdatingStatus)
+            {
+                cds.Separator = textBoxScrollLoopSeparator.Text;
+                Properties.Settings.Default.Save();
+            }
 
             //Update our text fields
             UpdateMarqueesSeparator(iTableLayoutPanelDisplay);
@@ -2930,12 +2962,16 @@ namespace SharpDisplayManager
         private void comboBoxHdmiPort_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Save CEC HDMI port
-            Properties.Settings.Default.CecHdmiPort = Convert.ToByte(comboBoxHdmiPort.SelectedIndex);
-            Properties.Settings.Default.CecHdmiPort++;
-            Properties.Settings.Default.Save();
+            if (!iUpdatingStatus)
+            {
+                byte index = Convert.ToByte(comboBoxHdmiPort.SelectedIndex);
+                index++;
+                Properties.Settings.Default.CecHdmiPort = index;
+            }
             //
             ResetCec();
         }
+
 
         /// <summary>
         /// 
@@ -3480,7 +3516,6 @@ namespace SharpDisplayManager
                 //Delete it then
                 Trace.WriteLine("Harmony: Reseting authentication token!");
                 Properties.Settings.Default.LogitechAuthToken = "";
-                Properties.Settings.Default.Save();
 
                 Trace.WriteLine("Harmony: Authenticating with Logitech servers...");
                 success = await Program.HarmonyClient.TryOpenAsync();
@@ -3489,7 +3524,6 @@ namespace SharpDisplayManager
                 {
                     Trace.WriteLine("Harmony: Saving authentication token.");
                     Properties.Settings.Default.LogitechAuthToken = Program.HarmonyClient.Token;
-                    Properties.Settings.Default.Save();
                 }
             }
            
