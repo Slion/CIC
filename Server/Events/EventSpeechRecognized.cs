@@ -9,7 +9,7 @@ using Ear = SharpLib.Ear;
 namespace SharpDisplayManager
 {
     [DataContract]
-    [Ear.AttributeObject(Id = "Event.Speech.Recognized", Name = "Speech recognized", Description = "Triggered when a voidce command is recognized.")]
+    [Ear.AttributeObject(Id = "Event.Speech.Recognized", Name = "Speech recognized", Description = "Triggered when a voice command is recognized.")]
     public class EventSpeechRecognized : Ear.Event
     {
         public EventSpeechRecognized()
