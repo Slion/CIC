@@ -83,6 +83,7 @@ namespace SharpDisplayManager
             if (obj is EventSpeech)
             {
                 EventSpeech e = (EventSpeech)obj;
+                e.Context.Variables.Add("$targetConfidence", Confidence.ToString("0.00"));
                 // Speech events are matching if they have the same semantic and we are confident enough
                 if (e.Semantic.Equals(Semantic))
                 {
@@ -95,7 +96,7 @@ namespace SharpDisplayManager
                         // Not the best place to do that but here we go
                         // Trigger discarded event when confidence is not high enough
                         EventSpeechDiscarded discardedEvent = new EventSpeechDiscarded();
-                        discardedEvent.Context.Variables.Add("$confidence",e.Confidence.ToString());
+                        discardedEvent.Context = e.Context;                        
                         Properties.Settings.Default.EarManager.TriggerEvents(discardedEvent);
                     }
                 }

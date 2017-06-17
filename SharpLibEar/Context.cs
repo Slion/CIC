@@ -24,7 +24,7 @@ namespace SharpLib.Ear
         {
             foreach (KeyValuePair<string, string> kvp in Variables)
             {
-                aSource.Replace(kvp.Key, kvp.Value);
+                aSource = aSource.Replace(kvp.Key, kvp.Value);
             }
 
             return aSource;
