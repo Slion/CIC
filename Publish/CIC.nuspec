@@ -28,7 +28,6 @@
         <file src="NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />        
         <file src="Splat.dll" target="lib\net45\Splat.dll" />
         <file src="Squirrel.dll" target="lib\net45\Squirrel.dll" />
-		<file src="Squirrel.dll" target="lib\net45\Squirrel.dll" />
         <!-- ======== CIC dependencies ======== -->
         <!-- XMPP client for communication with Logitech Harmony -->
         <file src="agsXMPP.dll" target="lib\net45\agsXMPP.dll" />
@@ -56,7 +55,9 @@
         <file src="SharpLibUtils.dll" target="lib\net45\SharpLibUtils.dll" />
         <file src="SharpLibWin32.dll" target="lib\net45\SharpLibWin32.dll" />
         <file src="SharpLibMonitorConfig.dll" target="lib\net45\SharpLibMonitorConfig.dll" />
-		
+        <!-- Kinect -->
+        <file src="Microsoft.Kinect.dll" target="lib\net45\Microsoft.Kinect.dll" />
+        <file src="Microsoft.Speech.dll" target="lib\Microsoft.Speech.dll" />
         <!-- Add Windows Visual Studio redist -->
         <!-- VS 2013 - needed for HDMI-CEC -->
         <!-- C Run-Time Libraries (CRT) -->
