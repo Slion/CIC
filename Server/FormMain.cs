@@ -3070,7 +3070,6 @@ namespace SharpDisplayManager
                 }
                 node = node.Parent;
             }
-
             return selectedEvent;
         }
 
@@ -3178,7 +3177,8 @@ namespace SharpDisplayManager
             FormEditObject<Ear.Action> ea = new FormEditObject<Ear.Action>();
             ea.Text = "Edit action";
             ea.Object = selectedAction;
-            int actionIndex = iTreeViewEvents.SelectedNode.Index;
+            // Find our action within its parent so that we can update it later
+            int actionIndex = parent.Objects.FindIndex(x => x == selectedAction);
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
@@ -3394,7 +3394,8 @@ namespace SharpDisplayManager
             FormEditObject<Ear.Event> ea = new FormEditObject<Ear.Event>();
             ea.Text = "Edit event";
             ea.Object = selectedEvent;
-            int index = iTreeViewEvents.SelectedNode.Index;
+            // Get the index of our event so that we can update it below
+            int index = Properties.Settings.Default.EarManager.Events.FindIndex(x => x == selectedEvent);
             DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {                
