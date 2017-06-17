@@ -66,19 +66,19 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
-            StartMessageClient();
+            StartMessageClient(aContext);
         }
 
         /// <summary>
         /// Just launch our idle client.
         /// </summary>
-        private void StartMessageClient()
+        private void StartMessageClient(Context aContext)
         {
             Thread clientThread = new Thread(SharpDisplayClientMessage.Program.MainWithParams);
             SharpDisplayClientMessage.StartParams myParams =
-                new SharpDisplayClientMessage.StartParams(PrimaryText, SecondaryText, DurationInMilliseconds);
+                new SharpDisplayClientMessage.StartParams(aContext.Apply(PrimaryText), aContext.Apply(SecondaryText), DurationInMilliseconds);
             clientThread.Start(myParams);
         }
 

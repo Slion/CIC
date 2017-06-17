@@ -70,7 +70,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             if (Program.HarmonyClient!=null)
             {

@@ -14,6 +14,8 @@ namespace SharpLib.Ear
     [AttributeObject(Id = "Event", Name = "User Event", Description = "An event that can be triggered by users.")]
     public class Event : Object
     {
+        public Context Context;
+
         [DataMember]
         [AttributeObjectProperty
             (
@@ -42,7 +44,7 @@ namespace SharpLib.Ear
             Trace.WriteLine("Event triggered: " + AttributeName);
             foreach (Action action in Objects.OfType<Action>())
             {
-                await action.Execute();
+                await action.Execute(Context);
             }
         }
 
@@ -58,6 +60,19 @@ namespace SharpLib.Ear
             bool res= aObject.GetType() == GetType();
             return res;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void DoConstruct()
+        {
+            base.DoConstruct();
+            if (null == Context)
+            {
+                Context = new Context();
+            }            
+        }
+
     };
 
 }

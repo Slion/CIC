@@ -54,7 +54,7 @@ namespace SharpLib.Ear
         /// Basic action just does nothing
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task DoExecute()
+        protected virtual async Task DoExecute(Context aContext)
         {
             
         }
@@ -65,14 +65,14 @@ namespace SharpLib.Ear
         public void Test()
         {
             Trace.WriteLine("Action test");
-            Execute();
+            Execute(new Context());
         }
 
         /// <summary>
         /// Execute our action N times.
         /// </summary>
         /// <returns></returns>
-        public async Task Execute()
+        public async Task Execute(Context aContext)
         {
             if (!IsValid())
             {
@@ -91,12 +91,12 @@ namespace SharpLib.Ear
                 Trace.WriteLine($"EAR: Action.Execute: [{Iterations - i + 1}/{Iterations}] - {BriefBase()}");
                 //For each iteration
                 //We first execute ourselves
-                await DoExecute();
+                await DoExecute(aContext);
 
                 //Then our children
                 foreach (Action a in Objects.OfType<Action>())
                 {
-                    await a.Execute();
+                    await a.Execute(aContext);
                 }
             }            
         }

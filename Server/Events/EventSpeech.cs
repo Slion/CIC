@@ -5,10 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
-using System.Windows.Forms;
 using Ear = SharpLib.Ear;
-using Hid = SharpLib.Hid;
-using SharpLib.Ear;
 
 namespace SharpDisplayManager
 {
@@ -87,7 +84,21 @@ namespace SharpDisplayManager
             {
                 EventSpeech e = (EventSpeech)obj;
                 // Speech events are matching if they have the same semantic and we are confident enough
-                return e.Semantic.Equals(Semantic) && e.Confidence>=Confidence;                 
+                if (e.Semantic.Equals(Semantic))
+                {
+                    if (e.Confidence >= Confidence)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        // Not the best place to do that but here we go
+                        // Trigger discarded event when confidence is not high enough
+                        EventSpeechDiscarded discardedEvent = new EventSpeechDiscarded();
+                        discardedEvent.Context.Variables.Add("$confidence",e.Confidence.ToString());
+                        Properties.Settings.Default.EarManager.TriggerEvents(discardedEvent);
+                    }
+                }
             }
 
             return false;

@@ -15,7 +15,7 @@ namespace SharpDisplayManager
     [AttributeObject(Id = "Cec.Scan", Name = "CEC Scan", Description = "Scan devices on your CEC HDMI network.")]
     class ActionCecScan : SharpLib.Ear.Action
     {
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             if (Cec.Client.Static == null)
             {

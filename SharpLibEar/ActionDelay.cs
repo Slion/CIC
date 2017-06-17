@@ -41,7 +41,7 @@ namespace SharpLib.Ear
         }
 
 
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             await Task.Delay(Milliseconds);
         }
