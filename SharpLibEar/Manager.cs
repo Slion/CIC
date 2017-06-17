@@ -61,11 +61,12 @@ namespace SharpLib.Ear
         /// Trigger the given event.
         /// </summary>
         /// <param name="aEventType"></param>
-        public async void TriggerEvents<T>(T aEvent) where T : class
+        public async void TriggerEvents<T>(T aEvent) where T : Event
         {
             //Only trigger events matching the desired type
             foreach (Event e in Events.Where(e => e.Matches(aEvent) && e.Enabled))
             {
+                e.Context = aEvent.Context;
                 await e.Trigger();
             }
         }

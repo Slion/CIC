@@ -72,7 +72,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             CheckCurrentItem(); // TODO: Should not need to do that everytime?
             if (PhysicalMonitor != null)

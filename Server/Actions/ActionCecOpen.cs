@@ -14,7 +14,7 @@ namespace SharpDisplayManager
     [AttributeObject(Id = "Cec.Open", Name = "CEC Open", Description = "Open CEC connection.")]
     class ActionCecOpen : SharpLib.Ear.Action
     {
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             if (Cec.Client.Static == null)
             {

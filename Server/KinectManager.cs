@@ -34,7 +34,13 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        private EventSpeech iEventSpeechMatching = new EventSpeech();
+        private EventSpeech iEventSpeech = new EventSpeech();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private EventSpeechDiscarded iEventSpeechDiscarded = new EventSpeechDiscarded();
+
 
         /// <summary>
         /// 
@@ -186,10 +192,10 @@ namespace SharpDisplayManager
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             // Set our search clue semantic
-            iEventSpeechMatching.Semantic = e.Result.Semantics.Value.ToString();
-            iEventSpeechMatching.Confidence = e.Result.Confidence;
+            iEventSpeech.Semantic = e.Result.Semantics.Value.ToString();
+            iEventSpeech.Confidence = e.Result.Confidence;
             // Trigger any matching events
-            Properties.Settings.Default.EarManager.TriggerEvents(iEventSpeechMatching);
+            Properties.Settings.Default.EarManager.TriggerEvents(iEventSpeech);
         }
 
         /// <summary>

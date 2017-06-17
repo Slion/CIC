@@ -14,7 +14,7 @@ namespace SharpDisplayManager
     [AttributeObject(Id = "Cec.Close", Name = "CEC Close", Description = "Close CEC connection.")]
     class ActionCecClose : SharpLib.Ear.Action
     {
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             if (Cec.Client.Static == null)
             {

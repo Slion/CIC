@@ -17,7 +17,7 @@ namespace SharpLib.Ear
             iCallback = aCallback;
         }
 
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             if (iCallback != null)
             {

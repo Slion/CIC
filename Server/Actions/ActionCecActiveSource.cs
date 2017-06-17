@@ -26,7 +26,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// Set the defined device type as active source.
         /// </summary>
-        protected override async Task DoExecute()
+        protected override async Task DoExecute(Context aContext)
         {
             if (Cec.Client.Static == null)
             {
