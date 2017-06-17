@@ -201,12 +201,6 @@ namespace SharpDisplayManager
                 TextBox ctrl = (TextBox)aControl;
                 aInfo.SetValue(aObject, ctrl.Text);
             }
-            else if (aInfo.PropertyType == typeof(PropertyText))
-            {
-                TextBox ctrl = (TextBox)aControl;
-                PropertyText value = new PropertyText { Text = ctrl.Text };
-                aInfo.SetValue(aObject, value);
-            }
             else if (aInfo.PropertyType == typeof(PropertyFile))
             {
                 Button ctrl = (Button)aControl;
@@ -308,26 +302,16 @@ namespace SharpDisplayManager
                 ctrl.AutoSize = true;
                 ctrl.Dock = DockStyle.Fill; // Fill the whole table cell
                 ctrl.Text = (string)aInfo.GetValue(aObject);
-                // Hook-in change notification after setting the value 
-                ctrl.TextChanged += ControlValueChanged;
-                return ctrl;
-            }
-            else if (aInfo.PropertyType == typeof(PropertyText))
-            {
-                // We have a text property
-                TextBox ctrl = new TextBox();
-                ctrl.AutoSize = true;
-                ctrl.Dock = DockStyle.Fill; // Fill the whole table cell
-                ctrl.Text = ((PropertyText)aInfo.GetValue(aObject)).Text;
-                // Multiline setup
-                ctrl.Multiline = ((PropertyText)aInfo.GetValue(aObject)).Multiline;
-                ctrl.AcceptsReturn = ctrl.Multiline;
-                ctrl.ScrollBars = ScrollBars.Vertical;
 
+                // Multiline setup
+                ctrl.Multiline = aAttribute.Multiline;
                 if (ctrl.Multiline)
                 {
+                    ctrl.AcceptsReturn = true;
+                    ctrl.ScrollBars = ScrollBars.Vertical;
+                    // Adjust our height as needed
                     Size size = ctrl.Size;
-                    size.Height += ctrl.Font.Height * (((PropertyText)aInfo.GetValue(aObject)).HeightInLines-1); 
+                    size.Height += ctrl.Font.Height * (aAttribute.HeightInLines - 1);
                     ctrl.MinimumSize = size;
                 }
 
@@ -423,10 +407,6 @@ namespace SharpDisplayManager
                 return true;
             }
             else if (aInfo.PropertyType == typeof(string))
-            {
-                return true;
-            }
-            else if (aInfo.PropertyType == typeof(PropertyText))
             {
                 return true;
             }

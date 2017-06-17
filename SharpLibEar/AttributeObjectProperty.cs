@@ -17,10 +17,13 @@ namespace SharpLib.Ear
         public string Name;
         public string Description;
         // For numerics
-        public double Minimum;
-        public double Maximum;
-        public double Increment;
+        public double Minimum = 0;
+        public double Maximum = 100;
+        public double Increment = 1;
         public int DecimalPlaces = 0;
+        // For string
+        public bool Multiline = false;
+        public int HeightInLines = 1;
         // For file dialog
         public string Filter;
     }

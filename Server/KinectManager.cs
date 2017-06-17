@@ -75,7 +75,7 @@ namespace SharpDisplayManager
             foreach (EventSpeech e in ear.Events.Where(e => e.GetType() == typeof(EventSpeech)))
             {
                 // For each events associates its phrases with its semantic
-                string[] phrases = e.Phrases.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                string[] phrases = e.Phrases.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 foreach (string phrase in phrases)
                 {
                     if (string.IsNullOrWhiteSpace(phrase))

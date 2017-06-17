@@ -25,9 +25,11 @@ namespace SharpDisplayManager
             (
             Id = "Speech.Phrases",
             Name = "Phrases",
-            Description = "The phrases activating your voice command."
+            Description = "The phrases activating your voice command.",
+            Multiline = true,
+            HeightInLines = 3
             )]
-        public PropertyText Phrases { get; set; } = new PropertyText { Text = "", Multiline = true, HeightInLines = 3 };
+        public string Phrases { get; set; } = "";
 
         [DataMember]
         [Ear.AttributeObjectProperty
@@ -55,18 +57,6 @@ namespace SharpDisplayManager
         protected override void DoConstruct()
         {
             base.DoConstruct();
-            if (Phrases==null)
-            {
-                // Defense, we hit this durring development but should not happen in production
-                // When internalizing empty phrases               
-                Phrases = new PropertyText { Text = "", Multiline=true, HeightInLines = 3 };
-            }
-            else
-            {
-                // Define our default here too
-                Phrases.Multiline = true;
-                Phrases.HeightInLines = 3;
-            }
             UpdateDynamicProperties();
         }
 
@@ -138,7 +128,7 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override bool IsValid()
         {
-            return !string.IsNullOrWhiteSpace(Phrases.Text) && !string.IsNullOrWhiteSpace(Semantic);
+            return !string.IsNullOrWhiteSpace(Phrases) && !string.IsNullOrWhiteSpace(Semantic);
         }
     }
 }
