@@ -57,7 +57,8 @@
         <file src="SharpLibMonitorConfig.dll" target="lib\net45\SharpLibMonitorConfig.dll" />
         <!-- Kinect -->
         <file src="Microsoft.Kinect.dll" target="lib\net45\Microsoft.Kinect.dll" />
-        <file src="Microsoft.Speech.dll" target="lib\Microsoft.Speech.dll" />
+        <!-- Speech -->
+        <file src="Microsoft.Speech.dll" target="lib\net45\Microsoft.Speech.dll" />
         <!-- Add Windows Visual Studio redist -->
         <!-- VS 2013 - needed for HDMI-CEC -->
         <!-- C Run-Time Libraries (CRT) -->
