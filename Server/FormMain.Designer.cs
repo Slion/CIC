@@ -53,7 +53,6 @@
             this.toolStripStatusLabelPower = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPageClients = new System.Windows.Forms.TabPage();
-            this.iCheckBoxStartIdleClient = new System.Windows.Forms.CheckBox();
             this.iButtonStartIdleClient = new System.Windows.Forms.Button();
             this.buttonCloseClients = new System.Windows.Forms.Button();
             this.buttonStartClient = new System.Windows.Forms.Button();
@@ -67,7 +66,6 @@
             this.maskedTextBoxTimerInterval = new System.Windows.Forms.MaskedTextBox();
             this.comboBoxDisplayType = new System.Windows.Forms.ComboBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
-            this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
             this.trackBarBrightness = new System.Windows.Forms.TrackBar();
             this.buttonFill = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
@@ -104,15 +102,11 @@
             this.checkBoxCecLogWarning = new System.Windows.Forms.CheckBox();
             this.labelHdmiPort = new System.Windows.Forms.Label();
             this.comboBoxHdmiPort = new System.Windows.Forms.ComboBox();
-            this.iCheckBoxCecEnabled = new System.Windows.Forms.CheckBox();
             this.tabPageHarmony = new System.Windows.Forms.TabPage();
             this.iButtonHarmonyConnect = new System.Windows.Forms.Button();
-            this.iCheckBoxHarmonyEnabled = new System.Windows.Forms.CheckBox();
             this.iTreeViewHarmony = new System.Windows.Forms.TreeView();
             this.label1 = new System.Windows.Forms.Label();
-            this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
-            this.tabPageKinect = new System.Windows.Forms.TabPage();
-            this.iCheckBoxKinectEnabled = new System.Windows.Forms.CheckBox();
+            this.tabPageSpeech = new System.Windows.Forms.TabPage();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
             this.buttonEventEdit = new System.Windows.Forms.Button();
             this.buttonEventDelete = new System.Windows.Forms.Button();
@@ -130,8 +124,6 @@
             this.iButtonOpenDataFolder = new System.Windows.Forms.Button();
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
-            this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.tabPageLogs = new System.Windows.Forms.TabPage();
             this.buttonClearLogs = new System.Windows.Forms.Button();
             this.richTextBoxLogs = new System.Windows.Forms.RichTextBox();
@@ -139,6 +131,15 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
+            this.iCheckBoxStartIdleClient = new System.Windows.Forms.CheckBox();
+            this.iCheckBoxCecEnabled = new System.Windows.Forms.CheckBox();
+            this.iCheckBoxHarmonyEnabled = new System.Windows.Forms.CheckBox();
+            this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
+            this.iCheckBoxEnableSpeech = new System.Windows.Forms.CheckBox();
+            this.iCheckBoxKinectEnabled = new System.Windows.Forms.CheckBox();
+            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
+            this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.iPanelDisplay.SuspendLayout();
             this.panel1.SuspendLayout();
             this.iTableLayoutPanelDisplay.SuspendLayout();
@@ -154,7 +155,7 @@
             this.tabPageCec.SuspendLayout();
             this.groupBoxCecLogOptions.SuspendLayout();
             this.tabPageHarmony.SuspendLayout();
-            this.tabPageKinect.SuspendLayout();
+            this.tabPageSpeech.SuspendLayout();
             this.tabPageEvent.SuspendLayout();
             this.tabPageApp.SuspendLayout();
             this.tabPageLogs.SuspendLayout();
@@ -324,20 +325,6 @@
             this.tabPageClients.Text = "Clients";
             this.tabPageClients.UseVisualStyleBackColor = true;
             // 
-            // iCheckBoxStartIdleClient
-            // 
-            this.iCheckBoxStartIdleClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.iCheckBoxStartIdleClient.AutoSize = true;
-            this.iCheckBoxStartIdleClient.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartIdleClient;
-            this.iCheckBoxStartIdleClient.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.iCheckBoxStartIdleClient.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartIdleClient", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 340);
-            this.iCheckBoxStartIdleClient.Name = "iCheckBoxStartIdleClient";
-            this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(145, 17);
-            this.iCheckBoxStartIdleClient.TabIndex = 22;
-            this.iCheckBoxStartIdleClient.Text = "Start idle client on startup";
-            this.iCheckBoxStartIdleClient.UseVisualStyleBackColor = true;
-            // 
             // iButtonStartIdleClient
             // 
             this.iButtonStartIdleClient.Location = new System.Drawing.Point(6, 35);
@@ -485,19 +472,6 @@
             this.buttonSuspend.UseVisualStyleBackColor = true;
             this.buttonSuspend.Click += new System.EventHandler(this.buttonSuspend_Click);
             // 
-            // checkBoxConnectOnStartup
-            // 
-            this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxConnectOnStartup.AutoSize = true;
-            this.checkBoxConnectOnStartup.Checked = global::SharpDisplayManager.Properties.Settings.Default.DisplayConnectOnStartup;
-            this.checkBoxConnectOnStartup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "DisplayConnectOnStartup", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
-            this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
-            this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
-            this.checkBoxConnectOnStartup.TabIndex = 13;
-            this.checkBoxConnectOnStartup.Text = "Connect on stratup ";
-            this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
-            // 
             // trackBarBrightness
             // 
             this.trackBarBrightness.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -621,7 +595,7 @@
             this.tabControl.Controls.Add(this.tabPageAudio);
             this.tabControl.Controls.Add(this.tabPageCec);
             this.tabControl.Controls.Add(this.tabPageHarmony);
-            this.tabControl.Controls.Add(this.tabPageKinect);
+            this.tabControl.Controls.Add(this.tabPageSpeech);
             this.tabControl.Controls.Add(this.tabPageEvent);
             this.tabControl.Controls.Add(this.tabPageApp);
             this.tabControl.Controls.Add(this.tabPageLogs);
@@ -947,25 +921,12 @@
             this.comboBoxHdmiPort.TabIndex = 19;
             this.comboBoxHdmiPort.SelectedIndexChanged += new System.EventHandler(this.comboBoxHdmiPort_SelectedIndexChanged);
             // 
-            // iCheckBoxCecEnabled
-            // 
-            this.iCheckBoxCecEnabled.AutoSize = true;
-            this.iCheckBoxCecEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.CecEnabled;
-            this.iCheckBoxCecEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "CecEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
-            this.iCheckBoxCecEnabled.Name = "iCheckBoxCecEnabled";
-            this.iCheckBoxCecEnabled.Size = new System.Drawing.Size(83, 17);
-            this.iCheckBoxCecEnabled.TabIndex = 21;
-            this.iCheckBoxCecEnabled.Text = "Enable CEC";
-            this.iCheckBoxCecEnabled.UseVisualStyleBackColor = true;
-            this.iCheckBoxCecEnabled.CheckedChanged += new System.EventHandler(this.iCheckBoxCecEnabled_CheckedChanged);
-            // 
             // tabPageHarmony
             // 
             this.tabPageHarmony.Controls.Add(this.iButtonHarmonyConnect);
-            this.tabPageHarmony.Controls.Add(this.iCheckBoxHarmonyEnabled);
             this.tabPageHarmony.Controls.Add(this.iTreeViewHarmony);
             this.tabPageHarmony.Controls.Add(this.label1);
+            this.tabPageHarmony.Controls.Add(this.iCheckBoxHarmonyEnabled);
             this.tabPageHarmony.Controls.Add(this.iTextBoxHarmonyHubAddress);
             this.tabPageHarmony.Location = new System.Drawing.Point(4, 22);
             this.tabPageHarmony.Name = "tabPageHarmony";
@@ -984,19 +945,6 @@
             this.iButtonHarmonyConnect.Text = "Open";
             this.iButtonHarmonyConnect.UseVisualStyleBackColor = true;
             this.iButtonHarmonyConnect.Click += new System.EventHandler(this.iButtonHarmonyConnect_Click);
-            // 
-            // iCheckBoxHarmonyEnabled
-            // 
-            this.iCheckBoxHarmonyEnabled.AutoSize = true;
-            this.iCheckBoxHarmonyEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.HarmonyEnabled;
-            this.iCheckBoxHarmonyEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxHarmonyEnabled.Location = new System.Drawing.Point(6, 6);
-            this.iCheckBoxHarmonyEnabled.Name = "iCheckBoxHarmonyEnabled";
-            this.iCheckBoxHarmonyEnabled.Size = new System.Drawing.Size(104, 17);
-            this.iCheckBoxHarmonyEnabled.TabIndex = 22;
-            this.iCheckBoxHarmonyEnabled.Text = "Enable Harmony";
-            this.iCheckBoxHarmonyEnabled.UseVisualStyleBackColor = true;
-            this.iCheckBoxHarmonyEnabled.CheckedChanged += new System.EventHandler(this.iCheckBoxHarmonyEnabled_CheckedChanged);
             // 
             // iTreeViewHarmony
             // 
@@ -1019,40 +967,18 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Harmony Hub Address:";
             // 
-            // iTextBoxHarmonyHubAddress
+            // tabPageSpeech
             // 
-            this.iTextBoxHarmonyHubAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTextBoxHarmonyHubAddress.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyHubAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iTextBoxHarmonyHubAddress.Location = new System.Drawing.Point(282, 23);
-            this.iTextBoxHarmonyHubAddress.Name = "iTextBoxHarmonyHubAddress";
-            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(191, 20);
-            this.iTextBoxHarmonyHubAddress.TabIndex = 8;
-            this.iTextBoxHarmonyHubAddress.Text = global::SharpDisplayManager.Properties.Settings.Default.HarmonyHubAddress;
-            // 
-            // tabPageKinect
-            // 
-            this.tabPageKinect.Controls.Add(this.iCheckBoxKinectEnabled);
-            this.tabPageKinect.Location = new System.Drawing.Point(4, 22);
-            this.tabPageKinect.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPageKinect.Name = "tabPageKinect";
-            this.tabPageKinect.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageKinect.Size = new System.Drawing.Size(752, 385);
-            this.tabPageKinect.TabIndex = 11;
-            this.tabPageKinect.Text = "Kinect";
-            this.tabPageKinect.UseVisualStyleBackColor = true;
-            // 
-            // iCheckBoxKinectEnabled
-            // 
-            this.iCheckBoxKinectEnabled.AutoSize = true;
-            this.iCheckBoxKinectEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.KinectEnabled;
-            this.iCheckBoxKinectEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.iCheckBoxKinectEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "KinectEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxKinectEnabled.Location = new System.Drawing.Point(5, 5);
-            this.iCheckBoxKinectEnabled.Name = "iCheckBoxKinectEnabled";
-            this.iCheckBoxKinectEnabled.Size = new System.Drawing.Size(92, 17);
-            this.iCheckBoxKinectEnabled.TabIndex = 23;
-            this.iCheckBoxKinectEnabled.Text = "Enable Kinect";
-            this.iCheckBoxKinectEnabled.UseVisualStyleBackColor = true;
+            this.tabPageSpeech.Controls.Add(this.iCheckBoxEnableSpeech);
+            this.tabPageSpeech.Controls.Add(this.iCheckBoxKinectEnabled);
+            this.tabPageSpeech.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSpeech.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPageSpeech.Name = "tabPageSpeech";
+            this.tabPageSpeech.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPageSpeech.Size = new System.Drawing.Size(752, 385);
+            this.tabPageSpeech.TabIndex = 11;
+            this.tabPageSpeech.Text = "Speech";
+            this.tabPageSpeech.UseVisualStyleBackColor = true;
             // 
             // tabPageEvent
             // 
@@ -1258,32 +1184,6 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
-            // checkBoxStartMinimized
-            // 
-            this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxStartMinimized.AutoSize = true;
-            this.checkBoxStartMinimized.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartMinimized;
-            this.checkBoxStartMinimized.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartMinimized", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 285);
-            this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
-            this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
-            this.checkBoxStartMinimized.TabIndex = 16;
-            this.checkBoxStartMinimized.Text = "Start minimized";
-            this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxMinimizeToTray
-            // 
-            this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxMinimizeToTray.AutoSize = true;
-            this.checkBoxMinimizeToTray.Checked = global::SharpDisplayManager.Properties.Settings.Default.MinimizeToTray;
-            this.checkBoxMinimizeToTray.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(6, 308);
-            this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
-            this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
-            this.checkBoxMinimizeToTray.TabIndex = 15;
-            this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
-            this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
-            // 
             // tabPageLogs
             // 
             this.tabPageLogs.Controls.Add(this.buttonClearLogs);
@@ -1344,6 +1244,119 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
+            // checkBoxConnectOnStartup
+            // 
+            this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxConnectOnStartup.AutoSize = true;
+            this.checkBoxConnectOnStartup.Checked = global::SharpDisplayManager.Properties.Settings.Default.DisplayConnectOnStartup;
+            this.checkBoxConnectOnStartup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "DisplayConnectOnStartup", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
+            this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
+            this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
+            this.checkBoxConnectOnStartup.TabIndex = 13;
+            this.checkBoxConnectOnStartup.Text = "Connect on stratup ";
+            this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
+            // 
+            // iCheckBoxStartIdleClient
+            // 
+            this.iCheckBoxStartIdleClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.iCheckBoxStartIdleClient.AutoSize = true;
+            this.iCheckBoxStartIdleClient.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartIdleClient;
+            this.iCheckBoxStartIdleClient.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.iCheckBoxStartIdleClient.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartIdleClient", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 340);
+            this.iCheckBoxStartIdleClient.Name = "iCheckBoxStartIdleClient";
+            this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(145, 17);
+            this.iCheckBoxStartIdleClient.TabIndex = 22;
+            this.iCheckBoxStartIdleClient.Text = "Start idle client on startup";
+            this.iCheckBoxStartIdleClient.UseVisualStyleBackColor = true;
+            // 
+            // iCheckBoxCecEnabled
+            // 
+            this.iCheckBoxCecEnabled.AutoSize = true;
+            this.iCheckBoxCecEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.CecEnabled;
+            this.iCheckBoxCecEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "CecEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
+            this.iCheckBoxCecEnabled.Name = "iCheckBoxCecEnabled";
+            this.iCheckBoxCecEnabled.Size = new System.Drawing.Size(83, 17);
+            this.iCheckBoxCecEnabled.TabIndex = 21;
+            this.iCheckBoxCecEnabled.Text = "Enable CEC";
+            this.iCheckBoxCecEnabled.UseVisualStyleBackColor = true;
+            this.iCheckBoxCecEnabled.CheckedChanged += new System.EventHandler(this.iCheckBoxCecEnabled_CheckedChanged);
+            // 
+            // iCheckBoxHarmonyEnabled
+            // 
+            this.iCheckBoxHarmonyEnabled.AutoSize = true;
+            this.iCheckBoxHarmonyEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.HarmonyEnabled;
+            this.iCheckBoxHarmonyEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxHarmonyEnabled.Location = new System.Drawing.Point(6, 6);
+            this.iCheckBoxHarmonyEnabled.Name = "iCheckBoxHarmonyEnabled";
+            this.iCheckBoxHarmonyEnabled.Size = new System.Drawing.Size(104, 17);
+            this.iCheckBoxHarmonyEnabled.TabIndex = 22;
+            this.iCheckBoxHarmonyEnabled.Text = "Enable Harmony";
+            this.iCheckBoxHarmonyEnabled.UseVisualStyleBackColor = true;
+            this.iCheckBoxHarmonyEnabled.CheckedChanged += new System.EventHandler(this.iCheckBoxHarmonyEnabled_CheckedChanged);
+            // 
+            // iTextBoxHarmonyHubAddress
+            // 
+            this.iTextBoxHarmonyHubAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTextBoxHarmonyHubAddress.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyHubAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iTextBoxHarmonyHubAddress.Location = new System.Drawing.Point(282, 23);
+            this.iTextBoxHarmonyHubAddress.Name = "iTextBoxHarmonyHubAddress";
+            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(191, 20);
+            this.iTextBoxHarmonyHubAddress.TabIndex = 8;
+            this.iTextBoxHarmonyHubAddress.Text = global::SharpDisplayManager.Properties.Settings.Default.HarmonyHubAddress;
+            // 
+            // iCheckBoxEnableSpeech
+            // 
+            this.iCheckBoxEnableSpeech.AutoSize = true;
+            this.iCheckBoxEnableSpeech.Checked = global::SharpDisplayManager.Properties.Settings.Default.SpeechEnabled;
+            this.iCheckBoxEnableSpeech.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "SpeechEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxEnableSpeech.Location = new System.Drawing.Point(3, 5);
+            this.iCheckBoxEnableSpeech.Name = "iCheckBoxEnableSpeech";
+            this.iCheckBoxEnableSpeech.Size = new System.Drawing.Size(99, 17);
+            this.iCheckBoxEnableSpeech.TabIndex = 24;
+            this.iCheckBoxEnableSpeech.Text = "Enable Speech";
+            this.iCheckBoxEnableSpeech.UseVisualStyleBackColor = true;
+            // 
+            // iCheckBoxKinectEnabled
+            // 
+            this.iCheckBoxKinectEnabled.AutoSize = true;
+            this.iCheckBoxKinectEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.KinectEnabled;
+            this.iCheckBoxKinectEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "KinectEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxKinectEnabled.Location = new System.Drawing.Point(3, 28);
+            this.iCheckBoxKinectEnabled.Name = "iCheckBoxKinectEnabled";
+            this.iCheckBoxKinectEnabled.Size = new System.Drawing.Size(92, 17);
+            this.iCheckBoxKinectEnabled.TabIndex = 23;
+            this.iCheckBoxKinectEnabled.Text = "Enable Kinect";
+            this.iCheckBoxKinectEnabled.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxStartMinimized
+            // 
+            this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxStartMinimized.AutoSize = true;
+            this.checkBoxStartMinimized.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartMinimized;
+            this.checkBoxStartMinimized.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartMinimized", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 285);
+            this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
+            this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxStartMinimized.TabIndex = 16;
+            this.checkBoxStartMinimized.Text = "Start minimized";
+            this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMinimizeToTray
+            // 
+            this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxMinimizeToTray.AutoSize = true;
+            this.checkBoxMinimizeToTray.Checked = global::SharpDisplayManager.Properties.Settings.Default.MinimizeToTray;
+            this.checkBoxMinimizeToTray.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(6, 308);
+            this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
+            this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
+            this.checkBoxMinimizeToTray.TabIndex = 15;
+            this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
+            this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1388,8 +1401,8 @@
             this.groupBoxCecLogOptions.PerformLayout();
             this.tabPageHarmony.ResumeLayout(false);
             this.tabPageHarmony.PerformLayout();
-            this.tabPageKinect.ResumeLayout(false);
-            this.tabPageKinect.PerformLayout();
+            this.tabPageSpeech.ResumeLayout(false);
+            this.tabPageSpeech.PerformLayout();
             this.tabPageEvent.ResumeLayout(false);
             this.tabPageApp.ResumeLayout(false);
             this.tabPageApp.PerformLayout();
@@ -1499,8 +1512,9 @@
         private MarqueeLabel marqueeLabelBottom;
         private System.Windows.Forms.Button iButtonOpenDataFolder;
         private System.Windows.Forms.Button iButtonOpenExeFolder;
-        private System.Windows.Forms.TabPage tabPageKinect;
+        private System.Windows.Forms.TabPage tabPageSpeech;
         private System.Windows.Forms.CheckBox iCheckBoxKinectEnabled;
+        private System.Windows.Forms.CheckBox iCheckBoxEnableSpeech;
     }
 }
 

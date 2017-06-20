@@ -188,5 +188,17 @@ namespace SharpDisplayManager.Properties {
                 this["KinectEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SpeechEnabled {
+            get {
+                return ((bool)(this["SpeechEnabled"]));
+            }
+            set {
+                this["SpeechEnabled"] = value;
+            }
+        }
     }
 }
