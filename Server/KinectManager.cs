@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,11 +42,41 @@ namespace SharpDisplayManager
         /// </summary>
         private EventSpeechDiscarded iEventSpeechDiscarded = new EventSpeechDiscarded();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void TryStartSpeechRecognition()
+        {
+            try
+            {
+                StartSpeechRecognition();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public void StartSpeechRecognition()
+        public void TryStopSpeechRecognition()
+        {
+            try
+            {
+                StopSpeechRecognition();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StartSpeechRecognition()
         {
             iKinectSensor = KinectSensor.GetDefault();
 
@@ -126,7 +157,7 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        public void StopSpeechRecognition()
+        private void StopSpeechRecognition()
         {
             if (null != iAudioStream)
             {

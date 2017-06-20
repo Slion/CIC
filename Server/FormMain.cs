@@ -415,13 +415,20 @@ namespace SharpDisplayManager
         /// </summary>
         public void CreateKinectManagerIfNeeded()
         {
-            // First clean things up
-            DestroyKinectManager();
-
-            if (Properties.Settings.Default.KinectEnabled)
+            try
             {
-                iKinectManager = new KinectManager();
-                iKinectManager.StartSpeechRecognition();
+                // First clean things up
+                DestroyKinectManager();
+
+                if (Properties.Settings.Default.KinectEnabled)
+                {
+                    iKinectManager = new KinectManager();
+                    iKinectManager.TryStartSpeechRecognition();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.ToString());
             }
         }
 
@@ -430,10 +437,17 @@ namespace SharpDisplayManager
         /// </summary>
         public void DestroyKinectManager()
         {
-            if (iKinectManager != null)
+            try
             {
-                iKinectManager.StopSpeechRecognition();
-            }            
+                if (iKinectManager != null)
+                {
+                    iKinectManager.TryStopSpeechRecognition();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.ToString());
+            }
         }
 
         /// <summary>
