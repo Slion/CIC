@@ -14,6 +14,8 @@ namespace SharpDisplayManager
     {
         ///
         private PowerManager.SettingNotifier iPowerSettingNotifier;
+        /// Designed to skip the event we get when first registering for notification
+        bool iSkipNextMonitorPowerNotification = false;
         ///
         public Cec.Client Client;
         ///This flag will only work properly if both on and off events are monitored.
@@ -38,6 +40,7 @@ namespace SharpDisplayManager
             MonitorPowerOn = true;
 
             //Create our power setting notifier and register the event we are interested in
+            iSkipNextMonitorPowerNotification = true;
             iPowerSettingNotifier = new PowerManager.SettingNotifier(aWndHandle);
             iPowerSettingNotifier.OnMonitorPowerOn += OnMonitorPowerOn;
             iPowerSettingNotifier.OnMonitorPowerOff += OnMonitorPowerOff;
@@ -81,6 +84,12 @@ namespace SharpDisplayManager
         private void OnMonitorPowerOn()
         {
             MonitorPowerOn = true;
+            if (iSkipNextMonitorPowerNotification)
+            {
+                Debug.WriteLine("Skipped OnMonitorPowerOn");
+                iSkipNextMonitorPowerNotification = false;
+                return;
+            }
             //Trigger corresponding event thus executing associated actions
             Properties.Settings.Default.EarManager.TriggerEvents<EventMonitorPowerOn>();            
         }
@@ -88,6 +97,12 @@ namespace SharpDisplayManager
         private void OnMonitorPowerOff()
         {
             MonitorPowerOn = false;
+            if (iSkipNextMonitorPowerNotification)
+            {
+                Debug.WriteLine("Skipped OnMonitorPowerOff");
+                iSkipNextMonitorPowerNotification = false;
+                return;
+            }
             //Trigger corresponding event thus executing associated actions
             Properties.Settings.Default.EarManager.TriggerEvents<EventMonitorPowerOff>();
         }

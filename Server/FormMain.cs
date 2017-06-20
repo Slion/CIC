@@ -386,6 +386,10 @@ namespace SharpDisplayManager
             {
                 CreateKinectManagerIfNeeded();
             }
+            else if (e.PropertyName.Equals("CecEnabled"))
+            {
+                ResetCec();
+            }
         }
 
         /// <summary>
@@ -1518,6 +1522,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void UpdateStatus()
         {
+            Debug.WriteLine("Status update - being");
             // Set that flag to avoid feedback loop
             iUpdatingStatus = true;
             //Load settings
@@ -1534,7 +1539,7 @@ namespace SharpDisplayManager
             checkBoxAutoStart.Checked = iStartupManager.Startup;
             
             //CEC settings
-            comboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
+            iComboBoxHdmiPort.SelectedIndex = Properties.Settings.Default.CecHdmiPort - 1;
 
             //Mini Display settings
             checkBoxReverseScreen.Checked = cds.ReverseScreen;
@@ -1656,6 +1661,7 @@ namespace SharpDisplayManager
 
             //
             iUpdatingStatus = false;
+            Debug.WriteLine("Status update - end");
         }
 
 
@@ -3005,18 +3011,13 @@ namespace SharpDisplayManager
 
         }
 
-        private void iCheckBoxCecEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-            //
-            ResetCec();
-        }
 
         private void comboBoxHdmiPort_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Save CEC HDMI port
             if (!iUpdatingStatus)
             {
-                byte index = Convert.ToByte(comboBoxHdmiPort.SelectedIndex);
+                byte index = Convert.ToByte(iComboBoxHdmiPort.SelectedIndex);
                 index++;
                 Properties.Settings.Default.CecHdmiPort = index;
             }
@@ -3040,8 +3041,7 @@ namespace SharpDisplayManager
             //
             if (Properties.Settings.Default.CecEnabled)
             {
-                iCecManager.Start(Handle, "CEC",
-                    Properties.Settings.Default.CecHdmiPort);
+                iCecManager.Start(Handle, "CEC", Properties.Settings.Default.CecHdmiPort);
 
                 SetupCecLogLevel();
             }
