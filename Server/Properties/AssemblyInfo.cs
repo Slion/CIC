@@ -35,7 +35,7 @@ using System.Resources;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 // Increasing this will cause our Visual Studio build server to publish a new Squirrel release
-[assembly: AssemblyFileVersion("2.2.5")]
+[assembly: AssemblyFileVersion("2.2.6")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
 
 // To avoid default Squirrel behaviour such as create shortcuts for every EXE we need to be Squirrel Aware
