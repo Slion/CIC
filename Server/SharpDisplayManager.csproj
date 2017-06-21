@@ -295,16 +295,16 @@
     <Compile Include="Session.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Spectrum\SpectrumBase.cs" />
-    <Compile Include="SpeechManager.cs" />
-    <Compile Include="SpeechManagerMicrosoft.cs">
+    <Compile Include="Speech\SpeechManager.cs" />
+    <Compile Include="Speech\SpeechManagerMicrosoft.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SpeechManagerMicrosoft.tt</DependentUpon>
     </Compile>
-    <Compile Include="SpeechManagerSystem.cs">
+    <Compile Include="Speech\SpeechManagerSystem.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SpeechManagerSystem.tt</DependentUpon>	  
+      <DependentUpon>SpeechManagerSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="StartupManager.cs" />
     <Compile Include="TaskScheduler.cs" />
@@ -440,14 +440,12 @@
     <Content Include="..\Publish\DoSquirrelRelease.ps1">
       <Link>Publish\DoSquirrelRelease.ps1</Link>
     </Content>
-    <Content Include="SpeechManager.inc">
-      <LastGenOutput>SpeechManager.cs</LastGenOutput>
-    </Content>
-    <Content Include="SpeechManagerMicrosoft.tt">
+    <Content Include="Speech\SpeechManager.inc" />
+    <Content Include="Speech\SpeechManagerMicrosoft.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SpeechManagerMicrosoft.cs</LastGenOutput>
     </Content>
-    <Content Include="SpeechManagerSystem.tt">
+    <Content Include="Speech\SpeechManagerSystem.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SpeechManagerSystem.cs</LastGenOutput>
     </Content>
