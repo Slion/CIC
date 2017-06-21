@@ -200,5 +200,17 @@ namespace SharpDisplayManager.Properties {
                 this["SpeechEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseMicrosoftSpeech {
+            get {
+                return ((bool)(this["UseMicrosoftSpeech"]));
+            }
+            set {
+                this["UseMicrosoftSpeech"] = value;
+            }
+        }
     }
 }

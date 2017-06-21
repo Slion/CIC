@@ -208,6 +208,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -241,7 +242,6 @@
     <Compile Include="Events\EventSpeechDiscarded.cs" />
     <Compile Include="Events\EventSpeechRecognized.cs" />
     <Compile Include="KinectAudioStream.cs" />
-    <Compile Include="SpeechManager.cs" />
     <Compile Include="Spectrum\BasicSpectrumProvider.cs" />
     <Compile Include="CbtHook.cs" />
     <Compile Include="CecClient.cs" />
@@ -295,6 +295,17 @@
     <Compile Include="Session.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Spectrum\SpectrumBase.cs" />
+    <Compile Include="SpeechManager.cs" />
+    <Compile Include="SpeechManagerMicrosoft.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpeechManagerMicrosoft.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpeechManagerSystem.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpeechManagerSystem.tt</DependentUpon>	  
+    </Compile>
     <Compile Include="StartupManager.cs" />
     <Compile Include="TaskScheduler.cs" />
     <Compile Include="Win32API.cs" />
@@ -429,10 +440,23 @@
     <Content Include="..\Publish\DoSquirrelRelease.ps1">
       <Link>Publish\DoSquirrelRelease.ps1</Link>
     </Content>
+    <Content Include="SpeechManager.inc">
+      <LastGenOutput>SpeechManager.cs</LastGenOutput>
+    </Content>
+    <Content Include="SpeechManagerMicrosoft.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SpeechManagerMicrosoft.cs</LastGenOutput>
+    </Content>
+    <Content Include="SpeechManagerSystem.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SpeechManagerSystem.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Resources\cic.ico" />
     <EmbeddedResource Include="Resources\record.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

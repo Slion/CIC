@@ -114,7 +114,7 @@ namespace SharpDisplayManager
         // Audio
         private AudioManager iAudioManager;
         // Kinect
-        public SpeechManager iKinectManager;
+        public SpeechManager iSpeechManager;
 
         //Network
         private NetworkManager iNetworkManager;
@@ -244,7 +244,7 @@ namespace SharpDisplayManager
             CreateAudioManager();
 
             //Kinect
-            CreateKinectManagerIfNeeded();
+            CreateSpeechManagerIfNeeded();
 
             //Network
             iNetworkManager = new NetworkManager();
@@ -382,9 +382,9 @@ namespace SharpDisplayManager
         {
             Trace.WriteLine($"Settings: property changed {e.PropertyName}");
 
-            if (e.PropertyName.Equals("KinectEnabled"))
+            if (e.PropertyName.Equals("SpeechEnabled") || e.PropertyName.Equals("UseMicrosoftSpeech"))
             {
-                CreateKinectManagerIfNeeded();
+                CreateSpeechManagerIfNeeded();
             }
             else if (e.PropertyName.Equals("CecEnabled"))
             {
@@ -417,17 +417,29 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        public void CreateKinectManagerIfNeeded()
+        public void CreateSpeechManagerIfNeeded()
         {
             try
             {
                 // First clean things up
-                DestroyKinectManager();
+                DestroySpeechManager();
 
                 if (Properties.Settings.Default.KinectEnabled)
                 {
-                    iKinectManager = new SpeechManager();
-                    iKinectManager.TryStartSpeechRecognition();
+                    // Instanciate the proper Speech Manager
+                    if (Properties.Settings.Default.UseMicrosoftSpeech)
+                    {
+                        // Typically used for Kinect
+                        // Needs user to install it on its machine
+                        iSpeechManager = new SpeechManagerMicrosoft();
+                    }
+                    else
+                    {
+                        // Default, provided with Windows 
+                        iSpeechManager = new SpeechManagerSystem();
+                    }
+                    
+                    iSpeechManager.TryStartSpeechRecognition();
                 }
             }
             catch (Exception ex)
@@ -439,13 +451,13 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        public void DestroyKinectManager()
+        public void DestroySpeechManager()
         {
             try
             {
-                if (iKinectManager != null)
+                if (iSpeechManager != null)
                 {
-                    iKinectManager.TryStopSpeechRecognition();
+                    iSpeechManager.TryStopSpeechRecognition();
                 }
             }
             catch (Exception ex)
@@ -1756,7 +1768,7 @@ namespace SharpDisplayManager
             iCecManager.Stop();
             iNetworkManager.Dispose();
             DestroyAudioManager();
-            DestroyKinectManager();
+            DestroySpeechManager();
             CloseDisplayConnection();
             StopServer();
             e.Cancel = iClosing;

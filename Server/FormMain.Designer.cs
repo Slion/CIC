@@ -112,6 +112,7 @@
             this.iCheckBoxHarmonyEnabled = new System.Windows.Forms.CheckBox();
             this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
             this.tabPageSpeech = new System.Windows.Forms.TabPage();
+            this.iCheckBoxUseMicrosoftSpeech = new System.Windows.Forms.CheckBox();
             this.iCheckBoxEnableSpeech = new System.Windows.Forms.CheckBox();
             this.iCheckBoxKinectEnabled = new System.Windows.Forms.CheckBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
@@ -1031,6 +1032,7 @@
             // 
             // tabPageSpeech
             // 
+            this.tabPageSpeech.Controls.Add(this.iCheckBoxUseMicrosoftSpeech);
             this.tabPageSpeech.Controls.Add(this.iCheckBoxEnableSpeech);
             this.tabPageSpeech.Controls.Add(this.iCheckBoxKinectEnabled);
             this.tabPageSpeech.Location = new System.Drawing.Point(4, 22);
@@ -1041,6 +1043,20 @@
             this.tabPageSpeech.TabIndex = 11;
             this.tabPageSpeech.Text = "Speech";
             this.tabPageSpeech.UseVisualStyleBackColor = true;
+            // 
+            // iCheckBoxUseMicrosoftSpeech
+            // 
+            this.iCheckBoxUseMicrosoftSpeech.AutoSize = true;
+            this.iCheckBoxUseMicrosoftSpeech.Checked = global::SharpDisplayManager.Properties.Settings.Default.UseMicrosoftSpeech;
+            this.iCheckBoxUseMicrosoftSpeech.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "UseMicrosoftSpeech", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxUseMicrosoftSpeech.Location = new System.Drawing.Point(3, 28);
+            this.iCheckBoxUseMicrosoftSpeech.Name = "iCheckBoxUseMicrosoftSpeech";
+            this.iCheckBoxUseMicrosoftSpeech.Size = new System.Drawing.Size(131, 17);
+            this.iCheckBoxUseMicrosoftSpeech.TabIndex = 25;
+            this.iCheckBoxUseMicrosoftSpeech.Text = "Use Microsoft.Speech";
+            this.toolTip.SetToolTip(this.iCheckBoxUseMicrosoftSpeech, "Use Microsoft.Speech instead of System.Speech. Requires installation of Microsoft" +
+        " Speech Platform 11 and corresponding recognizers.");
+            this.iCheckBoxUseMicrosoftSpeech.UseVisualStyleBackColor = true;
             // 
             // iCheckBoxEnableSpeech
             // 
@@ -1059,12 +1075,13 @@
             this.iCheckBoxKinectEnabled.AutoSize = true;
             this.iCheckBoxKinectEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.KinectEnabled;
             this.iCheckBoxKinectEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "KinectEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxKinectEnabled.Location = new System.Drawing.Point(3, 28);
+            this.iCheckBoxKinectEnabled.Location = new System.Drawing.Point(5, 363);
             this.iCheckBoxKinectEnabled.Name = "iCheckBoxKinectEnabled";
             this.iCheckBoxKinectEnabled.Size = new System.Drawing.Size(92, 17);
             this.iCheckBoxKinectEnabled.TabIndex = 23;
             this.iCheckBoxKinectEnabled.Text = "Enable Kinect";
             this.iCheckBoxKinectEnabled.UseVisualStyleBackColor = true;
+            this.iCheckBoxKinectEnabled.Visible = false;
             // 
             // tabPageEvent
             // 
@@ -1514,6 +1531,7 @@
         private System.Windows.Forms.TabPage tabPageSpeech;
         private System.Windows.Forms.CheckBox iCheckBoxKinectEnabled;
         private System.Windows.Forms.CheckBox iCheckBoxEnableSpeech;
+        private System.Windows.Forms.CheckBox iCheckBoxUseMicrosoftSpeech;
     }
 }
 

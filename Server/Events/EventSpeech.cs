@@ -118,7 +118,7 @@ namespace SharpDisplayManager
             {
                 // Leaving edit mode
                 // Create our kinect manager if needed
-                Program.iFormMain.CreateKinectManagerIfNeeded();
+                Program.iFormMain.CreateSpeechManagerIfNeeded();
 
             }
         }
@@ -132,7 +132,7 @@ namespace SharpDisplayManager
             {
                 // Enter edit mode
                 // Destroy our kinect manager while editing events
-                Program.iFormMain.DestroyKinectManager();
+                Program.iFormMain.DestroySpeechManager();
             }
         }
 
