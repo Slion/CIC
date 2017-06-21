@@ -8,10 +8,9 @@ using System.Runtime.InteropServices;
 namespace SharpDisplayManager
 {
     /**
-     * TODO: Generalize speech recognition for it to work without Kinect?
      * Contains some code taken from Microsoft Samples Kinect SpeechBasics.
      */
-    public class KinectManager
+    public class SpeechManager
     {
         /// <summary>
         /// Speech recognition engine using audio data from Kinect.

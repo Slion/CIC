@@ -114,7 +114,7 @@ namespace SharpDisplayManager
         // Audio
         private AudioManager iAudioManager;
         // Kinect
-        public KinectManager iKinectManager;
+        public SpeechManager iKinectManager;
 
         //Network
         private NetworkManager iNetworkManager;
@@ -426,7 +426,7 @@ namespace SharpDisplayManager
 
                 if (Properties.Settings.Default.KinectEnabled)
                 {
-                    iKinectManager = new KinectManager();
+                    iKinectManager = new SpeechManager();
                     iKinectManager.TryStartSpeechRecognition();
                 }
             }
