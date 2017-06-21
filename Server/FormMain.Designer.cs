@@ -114,7 +114,6 @@
             this.tabPageSpeech = new System.Windows.Forms.TabPage();
             this.iCheckBoxUseMicrosoftSpeech = new System.Windows.Forms.CheckBox();
             this.iCheckBoxEnableSpeech = new System.Windows.Forms.CheckBox();
-            this.iCheckBoxKinectEnabled = new System.Windows.Forms.CheckBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
             this.buttonEventEdit = new System.Windows.Forms.Button();
             this.buttonEventDelete = new System.Windows.Forms.Button();
@@ -141,6 +140,7 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.iLabelSpeechRecognizerCulture = new System.Windows.Forms.Label();
             this.iPanelDisplay.SuspendLayout();
             this.panel1.SuspendLayout();
             this.iTableLayoutPanelDisplay.SuspendLayout();
@@ -1032,9 +1032,9 @@
             // 
             // tabPageSpeech
             // 
+            this.tabPageSpeech.Controls.Add(this.iLabelSpeechRecognizerCulture);
             this.tabPageSpeech.Controls.Add(this.iCheckBoxUseMicrosoftSpeech);
             this.tabPageSpeech.Controls.Add(this.iCheckBoxEnableSpeech);
-            this.tabPageSpeech.Controls.Add(this.iCheckBoxKinectEnabled);
             this.tabPageSpeech.Location = new System.Drawing.Point(4, 22);
             this.tabPageSpeech.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageSpeech.Name = "tabPageSpeech";
@@ -1069,19 +1069,6 @@
             this.iCheckBoxEnableSpeech.TabIndex = 24;
             this.iCheckBoxEnableSpeech.Text = "Enable Speech";
             this.iCheckBoxEnableSpeech.UseVisualStyleBackColor = true;
-            // 
-            // iCheckBoxKinectEnabled
-            // 
-            this.iCheckBoxKinectEnabled.AutoSize = true;
-            this.iCheckBoxKinectEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.KinectEnabled;
-            this.iCheckBoxKinectEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "KinectEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxKinectEnabled.Location = new System.Drawing.Point(5, 363);
-            this.iCheckBoxKinectEnabled.Name = "iCheckBoxKinectEnabled";
-            this.iCheckBoxKinectEnabled.Size = new System.Drawing.Size(92, 17);
-            this.iCheckBoxKinectEnabled.TabIndex = 23;
-            this.iCheckBoxKinectEnabled.Text = "Enable Kinect";
-            this.iCheckBoxKinectEnabled.UseVisualStyleBackColor = true;
-            this.iCheckBoxKinectEnabled.Visible = false;
             // 
             // tabPageEvent
             // 
@@ -1373,6 +1360,15 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
+            // iLabelSpeechRecognizerCulture
+            // 
+            this.iLabelSpeechRecognizerCulture.AutoSize = true;
+            this.iLabelSpeechRecognizerCulture.Location = new System.Drawing.Point(3, 370);
+            this.iLabelSpeechRecognizerCulture.Name = "iLabelSpeechRecognizerCulture";
+            this.iLabelSpeechRecognizerCulture.Size = new System.Drawing.Size(134, 13);
+            this.iLabelSpeechRecognizerCulture.TabIndex = 26;
+            this.iLabelSpeechRecognizerCulture.Text = "Speech recognizer culture:";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1529,9 +1525,9 @@
         private System.Windows.Forms.Button iButtonOpenDataFolder;
         private System.Windows.Forms.Button iButtonOpenExeFolder;
         private System.Windows.Forms.TabPage tabPageSpeech;
-        private System.Windows.Forms.CheckBox iCheckBoxKinectEnabled;
         private System.Windows.Forms.CheckBox iCheckBoxEnableSpeech;
         private System.Windows.Forms.CheckBox iCheckBoxUseMicrosoftSpeech;
+        private System.Windows.Forms.Label iLabelSpeechRecognizerCulture;
     }
 }
 

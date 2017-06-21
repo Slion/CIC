@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -20,6 +21,11 @@ namespace SharpDisplayManager
         /// 
         /// </summary>
         protected EventSpeechDiscarded iEventSpeechDiscarded = new EventSpeechDiscarded();
+
+        /// <summary>
+        /// Our recognizer culture.
+        /// </summary>
+        public CultureInfo Culture = CultureInfo.CurrentCulture;
 
         /// <summary>
         /// 
@@ -54,12 +60,13 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected abstract void StartSpeechRecognition();
+        public abstract void StartSpeechRecognition();
 
         /// <summary>
         /// 
         /// </summary>
-        protected abstract void StopSpeechRecognition();
+        public abstract void StopSpeechRecognition();
+
 
     }
 }

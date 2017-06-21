@@ -438,8 +438,10 @@ namespace SharpDisplayManager
                         // Default, provided with Windows 
                         iSpeechManager = new SpeechManagerSystem();
                     }
-                    
-                    iSpeechManager.TryStartSpeechRecognition();
+
+                    iLabelSpeechRecognizerCulture.Text = "Culture: none";
+                    iSpeechManager.StartSpeechRecognition();
+                    iLabelSpeechRecognizerCulture.Text = "Culture: " + iSpeechManager.Culture.Name;
                 }
             }
             catch (Exception ex)
@@ -457,7 +459,7 @@ namespace SharpDisplayManager
             {
                 if (iSpeechManager != null)
                 {
-                    iSpeechManager.TryStopSpeechRecognition();
+                    iSpeechManager.StopSpeechRecognition();
                 }
             }
             catch (Exception ex)

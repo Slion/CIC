@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Globalization;
 using <#= SpeechType #>.Speech.Recognition;
 
 namespace SharpDisplayManager
@@ -18,9 +19,9 @@ namespace SharpDisplayManager
         /// <summary>
         /// 
         /// </summary>
-        protected override void StartSpeechRecognition()
+        public override void StartSpeechRecognition()
         {
-            RecognizerInfo ri = TryGetKinectRecognizer();
+            RecognizerInfo ri = GetKinectRecognizer();
 
             if (null == ri)
             {
@@ -57,6 +58,8 @@ namespace SharpDisplayManager
                 return;
             }
 
+            // Set our culture
+            Culture = ri.Culture;
             var gb = new GrammarBuilder { Culture = ri.Culture };
             gb.Append(choices);
 
@@ -67,15 +70,18 @@ namespace SharpDisplayManager
             iSpeechEngine.SpeechRecognized += this.SpeechRecognized;
             iSpeechEngine.SpeechRecognitionRejected += this.SpeechRejected;
 
-            iSpeechEngine.SetInputToDefaultAudioDevice();
+            // For long recognition sessions (a few hours or more), it may be beneficial to turn off adaptation of the acoustic model. 
+            // This will prevent recognition accuracy from degrading over time.
+            iSpeechEngine.UpdateRecognizerSetting("AdaptationOn", 0);
 
+            iSpeechEngine.SetInputToDefaultAudioDevice();
             iSpeechEngine.RecognizeAsync(RecognizeMode.Multiple);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        protected override void StopSpeechRecognition()
+        public override void StopSpeechRecognition()
         {
 
             if (null != iSpeechEngine)
@@ -95,33 +101,32 @@ namespace SharpDisplayManager
         /// <returns>
         /// RecognizerInfo if found, <code>null</code> otherwise.
         /// </returns>
-        private static RecognizerInfo TryGetKinectRecognizer()
+        private static RecognizerInfo GetKinectRecognizer()
         {
-            IEnumerable<RecognizerInfo> recognizers;
+            IEnumerable<RecognizerInfo> recognizers = SpeechRecognitionEngine.InstalledRecognizers();
 
-            // This is required to catch the case when an expected recognizer is not installed.
-            // By default - the x86 Speech Runtime is always expected. 
-            try
-            {
-                recognizers = SpeechRecognitionEngine.InstalledRecognizers();
-            }
-            catch (COMException)
-            {
-                Debug.Print("Warning: Can't find any speech recognizers.");
-                return null;
-            }
+            CultureInfo ci = CultureInfo.CurrentCulture;
+            RecognizerInfo ri = null;
 
             foreach (RecognizerInfo recognizer in recognizers)
             {
                 string value;
                 //recognizer.AdditionalInfo.TryGetValue("Kinect", out value);
                 //if ("True".Equals(value, StringComparison.OrdinalIgnoreCase) && "en-US".Equals(recognizer.Culture.Name, StringComparison.OrdinalIgnoreCase))
+                
+                if (ri==null)
                 {
+                    ri = recognizer;
+                }
+                else if (recognizer.Name.Equals(ci.Name))
+                {
+                    // We have a recognizer matching our current culture
                     return recognizer;
                 }
             }
 
-            return null;
+            // TODO: throw an exception if null
+            return ri;
         }
 
 
