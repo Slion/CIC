@@ -2,5 +2,4 @@
 
 # Command & Information Center
 
-
-See project [description on MediaPortal](https://forum.team-mediaportal.com/threads/home-theater-command-information-center.127180/).
+Please visit our [CIC home page](https://slions.net/resources/command-information-center.4/) for more information.
