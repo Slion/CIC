@@ -28,6 +28,12 @@ namespace SharpDisplayManager
                 return;
             }
 
+            // Check if selected recognizer is for Kinect
+            string value;
+            ri.AdditionalInfo.TryGetValue("Kinect", out value);
+            IsKinectRecognizer = "True".Equals(value, StringComparison.OrdinalIgnoreCase);
+
+
             iSpeechEngine = new SpeechRecognitionEngine(ri.Id);
 
             // Create a speech recognition grammar based on our speech events
@@ -115,15 +121,13 @@ namespace SharpDisplayManager
 
             foreach (RecognizerInfo recognizer in recognizers)
             {
-                string value;
-                //recognizer.AdditionalInfo.TryGetValue("Kinect", out value);
-                //if ("True".Equals(value, StringComparison.OrdinalIgnoreCase) && "en-US".Equals(recognizer.Culture.Name, StringComparison.OrdinalIgnoreCase))
-                
                 if (ri==null)
                 {
+                    // Use the first one we found if none are perfect match
                     ri = recognizer;
                 }
-                else if (recognizer.Name.Equals(ci.Name))
+
+                if (recognizer.Name.Equals(ci.Name))
                 {
                     // We have a recognizer matching our current culture
                     return recognizer;

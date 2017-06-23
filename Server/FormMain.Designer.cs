@@ -112,6 +112,7 @@
             this.iCheckBoxHarmonyEnabled = new System.Windows.Forms.CheckBox();
             this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
             this.tabPageSpeech = new System.Windows.Forms.TabPage();
+            this.iLabelSpeechRecognizerCulture = new System.Windows.Forms.Label();
             this.iCheckBoxUseMicrosoftSpeech = new System.Windows.Forms.CheckBox();
             this.iCheckBoxEnableSpeech = new System.Windows.Forms.CheckBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
@@ -140,7 +141,6 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.iLabelSpeechRecognizerCulture = new System.Windows.Forms.Label();
             this.iPanelDisplay.SuspendLayout();
             this.panel1.SuspendLayout();
             this.iTableLayoutPanelDisplay.SuspendLayout();
@@ -1044,6 +1044,15 @@
             this.tabPageSpeech.Text = "Speech";
             this.tabPageSpeech.UseVisualStyleBackColor = true;
             // 
+            // iLabelSpeechRecognizerCulture
+            // 
+            this.iLabelSpeechRecognizerCulture.AutoSize = true;
+            this.iLabelSpeechRecognizerCulture.Location = new System.Drawing.Point(3, 370);
+            this.iLabelSpeechRecognizerCulture.Name = "iLabelSpeechRecognizerCulture";
+            this.iLabelSpeechRecognizerCulture.Size = new System.Drawing.Size(70, 13);
+            this.iLabelSpeechRecognizerCulture.TabIndex = 26;
+            this.iLabelSpeechRecognizerCulture.Text = "Culture: none";
+            // 
             // iCheckBoxUseMicrosoftSpeech
             // 
             this.iCheckBoxUseMicrosoftSpeech.AutoSize = true;
@@ -1359,15 +1368,6 @@
             // openFileDialog
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
-            // 
-            // iLabelSpeechRecognizerCulture
-            // 
-            this.iLabelSpeechRecognizerCulture.AutoSize = true;
-            this.iLabelSpeechRecognizerCulture.Location = new System.Drawing.Point(3, 370);
-            this.iLabelSpeechRecognizerCulture.Name = "iLabelSpeechRecognizerCulture";
-            this.iLabelSpeechRecognizerCulture.Size = new System.Drawing.Size(134, 13);
-            this.iLabelSpeechRecognizerCulture.TabIndex = 26;
-            this.iLabelSpeechRecognizerCulture.Text = "Speech recognizer culture:";
             // 
             // FormMain
             // 

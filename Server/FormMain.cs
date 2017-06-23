@@ -424,7 +424,7 @@ namespace SharpDisplayManager
                 // First clean things up
                 DestroySpeechManager();
 
-                if (Properties.Settings.Default.KinectEnabled)
+                if (Properties.Settings.Default.SpeechEnabled)
                 {
                     // Instanciate the proper Speech Manager
                     if (Properties.Settings.Default.UseMicrosoftSpeech)
@@ -439,9 +439,12 @@ namespace SharpDisplayManager
                         iSpeechManager = new SpeechManagerSystem();
                     }
 
-                    iLabelSpeechRecognizerCulture.Text = "Culture: none";
                     iSpeechManager.StartSpeechRecognition();
                     iLabelSpeechRecognizerCulture.Text = "Culture: " + iSpeechManager.Culture.Name;
+                    if (iSpeechManager.IsKinectRecognizer)
+                    {
+                        iLabelSpeechRecognizerCulture.Text += " - Kinect";
+                    }
                 }
             }
             catch (Exception ex)
@@ -466,6 +469,8 @@ namespace SharpDisplayManager
             {
                 Debug.Print(ex.ToString());
             }
+
+            iLabelSpeechRecognizerCulture.Text = "Culture: none";
         }
 
         /// <summary>

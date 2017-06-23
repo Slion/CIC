@@ -23,6 +23,11 @@ namespace SharpDisplayManager
         protected EventSpeechDiscarded iEventSpeechDiscarded = new EventSpeechDiscarded();
 
         /// <summary>
+        /// Tells if the selected recognizer is a intended for Kinect.
+        /// </summary>
+        public bool IsKinectRecognizer = false;
+
+        /// <summary>
         /// Our recognizer culture.
         /// </summary>
         public CultureInfo Culture = CultureInfo.CurrentCulture;
