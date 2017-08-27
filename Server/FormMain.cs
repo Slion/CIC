@@ -3822,10 +3822,5 @@ namespace SharpDisplayManager
             // I reckon this happens only once per session.
             SquirrelUpdate(true);
         }
-
-        private async void iCheckBoxEnableFritzBox_CheckedChanged(object sender, EventArgs e)
-        {
-            //await CreateFritzBoxClient();
-        }
     }
 }

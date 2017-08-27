@@ -239,6 +239,8 @@
     <Compile Include="Actions\ActionDisplayMessage.cs" />
     <Compile Include="Actions\ActionFritzBoxDevice.cs" />
     <Compile Include="Actions\ActionFritzBoxSwitch.cs" />
+    <Compile Include="Actions\ActionFritzBoxSwitchOff.cs" />
+    <Compile Include="Actions\ActionFritzBoxSwitchOn.cs" />
     <Compile Include="Actions\ActionFritzBoxSwitchToggle.cs" />
     <Compile Include="Actions\ActionHarmonyCommand.cs" />
     <Compile Include="Actions\ActionMonitorBrightness.cs" />

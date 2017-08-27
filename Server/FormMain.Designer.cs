@@ -1397,7 +1397,6 @@
             this.iCheckBoxEnableFritzBox.TabIndex = 23;
             this.iCheckBoxEnableFritzBox.Text = "Enable FRITZ!Box";
             this.iCheckBoxEnableFritzBox.UseVisualStyleBackColor = true;
-            this.iCheckBoxEnableFritzBox.CheckedChanged += new System.EventHandler(this.iCheckBoxEnableFritzBox_CheckedChanged);
             // 
             // iTextBoxPassword
             // 
