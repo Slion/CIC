@@ -26,6 +26,7 @@ using Hid = SharpLib.Hid;
 using Squirrel;
 using System.Configuration;
 using System.IO;
+using SmartHome = SharpLib.FritzBox.SmartHome;
 
 namespace SharpDisplayManager
 {
@@ -45,6 +46,10 @@ namespace SharpDisplayManager
         /// </summary>
         public static HarmonyHub.Config HarmonyConfig { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static SmartHome.Client FritzBoxClient { get; set; }
 
         /// <summary>
         /// Use notably to handle green start key from IR remote control

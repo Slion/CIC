@@ -36,7 +36,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="HarmonyHubAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">HarmonyHub</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="LogitechAuthToken" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -49,6 +49,18 @@
     </Setting>
     <Setting Name="UseMicrosoftSpeech" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FritzBoxEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FritzBoxUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://fritz.box/</Value>
+    </Setting>
+    <Setting Name="FritzBoxLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FritzBoxPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

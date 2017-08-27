@@ -80,6 +80,7 @@ namespace SharpLib.Ear
         public enum State
         {
             Rest=0,
+            PrepareEdit,
             Edit
         }
 
@@ -165,12 +166,12 @@ namespace SharpLib.Ear
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-
         /// <summary>
         /// Invoke our event.
         /// </summary>
         /// <param name="name"></param>
-        protected void OnPropertyChanged(string name)
+        /// TODO: Set back as protected at some point
+        public void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }

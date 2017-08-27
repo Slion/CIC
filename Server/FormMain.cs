@@ -36,6 +36,7 @@ using System.Deployment.Application;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Configuration;
 //CSCore
 using CSCore;
 using CSCore.Win32;
@@ -57,7 +58,7 @@ using SharpLib.Display;
 using Ear = SharpLib.Ear;
 using SharpLib.Win32;
 using Squirrel;
-using System.Configuration;
+using SmartHome = SharpLib.FritzBox.SmartHome;
 
 namespace SharpDisplayManager
 {
@@ -220,7 +221,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             //Check if we are running a Click Once deployed application
             //TODO: remove ClickOnce stuff 
@@ -258,6 +259,9 @@ namespace SharpDisplayManager
 
             //Harmony
             ResetHarmonyAsync();
+
+            //FRITZ!Box
+            await CreateFritzBoxClient();
 
             //Setup Events
             PopulateTreeViewEvents();
@@ -378,7 +382,7 @@ namespace SharpDisplayManager
         }
 
 
-        private void PropertyChangedEventHandler(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private async void PropertyChangedEventHandler(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Trace.WriteLine($"Settings: property changed {e.PropertyName}");
 
@@ -390,8 +394,14 @@ namespace SharpDisplayManager
             {
                 ResetCec();
             }
+            else if (e.PropertyName.Equals("FritzBoxEnabled"))
+            {
+                await CreateFritzBoxClient();
+            }
         }
 
+
+    
         /// <summary>
         /// 
         /// </summary>
@@ -2535,7 +2545,7 @@ namespace SharpDisplayManager
 
         /// <summary>
         /// Update our display table layout.
-        /// Will instanciate every field control as defined by our client.
+        /// Will instantiate every field control as defined by our client.
         /// Fields must be specified by rows from the left.
         /// </summary>
         /// <param name="aLayout"></param>
@@ -3098,7 +3108,7 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void iButtonHarmonyConnect_Click(object sender, EventArgs e)
         {
-            // User is explicitaly trying to connect
+            // User is explicitly trying to connect
             //Reset Harmony Hub connection forcing authentication
             ResetHarmonyAsync(true);
         }
@@ -3527,6 +3537,107 @@ namespace SharpDisplayManager
             ((TreeView) sender).Focus();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private async Task CreateFritzBoxClient()
+        {
+            DestroyFritzBoxClient();
+
+            if (!Properties.Settings.Default.FritzBoxEnabled)
+            {
+                return;
+            }
+            
+            Program.FritzBoxClient = new SmartHome.Client(Properties.Settings.Default.FritzBoxUrl);
+            iTextBoxFritzBoxUrl.Enabled = false; // Can't change URL of existing client
+            await Program.FritzBoxClient.Authenticate(Properties.Settings.Default.FritzBoxLogin, Properties.Settings.Default.FritzBoxPassword);
+            await PopulateFritzBoxTreeView();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void DestroyFritzBoxClient()
+        {
+            if (Program.FritzBoxClient != null)
+            {
+                Program.FritzBoxClient.Dispose();
+                Program.FritzBoxClient = null;
+            }
+
+            //Allow updating the URL again
+            iTextBoxFritzBoxUrl.Enabled = true;
+            iTreeViewFritzBox.Nodes.Clear();
+        }
+
+        private async Task PopulateFritzBoxTreeView()
+        {
+            SmartHome.DeviceList deviceList = await Program.FritzBoxClient.GetDeviceList();
+            PopulateDevicesTree(deviceList);
+        }
+
+
+        /// <summary>
+        /// Populate our tree view with our devices information.
+        /// </summary>
+        /// <param name="aDeviceList"></param>
+        void PopulateDevicesTree(SmartHome.DeviceList aDeviceList)
+        {
+            iTreeViewFritzBox.Nodes.Clear();
+
+            // For each device
+            foreach (SmartHome.Device device in aDeviceList.Devices)
+            {
+                // Add a new node
+                TreeNode deviceNode = iTreeViewFritzBox.Nodes.Add(device.Id, $"{device.Name} - {device.ProductName} by {device.Manufacturer}");
+                deviceNode.Tag = device;
+
+                // Check the functions of that device
+                foreach (SmartHome.Function f in Enum.GetValues(typeof(SmartHome.Function)))
+                {
+                    if (device.Has(f))
+                    {
+                        // Add a new node for each supported function
+                        TreeNode functionNode = deviceNode.Nodes.Add(f.ToString());
+                        if (f == SmartHome.Function.TemperatureSensor)
+                        {
+                            // Add temperature sensor data
+                            functionNode.Nodes.Add($"{device.Temperature.Reading} °C");
+                            functionNode.Nodes.Add($"Offset: {device.Temperature.OffsetReading} °C");
+                        }
+                        else if (f == SmartHome.Function.SwitchSocket)
+                        {
+                            // Add switch socket data
+                            functionNode.Nodes.Add($"Mode: {device.Switch.Mode.ToString()}");
+                            functionNode.Nodes.Add($"Switched {device.Switch.State.ToString()}");
+                            functionNode.Nodes.Add($"Lock: {device.Switch.Lock.ToString()}");
+                            functionNode.Nodes.Add($"Device lock: {device.Switch.DeviceLock.ToString()}");
+                        }
+                        else if (f == SmartHome.Function.RadiatorThermostat)
+                        {
+                            // Add radiator thermostat data                            
+                            functionNode.Nodes.Add($"Comfort temperature: {device.Thermostat.ComfortTemperatureInCelsius.ToString()} °C");
+                            functionNode.Nodes.Add($"Economy temperature: {device.Thermostat.EconomyTemperatureInCelsius.ToString()} °C");
+                            functionNode.Nodes.Add($"Current temperature: {device.Thermostat.CurrentTemperatureInCelsius.ToString()} °C");
+                            functionNode.Nodes.Add($"Target temperature: {device.Thermostat.TargetTemperatureInCelsius.ToString()} °C");
+                            functionNode.Nodes.Add($"Battery {device.Thermostat.Battery.ToString()}");
+                            functionNode.Nodes.Add($"Lock: {device.Thermostat.Lock.ToString()}");
+                            functionNode.Nodes.Add($"Device lock: {device.Thermostat.DeviceLock.ToString()}");
+                        }
+                        else if (f == SmartHome.Function.PowerMeter)
+                        {
+                            // Add power meter data
+                            functionNode.Nodes.Add($"Power: {device.PowerMeter.PowerInWatt}W");
+                            functionNode.Nodes.Add($"Energy: {device.PowerMeter.EnergyInKiloWattPerHour}kWh");
+                        }
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// Called whenever we loose connection with our HarmonyHub.
         /// </summary>
@@ -3712,5 +3823,9 @@ namespace SharpDisplayManager
             SquirrelUpdate(true);
         }
 
+        private async void iCheckBoxEnableFritzBox_CheckedChanged(object sender, EventArgs e)
+        {
+            //await CreateFritzBoxClient();
+        }
     }
 }

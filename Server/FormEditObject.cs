@@ -108,7 +108,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void comboBoxActionType_SelectedIndexChanged(object sender, EventArgs e)
+        private void iComboBoxObjectType_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Instantiate an action corresponding to our type
             Type objectType = ((ItemObjectType) iComboBoxObjectType.SelectedItem).Type;
@@ -214,7 +214,9 @@ namespace SharpDisplayManager
                 PropertyComboBox value = (PropertyComboBox)aInfo.GetValue(aObject);
                 value.CurrentItem = currentItem;
                 //Not strictly needed but makes sure the set method is called
-                aInfo.SetValue(aObject, value);                
+                aInfo.SetValue(aObject, value);
+                //
+                aObject.OnPropertyChanged(aInfo.Name);              
             }
             else if (aInfo.PropertyType == typeof(PropertyButton))
             {
@@ -362,8 +364,11 @@ namespace SharpDisplayManager
                     ctrl.Items.Add(item);
                 }
 
-                ctrl.SelectedItem = ((PropertyComboBox)aInfo.GetValue(aObject)).CurrentItem;
-                //
+                ctrl.SelectedItem = pcb.CurrentItem;
+
+                // Hook-in change notification after setting the value 
+                // Make sure form content is updated after property change
+                ctrl.SelectedIndexChanged += ControlValueChanged;
                 return ctrl;
             }
             else if (aInfo.PropertyType == typeof(PropertyButton))
@@ -456,6 +461,10 @@ namespace SharpDisplayManager
                 return;
             }
 
+            // Tell our object to prepare for edit
+            Object.CurrentState = SharpLib.Ear.Object.State.PrepareEdit;
+            Object.PropertyChanged -= PropertyChangedEventHandlerThreadSafe; // Most important to avoid accumulating handlers
+            //
             UpdateStaticControls();
 
             //IEnumerable<PropertyInfo> properties = aObject.GetType().GetProperties().Where(
@@ -503,7 +512,7 @@ namespace SharpDisplayManager
 
             }
 
-            //Entrer object edit mode
+            //Enter object edit mode
             Object.CurrentState = SharpLib.Ear.Object.State.Edit;
             Object.PropertyChanged += PropertyChangedEventHandlerThreadSafe;
         }
@@ -534,6 +543,9 @@ namespace SharpDisplayManager
                     //HID can't do full control updates for some reason
                     //We are getting spammed with HID events after a few clicks
                     //We need to investigate, HID bug?
+                    //TODO: Bug mentioned above possibly fixed
+                    // I guess it was due to accumulation of Object.PropertyChanged handler
+                    // Considerer removing all HID specific stuff from this class
                     UpdateStaticControls();
                 }
                 else

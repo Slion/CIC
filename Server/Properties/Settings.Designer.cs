@@ -155,7 +155,7 @@ namespace SharpDisplayManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("HarmonyHub")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string HarmonyHubAddress {
             get {
                 return ((string)(this["HarmonyHubAddress"]));
@@ -210,6 +210,54 @@ namespace SharpDisplayManager.Properties {
             }
             set {
                 this["UseMicrosoftSpeech"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FritzBoxEnabled {
+            get {
+                return ((bool)(this["FritzBoxEnabled"]));
+            }
+            set {
+                this["FritzBoxEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://fritz.box/")]
+        public string FritzBoxUrl {
+            get {
+                return ((string)(this["FritzBoxUrl"]));
+            }
+            set {
+                this["FritzBoxUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FritzBoxLogin {
+            get {
+                return ((string)(this["FritzBoxLogin"]));
+            }
+            set {
+                this["FritzBoxLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FritzBoxPassword {
+            get {
+                return ((string)(this["FritzBoxPassword"]));
+            }
+            set {
+                this["FritzBoxPassword"] = value;
             }
         }
     }

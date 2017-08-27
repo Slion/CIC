@@ -51,7 +51,7 @@
             this.iComboBoxObjectType.Size = new System.Drawing.Size(272, 21);
             this.iComboBoxObjectType.Sorted = true;
             this.iComboBoxObjectType.TabIndex = 18;
-            this.iComboBoxObjectType.SelectedIndexChanged += new System.EventHandler(this.comboBoxActionType_SelectedIndexChanged);
+            this.iComboBoxObjectType.SelectedIndexChanged += new System.EventHandler(this.iComboBoxObjectType_SelectedIndexChanged);
             this.iComboBoxObjectType.Enter += new System.EventHandler(this.iComboBoxObjectType_Enter);
             this.iComboBoxObjectType.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.iComboBoxObjectType_KeyPress);
             this.iComboBoxObjectType.Leave += new System.EventHandler(this.iComboBoxObjectType_Leave);
