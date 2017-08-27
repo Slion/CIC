@@ -55,6 +55,7 @@
         <file src="SharpLibUtils.dll" target="lib\net45\SharpLibUtils.dll" />
         <file src="SharpLibWin32.dll" target="lib\net45\SharpLibWin32.dll" />
         <file src="SharpLibMonitorConfig.dll" target="lib\net45\SharpLibMonitorConfig.dll" />
+        <file src="SharpLibFritzBox.dll" target="lib\net45\SharpLibFritzBox.dll" />
         <!-- Kinect -->
         <file src="Microsoft.Kinect.dll" target="lib\net45\Microsoft.Kinect.dll" />
         <!-- Speech -->
