@@ -84,7 +84,7 @@ namespace SharpDisplayManager
             if (iDeviceList==null)
             {
                 // Authenticate
-                await Program.FritzBoxClient.Authenticate(Properties.Settings.Default.FritzBoxLogin, Properties.Settings.Default.FritzBoxPassword);
+                await Program.FritzBoxClient.Authenticate(Properties.Settings.Default.FritzBoxLogin, Properties.Settings.Default.DecryptFritzBoxPassword());
                 // Try again
                 iDeviceList = await Program.FritzBoxClient.GetDeviceList();
             }

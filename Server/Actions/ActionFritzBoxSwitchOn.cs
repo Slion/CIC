@@ -46,7 +46,7 @@ namespace SharpDisplayManager
             if (!done)
             {
                 // In case of failure authenticate anew before trying one last time 
-                await Program.FritzBoxClient.Authenticate(Properties.Settings.Default.FritzBoxLogin, Properties.Settings.Default.FritzBoxPassword);
+                await Program.FritzBoxClient.Authenticate(Properties.Settings.Default.FritzBoxLogin, Properties.Settings.Default.DecryptFritzBoxPassword());
                 await Program.FritzBoxClient.SwitchOn(DeviceId);
             }
         }

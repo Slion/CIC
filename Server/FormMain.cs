@@ -3552,7 +3552,7 @@ namespace SharpDisplayManager
             
             Program.FritzBoxClient = new SmartHome.Client(Properties.Settings.Default.FritzBoxUrl);
             iTextBoxFritzBoxUrl.Enabled = false; // Can't change URL of existing client
-            await Program.FritzBoxClient.Authenticate(Properties.Settings.Default.FritzBoxLogin, Properties.Settings.Default.FritzBoxPassword);
+            await Program.FritzBoxClient.Authenticate(Properties.Settings.Default.FritzBoxLogin, Properties.Settings.Default.DecryptFritzBoxPassword());
             await PopulateFritzBoxTreeView();
         }
 
@@ -3573,9 +3573,17 @@ namespace SharpDisplayManager
         }
 
         private async Task PopulateFritzBoxTreeView()
-        {
-            SmartHome.DeviceList deviceList = await Program.FritzBoxClient.GetDeviceList();
-            PopulateDevicesTree(deviceList);
+        {            
+            try
+            {
+                SmartHome.DeviceList deviceList = await Program.FritzBoxClient.GetDeviceList();
+                PopulateDevicesTree(deviceList);
+            }
+            catch (Exception ex)
+            {
+                // Could fail to authenticate
+                Debug.Print(ex.ToString());
+            }
         }
 
 
@@ -3821,6 +3829,13 @@ namespace SharpDisplayManager
             // Check for update
             // I reckon this happens only once per session.
             SquirrelUpdate(true);
+        }
+
+        private void iTextBoxFritzBoxPassword_TextChanged(object sender, EventArgs e)
+        {
+            //Save our password after encryption
+            Properties.Settings.Default.FritzBoxPassword = Secure.EncryptString(Secure.ToSecureString(iTextBoxFritzBoxPassword.Text));
+            Properties.Settings.Default.Save();
         }
     }
 }

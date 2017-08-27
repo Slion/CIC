@@ -252,6 +252,7 @@
     <Compile Include="Events\EventSpeechDiscarded.cs" />
     <Compile Include="Events\EventSpeechRecognized.cs" />
     <Compile Include="KinectAudioStream.cs" />
+    <Compile Include="Properties\Settings.cs" />
     <Compile Include="Spectrum\BasicSpectrumProvider.cs" />
     <Compile Include="CbtHook.cs" />
     <Compile Include="CecClient.cs" />

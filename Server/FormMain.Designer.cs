@@ -53,6 +53,7 @@
             this.toolStripStatusLabelPower = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFps = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPageClients = new System.Windows.Forms.TabPage();
+            this.iCheckBoxStartIdleClient = new System.Windows.Forms.CheckBox();
             this.iButtonStartIdleClient = new System.Windows.Forms.Button();
             this.buttonCloseClients = new System.Windows.Forms.Button();
             this.buttonStartClient = new System.Windows.Forms.Button();
@@ -66,6 +67,7 @@
             this.maskedTextBoxTimerInterval = new System.Windows.Forms.MaskedTextBox();
             this.comboBoxDisplayType = new System.Windows.Forms.ComboBox();
             this.buttonSuspend = new System.Windows.Forms.Button();
+            this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
             this.trackBarBrightness = new System.Windows.Forms.TrackBar();
             this.buttonFill = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
@@ -102,12 +104,26 @@
             this.checkBoxCecLogWarning = new System.Windows.Forms.CheckBox();
             this.labelHdmiPort = new System.Windows.Forms.Label();
             this.iComboBoxHdmiPort = new System.Windows.Forms.ComboBox();
+            this.iCheckBoxCecEnabled = new System.Windows.Forms.CheckBox();
             this.tabPageHarmony = new System.Windows.Forms.TabPage();
             this.iButtonHarmonyConnect = new System.Windows.Forms.Button();
             this.iTreeViewHarmony = new System.Windows.Forms.TreeView();
             this.label1 = new System.Windows.Forms.Label();
+            this.iCheckBoxHarmonyEnabled = new System.Windows.Forms.CheckBox();
+            this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
+            this.tabPageFritzBox = new System.Windows.Forms.TabPage();
+            this.iCheckBoxEnableFritzBox = new System.Windows.Forms.CheckBox();
+            this.iLabelFritzBoxPassword = new System.Windows.Forms.Label();
+            this.iLabelFritzBoxLogin = new System.Windows.Forms.Label();
+            this.iTreeViewFritzBox = new System.Windows.Forms.TreeView();
+            this.iLabelFritzBoxUrl = new System.Windows.Forms.Label();
+            this.iTextBoxFritzBoxPassword = new System.Windows.Forms.TextBox();
+            this.iTextBoxFritzBoxLogin = new System.Windows.Forms.TextBox();
+            this.iTextBoxFritzBoxUrl = new System.Windows.Forms.TextBox();
             this.tabPageSpeech = new System.Windows.Forms.TabPage();
             this.iLabelSpeechRecognizerCulture = new System.Windows.Forms.Label();
+            this.iCheckBoxUseMicrosoftSpeech = new System.Windows.Forms.CheckBox();
+            this.iCheckBoxEnableSpeech = new System.Windows.Forms.CheckBox();
             this.tabPageEvent = new System.Windows.Forms.TabPage();
             this.buttonEventEdit = new System.Windows.Forms.Button();
             this.buttonEventDelete = new System.Windows.Forms.Button();
@@ -125,6 +141,8 @@
             this.iButtonOpenDataFolder = new System.Windows.Forms.Button();
             this.checkBoxAutoStart = new System.Windows.Forms.CheckBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
+            this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.tabPageLogs = new System.Windows.Forms.TabPage();
             this.buttonClearLogs = new System.Windows.Forms.Button();
             this.richTextBoxLogs = new System.Windows.Forms.RichTextBox();
@@ -132,24 +150,6 @@
             this.labelFontHeight = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tabPageFritzBox = new System.Windows.Forms.TabPage();
-            this.iLabelFritzBoxUrl = new System.Windows.Forms.Label();
-            this.iTreeViewFritzBox = new System.Windows.Forms.TreeView();
-            this.iLabelLogin = new System.Windows.Forms.Label();
-            this.iLabelFritzBoxPassword = new System.Windows.Forms.Label();
-            this.checkBoxConnectOnStartup = new System.Windows.Forms.CheckBox();
-            this.iCheckBoxStartIdleClient = new System.Windows.Forms.CheckBox();
-            this.iCheckBoxCecEnabled = new System.Windows.Forms.CheckBox();
-            this.iCheckBoxHarmonyEnabled = new System.Windows.Forms.CheckBox();
-            this.iTextBoxHarmonyHubAddress = new System.Windows.Forms.TextBox();
-            this.iCheckBoxEnableFritzBox = new System.Windows.Forms.CheckBox();
-            this.iTextBoxPassword = new System.Windows.Forms.TextBox();
-            this.iTextBoxFritzBoxLogin = new System.Windows.Forms.TextBox();
-            this.iTextBoxFritzBoxUrl = new System.Windows.Forms.TextBox();
-            this.iCheckBoxUseMicrosoftSpeech = new System.Windows.Forms.CheckBox();
-            this.iCheckBoxEnableSpeech = new System.Windows.Forms.CheckBox();
-            this.checkBoxStartMinimized = new System.Windows.Forms.CheckBox();
-            this.checkBoxMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.iPanelDisplay.SuspendLayout();
             this.panel1.SuspendLayout();
             this.iTableLayoutPanelDisplay.SuspendLayout();
@@ -165,11 +165,11 @@
             this.tabPageCec.SuspendLayout();
             this.groupBoxCecLogOptions.SuspendLayout();
             this.tabPageHarmony.SuspendLayout();
+            this.tabPageFritzBox.SuspendLayout();
             this.tabPageSpeech.SuspendLayout();
             this.tabPageEvent.SuspendLayout();
             this.tabPageApp.SuspendLayout();
             this.tabPageLogs.SuspendLayout();
-            this.tabPageFritzBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // iPanelDisplay
@@ -336,6 +336,20 @@
             this.tabPageClients.Text = "Clients";
             this.tabPageClients.UseVisualStyleBackColor = true;
             // 
+            // iCheckBoxStartIdleClient
+            // 
+            this.iCheckBoxStartIdleClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.iCheckBoxStartIdleClient.AutoSize = true;
+            this.iCheckBoxStartIdleClient.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartIdleClient;
+            this.iCheckBoxStartIdleClient.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.iCheckBoxStartIdleClient.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartIdleClient", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 340);
+            this.iCheckBoxStartIdleClient.Name = "iCheckBoxStartIdleClient";
+            this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(145, 17);
+            this.iCheckBoxStartIdleClient.TabIndex = 22;
+            this.iCheckBoxStartIdleClient.Text = "Start idle client on startup";
+            this.iCheckBoxStartIdleClient.UseVisualStyleBackColor = true;
+            // 
             // iButtonStartIdleClient
             // 
             this.iButtonStartIdleClient.Location = new System.Drawing.Point(6, 35);
@@ -482,6 +496,19 @@
             this.buttonSuspend.Text = "Pause";
             this.buttonSuspend.UseVisualStyleBackColor = true;
             this.buttonSuspend.Click += new System.EventHandler(this.buttonSuspend_Click);
+            // 
+            // checkBoxConnectOnStartup
+            // 
+            this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxConnectOnStartup.AutoSize = true;
+            this.checkBoxConnectOnStartup.Checked = global::SharpDisplayManager.Properties.Settings.Default.DisplayConnectOnStartup;
+            this.checkBoxConnectOnStartup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "DisplayConnectOnStartup", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
+            this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
+            this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
+            this.checkBoxConnectOnStartup.TabIndex = 13;
+            this.checkBoxConnectOnStartup.Text = "Connect on stratup ";
+            this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
             // 
             // trackBarBrightness
             // 
@@ -933,6 +960,18 @@
             this.iComboBoxHdmiPort.TabIndex = 19;
             this.iComboBoxHdmiPort.SelectedIndexChanged += new System.EventHandler(this.comboBoxHdmiPort_SelectedIndexChanged);
             // 
+            // iCheckBoxCecEnabled
+            // 
+            this.iCheckBoxCecEnabled.AutoSize = true;
+            this.iCheckBoxCecEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.CecEnabled;
+            this.iCheckBoxCecEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "CecEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
+            this.iCheckBoxCecEnabled.Name = "iCheckBoxCecEnabled";
+            this.iCheckBoxCecEnabled.Size = new System.Drawing.Size(83, 17);
+            this.iCheckBoxCecEnabled.TabIndex = 21;
+            this.iCheckBoxCecEnabled.Text = "Enable CEC";
+            this.iCheckBoxCecEnabled.UseVisualStyleBackColor = true;
+            // 
             // tabPageHarmony
             // 
             this.tabPageHarmony.Controls.Add(this.iButtonHarmonyConnect);
@@ -979,6 +1018,129 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Harmony Hub Address:";
             // 
+            // iCheckBoxHarmonyEnabled
+            // 
+            this.iCheckBoxHarmonyEnabled.AutoSize = true;
+            this.iCheckBoxHarmonyEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.HarmonyEnabled;
+            this.iCheckBoxHarmonyEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxHarmonyEnabled.Location = new System.Drawing.Point(6, 6);
+            this.iCheckBoxHarmonyEnabled.Name = "iCheckBoxHarmonyEnabled";
+            this.iCheckBoxHarmonyEnabled.Size = new System.Drawing.Size(104, 17);
+            this.iCheckBoxHarmonyEnabled.TabIndex = 22;
+            this.iCheckBoxHarmonyEnabled.Text = "Enable Harmony";
+            this.iCheckBoxHarmonyEnabled.UseVisualStyleBackColor = true;
+            this.iCheckBoxHarmonyEnabled.CheckedChanged += new System.EventHandler(this.iCheckBoxHarmonyEnabled_CheckedChanged);
+            // 
+            // iTextBoxHarmonyHubAddress
+            // 
+            this.iTextBoxHarmonyHubAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTextBoxHarmonyHubAddress.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyHubAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iTextBoxHarmonyHubAddress.Location = new System.Drawing.Point(282, 23);
+            this.iTextBoxHarmonyHubAddress.Name = "iTextBoxHarmonyHubAddress";
+            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(191, 20);
+            this.iTextBoxHarmonyHubAddress.TabIndex = 8;
+            this.iTextBoxHarmonyHubAddress.Text = global::SharpDisplayManager.Properties.Settings.Default.HarmonyHubAddress;
+            // 
+            // tabPageFritzBox
+            // 
+            this.tabPageFritzBox.Controls.Add(this.iCheckBoxEnableFritzBox);
+            this.tabPageFritzBox.Controls.Add(this.iLabelFritzBoxPassword);
+            this.tabPageFritzBox.Controls.Add(this.iLabelFritzBoxLogin);
+            this.tabPageFritzBox.Controls.Add(this.iTreeViewFritzBox);
+            this.tabPageFritzBox.Controls.Add(this.iLabelFritzBoxUrl);
+            this.tabPageFritzBox.Controls.Add(this.iTextBoxFritzBoxPassword);
+            this.tabPageFritzBox.Controls.Add(this.iTextBoxFritzBoxLogin);
+            this.tabPageFritzBox.Controls.Add(this.iTextBoxFritzBoxUrl);
+            this.tabPageFritzBox.Location = new System.Drawing.Point(4, 22);
+            this.tabPageFritzBox.Name = "tabPageFritzBox";
+            this.tabPageFritzBox.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageFritzBox.Size = new System.Drawing.Size(752, 385);
+            this.tabPageFritzBox.TabIndex = 12;
+            this.tabPageFritzBox.Text = "FRITZ!Box";
+            this.tabPageFritzBox.UseVisualStyleBackColor = true;
+            // 
+            // iCheckBoxEnableFritzBox
+            // 
+            this.iCheckBoxEnableFritzBox.AutoSize = true;
+            this.iCheckBoxEnableFritzBox.Checked = global::SharpDisplayManager.Properties.Settings.Default.FritzBoxEnabled;
+            this.iCheckBoxEnableFritzBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "FritzBoxEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxEnableFritzBox.Location = new System.Drawing.Point(9, 6);
+            this.iCheckBoxEnableFritzBox.Name = "iCheckBoxEnableFritzBox";
+            this.iCheckBoxEnableFritzBox.Size = new System.Drawing.Size(114, 17);
+            this.iCheckBoxEnableFritzBox.TabIndex = 23;
+            this.iCheckBoxEnableFritzBox.Text = "Enable FRITZ!Box";
+            this.iCheckBoxEnableFritzBox.UseVisualStyleBackColor = true;
+            // 
+            // iLabelFritzBoxPassword
+            // 
+            this.iLabelFritzBoxPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iLabelFritzBoxPassword.AutoSize = true;
+            this.iLabelFritzBoxPassword.Location = new System.Drawing.Point(6, 123);
+            this.iLabelFritzBoxPassword.Name = "iLabelFritzBoxPassword";
+            this.iLabelFritzBoxPassword.Size = new System.Drawing.Size(56, 13);
+            this.iLabelFritzBoxPassword.TabIndex = 20;
+            this.iLabelFritzBoxPassword.Text = "Password:";
+            // 
+            // iLabelFritzBoxLogin
+            // 
+            this.iLabelFritzBoxLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iLabelFritzBoxLogin.AutoSize = true;
+            this.iLabelFritzBoxLogin.Location = new System.Drawing.Point(6, 84);
+            this.iLabelFritzBoxLogin.Name = "iLabelFritzBoxLogin";
+            this.iLabelFritzBoxLogin.Size = new System.Drawing.Size(36, 13);
+            this.iLabelFritzBoxLogin.TabIndex = 18;
+            this.iLabelFritzBoxLogin.Text = "Login:";
+            // 
+            // iTreeViewFritzBox
+            // 
+            this.iTreeViewFritzBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTreeViewFritzBox.Location = new System.Drawing.Point(227, 6);
+            this.iTreeViewFritzBox.Name = "iTreeViewFritzBox";
+            this.iTreeViewFritzBox.Size = new System.Drawing.Size(519, 373);
+            this.iTreeViewFritzBox.TabIndex = 16;
+            // 
+            // iLabelFritzBoxUrl
+            // 
+            this.iLabelFritzBoxUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iLabelFritzBoxUrl.AutoSize = true;
+            this.iLabelFritzBoxUrl.Location = new System.Drawing.Point(6, 45);
+            this.iLabelFritzBoxUrl.Name = "iLabelFritzBoxUrl";
+            this.iLabelFritzBoxUrl.Size = new System.Drawing.Size(102, 13);
+            this.iLabelFritzBoxUrl.TabIndex = 11;
+            this.iLabelFritzBoxUrl.Text = "FRITZ!Box address:";
+            // 
+            // iTextBoxFritzBoxPassword
+            // 
+            this.iTextBoxFritzBoxPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTextBoxFritzBoxPassword.Location = new System.Drawing.Point(9, 139);
+            this.iTextBoxFritzBoxPassword.Name = "iTextBoxFritzBoxPassword";
+            this.iTextBoxFritzBoxPassword.Size = new System.Drawing.Size(191, 20);
+            this.iTextBoxFritzBoxPassword.TabIndex = 19;
+            this.iTextBoxFritzBoxPassword.UseSystemPasswordChar = true;
+            this.iTextBoxFritzBoxPassword.TextChanged += new System.EventHandler(this.iTextBoxFritzBoxPassword_TextChanged);
+            // 
+            // iTextBoxFritzBoxLogin
+            // 
+            this.iTextBoxFritzBoxLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTextBoxFritzBoxLogin.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "FritzBoxLogin", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iTextBoxFritzBoxLogin.Location = new System.Drawing.Point(9, 100);
+            this.iTextBoxFritzBoxLogin.Name = "iTextBoxFritzBoxLogin";
+            this.iTextBoxFritzBoxLogin.Size = new System.Drawing.Size(191, 20);
+            this.iTextBoxFritzBoxLogin.TabIndex = 17;
+            this.iTextBoxFritzBoxLogin.Text = global::SharpDisplayManager.Properties.Settings.Default.FritzBoxLogin;
+            // 
+            // iTextBoxFritzBoxUrl
+            // 
+            this.iTextBoxFritzBoxUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.iTextBoxFritzBoxUrl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "FritzBoxUrl", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iTextBoxFritzBoxUrl.Location = new System.Drawing.Point(9, 61);
+            this.iTextBoxFritzBoxUrl.Name = "iTextBoxFritzBoxUrl";
+            this.iTextBoxFritzBoxUrl.Size = new System.Drawing.Size(191, 20);
+            this.iTextBoxFritzBoxUrl.TabIndex = 10;
+            this.iTextBoxFritzBoxUrl.Text = global::SharpDisplayManager.Properties.Settings.Default.FritzBoxUrl;
+            // 
             // tabPageSpeech
             // 
             this.tabPageSpeech.Controls.Add(this.iLabelSpeechRecognizerCulture);
@@ -1001,6 +1163,32 @@
             this.iLabelSpeechRecognizerCulture.Size = new System.Drawing.Size(70, 13);
             this.iLabelSpeechRecognizerCulture.TabIndex = 26;
             this.iLabelSpeechRecognizerCulture.Text = "Culture: none";
+            // 
+            // iCheckBoxUseMicrosoftSpeech
+            // 
+            this.iCheckBoxUseMicrosoftSpeech.AutoSize = true;
+            this.iCheckBoxUseMicrosoftSpeech.Checked = global::SharpDisplayManager.Properties.Settings.Default.UseMicrosoftSpeech;
+            this.iCheckBoxUseMicrosoftSpeech.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "UseMicrosoftSpeech", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxUseMicrosoftSpeech.Location = new System.Drawing.Point(3, 28);
+            this.iCheckBoxUseMicrosoftSpeech.Name = "iCheckBoxUseMicrosoftSpeech";
+            this.iCheckBoxUseMicrosoftSpeech.Size = new System.Drawing.Size(131, 17);
+            this.iCheckBoxUseMicrosoftSpeech.TabIndex = 25;
+            this.iCheckBoxUseMicrosoftSpeech.Text = "Use Microsoft.Speech";
+            this.toolTip.SetToolTip(this.iCheckBoxUseMicrosoftSpeech, "Use Microsoft.Speech instead of System.Speech. Requires installation of Microsoft" +
+        " Speech Platform 11 and corresponding recognizers.");
+            this.iCheckBoxUseMicrosoftSpeech.UseVisualStyleBackColor = true;
+            // 
+            // iCheckBoxEnableSpeech
+            // 
+            this.iCheckBoxEnableSpeech.AutoSize = true;
+            this.iCheckBoxEnableSpeech.Checked = global::SharpDisplayManager.Properties.Settings.Default.SpeechEnabled;
+            this.iCheckBoxEnableSpeech.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "SpeechEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.iCheckBoxEnableSpeech.Location = new System.Drawing.Point(3, 5);
+            this.iCheckBoxEnableSpeech.Name = "iCheckBoxEnableSpeech";
+            this.iCheckBoxEnableSpeech.Size = new System.Drawing.Size(99, 17);
+            this.iCheckBoxEnableSpeech.TabIndex = 24;
+            this.iCheckBoxEnableSpeech.Text = "Enable Speech";
+            this.iCheckBoxEnableSpeech.UseVisualStyleBackColor = true;
             // 
             // tabPageEvent
             // 
@@ -1206,6 +1394,32 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
+            // checkBoxStartMinimized
+            // 
+            this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxStartMinimized.AutoSize = true;
+            this.checkBoxStartMinimized.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartMinimized;
+            this.checkBoxStartMinimized.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartMinimized", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 285);
+            this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
+            this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxStartMinimized.TabIndex = 16;
+            this.checkBoxStartMinimized.Text = "Start minimized";
+            this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMinimizeToTray
+            // 
+            this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxMinimizeToTray.AutoSize = true;
+            this.checkBoxMinimizeToTray.Checked = global::SharpDisplayManager.Properties.Settings.Default.MinimizeToTray;
+            this.checkBoxMinimizeToTray.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(6, 308);
+            this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
+            this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
+            this.checkBoxMinimizeToTray.TabIndex = 15;
+            this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
+            this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
+            // 
             // tabPageLogs
             // 
             this.tabPageLogs.Controls.Add(this.buttonClearLogs);
@@ -1266,221 +1480,6 @@
             // 
             this.openFileDialog.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
             // 
-            // tabPageFritzBox
-            // 
-            this.tabPageFritzBox.Controls.Add(this.iCheckBoxEnableFritzBox);
-            this.tabPageFritzBox.Controls.Add(this.iLabelFritzBoxPassword);
-            this.tabPageFritzBox.Controls.Add(this.iLabelLogin);
-            this.tabPageFritzBox.Controls.Add(this.iTreeViewFritzBox);
-            this.tabPageFritzBox.Controls.Add(this.iLabelFritzBoxUrl);
-            this.tabPageFritzBox.Controls.Add(this.iTextBoxPassword);
-            this.tabPageFritzBox.Controls.Add(this.iTextBoxFritzBoxLogin);
-            this.tabPageFritzBox.Controls.Add(this.iTextBoxFritzBoxUrl);
-            this.tabPageFritzBox.Location = new System.Drawing.Point(4, 22);
-            this.tabPageFritzBox.Name = "tabPageFritzBox";
-            this.tabPageFritzBox.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageFritzBox.Size = new System.Drawing.Size(752, 385);
-            this.tabPageFritzBox.TabIndex = 12;
-            this.tabPageFritzBox.Text = "FRITZ!Box";
-            this.tabPageFritzBox.UseVisualStyleBackColor = true;
-            // 
-            // iLabelFritzBoxUrl
-            // 
-            this.iLabelFritzBoxUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iLabelFritzBoxUrl.AutoSize = true;
-            this.iLabelFritzBoxUrl.Location = new System.Drawing.Point(6, 45);
-            this.iLabelFritzBoxUrl.Name = "iLabelFritzBoxUrl";
-            this.iLabelFritzBoxUrl.Size = new System.Drawing.Size(102, 13);
-            this.iLabelFritzBoxUrl.TabIndex = 11;
-            this.iLabelFritzBoxUrl.Text = "FRITZ!Box address:";
-            // 
-            // iTreeViewFritzBox
-            // 
-            this.iTreeViewFritzBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTreeViewFritzBox.Location = new System.Drawing.Point(227, 6);
-            this.iTreeViewFritzBox.Name = "iTreeViewFritzBox";
-            this.iTreeViewFritzBox.Size = new System.Drawing.Size(519, 373);
-            this.iTreeViewFritzBox.TabIndex = 16;
-            // 
-            // iLabelLogin
-            // 
-            this.iLabelLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iLabelLogin.AutoSize = true;
-            this.iLabelLogin.Location = new System.Drawing.Point(6, 84);
-            this.iLabelLogin.Name = "iLabelLogin";
-            this.iLabelLogin.Size = new System.Drawing.Size(36, 13);
-            this.iLabelLogin.TabIndex = 18;
-            this.iLabelLogin.Text = "Login:";
-            // 
-            // iLabelFritzBoxPassword
-            // 
-            this.iLabelFritzBoxPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iLabelFritzBoxPassword.AutoSize = true;
-            this.iLabelFritzBoxPassword.Location = new System.Drawing.Point(6, 123);
-            this.iLabelFritzBoxPassword.Name = "iLabelFritzBoxPassword";
-            this.iLabelFritzBoxPassword.Size = new System.Drawing.Size(56, 13);
-            this.iLabelFritzBoxPassword.TabIndex = 20;
-            this.iLabelFritzBoxPassword.Text = "Password:";
-            // 
-            // checkBoxConnectOnStartup
-            // 
-            this.checkBoxConnectOnStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxConnectOnStartup.AutoSize = true;
-            this.checkBoxConnectOnStartup.Checked = global::SharpDisplayManager.Properties.Settings.Default.DisplayConnectOnStartup;
-            this.checkBoxConnectOnStartup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "DisplayConnectOnStartup", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
-            this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
-            this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
-            this.checkBoxConnectOnStartup.TabIndex = 13;
-            this.checkBoxConnectOnStartup.Text = "Connect on stratup ";
-            this.checkBoxConnectOnStartup.UseVisualStyleBackColor = true;
-            // 
-            // iCheckBoxStartIdleClient
-            // 
-            this.iCheckBoxStartIdleClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.iCheckBoxStartIdleClient.AutoSize = true;
-            this.iCheckBoxStartIdleClient.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartIdleClient;
-            this.iCheckBoxStartIdleClient.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.iCheckBoxStartIdleClient.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartIdleClient", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxStartIdleClient.Location = new System.Drawing.Point(108, 340);
-            this.iCheckBoxStartIdleClient.Name = "iCheckBoxStartIdleClient";
-            this.iCheckBoxStartIdleClient.Size = new System.Drawing.Size(145, 17);
-            this.iCheckBoxStartIdleClient.TabIndex = 22;
-            this.iCheckBoxStartIdleClient.Text = "Start idle client on startup";
-            this.iCheckBoxStartIdleClient.UseVisualStyleBackColor = true;
-            // 
-            // iCheckBoxCecEnabled
-            // 
-            this.iCheckBoxCecEnabled.AutoSize = true;
-            this.iCheckBoxCecEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.CecEnabled;
-            this.iCheckBoxCecEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "CecEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxCecEnabled.Location = new System.Drawing.Point(6, 6);
-            this.iCheckBoxCecEnabled.Name = "iCheckBoxCecEnabled";
-            this.iCheckBoxCecEnabled.Size = new System.Drawing.Size(83, 17);
-            this.iCheckBoxCecEnabled.TabIndex = 21;
-            this.iCheckBoxCecEnabled.Text = "Enable CEC";
-            this.iCheckBoxCecEnabled.UseVisualStyleBackColor = true;
-            // 
-            // iCheckBoxHarmonyEnabled
-            // 
-            this.iCheckBoxHarmonyEnabled.AutoSize = true;
-            this.iCheckBoxHarmonyEnabled.Checked = global::SharpDisplayManager.Properties.Settings.Default.HarmonyEnabled;
-            this.iCheckBoxHarmonyEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxHarmonyEnabled.Location = new System.Drawing.Point(6, 6);
-            this.iCheckBoxHarmonyEnabled.Name = "iCheckBoxHarmonyEnabled";
-            this.iCheckBoxHarmonyEnabled.Size = new System.Drawing.Size(104, 17);
-            this.iCheckBoxHarmonyEnabled.TabIndex = 22;
-            this.iCheckBoxHarmonyEnabled.Text = "Enable Harmony";
-            this.iCheckBoxHarmonyEnabled.UseVisualStyleBackColor = true;
-            this.iCheckBoxHarmonyEnabled.CheckedChanged += new System.EventHandler(this.iCheckBoxHarmonyEnabled_CheckedChanged);
-            // 
-            // iTextBoxHarmonyHubAddress
-            // 
-            this.iTextBoxHarmonyHubAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTextBoxHarmonyHubAddress.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "HarmonyHubAddress", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iTextBoxHarmonyHubAddress.Location = new System.Drawing.Point(282, 23);
-            this.iTextBoxHarmonyHubAddress.Name = "iTextBoxHarmonyHubAddress";
-            this.iTextBoxHarmonyHubAddress.Size = new System.Drawing.Size(191, 20);
-            this.iTextBoxHarmonyHubAddress.TabIndex = 8;
-            this.iTextBoxHarmonyHubAddress.Text = global::SharpDisplayManager.Properties.Settings.Default.HarmonyHubAddress;
-            // 
-            // iCheckBoxEnableFritzBox
-            // 
-            this.iCheckBoxEnableFritzBox.AutoSize = true;
-            this.iCheckBoxEnableFritzBox.Checked = global::SharpDisplayManager.Properties.Settings.Default.FritzBoxEnabled;
-            this.iCheckBoxEnableFritzBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "FritzBoxEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxEnableFritzBox.Location = new System.Drawing.Point(9, 6);
-            this.iCheckBoxEnableFritzBox.Name = "iCheckBoxEnableFritzBox";
-            this.iCheckBoxEnableFritzBox.Size = new System.Drawing.Size(114, 17);
-            this.iCheckBoxEnableFritzBox.TabIndex = 23;
-            this.iCheckBoxEnableFritzBox.Text = "Enable FRITZ!Box";
-            this.iCheckBoxEnableFritzBox.UseVisualStyleBackColor = true;
-            // 
-            // iTextBoxPassword
-            // 
-            this.iTextBoxPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTextBoxPassword.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "FritzBoxPassword", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iTextBoxPassword.Location = new System.Drawing.Point(9, 139);
-            this.iTextBoxPassword.Name = "iTextBoxPassword";
-            this.iTextBoxPassword.Size = new System.Drawing.Size(191, 20);
-            this.iTextBoxPassword.TabIndex = 19;
-            this.iTextBoxPassword.Text = global::SharpDisplayManager.Properties.Settings.Default.FritzBoxPassword;
-            this.iTextBoxPassword.UseSystemPasswordChar = true;
-            // 
-            // iTextBoxFritzBoxLogin
-            // 
-            this.iTextBoxFritzBoxLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTextBoxFritzBoxLogin.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "FritzBoxLogin", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iTextBoxFritzBoxLogin.Location = new System.Drawing.Point(9, 100);
-            this.iTextBoxFritzBoxLogin.Name = "iTextBoxFritzBoxLogin";
-            this.iTextBoxFritzBoxLogin.Size = new System.Drawing.Size(191, 20);
-            this.iTextBoxFritzBoxLogin.TabIndex = 17;
-            this.iTextBoxFritzBoxLogin.Text = global::SharpDisplayManager.Properties.Settings.Default.FritzBoxLogin;
-            // 
-            // iTextBoxFritzBoxUrl
-            // 
-            this.iTextBoxFritzBoxUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.iTextBoxFritzBoxUrl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::SharpDisplayManager.Properties.Settings.Default, "FritzBoxUrl", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iTextBoxFritzBoxUrl.Location = new System.Drawing.Point(9, 61);
-            this.iTextBoxFritzBoxUrl.Name = "iTextBoxFritzBoxUrl";
-            this.iTextBoxFritzBoxUrl.Size = new System.Drawing.Size(191, 20);
-            this.iTextBoxFritzBoxUrl.TabIndex = 10;
-            this.iTextBoxFritzBoxUrl.Text = global::SharpDisplayManager.Properties.Settings.Default.FritzBoxUrl;
-            // 
-            // iCheckBoxUseMicrosoftSpeech
-            // 
-            this.iCheckBoxUseMicrosoftSpeech.AutoSize = true;
-            this.iCheckBoxUseMicrosoftSpeech.Checked = global::SharpDisplayManager.Properties.Settings.Default.UseMicrosoftSpeech;
-            this.iCheckBoxUseMicrosoftSpeech.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "UseMicrosoftSpeech", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxUseMicrosoftSpeech.Location = new System.Drawing.Point(3, 28);
-            this.iCheckBoxUseMicrosoftSpeech.Name = "iCheckBoxUseMicrosoftSpeech";
-            this.iCheckBoxUseMicrosoftSpeech.Size = new System.Drawing.Size(131, 17);
-            this.iCheckBoxUseMicrosoftSpeech.TabIndex = 25;
-            this.iCheckBoxUseMicrosoftSpeech.Text = "Use Microsoft.Speech";
-            this.toolTip.SetToolTip(this.iCheckBoxUseMicrosoftSpeech, "Use Microsoft.Speech instead of System.Speech. Requires installation of Microsoft" +
-        " Speech Platform 11 and corresponding recognizers.");
-            this.iCheckBoxUseMicrosoftSpeech.UseVisualStyleBackColor = true;
-            // 
-            // iCheckBoxEnableSpeech
-            // 
-            this.iCheckBoxEnableSpeech.AutoSize = true;
-            this.iCheckBoxEnableSpeech.Checked = global::SharpDisplayManager.Properties.Settings.Default.SpeechEnabled;
-            this.iCheckBoxEnableSpeech.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "SpeechEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.iCheckBoxEnableSpeech.Location = new System.Drawing.Point(3, 5);
-            this.iCheckBoxEnableSpeech.Name = "iCheckBoxEnableSpeech";
-            this.iCheckBoxEnableSpeech.Size = new System.Drawing.Size(99, 17);
-            this.iCheckBoxEnableSpeech.TabIndex = 24;
-            this.iCheckBoxEnableSpeech.Text = "Enable Speech";
-            this.iCheckBoxEnableSpeech.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxStartMinimized
-            // 
-            this.checkBoxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxStartMinimized.AutoSize = true;
-            this.checkBoxStartMinimized.Checked = global::SharpDisplayManager.Properties.Settings.Default.StartMinimized;
-            this.checkBoxStartMinimized.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "StartMinimized", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxStartMinimized.Location = new System.Drawing.Point(6, 285);
-            this.checkBoxStartMinimized.Name = "checkBoxStartMinimized";
-            this.checkBoxStartMinimized.Size = new System.Drawing.Size(96, 17);
-            this.checkBoxStartMinimized.TabIndex = 16;
-            this.checkBoxStartMinimized.Text = "Start minimized";
-            this.checkBoxStartMinimized.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxMinimizeToTray
-            // 
-            this.checkBoxMinimizeToTray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxMinimizeToTray.AutoSize = true;
-            this.checkBoxMinimizeToTray.Checked = global::SharpDisplayManager.Properties.Settings.Default.MinimizeToTray;
-            this.checkBoxMinimizeToTray.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "MinimizeToTray", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxMinimizeToTray.Location = new System.Drawing.Point(6, 308);
-            this.checkBoxMinimizeToTray.Name = "checkBoxMinimizeToTray";
-            this.checkBoxMinimizeToTray.Size = new System.Drawing.Size(133, 17);
-            this.checkBoxMinimizeToTray.TabIndex = 15;
-            this.checkBoxMinimizeToTray.Text = "Minimize to system tray";
-            this.checkBoxMinimizeToTray.UseVisualStyleBackColor = true;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1525,14 +1524,14 @@
             this.groupBoxCecLogOptions.PerformLayout();
             this.tabPageHarmony.ResumeLayout(false);
             this.tabPageHarmony.PerformLayout();
+            this.tabPageFritzBox.ResumeLayout(false);
+            this.tabPageFritzBox.PerformLayout();
             this.tabPageSpeech.ResumeLayout(false);
             this.tabPageSpeech.PerformLayout();
             this.tabPageEvent.ResumeLayout(false);
             this.tabPageApp.ResumeLayout(false);
             this.tabPageApp.PerformLayout();
             this.tabPageLogs.ResumeLayout(false);
-            this.tabPageFritzBox.ResumeLayout(false);
-            this.tabPageFritzBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1645,8 +1644,8 @@
         private System.Windows.Forms.TabPage tabPageFritzBox;
         private System.Windows.Forms.CheckBox iCheckBoxEnableFritzBox;
         private System.Windows.Forms.Label iLabelFritzBoxPassword;
-        private System.Windows.Forms.TextBox iTextBoxPassword;
-        private System.Windows.Forms.Label iLabelLogin;
+        private System.Windows.Forms.TextBox iTextBoxFritzBoxPassword;
+        private System.Windows.Forms.Label iLabelFritzBoxLogin;
         private System.Windows.Forms.TextBox iTextBoxFritzBoxLogin;
         private System.Windows.Forms.TreeView iTreeViewFritzBox;
         private System.Windows.Forms.Label iLabelFritzBoxUrl;
