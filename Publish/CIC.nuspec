@@ -41,8 +41,8 @@
         <!-- PowerManager to get notified when power events such as monitor standby -->
         <file src="PowerManager.dll" target="lib\net45\PowerManager.dll" />
         <!-- CIC core -->
-        <file src="SharpDisplayManager.exe" target="lib\net45\SharpDisplayManager.exe" />
-        <file src="SharpDisplayManager.exe.config" target="lib\net45\SharpDisplayManager.exe.config" />
+        <file src="CIC.exe" target="lib\net45\CIC.exe" />
+        <file src="CIC.exe.config" target="lib\net45\CIC.exe.config" />
         <file src="SharpDisplayClientIdle.exe" target="lib\net45\SharpDisplayClientIdle.exe" />
         <file src="SharpDisplayClientMessage.exe" target="lib\net45\SharpDisplayClientMessage.exe" />
         <file src="SharpDisplayClientTest.exe" target="lib\net45\SharpDisplayClientTest.exe" />

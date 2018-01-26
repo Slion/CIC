@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDisplayManager", "Server\SharpDisplayManager.csproj", "{1DA8C1B3-18C5-4E74-BE4E-0B0E15FBAF49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIC", "Server\CIC.csproj", "{1DA8C1B3-18C5-4E74-BE4E-0B0E15FBAF49}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PowerManager", "PowerManager\PowerManager.vcxproj", "{C174F23D-3055-49BC-B6B0-563011AF624D}"
 EndProject
@@ -120,5 +120,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D28AF2A-C003-4766-AF39-DDDA34D890C0}
 	EndGlobalSection
 EndGlobal
