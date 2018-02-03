@@ -27,7 +27,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using CodeProject.Dialog;
 using System.Drawing.Imaging;
 using System.ServiceModel;
 using System.Threading;
@@ -1099,7 +1098,7 @@ namespace SharpDisplayManager
             //DlgBox.ShowDialog(fontDialog);
 
             //if (fontDialog.ShowDialog(this) != DialogResult.Cancel)
-            if (DlgBox.ShowDialog(fontDialog) != DialogResult.Cancel)
+            if (SharpLib.Forms.DlgBox.ShowDialog(fontDialog) != DialogResult.Cancel)
             {
                 //Save font settings
                 cds.Font = fontDialog.Font;
@@ -3265,7 +3264,7 @@ namespace SharpDisplayManager
 
             FormEditObject<Ear.Action> ea = new FormEditObject<Ear.Action>();
             ea.Text = "Add action";
-            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            DialogResult res = SharpLib.Forms.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
                 parent.Objects.Add(ea.Object);               
@@ -3296,7 +3295,7 @@ namespace SharpDisplayManager
             ea.Object = selectedAction;
             // Find our action within its parent so that we can update it later
             int actionIndex = parent.Objects.FindIndex(x => x == selectedAction);
-            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            DialogResult res = SharpLib.Forms.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
                 //Make sure we keep the same children as before
@@ -3466,7 +3465,7 @@ namespace SharpDisplayManager
         {
             FormEditObject<Ear.Event> ea = new FormEditObject<Ear.Event>();
             ea.Text = "Add event";
-            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            DialogResult res = SharpLib.Forms.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {
                 Properties.Settings.Default.EarManager.Events.Add(ea.Object);
@@ -3513,7 +3512,7 @@ namespace SharpDisplayManager
             ea.Object = selectedEvent;
             // Get the index of our event so that we can update it below
             int index = Properties.Settings.Default.EarManager.Events.FindIndex(x => x == selectedEvent);
-            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(ea);
+            DialogResult res = SharpLib.Forms.DlgBox.ShowDialog(ea);
             if (res == DialogResult.OK)
             {                
                 //Make sure we keep the same actions as before

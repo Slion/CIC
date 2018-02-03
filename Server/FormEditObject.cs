@@ -13,7 +13,6 @@ using SharpLib.Ear;
 using System.Reflection;
 using Microsoft.VisualBasic.CompilerServices;
 using SharpLib.Utils;
-using CodeProject.Dialog;
 using System.IO;
 
 namespace SharpDisplayManager
@@ -337,7 +336,7 @@ namespace SharpDisplayManager
                     // Use file filter specified by our property
                     ofd.Filter = aAttribute.Filter;
                     // Show our dialog
-                    if (DlgBox.ShowDialog(ofd) == DialogResult.OK)
+                    if (SharpLib.Forms.DlgBox.ShowDialog(ofd) == DialogResult.OK)
                     {
                         // Fetch selected file name
                         ctrl.Text = ofd.FileName;

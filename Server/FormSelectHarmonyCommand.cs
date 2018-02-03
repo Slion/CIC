@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CodeProject.Dialog;
 
 namespace SharpDisplayManager
 {
@@ -35,7 +34,7 @@ namespace SharpDisplayManager
             }
             else
             {
-                ErrBox.Show("No Harmony Hub configuration!");
+                SharpLib.Forms.ErrBox.Show("No Harmony Hub configuration!");
                 Close();
             }           
         }

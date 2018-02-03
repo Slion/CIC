@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
-using CodeProject.Dialog;
 using SmartHome = SharpLib.FritzBox.SmartHome;
 
 namespace SharpDisplayManager

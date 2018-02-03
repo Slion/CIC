@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
-using CodeProject.Dialog;
 
 namespace SharpDisplayManager
 {
@@ -123,12 +122,12 @@ namespace SharpDisplayManager
         {
             if (Program.HarmonyConfig == null)
             {
-                ErrBox.Show("No Harmony Hub configuration!");
+                SharpLib.Forms.ErrBox.Show("No Harmony Hub configuration!");
                 return;
             }
 
             FormSelectHarmonyCommand dlg = new FormSelectHarmonyCommand();
-            DialogResult res = CodeProject.Dialog.DlgBox.ShowDialog(dlg);
+            DialogResult res = SharpLib.Forms.DlgBox.ShowDialog(dlg);
             if (res == DialogResult.OK)
             {
                 DeviceId = dlg.DeviceId;
