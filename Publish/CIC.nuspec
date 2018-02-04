@@ -11,7 +11,7 @@
         <iconUrl>http://publish.slions.net/CIC/favicon.ico</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Command &amp; Information Center for Home Theaters.</description>
-        <copyright>Copyright (c) 2013-2017, Stephane Lenclud</copyright>
+        <copyright>Copyright (c) 2013-2018, Stephane Lenclud</copyright>
         <language>en-US</language>
     </metadata>
     <files>
@@ -56,6 +56,11 @@
         <file src="SharpLibWin32.dll" target="lib\net45\SharpLibWin32.dll" />
         <file src="SharpLibMonitorConfig.dll" target="lib\net45\SharpLibMonitorConfig.dll" />
         <file src="SharpLibFritzBox.dll" target="lib\net45\SharpLibFritzBox.dll" />
+        <file src="SharpLibForms.dll" target="lib\net45\SharpLibForms.dll" />
+        <file src="SharpLibStreamDeck.dll" target="lib\net45\SharpLibStreamDeck.dll" />
+        <file src="SharpLibStreamDeckForms.dll" target="lib\net45\SharpLibStreamDeckForms.dll" />
+        <!-- HID Library for Stream Deck -->
+        <file src="HidLibrary.dll" target="lib\net45\HidLibrary.dll" />
         <!-- Kinect -->
         <file src="Microsoft.Kinect.dll" target="lib\net45\Microsoft.Kinect.dll" />
         <!-- Speech -->
