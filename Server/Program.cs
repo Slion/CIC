@@ -36,6 +36,11 @@ namespace SharpDisplayManager
         //That is what we want but we should enforce it somehow.
         public static FormMain iFormMain;
 
+        public static string StreamDeckFilePath;
+        public static string StreamDeckBackupFilePath;
+
+        public static string SettingsFilePath;
+        public static string SettingsBackupFilePath;
         /// <summary>
         /// 
         /// </summary>
@@ -64,6 +69,16 @@ namespace SharpDisplayManager
         [STAThread]
         static void Main()
         {
+            // Work out file Paths
+            StreamDeckFilePath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+            StreamDeckFilePath = Path.GetDirectoryName(StreamDeckFilePath) + "\\stream-deck.xml";
+            StreamDeckBackupFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\..\\stream-deck.xml";
+            //
+            SettingsFilePath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+            SettingsBackupFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\..\\last.config";
+
+
+
 
             /*
 			if (!IsRunAsAdministrator())
@@ -130,7 +145,8 @@ namespace SharpDisplayManager
                   });
             }
 #endif
-            RestoreSettings();
+            RestoreSettings(SettingsBackupFilePath,SettingsFilePath);
+            RestoreSettings(StreamDeckBackupFilePath, StreamDeckFilePath);
 
             Application.ApplicationExit += new EventHandler(OnApplicationExit);
 			//
@@ -146,22 +162,35 @@ namespace SharpDisplayManager
         /// </summary>
         public static void BackupSettings()
         {
-            string settingsFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
-            string destination = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\..\\last.config";
-            File.Copy(settingsFile, destination, true);
+            // Application Settings 
+            try
+            {
+                File.Copy(SettingsFilePath, SettingsBackupFilePath, true);
+            }
+            catch
+            {
+
+            }
+            
+            // Stream Deck configuration
+            try
+            {
+                File.Copy(StreamDeckFilePath, StreamDeckBackupFilePath, true);
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>
         /// Restore our settings backup if any.
         /// Used to persist settings across updates.
         /// </summary>
-        private static void RestoreSettings()
+        private static void RestoreSettings(string aSource, string aDestination)
         {
             //Restore settings after application update            
-            string destFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
-            string sourceFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\..\\last.config";
             // Check if we have settings that we need to restore
-            if (!File.Exists(sourceFile))
+            if (!File.Exists(aSource))
             {
                 // Nothing we need to do
                 return;
@@ -173,7 +202,7 @@ namespace SharpDisplayManager
             // Create directory as needed
             try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(destFile));
+                Directory.CreateDirectory(Path.GetDirectoryName(aDestination));
             }
             catch (Exception ex)
             {
@@ -183,7 +212,7 @@ namespace SharpDisplayManager
             // Copy our backup file in place 
             try
             {
-                File.Copy(sourceFile, destFile, true);
+                File.Copy(aSource, aDestination, true);
             }
             catch (Exception ex)
             {
@@ -193,7 +222,7 @@ namespace SharpDisplayManager
             // Delete backup file
             try
             {
-                File.Delete(sourceFile);
+                File.Delete(aSource);
             }
             catch (Exception ex)
             {

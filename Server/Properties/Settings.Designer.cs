@@ -8,334 +8,267 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SharpDisplayManager.Properties
-{
-
-
+namespace SharpDisplayManager.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisplayConnectOnStartup
-        {
-            get
-            {
+        public bool DisplayConnectOnStartup {
+            get {
                 return ((bool)(this["DisplayConnectOnStartup"]));
             }
-            set
-            {
+            set {
                 this["DisplayConnectOnStartup"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::SharpDisplayManager.DisplaysSettings DisplaysSettings
-        {
-            get
-            {
+        public global::SharpDisplayManager.DisplaysSettings DisplaysSettings {
+            get {
                 return ((global::SharpDisplayManager.DisplaysSettings)(this["DisplaysSettings"]));
             }
-            set
-            {
+            set {
                 this["DisplaysSettings"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int CurrentDisplayIndex
-        {
-            get
-            {
+        public int CurrentDisplayIndex {
+            get {
                 return ((int)(this["CurrentDisplayIndex"]));
             }
-            set
-            {
+            set {
                 this["CurrentDisplayIndex"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool CycleClients
-        {
-            get
-            {
+        public bool CycleClients {
+            get {
                 return ((bool)(this["CycleClients"]));
             }
-            set
-            {
+            set {
                 this["CycleClients"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool MinimizeToTray
-        {
-            get
-            {
+        public bool MinimizeToTray {
+            get {
                 return ((bool)(this["MinimizeToTray"]));
             }
-            set
-            {
+            set {
                 this["MinimizeToTray"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool StartMinimized
-        {
-            get
-            {
+        public bool StartMinimized {
+            get {
                 return ((bool)(this["StartMinimized"]));
             }
-            set
-            {
+            set {
                 this["StartMinimized"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool CecEnabled
-        {
-            get
-            {
+        public bool CecEnabled {
+            get {
                 return ((bool)(this["CecEnabled"]));
             }
-            set
-            {
+            set {
                 this["CecEnabled"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public byte CecHdmiPort
-        {
-            get
-            {
+        public byte CecHdmiPort {
+            get {
                 return ((byte)(this["CecHdmiPort"]));
             }
-            set
-            {
+            set {
                 this["CecHdmiPort"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool StartIdleClient
-        {
-            get
-            {
+        public bool StartIdleClient {
+            get {
                 return ((bool)(this["StartIdleClient"]));
             }
-            set
-            {
+            set {
                 this["StartIdleClient"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::SharpDisplayManager.EarManager EarManager
-        {
-            get
-            {
+        public global::SharpDisplayManager.EarManager EarManager {
+            get {
                 return ((global::SharpDisplayManager.EarManager)(this["EarManager"]));
             }
-            set
-            {
+            set {
                 this["EarManager"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool HarmonyEnabled
-        {
-            get
-            {
+        public bool HarmonyEnabled {
+            get {
                 return ((bool)(this["HarmonyEnabled"]));
             }
-            set
-            {
+            set {
                 this["HarmonyEnabled"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string HarmonyHubAddress
-        {
-            get
-            {
+        public string HarmonyHubAddress {
+            get {
                 return ((string)(this["HarmonyHubAddress"]));
             }
-            set
-            {
+            set {
                 this["HarmonyHubAddress"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LogitechAuthToken
-        {
-            get
-            {
+        public string LogitechAuthToken {
+            get {
                 return ((string)(this["LogitechAuthToken"]));
             }
-            set
-            {
+            set {
                 this["LogitechAuthToken"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool KinectEnabled
-        {
-            get
-            {
+        public bool KinectEnabled {
+            get {
                 return ((bool)(this["KinectEnabled"]));
             }
-            set
-            {
+            set {
                 this["KinectEnabled"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SpeechEnabled
-        {
-            get
-            {
+        public bool SpeechEnabled {
+            get {
                 return ((bool)(this["SpeechEnabled"]));
             }
-            set
-            {
+            set {
                 this["SpeechEnabled"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseMicrosoftSpeech
-        {
-            get
-            {
+        public bool UseMicrosoftSpeech {
+            get {
                 return ((bool)(this["UseMicrosoftSpeech"]));
             }
-            set
-            {
+            set {
                 this["UseMicrosoftSpeech"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FritzBoxEnabled
-        {
-            get
-            {
+        public bool FritzBoxEnabled {
+            get {
                 return ((bool)(this["FritzBoxEnabled"]));
             }
-            set
-            {
+            set {
                 this["FritzBoxEnabled"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://fritz.box/")]
-        public string FritzBoxUrl
-        {
-            get
-            {
+        public string FritzBoxUrl {
+            get {
                 return ((string)(this["FritzBoxUrl"]));
             }
-            set
-            {
+            set {
                 this["FritzBoxUrl"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FritzBoxLogin
-        {
-            get
-            {
+        public string FritzBoxLogin {
+            get {
                 return ((string)(this["FritzBoxLogin"]));
             }
-            set
-            {
+            set {
                 this["FritzBoxLogin"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FritzBoxPassword
-        {
-            get
-            {
+        public string FritzBoxPassword {
+            get {
                 return ((string)(this["FritzBoxPassword"]));
             }
-            set
-            {
+            set {
                 this["FritzBoxPassword"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool StreamDeckEnabled
-        {
-            get
-            {
+        public bool StreamDeckEnabled {
+            get {
                 return ((bool)(this["StreamDeckEnabled"]));
             }
-            set
-            {
+            set {
                 this["StreamDeckEnabled"] = value;
             }
         }

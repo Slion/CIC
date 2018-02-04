@@ -136,8 +136,6 @@ namespace SharpDisplayManager
                 //Tell observer the object itself changed
                 OnPropertyChanged("Brief");
             }
-
         }
-
     }
 }

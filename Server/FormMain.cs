@@ -145,6 +145,11 @@ namespace SharpDisplayManager
         /// </summary>
         RichTextBoxTraceListener iWriter;
 
+        /// <summary>
+        /// Stream Deck
+        /// </summary>
+        CIC.StreamDeckEditor iStreamDeckEditor;
+
 
         /// <summary>
         /// Allow user to receive window messages;
@@ -191,6 +196,9 @@ namespace SharpDisplayManager
 
             //Have our designer initialize its controls
             InitializeComponent();
+
+            // Embed our Stream Deck Editor Form
+            UpdateStreamDeck();
 
             //Redirect console output
             iWriter = new RichTextBoxTraceListener(richTextBoxLogs);
@@ -320,6 +328,58 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        void UpdateStreamDeck()
+        {
+            if (Properties.Settings.Default.StreamDeckEnabled && iStreamDeckEditor==null)
+            {
+                iStreamDeckEditor = new CIC.StreamDeckEditor(Program.StreamDeckFilePath);
+                iStreamDeckEditor.Dock = DockStyle.Fill;
+                iStreamDeckEditor.TopLevel = false;
+                iStreamDeckEditor.Show();
+                tabPageStreamDeck.Controls.Add(iStreamDeckEditor);
+                PopulateStreamDeckEvents();
+            }
+            else if (!Properties.Settings.Default.StreamDeckEnabled && iStreamDeckEditor != null)
+            {
+                tabPageStreamDeck.Controls.Remove(iStreamDeckEditor);
+                iStreamDeckEditor.Dispose();
+                iStreamDeckEditor = null;
+            }
+
+        }
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        void PopulateStreamDeckEvents()
+        {
+            if (iStreamDeckEditor==null)
+            {
+                return;
+            }
+
+            iStreamDeckEditor.ComboBoxEvents.Items.Clear();
+
+            foreach (Ear.Event e in Properties.Settings.Default.EarManager.Events)
+            {
+                // We only want user event
+                if (e.GetType() == typeof(Ear.Event))
+                {
+                    iStreamDeckEditor.ComboBoxEvents.Items.Add(e.Name);
+                }
+            }
+            
+            // Make sure current key event is reloaded 
+            iStreamDeckEditor.EditCurrentKey();
+        }
+
+
+
+
+        /// <summary>
         /// Check for application update and ask the user to proceed if any.
         /// </summary>
         async void SquirrelUpdate(bool aAutoCheck=false)
@@ -396,6 +456,10 @@ namespace SharpDisplayManager
             else if (e.PropertyName.Equals("FritzBoxEnabled"))
             {
                 await CreateFritzBoxClient();
+            }
+            else if (e.PropertyName.Equals("StreamDeckEnabled"))
+            {
+                UpdateStreamDeck();
             }
         }
 
@@ -3836,5 +3900,15 @@ namespace SharpDisplayManager
             Properties.Settings.Default.FritzBoxPassword = Secure.EncryptString(Secure.ToSecureString(iTextBoxFritzBoxPassword.Text));
             Properties.Settings.Default.Save();
         }
+
+        private void tabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            if (e.TabPage == tabPageStreamDeck)
+            {
+                // Update events
+                PopulateStreamDeckEvents();                
+            }
+        }
+
     }
 }
