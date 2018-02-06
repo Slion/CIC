@@ -223,6 +223,23 @@ namespace SharpDisplayManager
                 PropertyButton value = new PropertyButton { Text = ctrl.Text };
                 aInfo.SetValue(aObject, value);
             }
+            else if (aInfo.PropertyType == typeof(PropertyCheckedListBox))
+            {
+                CheckedListBox ctrl = (CheckedListBox)aControl;
+                PropertyCheckedListBox value = (PropertyCheckedListBox)aInfo.GetValue(aObject);
+                List<string> checkedItems = new List<string>();                
+                foreach (string item in ctrl.CheckedItems)
+                {
+                    checkedItems.Add(item);
+                }
+                value.CheckedItems = checkedItems;
+
+                //value.CurrentItem = currentItem;
+                //Not strictly needed but makes sure the set method is called
+                aInfo.SetValue(aObject, value);
+                //
+                //aObject.OnPropertyChanged(aInfo.Name);
+            }
 
             //TODO: add support for other types here
         }
@@ -350,20 +367,22 @@ namespace SharpDisplayManager
             else if (aInfo.PropertyType == typeof(PropertyComboBox))
             {
                 //ComboBox property
+                PropertyComboBox property = ((PropertyComboBox)aInfo.GetValue(aObject));
+
                 ComboBox ctrl = new ComboBox();
                 ctrl.AutoSize = true;
-                ctrl.Sorted = true;
+                ctrl.Sorted = property.Sorted;
                 ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
                 //Data source is such a pain to set the current item
                 //ctrl.DataSource = ((PropertyComboBox)aInfo.GetValue(aObject)).Items;                
 
-                PropertyComboBox pcb = ((PropertyComboBox)aInfo.GetValue(aObject));
-                foreach (string item in pcb.Items)
+                
+                foreach (string item in property.Items)
                 {
                     ctrl.Items.Add(item);
                 }
 
-                ctrl.SelectedItem = pcb.CurrentItem;
+                ctrl.SelectedItem = property.CurrentItem;
 
                 // Hook-in change notification after setting the value 
                 // Make sure form content is updated after property change
@@ -381,6 +400,34 @@ namespace SharpDisplayManager
                 ctrl.Click += ((PropertyButton)aInfo.GetValue(aObject)).ClickEventHandler;
                 // Hook-in change notification after setting the value 
                 ctrl.TextChanged += ControlValueChanged;
+                return ctrl;
+            }
+            else if (aInfo.PropertyType == typeof(PropertyCheckedListBox))
+            {
+                //CheckedListBox property
+                PropertyCheckedListBox property = ((PropertyCheckedListBox)aInfo.GetValue(aObject));
+                
+                CheckedListBox ctrl = new CheckedListBox();
+                ctrl.AutoSize = true;
+                ctrl.Sorted = property.Sorted;
+                ctrl.CheckOnClick = true;          
+
+                // Populate our box with list items
+                foreach (string item in property.Items)
+                {
+                    int index = ctrl.Items.Add(item);
+                    // Check items if needed
+                    if (property.CheckedItems.Contains(item))
+                    {
+                        ctrl.SetItemChecked(index,true);
+                    }
+                }
+                //
+                // Hook-in change notification after setting the value 
+                // That's essentially making sure title/brief gets updated as items are checked or unchecked
+                // This looks convoluted as we are working around the fact that ItemCheck event is triggered before the model is updated.
+                // See: https://stackoverflow.com/a/48645552/3969362
+                ctrl.ItemCheck += (s, e) => BeginInvoke((MethodInvoker)(() => ControlValueChanged(s, e)));
                 return ctrl;
             }
 
@@ -426,7 +473,11 @@ namespace SharpDisplayManager
             {
                 return true;
             }
-
+            else if (aInfo.PropertyType == typeof(PropertyCheckedListBox))
+            {
+                return true;
+            }
+            
             //TODO: add support for other type here
 
             return false;
@@ -439,6 +490,7 @@ namespace SharpDisplayManager
         /// <param name="aLayout"></param>
         private void UpdateControls()
         {
+            iTableLayoutPanel.SuspendLayout(); // Avoid flicker   
 
             toolTip.RemoveAll();
             //Debug.Print("UpdateTableLayoutPanel")
@@ -455,7 +507,8 @@ namespace SharpDisplayManager
 
 
             if (Object == null)
-            {
+            {                
+                iTableLayoutPanel.ResumeLayout(true);
                 //Just drop it
                 return;
             }
@@ -514,6 +567,8 @@ namespace SharpDisplayManager
             //Enter object edit mode
             Object.CurrentState = SharpLib.Ear.Object.State.Edit;
             Object.PropertyChanged += PropertyChangedEventHandlerThreadSafe;
+
+            iTableLayoutPanel.ResumeLayout(true);
         }
 
         /// <summary>
@@ -530,15 +585,15 @@ namespace SharpDisplayManager
                 this.Invoke(d, new object[] { sender, e });
             }
             else
-            {
+            {               
                 // We could test the name of the property that has changed as follow
                 // It's currently not needed though
                 //if (e.PropertyName == "Brief")
 
                 // Our object has changed behind our back.
                 // That's currently only the case for HID events that are listening for inputs.
-                if (Object is EventHid)
-                {
+                //if (Object is EventHid)
+                //{
                     //HID can't do full control updates for some reason
                     //We are getting spammed with HID events after a few clicks
                     //We need to investigate, HID bug?
@@ -546,11 +601,15 @@ namespace SharpDisplayManager
                     // I guess it was due to accumulation of Object.PropertyChanged handler
                     // Considerer removing all HID specific stuff from this class
                     UpdateStaticControls();
-                }
-                else
-                {
-                    UpdateControls();
-                }
+                //}
+                //else
+                //{
+                      // That would only be needed if changing a property would change our object editor layout
+                      // I've retired that for now as I don't think that's ever needed. I could be wrong though.
+                      // If ever needed again I guess we should mark our property with a special attribute flag.
+                      // Try avoiding it altogether as it's rather slow and causes flicker.
+                //    UpdateControls();
+                //}
             }
         }
 

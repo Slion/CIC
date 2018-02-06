@@ -13,7 +13,7 @@ using System.Diagnostics;
 namespace SharpDisplayManager
 {
     /// <summary>
-    /// Abstract CEC action using a device type.
+    /// Action of modifying monitor brightness.
     /// </summary>
     [DataContract]
     [AttributeObject(Id = "MonitorConfig.Brightness", Name = "Monitor Brightness", Description = "Control monitor brightness.")]

@@ -80,8 +80,10 @@
     <Compile Include="Object.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyButton.cs" />
+    <Compile Include="PropertyCheckedListBox.cs" />
     <Compile Include="PropertyComboBox.cs" />
     <Compile Include="PropertyFile.cs" />
+    <Compile Include="PropertyList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpLibUtils\SharpLibUtils.csproj">

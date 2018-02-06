@@ -12,10 +12,8 @@ namespace SharpLib.Ear
     /// </summary>
     [DataContract]
     [AttributeObject(Id = "Property.ComboBox", Name = "ComboBox", Description = "ComboBox property.")]
-    public class PropertyComboBox : Object
+    public class PropertyComboBox : PropertyList
     {
-        public IList<string> Items { get; set; } = new List<string>();
-
         [DataMember]
         public string CurrentItem { get; set; }
     }

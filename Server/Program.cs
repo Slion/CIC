@@ -61,7 +61,15 @@ namespace SharpDisplayManager
         /// </summary>
         public static Hid.Handler HidHandler;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public const string KSquirrelUpdateUrl = "http://publish.slions.net/CIC";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static SharpLib.MicroInput.Client iMicroInput;
 
         /// <summary>
         /// The main entry point for the application.
@@ -152,8 +160,29 @@ namespace SharpDisplayManager
 			//
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //
+            TryCreateMicroInputClient();
+            //
             iFormMain = new FormMain();
             Application.Run(iFormMain);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void TryCreateMicroInputClient()
+        {
+            try
+            {
+                iMicroInput = new SharpLib.MicroInput.Client();
+                iMicroInput.Open();
+            }
+            catch
+            {
+                Trace.WriteLine("WARNING: No micro input hardware (Teensy).");
+            }
         }
 
         /// <summary>

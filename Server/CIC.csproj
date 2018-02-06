@@ -188,6 +188,9 @@
       <HintPath>..\packages\SharpLibHid.1.4.2\lib\net40\SharpLibHid.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharpLibMicroInput, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpLibMicroInput.0.0.2\lib\net461\SharpLibMicroInput.dll</HintPath>
+    </Reference>
     <Reference Include="SharpLibMiniDisplay, Version=1.0.6373.24586, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\packages\SharpLibMiniDisplay.1.0.3\lib\net40\SharpLibMiniDisplay.dll</HintPath>
       <Private>True</Private>
@@ -256,6 +259,7 @@
     <Compile Include="Actions\ActionFritzBoxSwitchOn.cs" />
     <Compile Include="Actions\ActionFritzBoxSwitchToggle.cs" />
     <Compile Include="Actions\ActionHarmonyCommand.cs" />
+    <Compile Include="Actions\ActionMicroInputKeyboard.cs" />
     <Compile Include="Actions\ActionMonitorBrightness.cs" />
     <Compile Include="Actions\ActionMonitorConfig.cs" />
     <Compile Include="Actions\ActionMonitorContrast.cs" />
