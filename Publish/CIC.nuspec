@@ -59,6 +59,7 @@
         <file src="SharpLibForms.dll" target="lib\net45\SharpLibForms.dll" />
         <file src="SharpLibStreamDeck.dll" target="lib\net45\SharpLibStreamDeck.dll" />
         <file src="SharpLibStreamDeckForms.dll" target="lib\net45\SharpLibStreamDeckForms.dll" />
+        <file src="SharpLibMicroInput.dll" target="lib\net45\SharpLibMicroInput.dll" />
         <!-- HID Library for Stream Deck -->
         <file src="HidLibrary.dll" target="lib\net45\HidLibrary.dll" />
         <!-- Kinect -->
