@@ -17,9 +17,12 @@ namespace CIC
         }
 
         public override void StreamDeckKeyPressed(object sender, KeyEventArgs e)
-        {
-            // Trigger associated event
-            SharpDisplayManager.Properties.Settings.Default.EarManager.TriggerEventsByName(KeyForIndex(e.Key).EventName);
+        {            
+            if (e.IsDown)
+            {
+                // Trigger associated event
+                SharpDisplayManager.Properties.Settings.Default.EarManager.TriggerEventsByName(KeyForIndex(e.Key).EventName);
+            }           
         }
 
     }
