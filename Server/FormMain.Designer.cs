@@ -293,7 +293,7 @@
             this.toolStripStatusLabelSpring,
             this.toolStripStatusLabelPower,
             this.toolStripStatusLabelFps});
-            this.statusStrip.Location = new System.Drawing.Point(0, 573);
+            this.statusStrip.Location = new System.Drawing.Point(0, 605);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip.Size = new System.Drawing.Size(798, 22);
@@ -415,7 +415,7 @@
             this.tabPageDisplay.Location = new System.Drawing.Point(4, 22);
             this.tabPageDisplay.Name = "tabPageDisplay";
             this.tabPageDisplay.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDisplay.Size = new System.Drawing.Size(766, 418);
+            this.tabPageDisplay.Size = new System.Drawing.Size(766, 450);
             this.tabPageDisplay.TabIndex = 0;
             this.tabPageDisplay.Text = "Display";
             this.tabPageDisplay.UseVisualStyleBackColor = true;
@@ -492,7 +492,7 @@
             // buttonSuspend
             // 
             this.buttonSuspend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSuspend.Location = new System.Drawing.Point(6, 317);
+            this.buttonSuspend.Location = new System.Drawing.Point(6, 349);
             this.buttonSuspend.Name = "buttonSuspend";
             this.buttonSuspend.Size = new System.Drawing.Size(75, 23);
             this.buttonSuspend.TabIndex = 16;
@@ -506,7 +506,7 @@
             this.checkBoxConnectOnStartup.AutoSize = true;
             this.checkBoxConnectOnStartup.Checked = global::SharpDisplayManager.Properties.Settings.Default.DisplayConnectOnStartup;
             this.checkBoxConnectOnStartup.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SharpDisplayManager.Properties.Settings.Default, "DisplayConnectOnStartup", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 350);
+            this.checkBoxConnectOnStartup.Location = new System.Drawing.Point(113, 382);
             this.checkBoxConnectOnStartup.Name = "checkBoxConnectOnStartup";
             this.checkBoxConnectOnStartup.Size = new System.Drawing.Size(119, 17);
             this.checkBoxConnectOnStartup.TabIndex = 13;
@@ -521,7 +521,7 @@
             this.trackBarBrightness.Location = new System.Drawing.Point(704, 9);
             this.trackBarBrightness.Name = "trackBarBrightness";
             this.trackBarBrightness.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarBrightness.Size = new System.Drawing.Size(45, 358);
+            this.trackBarBrightness.Size = new System.Drawing.Size(45, 390);
             this.trackBarBrightness.TabIndex = 10;
             this.trackBarBrightness.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.toolTip.SetToolTip(this.trackBarBrightness, "Brightness adjustment");
@@ -570,7 +570,7 @@
             // buttonCapture
             // 
             this.buttonCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCapture.Location = new System.Drawing.Point(6, 346);
+            this.buttonCapture.Location = new System.Drawing.Point(6, 378);
             this.buttonCapture.Name = "buttonCapture";
             this.buttonCapture.Size = new System.Drawing.Size(75, 23);
             this.buttonCapture.TabIndex = 5;
@@ -645,7 +645,7 @@
             this.tabControl.Location = new System.Drawing.Point(12, 125);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(774, 444);
+            this.tabControl.Size = new System.Drawing.Size(774, 476);
             this.tabControl.TabIndex = 0;
             this.tabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Selected);
             // 
@@ -1512,7 +1512,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(798, 595);
+            this.ClientSize = new System.Drawing.Size(798, 627);
             this.Controls.Add(this.labelFontHeight);
             this.Controls.Add(this.labelFontWidth);
             this.Controls.Add(this.labelWarning);

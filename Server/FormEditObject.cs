@@ -209,13 +209,16 @@ namespace SharpDisplayManager
             else if (aInfo.PropertyType == typeof(PropertyComboBox))
             {
                 ComboBox ctrl = (ComboBox)aControl;
-                string currentItem = ctrl.SelectedItem.ToString();
-                PropertyComboBox value = (PropertyComboBox)aInfo.GetValue(aObject);
-                value.CurrentItem = currentItem;
-                //Not strictly needed but makes sure the set method is called
-                aInfo.SetValue(aObject, value);
-                //
-                aObject.OnPropertyChanged(aInfo.Name);              
+                if (ctrl.SelectedItem != null)
+                {
+                    string currentItem = ctrl.SelectedItem.ToString();
+                    PropertyComboBox value = (PropertyComboBox)aInfo.GetValue(aObject);
+                    value.CurrentItem = currentItem;
+                    //Not strictly needed but makes sure the set method is called
+                    aInfo.SetValue(aObject, value);
+                    //
+                    aObject.OnPropertyChanged(aInfo.Name);
+                }
             }
             else if (aInfo.PropertyType == typeof(PropertyButton))
             {

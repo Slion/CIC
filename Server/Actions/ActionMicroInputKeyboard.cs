@@ -22,6 +22,16 @@ namespace SharpDisplayManager
         [DataMember]
         [AttributeObjectProperty
             (
+            Id = "Action.MicroInputKeyboardFunction",
+            Name = "Keyboard function",
+            Description = "Select the keyboard function you want to achieve."
+            )
+        ]
+        public KeyboardFunction Function { get; set; }
+
+        [DataMember]
+        [AttributeObjectProperty
+            (
             Id = "Action.MicroInputKeyboardModifiers",
             Name = "Keyboard modifiers",
             Description = "Select keyboard modifiers."
@@ -40,6 +50,13 @@ namespace SharpDisplayManager
         ]
         public PropertyComboBox Key { get; set; } = new PropertyComboBox();
 
+        public enum KeyboardFunction
+        {
+            Action = 0,
+            Press = 1,
+            Release = 2,
+            ReleaseAll = 3
+        }
 
         protected override void DoConstruct()
         {
@@ -52,7 +69,7 @@ namespace SharpDisplayManager
 
         public override string BriefBase()
         {
-            string brief = AttributeName + " ";
+            string brief = AttributeName + " " + Function.ToString() + " ";
             foreach (string modifier in Modifiers.CheckedItems)
             {
                 brief += modifier + " + ";
@@ -61,7 +78,6 @@ namespace SharpDisplayManager
             brief += Key.CurrentItem;
             return brief;
         }
-
 
         /// <summary>
         /// 
@@ -111,7 +127,23 @@ namespace SharpDisplayManager
             }
 
             // Execute our keyboard action
-            Program.iMicroInput.KeyboardAction((ushort)typeof(SharpLib.MicroInput.Keyboard.Key).GetField(Key.CurrentItem).GetValue(null), modifiers);
+            switch (Function)
+            {
+                case KeyboardFunction.Action:
+                    Program.iMicroInput.KeyboardAction((ushort)typeof(SharpLib.MicroInput.Keyboard.Key).GetField(Key.CurrentItem).GetValue(null), modifiers);
+                    break;
+                case KeyboardFunction.Press:
+                    Program.iMicroInput.KeyboardPress((ushort)typeof(SharpLib.MicroInput.Keyboard.Key).GetField(Key.CurrentItem).GetValue(null), modifiers);
+                    break;
+                case KeyboardFunction.Release:
+                    Program.iMicroInput.KeyboardRelease((ushort)typeof(SharpLib.MicroInput.Keyboard.Key).GetField(Key.CurrentItem).GetValue(null), modifiers);
+                    break;
+                case KeyboardFunction.ReleaseAll:
+                    Program.iMicroInput.KeyboardReleaseAll();
+                    break;
+
+            }
+
         }
 
     }

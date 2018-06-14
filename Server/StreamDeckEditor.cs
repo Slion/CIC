@@ -21,8 +21,13 @@ namespace CIC
             if (e.IsDown)
             {
                 // Trigger associated event
-                SharpDisplayManager.Properties.Settings.Default.EarManager.TriggerEventsByName(KeyForIndex(e.Key).EventName);
+                SharpDisplayManager.Properties.Settings.Default.EarManager.TriggerEventsByName(KeyForIndex(e.Key).KeyDownEventName);
             }           
+            else
+            {
+                // Trigger associated event
+                SharpDisplayManager.Properties.Settings.Default.EarManager.TriggerEventsByName(KeyForIndex(e.Key).KeyUpEventName);
+            }
         }
 
     }

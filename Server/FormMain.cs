@@ -361,14 +361,16 @@ namespace SharpDisplayManager
                 return;
             }
 
-            iStreamDeckEditor.ComboBoxEvents.Items.Clear();
+            iStreamDeckEditor.ComboBoxKeyDownEvent.Items.Clear();
+            iStreamDeckEditor.ComboBoxKeyUpEvent.Items.Clear();
 
             foreach (Ear.Event e in Properties.Settings.Default.EarManager.Events)
             {
                 // We only want user event
                 if (e.GetType() == typeof(Ear.Event))
                 {
-                    iStreamDeckEditor.ComboBoxEvents.Items.Add(e.Name);
+                    iStreamDeckEditor.ComboBoxKeyDownEvent.Items.Add(e.Name);
+                    iStreamDeckEditor.ComboBoxKeyUpEvent.Items.Add(e.Name);
                 }
             }
             
