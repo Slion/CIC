@@ -79,6 +79,7 @@ namespace SharpDisplayManager
     [System.ComponentModel.DesignerCategory("Form")]
     public partial class FormMain : FormMainHid
     {
+        public static IntPtr HWND;
         //public Manager iManager = new Manager();        
         DateTime iLastTickTime;
         Display iDisplay;
@@ -230,6 +231,7 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private async void MainForm_Load(object sender, EventArgs e)
         {
+            HWND = Handle;
             //Check if we are running a Click Once deployed application
             //TODO: remove ClickOnce stuff 
             if (ApplicationDeployment.IsNetworkDeployed)
