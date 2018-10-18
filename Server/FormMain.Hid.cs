@@ -134,7 +134,15 @@ namespace SharpDisplayManager
                 case Const.WM_INPUT:
                     //Returning zero means we processed that message.
                     message.Result = new IntPtr(0);
-                    Program.HidHandler.ProcessInput(ref message);
+                    try
+                    {
+                        Program.HidHandler.ProcessInput(ref message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceInformation("HID Exception: " + ex.ToString());
+                    }
+                    
                     break;
             }
 
