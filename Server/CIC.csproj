@@ -173,9 +173,8 @@
       <HintPath>..\packages\squirrel.windows.1.6.0\lib\Net45\NuGet.Squirrel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpLibDisplay, Version=0.2.8.17764, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpLibDisplay.0.3.3\lib\net40\SharpLibDisplay.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SharpLibDisplay, Version=0.2.8.23010, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpLibDisplay.0.3.4\lib\net40\SharpLibDisplay.dll</HintPath>
     </Reference>
     <Reference Include="SharpLibForms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpLibForms.0.0.3\lib\net40\SharpLibForms.dll</HintPath>

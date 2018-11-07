@@ -66,9 +66,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpLibDisplay, Version=0.2.8.17764, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpLibDisplay.0.3.3\lib\net40\SharpLibDisplay.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SharpLibDisplay, Version=0.2.8.23010, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpLibDisplay.0.3.4\lib\net40\SharpLibDisplay.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
