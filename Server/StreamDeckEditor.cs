@@ -17,7 +17,11 @@ namespace CIC
         }
 
         public override void StreamDeckKeyPressed(object sender, KeyEventArgs e)
-        {            
+        {
+            // Make sure base class logic applies
+            base.StreamDeckKeyPressed(sender, e);
+
+            // Trigger corresponding events
             if (e.IsDown)
             {
                 // Trigger associated event
