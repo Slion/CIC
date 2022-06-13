@@ -129,6 +129,9 @@
       <HintPath>..\packages\DeltaCompressionDotNet.1.0.0\lib\net45\DeltaCompressionDotNet.PatchApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="GregsStack.InputSimulatorStandard, Version=1.3.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GregsStack.InputSimulatorStandard.1.3.4\lib\net40\GregsStack.InputSimulatorStandard.dll</HintPath>
+    </Reference>
     <Reference Include="HarmonyHub, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpLibHarmony.0.7.0\lib\net451\HarmonyHub.dll</HintPath>
       <Private>True</Private>
@@ -257,6 +260,7 @@
     <Compile Include="Actions\ActionFritzBoxSwitchOn.cs" />
     <Compile Include="Actions\ActionFritzBoxSwitchToggle.cs" />
     <Compile Include="Actions\ActionHarmonyCommand.cs" />
+    <Compile Include="Actions\ActionSendInputKeyoard.cs" />
     <Compile Include="Actions\ActionMicroInputKeyboard.cs" />
     <Compile Include="Actions\ActionMonitorBrightness.cs" />
     <Compile Include="Actions\ActionMonitorConfig.cs" />

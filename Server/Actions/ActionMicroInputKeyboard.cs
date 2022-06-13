@@ -13,7 +13,7 @@ using System.Diagnostics;
 namespace SharpDisplayManager
 {
     /// <summary>
-    /// Abstract Monitor Config action .
+    /// Send a keyboard event through Teensy hardware.
     /// </summary>
     [DataContract]
     [AttributeObject(Id = "MicroInput.Keyboard", Name = "Micro Input Keyboard", Description = "Send a keyboard event through Teensy hardware.")]

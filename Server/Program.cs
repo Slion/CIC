@@ -27,6 +27,7 @@ using Squirrel;
 using System.Configuration;
 using System.IO;
 using SmartHome = SharpLib.FritzBox.SmartHome;
+using GregsStack.InputSimulatorStandard;
 
 namespace SharpDisplayManager
 {
@@ -70,6 +71,11 @@ namespace SharpDisplayManager
         /// 
         /// </summary>
         public static SharpLib.MicroInput.Client iMicroInput;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static InputSimulator iInputSimulator = new InputSimulator();
 
         /// <summary>
         /// The main entry point for the application.
