@@ -11,6 +11,9 @@ using Hid = SharpLib.Hid;
 
 namespace SharpDisplayManager
 {
+    /// <summary>
+    /// TODO: Consider an option to make it device specific.
+    /// </summary>
     [DataContract]
     [Ear.AttributeObject(Id = "Event.Hid", Name = "HID", Description = "Handle input from Keyboards and Remotes.")]
     public class EventHid: Ear.Event
@@ -48,6 +51,12 @@ namespace SharpDisplayManager
 
         [DataMember]
         public bool IsGeneric { get; set; } = false;
+
+        [DataMember]
+        public bool IsGamePad { get; set; } = false;
+
+        [DataMember]
+        public bool IsJoystick { get; set; } = false;
 
         [DataMember]
         public bool HasModifierShift { get; set; } = false;
@@ -117,7 +126,17 @@ namespace SharpDisplayManager
             }
             else if (IsGeneric)
             {
-                brief += UsageName;
+                if (IsJoystick)
+                {
+                    brief += "Joystick ";
+                }
+
+                if (IsGamePad)
+                {
+                    brief += "GamePad ";
+                }
+
+                brief += UsageName;                
             }
 
             if (IsKeyUp)
@@ -148,6 +167,8 @@ namespace SharpDisplayManager
                     && e.UsageCollection == UsageCollection
                     && e.IsKeyUp == IsKeyUp
                     && e.IsGeneric == IsGeneric
+                    && e.IsGamePad == IsGamePad
+                    && e.IsJoystick == IsJoystick
                     && e.IsKeyboard == IsKeyboard
                     && e.IsMouse == IsMouse
                     && e.HasModifierAlt == HasModifierAlt
@@ -201,7 +222,8 @@ namespace SharpDisplayManager
                 || !aHidEvent.IsValid
                 || aHidEvent.IsBackground
                 || aHidEvent.IsRepeat
-                || aHidEvent.IsStray)
+                || aHidEvent.IsStray
+                )
             {
                 return;
             }
@@ -225,7 +247,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        /// TODO: Optionally save the device name to make it specific to a device.
         /// </summary>
         /// <param name="aHidEvent"></param>
         private void PrivateCopy(Hid.Event aHidEvent)
@@ -236,13 +258,27 @@ namespace SharpDisplayManager
             IsGeneric = aHidEvent.IsGeneric;
             IsKeyboard = aHidEvent.IsKeyboard;
             IsMouse = aHidEvent.IsMouse;
+            IsGamePad = aHidEvent.Device?.IsGamePad ?? false;
+            IsJoystick = aHidEvent.Device?.IsJoystick ?? false;
 
             if (IsGeneric)
             {
-                if (aHidEvent.Usages.Count > 0)
+                if (IsGamePad || IsJoystick)
                 {
-                    Usage = aHidEvent.Usages[0];
-                    UsageName = aHidEvent.UsageName(0);
+                    if (aHidEvent.Usages.Count > 0)
+                    {
+                        Usage = aHidEvent.Usages[0];
+                        UsageName = "Button " + Usage;
+                    }
+                }
+                else
+                {
+                    // We were assuming this is a remote control
+                    if (aHidEvent.Usages.Count > 0)
+                    {
+                        Usage = aHidEvent.Usages[0];
+                        UsageName = aHidEvent.UsageName(0);
+                    }
                 }
 
                 Key = Keys.None;

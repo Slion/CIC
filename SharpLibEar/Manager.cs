@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -45,11 +46,33 @@ namespace SharpLib.Ear
         }
 
         /// <summary>
+        /// We should not be able to trigger anything when in edit mode for instance.
+        /// </summary>
+        /// <returns></returns>
+        public bool CanTrigger()
+        {
+            bool canTrigger = CurrentState == State.Rest;
+            //if (!canTrigger)
+            //{
+            //    Trace.WriteLine("EAR: Can't trigger now!");
+            //}
+
+            return canTrigger;
+        }
+
+
+        /// <summary>
         /// Trigger the given event.
         /// </summary>
         /// <param name="aEventType"></param>
         public async void TriggerEvents<T>() where T: class
         {
+            // Check if we are currently allowed to trigger anything
+            if (!CanTrigger())
+            {
+                return;
+            }
+
             //Only trigger enabled events matching the desired type
             foreach (Event e in Events.Where(e => e.GetType() == typeof(T) && e.Enabled))
             {
@@ -63,6 +86,12 @@ namespace SharpLib.Ear
         /// <param name="aEventType"></param>
         public async void TriggerEvents<T>(T aEvent) where T : Event
         {
+            // Check if we are currently allowed to trigger anything
+            if (!CanTrigger())
+            {
+                return;
+            }
+
             //Only trigger events matching the desired type
             foreach (Event e in Events.Where(e => e.Matches(aEvent) && e.Enabled))
             {
@@ -78,6 +107,13 @@ namespace SharpLib.Ear
         /// <param name="aEvent"></param>
         public async void TriggerEventsByName(string aName)
         {
+            // Check if we are currently allowed to trigger anything
+            if (!CanTrigger())
+            {
+                return;
+            }
+
+
             if (string.IsNullOrEmpty(aName))
             {
                 //Just don't do that, that would be silly

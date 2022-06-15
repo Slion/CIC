@@ -176,8 +176,8 @@
       <HintPath>..\packages\squirrel.windows.1.6.0\lib\Net45\NuGet.Squirrel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpLib.Hid, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpLibHid.1.5.0\lib\net40\SharpLib.Hid.dll</HintPath>
+    <Reference Include="SharpLib.Hid, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpLibHid.1.5.1\lib\net40\SharpLib.Hid.dll</HintPath>
     </Reference>
     <Reference Include="SharpLibDisplay, Version=0.2.8.23010, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpLibDisplay.0.3.4\lib\net40\SharpLibDisplay.dll</HintPath>
@@ -260,7 +260,7 @@
     <Compile Include="Actions\ActionFritzBoxSwitchOn.cs" />
     <Compile Include="Actions\ActionFritzBoxSwitchToggle.cs" />
     <Compile Include="Actions\ActionHarmonyCommand.cs" />
-    <Compile Include="Actions\ActionSendInputKeyoard.cs" />
+    <Compile Include="Actions\ActionSendInputKeyboard.cs" />
     <Compile Include="Actions\ActionMicroInputKeyboard.cs" />
     <Compile Include="Actions\ActionMonitorBrightness.cs" />
     <Compile Include="Actions\ActionMonitorConfig.cs" />

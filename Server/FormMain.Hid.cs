@@ -34,7 +34,7 @@ namespace SharpDisplayManager
             // remote device. See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnwmt/html/remote_control.asp
             // for the vendor defined usage page.
 
-            RAWINPUTDEVICE[] rid = new RAWINPUTDEVICE[6];
+            RAWINPUTDEVICE[] rid = new RAWINPUTDEVICE[7];
 
             int i = 0;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.WindowsMediaCenterRemoteControl;
@@ -63,6 +63,12 @@ namespace SharpDisplayManager
             i++;
             rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.GenericDesktopControls;
             rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.GenericDesktop.GamePad;
+            rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
+            rid[i].hwndTarget = Handle;
+
+            i++;
+            rid[i].usUsagePage = (ushort)SharpLib.Hid.UsagePage.GenericDesktopControls;
+            rid[i].usUsage = (ushort)SharpLib.Hid.UsageCollection.GenericDesktop.Joystick;
             rid[i].dwFlags = RawInputDeviceFlags.RIDEV_INPUTSINK;
             rid[i].hwndTarget = Handle;
 

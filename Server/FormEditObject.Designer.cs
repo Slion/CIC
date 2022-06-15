@@ -87,6 +87,7 @@
             this.buttonCancel.TabIndex = 22;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // iTableLayoutPanel
             // 
@@ -163,7 +164,7 @@
             this.Name = "FormEditObject";
             this.Text = "Edit object";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEditObject_FormClosing);
-            this.Load += new System.EventHandler(this.FormEditAction_Load);
+            this.Load += new System.EventHandler(this.FormEditObject_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

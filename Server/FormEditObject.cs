@@ -38,8 +38,11 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FormEditAction_Load(object sender, EventArgs e)
+        private void FormEditObject_Load(object sender, EventArgs e)
         {
+            // Disable trigger until we are done editing
+            Properties.Settings.Default.EarManager.CurrentState = SharpLib.Ear.Object.State.Edit;
+
             // Populate registered object types
             IEnumerable < Type > types = Reflection.GetConcreteClassesDerivedFrom<T>();
             foreach (Type type in types)
@@ -83,6 +86,15 @@ namespace SharpDisplayManager
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            //FetchPropertiesValue(Object);
+        }
 
         /// <summary>
         /// 
@@ -96,9 +108,11 @@ namespace SharpDisplayManager
 
             if (!e.Cancel)
             {
-                //Exit edit mode
+                //Exit edit mode                
                 Object.CurrentState = SharpLib.Ear.Object.State.Rest;
                 Object.PropertyChanged -= PropertyChangedEventHandlerThreadSafe;
+                // Make sure we enable event triggers again
+                Properties.Settings.Default.EarManager.CurrentState = SharpLib.Ear.Object.State.Rest;
             }
         }
 
@@ -703,5 +717,6 @@ namespace SharpDisplayManager
                 Object.CurrentState = SharpLib.Ear.Object.State.Rest;
             }
         }
+
     }
 }
