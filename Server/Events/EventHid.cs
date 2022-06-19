@@ -73,7 +73,15 @@ namespace SharpDisplayManager
         [DataMember]
         public string UsageName { get; set; } = "Press a key";
 
-
+        //[DataMember]
+        //[Ear.AttributeObjectProperty
+        //    (
+        //    Id = "HID.Device",
+        //    Name = "HID device",
+        //    Description = "Select an HID device."
+        //    )
+        //]
+        //public Ear.PropertyComboBox Device { get; set; } = new Ear.PropertyComboBox();
 
         protected override void DoConstruct()
         {
@@ -236,7 +244,7 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        /// Used to capture incoming HID events
         /// </summary>
         /// <param name="aHidEvent"></param>
         public void Copy(Hid.Event aHidEvent)

@@ -264,6 +264,8 @@ namespace SharpDisplayManager
 
         /// <summary>
         /// Create a control for the given property.
+        /// TODO: Handle cases where a property value is null. That can be the case when extending an existing class and loading it from an older save.
+        /// Though I guess that should really be taken care of in Ear.Object.Construct which is called once the object was internalized.
         /// </summary>
         /// <param name="aInfo"></param>
         /// <param name="aAttribute"></param>
