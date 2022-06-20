@@ -48,7 +48,7 @@
             this.iComboBoxObjectType.FormattingEnabled = true;
             this.iComboBoxObjectType.Location = new System.Drawing.Point(55, 52);
             this.iComboBoxObjectType.Name = "iComboBoxObjectType";
-            this.iComboBoxObjectType.Size = new System.Drawing.Size(272, 21);
+            this.iComboBoxObjectType.Size = new System.Drawing.Size(277, 21);
             this.iComboBoxObjectType.Sorted = true;
             this.iComboBoxObjectType.TabIndex = 18;
             this.iComboBoxObjectType.SelectedIndexChanged += new System.EventHandler(this.iComboBoxObjectType_SelectedIndexChanged);
@@ -103,13 +103,13 @@
             this.iTableLayoutPanel.RowCount = 2;
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.iTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.iTableLayoutPanel.Size = new System.Drawing.Size(312, 46);
+            this.iTableLayoutPanel.Size = new System.Drawing.Size(317, 46);
             this.iTableLayoutPanel.TabIndex = 23;
             // 
             // iButtonTest
             // 
             this.iButtonTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.iButtonTest.Location = new System.Drawing.Point(252, 157);
+            this.iButtonTest.Location = new System.Drawing.Point(257, 157);
             this.iButtonTest.Name = "iButtonTest";
             this.iButtonTest.Size = new System.Drawing.Size(75, 23);
             this.iButtonTest.TabIndex = 24;
@@ -149,7 +149,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(339, 192);
+            this.ClientSize = new System.Drawing.Size(344, 192);
             this.Controls.Add(this.iLabelDescription);
             this.Controls.Add(this.iLabelBrief);
             this.Controls.Add(this.iButtonTest);

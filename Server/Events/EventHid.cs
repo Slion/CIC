@@ -8,6 +8,8 @@ using System.Runtime.Serialization;
 using System.Windows.Forms;
 using Ear = SharpLib.Ear;
 using Hid = SharpLib.Hid;
+using SharpLib.Win32;
+using System.Runtime.InteropServices;
 
 namespace SharpDisplayManager
 {
@@ -73,20 +75,77 @@ namespace SharpDisplayManager
         [DataMember]
         public string UsageName { get; set; } = "Press a key";
 
-        //[DataMember]
-        //[Ear.AttributeObjectProperty
-        //    (
-        //    Id = "HID.Device",
-        //    Name = "HID device",
-        //    Description = "Select an HID device."
-        //    )
-        //]
-        //public Ear.PropertyComboBox Device { get; set; } = new Ear.PropertyComboBox();
+        [DataMember]
+        [Ear.AttributeObjectProperty
+            (
+            Id = "HID.Device",
+            Name = "HID device",
+            Description = "Select an HID device."
+            )
+        ]
+        public Ear.PropertyComboBox Device { get; set; } = new Ear.PropertyComboBox();
 
         protected override void DoConstruct()
         {
             base.DoConstruct();
+
+            if (Device==null) // Can be the case when loading from a save that did not have support for it
+            {
+                Device = new Ear.PropertyComboBox();
+            }
+
             UpdateDynamicProperties();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PopulateDeviceList()
+        {
+            Device.Items.Clear();
+            
+            // TODO: Allow derived class to filter that list based on usage collection?
+            // TODO: Add any option to disable device check
+
+            //Get our list of devices
+            RAWINPUTDEVICELIST[] ridList = null;
+            uint deviceCount = 0;
+            int res = Function.GetRawInputDeviceList(ridList, ref deviceCount, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST)));
+            if (res == -1)
+            {
+                //Just give up then
+                return;
+            }
+
+            ridList = new RAWINPUTDEVICELIST[deviceCount];
+            res = Function.GetRawInputDeviceList(ridList, ref deviceCount, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST)));
+            if (res != deviceCount)
+            {
+                //Just give up then
+                return;
+            }
+
+            //For each our device add a node to our treeview
+            foreach (RAWINPUTDEVICELIST device in ridList)
+            {
+                SharpLib.Hid.Device.Input hidDevice;
+
+                //Try create our HID device.
+                try
+                {
+                    hidDevice = new SharpLib.Hid.Device.Input(device.hDevice);
+                }
+                catch /*(System.Exception ex)*/
+                {
+                    //Just skip that device then
+                    continue;
+                }
+
+                // TODO; Find a way to store the device object itself
+                Device.Items.Add(hidDevice.FriendlyName);
+    
+            }
+
         }
 
         private void UpdateDynamicProperties()
@@ -208,12 +267,15 @@ namespace SharpDisplayManager
         /// </summary>
         protected override void OnStateEnter()
         {
-            if (CurrentState == State.Edit)
+            if (CurrentState == State.PrepareEdit)
+            {
+                PopulateDeviceList();
+            }
+            else if (CurrentState == State.Edit)
             {
                 // Enter edit mode
                 // Hook-in HID events
-                Program.HidHandler.OnHidEvent += HandleHidEvent;
-
+                Program.HidHandler.OnHidEvent += HandleHidEvent;                
             }
         }
 

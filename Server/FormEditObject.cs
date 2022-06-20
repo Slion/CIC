@@ -304,7 +304,7 @@ namespace SharpDisplayManager
                 {
                     ctrl.Items.Add(name.ToString());
                     Graphics g = this.CreateGraphics();
-                    //Since combobox autosize would not work we need to get measure text ourselves
+                    //Since combobox autosize would not work we need to measure text ourselves
                     SizeF size = g.MeasureString(name.ToString(), ctrl.Font);
                     cbSize.Width = Math.Max(cbSize.Width, (int)size.Width);
                     cbSize.Height = Math.Max(cbSize.Height, (int)size.Height);
@@ -395,11 +395,20 @@ namespace SharpDisplayManager
                 //Data source is such a pain to set the current item
                 //ctrl.DataSource = ((PropertyComboBox)aInfo.GetValue(aObject)).Items;                
 
-                
+                Size cbSize = new Size(0, 0);
                 foreach (string item in property.Items)
                 {
                     ctrl.Items.Add(item);
+                    Graphics g = this.CreateGraphics();
+                    //Since combobox autosize would not work we need to measure text ourselves
+                    SizeF size = g.MeasureString(item, ctrl.Font);
+                    cbSize.Width = Math.Max(ctrl.Width, (int)size.Width);
+                    cbSize.Height = Math.Max(ctrl.Height, (int)size.Height);
                 }
+
+                //Make sure our combobox is large enough
+                // TODO: Check why that still won't be large enough for our HID devices
+                ctrl.MinimumSize = cbSize;
 
                 ctrl.SelectedItem = property.CurrentItem;
 
