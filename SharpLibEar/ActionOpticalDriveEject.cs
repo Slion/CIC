@@ -58,7 +58,7 @@ namespace SharpLib.Ear
             if (!Drive.Items.Contains(Drive.CurrentItem) && Drive.Items.Count>0)
             {
                 //Current item unknown, reset it then
-                Drive.CurrentItem = Drive.Items[0];
+                Drive.CurrentItem = Drive.Items[0].ToString();
             }
         }
 
@@ -68,7 +68,7 @@ namespace SharpLib.Ear
         private void PopulateOpticalDrives()
         {
             //Reset our list of drives
-            Drive.Items = new List<string>();
+            Drive.Items = new List<object>();
             //Go through each drives on our system and collected the optical ones in our list
             DriveInfo[] allDrives = DriveInfo.GetDrives();
             foreach (DriveInfo d in allDrives)

@@ -144,7 +144,7 @@ namespace SharpDisplayManager
         private void PopulateDevices()
         {
             //Reset our list of devices
-            Device.Items = new List<string>();
+            Device.Items = new List<object>();
 
             if (iDeviceList == null)
             {
@@ -169,7 +169,7 @@ namespace SharpDisplayManager
             // Set current item if not yet valid
             if (string.IsNullOrEmpty(Device.CurrentItem) && Device.Items.Count>0)
             {
-                Device.CurrentItem = Device.Items[0];
+                Device.CurrentItem = Device.Items[0].ToString();
                 DeviceId = DeviceIdFromDeviceName(Device.CurrentItem);
             }
         }

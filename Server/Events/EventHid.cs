@@ -94,6 +94,13 @@ namespace SharpDisplayManager
                 Device = new Ear.PropertyComboBox();
             }
 
+            // Our ComboBox will display our FriendlyName property
+            Device.DisplayMember = "FriendlyName";
+            // But we will store our InstancePath which uniquely identifies an HID device
+            Device.ValueMember = "InstancePath";
+            // Our ComboBox sorts our HID devices by name
+            Device.Sorted = true;
+            //
             UpdateDynamicProperties();
         }
 
@@ -102,7 +109,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void PopulateDeviceList()
         {
-            Device.Items.Clear();
+            Device.Items = new List<object>();
             
             // TODO: Allow derived class to filter that list based on usage collection?
             // TODO: Add any option to disable device check
@@ -141,8 +148,8 @@ namespace SharpDisplayManager
                     continue;
                 }
 
-                // TODO; Find a way to store the device object itself
-                Device.Items.Add(hidDevice.FriendlyName);
+                // Use the device object itself
+                Device.Items.Add(hidDevice);
     
             }
 

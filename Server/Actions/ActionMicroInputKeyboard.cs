@@ -84,7 +84,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void PopulateKeyboardKeys()
         {
-            Key.Items = new List<string>();
+            Key.Items = new List<object>();
 
             foreach (FieldInfo field in typeof(SharpLib.MicroInput.Keyboard.Key).GetFields())
             {
@@ -100,7 +100,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void PopulateKeyboardModifers()
         {
-            Modifiers.Items = new List<string>();
+            Modifiers.Items = new List<object>();
 
             foreach (FieldInfo field in typeof(SharpLib.MicroInput.Keyboard.Modifier).GetFields())
             {

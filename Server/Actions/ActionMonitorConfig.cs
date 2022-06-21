@@ -66,7 +66,7 @@ namespace SharpDisplayManager
             }            
 
             //Reset our list of drives
-            Monitor.Items = new List<string>();
+            Monitor.Items = new List<object>();
             //Go through each drives on our system and collected the optical ones in our list            
             int i = 0;
             foreach (VirtualMonitor vm in Monitors.VirtualMonitors)
@@ -89,7 +89,7 @@ namespace SharpDisplayManager
             if (!Monitor.Items.Contains(Monitor.CurrentItem) && Monitor.Items.Count > 0)
             {
                 //Current item unknown, reset it then
-                Monitor.CurrentItem = Monitor.Items[0];
+                Monitor.CurrentItem = Monitor.Items[0].ToString();
             }
 
             int i = 0;

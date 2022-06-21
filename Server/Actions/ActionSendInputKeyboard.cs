@@ -85,7 +85,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void PopulateKeyboardKeys()
         {
-            Key.Items = new List<string>();
+            Key.Items = new List<object>();
 
             var names = Enum.GetNames(typeof(VirtualKeyCode));
 
@@ -100,7 +100,7 @@ namespace SharpDisplayManager
         /// </summary>
         private void PopulateKeyboardModifers()
         {
-            Modifiers.Items = new List<string>();
+            Modifiers.Items = new List<object>();
 
             // SHIFT
             Modifiers.Items.Add(Enum.GetName(typeof(VirtualKeyCode), VirtualKeyCode.SHIFT));

@@ -225,7 +225,8 @@ namespace SharpDisplayManager
                 ComboBox ctrl = (ComboBox)aControl;
                 if (ctrl.SelectedItem != null)
                 {
-                    string currentItem = ctrl.SelectedItem.ToString();
+                    // Apparently you can still get the SelectedValue even when no ValueMember was set
+                    string currentItem = ctrl.SelectedValue.ToString();
                     PropertyComboBox value = (PropertyComboBox)aInfo.GetValue(aObject);
                     value.CurrentItem = currentItem;
                     //Not strictly needed but makes sure the set method is called
@@ -392,28 +393,50 @@ namespace SharpDisplayManager
                 ctrl.AutoSize = true;
                 ctrl.Sorted = property.Sorted;
                 ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
-                //Data source is such a pain to set the current item
-                //ctrl.DataSource = ((PropertyComboBox)aInfo.GetValue(aObject)).Items;                
-
-                Size cbSize = new Size(0, 0);
-                foreach (string item in property.Items)
+                // Use DataSource with optional DisplayMember and ValueMember, that also works for plain string collection
+                ctrl.DisplayMember = property.DisplayMember;
+                ctrl.ValueMember = property.ValueMember;
+                ctrl.DataSource = ((PropertyComboBox)aInfo.GetValue(aObject)).Items;
+                // When using DataSource we need to wait until our items are create to proceed further
+                BeginInvoke((MethodInvoker)(() => 
                 {
-                    ctrl.Items.Add(item);
-                    Graphics g = this.CreateGraphics();
-                    //Since combobox autosize would not work we need to measure text ourselves
-                    SizeF size = g.MeasureString(item, ctrl.Font);
-                    cbSize.Width = Math.Max(cbSize.Width, (int)size.Width);
-                    cbSize.Height = Math.Max(cbSize.Height, (int)size.Height);
-                }
+                    // Now our items must have been created from our data source
+                    Graphics g = ctrl.CreateGraphics();
+                    // Make sure our ComboBox is large enough to display its items
+                    Size cbSize = new Size(0, 0);
+                    foreach (object item in ctrl.Items)
+                    {
+                        //Since ComboBox AutoSize would not work we need to measure text ourselves
+                        SizeF size = g.MeasureString(string.IsNullOrEmpty(property.DisplayMember)? 
+                            // Typically the case for string collection DataSource
+                            item.ToString():
+                            // DataSource is a collection of unknown objects, using reflection we fetch the property referred to by DisplayMember then  
+                            item.GetType().GetProperty(property.DisplayMember).GetValue(item).ToString(), ctrl.Font);
 
-                //Make sure our combobox is large enough
-                ctrl.MinimumSize = cbSize;
+                        cbSize.Width = Math.Max(cbSize.Width, (int)size.Width);
+                        cbSize.Height = Math.Max(cbSize.Height, (int)size.Height);
+                    }
+                    //Make sure our combobox is large enough
+                    ctrl.MinimumSize = cbSize;
 
-                ctrl.SelectedItem = property.CurrentItem;
+                    // We can't set SelectedValue when no ValueMember
+                    if (string.IsNullOrEmpty(property.ValueMember))
+                    {
+                        // Use plain SelectedItem when no ValueMember, typically the case when simply using a string collection as DataSource
+                        ctrl.SelectedItem = property.CurrentItem;
+                    }
+                    else
+                    {
+                        // We have a ValueMember typically the case when our DataSource is a collection of unknown objects
+                        // We need to set our current item using value rather then display name
+                        ctrl.SelectedValue = property.CurrentItem;
+                    }
+                    
+                    // Hook-in change notification after setting the value 
+                    // Make sure form content is updated after property change
+                    ctrl.SelectedIndexChanged += ControlValueChanged;
+                }));
 
-                // Hook-in change notification after setting the value 
-                // Make sure form content is updated after property change
-                ctrl.SelectedIndexChanged += ControlValueChanged;
                 return ctrl;
             }
             else if (aInfo.PropertyType == typeof(PropertyButton))
