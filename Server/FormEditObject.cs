@@ -402,12 +402,11 @@ namespace SharpDisplayManager
                     Graphics g = this.CreateGraphics();
                     //Since combobox autosize would not work we need to measure text ourselves
                     SizeF size = g.MeasureString(item, ctrl.Font);
-                    cbSize.Width = Math.Max(ctrl.Width, (int)size.Width);
-                    cbSize.Height = Math.Max(ctrl.Height, (int)size.Height);
+                    cbSize.Width = Math.Max(cbSize.Width, (int)size.Width);
+                    cbSize.Height = Math.Max(cbSize.Height, (int)size.Height);
                 }
 
                 //Make sure our combobox is large enough
-                // TODO: Check why that still won't be large enough for our HID devices
                 ctrl.MinimumSize = cbSize;
 
                 ctrl.SelectedItem = property.CurrentItem;
