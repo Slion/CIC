@@ -262,7 +262,6 @@ namespace SharpDisplayManager
             //TODO: add support for other types here
         }
 
-
         /// <summary>
         /// Create a control for the given property.
         /// TODO: Handle cases where a property value is null. That can be the case when extending an existing class and loading it from an older save.
@@ -391,7 +390,7 @@ namespace SharpDisplayManager
 
                 ComboBox ctrl = new ComboBox();
                 ctrl.AutoSize = true;
-                ctrl.Sorted = property.Sorted;
+                //ctrl.Sorted = property.Sorted; // Sorted is not supported and does not work using DataSource, can result in the wrong item being selected
                 ctrl.DropDownStyle = ComboBoxStyle.DropDownList;
                 // Use DataSource with optional DisplayMember and ValueMember, that also works for plain string collection
                 ctrl.DisplayMember = property.DisplayMember;
@@ -419,22 +418,7 @@ namespace SharpDisplayManager
                     //Make sure our combobox is large enough
                     ctrl.MinimumSize = cbSize;
 
-                    // We can't set SelectedValue when no ValueMember
-                    if (string.IsNullOrEmpty(property.ValueMember))
-                    {
-                        // Use plain SelectedItem when no ValueMember, typically the case when simply using a string collection as DataSource
-                        ctrl.SelectedItem = property.CurrentItem;
-                    }
-                    else
-                    {
-                        // We have a ValueMember typically the case when our DataSource is a collection of unknown objects
-                        // We need to set our current item using value rather then display name
-                        ctrl.SelectedValue = property.CurrentItem;
-                    }
-                    
-                    // Hook-in change notification after setting the value 
-                    // Make sure form content is updated after property change
-                    ctrl.SelectedIndexChanged += ControlValueChanged;
+                    UpdateControlFromProperty(ctrl, aInfo, aObject);
                 }));
 
                 return ctrl;
@@ -595,6 +579,10 @@ namespace SharpDisplayManager
                     continue;
                 }
 
+                // Associate our object property with that control then
+                // That will enable us to update just that control when the property changes
+                ctrl.Tag = pi;
+
                 //Add a new row
                 iTableLayoutPanel.RowCount++;
                 iTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -622,7 +610,8 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
+        /// We receive this when a property in our object changed.
+        /// That means we need to update our controls with the new values from the object.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -635,7 +624,7 @@ namespace SharpDisplayManager
                 this.Invoke(d, new object[] { sender, e });
             }
             else
-            {               
+            {
                 // We could test the name of the property that has changed as follow
                 // It's currently not needed though
                 //if (e.PropertyName == "Brief")
@@ -644,24 +633,126 @@ namespace SharpDisplayManager
                 // That's currently only the case for HID events that are listening for inputs.
                 //if (Object is EventHid)
                 //{
-                    //HID can't do full control updates for some reason
-                    //We are getting spammed with HID events after a few clicks
-                    //We need to investigate, HID bug?
-                    //TODO: Bug mentioned above possibly fixed
-                    // I guess it was due to accumulation of Object.PropertyChanged handler
-                    // Considerer removing all HID specific stuff from this class
-                    UpdateStaticControls();
+                //HID can't do full control updates for some reason
+                //We are getting spammed with HID events after a few clicks
+                //We need to investigate, HID bug?
+                //TODO: Bug mentioned above possibly fixed
+                // I guess it was due to accumulation of Object.PropertyChanged handler
+                // Considerer removing all HID specific stuff from this class
+                UpdateStaticControls();
+                //UpdateControls();
+                // Update only the relevant control
+                UpdateControl(e.PropertyName);
                 //}
                 //else
                 //{
-                      // That would only be needed if changing a property would change our object editor layout
-                      // I've retired that for now as I don't think that's ever needed. I could be wrong though.
-                      // If ever needed again I guess we should mark our property with a special attribute flag.
-                      // Try avoiding it altogether as it's rather slow and causes flicker.
+                // That would only be needed if changing a property would change our object editor layout
+                // I've retired that for now as I don't think that's ever needed. I could be wrong though.
+                // If ever needed again I guess we should mark our property with a special attribute flag.
+                // Try avoiding it altogether as it's rather slow and causes flicker.
                 //    UpdateControls();
                 //}
             }
         }
+
+        /// <summary>
+        /// Update the control associated with the given property name with value from our object
+        /// </summary>
+        /// <param name="aPropertyName"></param>
+        void UpdateControl(string aPropertyName)
+        {
+            PropertyInfo pi = Object.GetType().GetProperty(aPropertyName);
+            UpdateControlFromProperty(FindControlForProperty(pi), pi, Object);
+        }
+
+        /// <summary>
+        /// Find the control in our layout that's bound to the given property.
+        /// </summary>
+        /// <param name="aPropertyName"></param>
+        /// <returns></returns>
+        Control FindControlForProperty(PropertyInfo aPropertyInfo)
+        {
+            if (aPropertyInfo == null)
+            {
+                return null;
+            }
+
+            foreach (Control ctrl in iTableLayoutPanel.Controls)
+            {
+                // Make sure we have a Tag
+                if (ctrl.Tag==null)
+                {
+                    continue;
+                }
+
+                // Make sure that Tag is a PropertyInfo
+                if (ctrl.Tag.GetType()!= aPropertyInfo.GetType())
+                {
+                    continue;
+                }
+
+                // Check if this is the right control for this property
+                if ((PropertyInfo)ctrl.Tag == aPropertyInfo)
+                {
+                    // We found it
+                    return ctrl;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Update a control states from an edited object property.
+        /// This notably enables refresh from our HID device property when the user is recording an event.
+        /// 
+        /// TODO: Add support for needed property types.
+        /// </summary>
+        /// <param name="aCtrl"></param>
+        /// <param name="aInfo"></param>
+        /// <param name="aObject"></param>
+        private void UpdateControlFromProperty(Control aCtrl, PropertyInfo aInfo, T aObject)
+        {
+            if (aCtrl == null || aInfo == null || aObject == null)
+            {
+                // No much we can do then
+                return;
+            }
+
+            if (aInfo.PropertyType == typeof(PropertyComboBox))
+            {
+                PropertyComboBox property = ((PropertyComboBox)aInfo.GetValue(aObject));
+                ComboBox ctrl = (ComboBox)aCtrl;
+
+                // Disable object update to prevent endless update notification circle
+                ctrl.SelectedIndexChanged -= ControlValueChanged;
+
+
+                if (!string.IsNullOrEmpty(property.CurrentItem)) // Defensive, I guess
+                {
+                    //if (!property.CurrentItemNotFound)
+                    {
+                        // We can't set SelectedValue when no ValueMember
+                        if (string.IsNullOrEmpty(property.ValueMember))
+                        {
+                            // Use plain SelectedItem when no ValueMember, typically the case when simply using a string collection as DataSource
+                            ctrl.SelectedItem = property.CurrentItem;
+                        }
+                        else
+                        {
+                            // We have a ValueMember typically the case when our DataSource is a collection of unknown objects
+                            // We need to set our current item using value rather then display name
+                            ctrl.SelectedValue = property.CurrentItem;
+                        }
+                    }
+                }
+
+                // Hook-in change notification after setting the value 
+                // That makes sure object is updated when user changes our control
+                ctrl.SelectedIndexChanged += ControlValueChanged;
+            }
+        }
+
 
         private void buttonTest_Click(object sender, EventArgs e)
         {

@@ -10,6 +10,7 @@ using Ear = SharpLib.Ear;
 using Hid = SharpLib.Hid;
 using SharpLib.Win32;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace SharpDisplayManager
 {
@@ -105,10 +106,16 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        /// 
-        /// </summary>
+        /// TODO: Find a way to cache that
+        /// </summary>g
         private void PopulateDeviceList()
         {
+            if (Device.Items!=null)
+            {
+                // Keep using that list
+                return;
+            }
+
             Device.Items = new List<object>();
             
             // TODO: Allow derived class to filter that list based on usage collection?
@@ -135,7 +142,7 @@ namespace SharpDisplayManager
             //For each our device add a node to our treeview
             foreach (RAWINPUTDEVICELIST device in ridList)
             {
-                SharpLib.Hid.Device.Input hidDevice;
+                Hid.Device.Input hidDevice;
 
                 //Try create our HID device.
                 try
@@ -150,9 +157,24 @@ namespace SharpDisplayManager
 
                 // Use the device object itself
                 Device.Items.Add(hidDevice);
-    
             }
 
+            // Sort them by friendly name
+            Device.Items.Sort(delegate (object x, object y)
+            {
+                return ((Hid.Device.Input)x).FriendlyName.CompareTo(((Hid.Device.Input)y).FriendlyName);
+            });
+
+            CheckDeviceExistance();                        
+        }
+
+
+        private void CheckDeviceExistance()
+        {
+            Device.CurrentItemNotFound = !Device.Items.Exists(delegate (object x)
+            {
+                return ((Hid.Device.Input)x).InstancePath.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
+            });
         }
 
         private void UpdateDynamicProperties()
@@ -222,6 +244,16 @@ namespace SharpDisplayManager
                 brief += " (DOWN)";
             }
 
+            if (CurrentState == State.Edit || CurrentState == State.PrepareEdit)
+            {
+                if (Device.CurrentItemNotFound)
+                {
+                    // Warn the user the device was not found
+                    // I guess it needs to be connected
+                    brief = "Device not found - " + brief;
+                }
+            }
+
             return brief;
         }
 
@@ -274,8 +306,14 @@ namespace SharpDisplayManager
         /// </summary>
         protected override void OnStateEnter()
         {
-            if (CurrentState == State.PrepareEdit)
+            if (CurrentState == State.Rest)
             {
+                // Reset our device list when we stop editing
+                Device.Items = null;            
+            }
+            else if (CurrentState == State.PrepareEdit)
+            {
+                // Create our device list as we start editing 
                 PopulateDeviceList();
             }
             else if (CurrentState == State.Edit)
@@ -310,6 +348,7 @@ namespace SharpDisplayManager
 
             //Tell observer the object itself changed
             OnPropertyChanged("Brief");
+            OnPropertyChanged("Device");
         }
 
         /// <summary>
@@ -332,6 +371,8 @@ namespace SharpDisplayManager
             //Copy for scan
             UsagePage = aHidEvent.UsagePage;
             UsageCollection = aHidEvent.UsageCollection;
+            Device.CurrentItem = aHidEvent.Device?.InstancePath ?? "";
+            CheckDeviceExistance();
             IsGeneric = aHidEvent.IsGeneric;
             IsKeyboard = aHidEvent.IsKeyboard;
             IsMouse = aHidEvent.IsMouse;
@@ -382,7 +423,11 @@ namespace SharpDisplayManager
         /// <returns></returns>
         public override bool IsValid()
         {
-            return IsGeneric || IsKeyboard;
+            if (CurrentState == State.Edit && Device.CurrentItemNotFound)
+            {
+                return false;
+            }
+            return (IsGeneric || IsKeyboard);
         }
     }
 }

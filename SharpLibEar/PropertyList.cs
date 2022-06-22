@@ -13,7 +13,7 @@ namespace SharpLib.Ear
     [DataContract]
     public abstract class PropertyList : Object
     {
-        public IList<object> Items { get; set; } = new List<object>();
+        public List<object> Items { get; set; } = new List<object>();
 
         /// <summary>
         /// The name of the property in our item object we should display.
@@ -27,6 +27,8 @@ namespace SharpLib.Ear
         public string ValueMember { get; set; }
 
         // Looks like that default does not always apply.
+        // TODO: Remove that as it is not supported by WinForm controls such as ComboBox when using DataSource.
+        // Instead one can easily sort the list itself as done with devices in EventHid for instance.
         public bool Sorted = true;
     }
 }

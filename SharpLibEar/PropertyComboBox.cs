@@ -14,7 +14,10 @@ namespace SharpLib.Ear
     [AttributeObject(Id = "Property.ComboBox", Name = "ComboBox", Description = "ComboBox property.")]
     public class PropertyComboBox : PropertyList
     {
+        //TODO: shall this be an object, but how would it get persisted then?
         [DataMember]
         public string CurrentItem { get; set; }
+
+        public bool CurrentItemNotFound { get; set; }
     }
 }
