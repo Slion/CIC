@@ -87,6 +87,19 @@ namespace SharpDisplayManager
         ]
         public Ear.PropertyComboBox Device { get; set; } = new Ear.PropertyComboBox();
 
+        /// <summary>
+        /// Manage button state for joysticks and gampads
+        /// </summary>
+        public bool ButtonDown { get; set; }
+
+        /// <summary>
+        /// Needed to manage buttons states for Joysticks and GamePads.
+        /// TODO: Remove our legacy single Usage and use only this one.
+        /// Make it persistent too.
+        /// </summary>
+        public List<ushort> Usages { get; set; }
+
+
         protected override void DoConstruct()
         {
             base.DoConstruct();
@@ -275,29 +288,78 @@ namespace SharpDisplayManager
         }
 
         /// <summary>
-        ///
+        /// In our EAR framework this just checks if an object matches another one.
+        /// However an HID event also uses this to manage various states when receiving incoming events.
+        /// TODO: Recode that logic to support mouse, remote control and other generic device key up and down event
+        /// TODO: Maybe implement a sub class to support multiple buttons press for gamePads and joysticks
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         public override bool Matches(object obj)
         {
+            // TODO: have an option to make it device specific and test the Device InstancePath
             if (obj is EventHid)
             {
                 EventHid e = (EventHid)obj;
-                return e.Key == Key
-                    && e.Usage == Usage
+                bool joystick = e.IsJoystick == IsJoystick;
+                bool isJoystick = joystick && IsJoystick;
+                bool gamepad = e.IsGamePad == IsGamePad;
+                bool isGamepad = gamepad && IsGamePad;
+                bool sameUsage = e.Usage == Usage;
+                bool sameDevice = e.Device.CurrentItem.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
+                bool match = e.Key == Key
                     && e.UsagePage == UsagePage
                     && e.UsageCollection == UsageCollection
-                    && e.IsKeyUp == IsKeyUp
                     && e.IsGeneric == IsGeneric
-                    && e.IsGamePad == IsGamePad
-                    && e.IsJoystick == IsJoystick
                     && e.IsKeyboard == IsKeyboard
                     && e.IsMouse == IsMouse
+                    && joystick
+                    && gamepad
                     && e.HasModifierAlt == HasModifierAlt
                     && e.HasModifierControl == HasModifierControl
                     && e.HasModifierShift == HasModifierShift
                     && e.HasModifierWindows == HasModifierWindows;
+
+                if (match)
+                {
+                    if (isJoystick || isGamepad)
+                    {
+                        if (sameDevice)
+                        {
+                            if (e.Usages.Contains(Usage))
+                            {
+                                if (!ButtonDown)
+                                {
+                                    //Trace.WriteLine("ButtonDown: " + Brief());
+                                    ButtonDown = true;
+                                    if (!IsKeyUp)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (ButtonDown)
+                                {
+                                    //Trace.WriteLine("ButtonUp: " + Brief());
+                                    ButtonDown = false;
+                                    if (IsKeyUp)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Not a joystick or a gamepad
+                        // Just check if our key up is a match and we are done here
+                        // TODO: We should only do that for keyboard I guess as remote control and other generic HID may need same treatment as joysticks to support key up and down
+                        return e.IsKeyUp == IsKeyUp && sameUsage;
+                    }
+                }
             }
 
             return false;
@@ -386,6 +448,7 @@ namespace SharpDisplayManager
         private void PrivateCopy(Hid.Event aHidEvent)
         {
             //Copy for scan
+            Usages = aHidEvent.Usages;
             UsagePage = aHidEvent.UsagePage;
             UsageCollection = aHidEvent.UsageCollection;
             Device.CurrentItem = aHidEvent.Device?.InstancePath ?? "";
@@ -404,7 +467,7 @@ namespace SharpDisplayManager
                     {
                         Usage = aHidEvent.Usages[0];
                         UsageName = "Button " + Usage;
-                    }
+                    }                    
                 }
                 else
                 {
