@@ -17,5 +17,13 @@ namespace SharpDisplayManager.Events
     {
 
 
+        protected override bool IsSupportedDevice(Hid.Device.Input aDevice)
+        {
+            // We only want gamepads and joysticks here
+            return aDevice.IsGamePad || aDevice.IsJoystick;
+        }
+
+
+
     }
 }

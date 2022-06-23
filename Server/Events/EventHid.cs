@@ -23,6 +23,7 @@ namespace SharpDisplayManager
     {
         public EventHid()
         {
+            //Device.Items = null;
         }
 
         [DataMember]
@@ -110,7 +111,7 @@ namespace SharpDisplayManager
         /// </summary>g
         private void PopulateDeviceList()
         {
-            if (Device.Items!=null)
+            if (Device.Items!=null && Device.Items.Count!=0)
             {
                 // Keep using that list
                 return;
@@ -156,7 +157,10 @@ namespace SharpDisplayManager
                 }
 
                 // Use the device object itself
-                Device.Items.Add(hidDevice);
+                if (IsSupportedDevice(hidDevice))
+                {
+                    Device.Items.Add(hidDevice);
+                }                
             }
 
             // Sort them by friendly name
@@ -169,6 +173,19 @@ namespace SharpDisplayManager
         }
 
 
+        /// <summary>
+        /// Allow derived class to decide which HID device should be displayed.
+        /// </summary>
+        /// <param name="aDevice"></param>
+        /// <returns></returns>
+        protected virtual bool IsSupportedDevice(Hid.Device.Input aDevice)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Check if our current device exists in our list and mark the result.
+        /// </summary>
         private void CheckDeviceExistance()
         {
             Device.CurrentItemNotFound = !Device.Items.Exists(delegate (object x)

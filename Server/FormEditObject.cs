@@ -838,7 +838,7 @@ namespace SharpDisplayManager
             // TODO: That's an ugly workaround, fix that somehow. Maybe by only doing HID scan when a button property has the focus
             if (Object is EventHid)
             {
-                Object.CurrentState = SharpLib.Ear.Object.State.Rest;
+                Object.CurrentState = SharpLib.Ear.Object.State.PrepareEdit;
             }
         }
 
