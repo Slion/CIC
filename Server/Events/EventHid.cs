@@ -405,11 +405,14 @@ namespace SharpDisplayManager
 
         /// <summary>
         /// Here we receive HID events from our HID library.
+        /// Used when recording during edition mode.
         /// </summary>
         /// <param name="aSender"></param>
         /// <param name="aHidEvent"></param>
         public void HandleHidEvent(object aSender, SharpLib.Hid.Event aHidEvent)
         {
+            var instancePath = Device.CurrentItem;
+
             if (CurrentState != State.Edit
                 || aHidEvent.IsMouse
                 || aHidEvent.IsButtonUp
@@ -427,7 +430,13 @@ namespace SharpDisplayManager
 
             //Tell observer the object itself changed
             OnPropertyChanged("Brief");
-            OnPropertyChanged("Device");
+
+            // Check if our device changed
+            if (!instancePath.Equals(Device.CurrentItem))
+            {
+                // Only trigger that one if our device actually changed, we could find ourself in endless loops with HID axis otherwise somehow
+                OnPropertyChanged("Device");
+            }            
         }
 
         /// <summary>
