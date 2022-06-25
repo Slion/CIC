@@ -93,7 +93,7 @@ namespace SharpLib.Ear
             }
 
             //Only trigger events matching the desired type
-            foreach (Event e in Events.Where(e => e.Matches(aEvent) && e.Enabled))
+            foreach (Event e in Events.Where(e => e.Enabled && e.Matches(aEvent)))
             {
                 e.Context = aEvent.Context;
                 await e.Trigger();

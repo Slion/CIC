@@ -172,17 +172,19 @@ namespace SharpDisplayManager
                 }
 
                 //Now fetch our property value
-                GetPropertyValueFromControl(iTableLayoutPanel.Controls[ctrlIndex+1], pi, aObject); //+1 otherwise we get the label
+                SetObjectPropertyValueFromControl(aObject, pi, iTableLayoutPanel.Controls[ctrlIndex + 1]); //+1 otherwise we get the label
 
                 ctrlIndex+=2; //Jump over the label too
             }
         }
 
         /// <summary>
+        /// Set an object property value from the state of the given control.
+        /// 
         /// Extend this function to support reading new types of properties.
         /// </summary>
         /// <param name="aObject"></param>
-        private void GetPropertyValueFromControl(Control aControl, PropertyInfo aInfo, T aObject)
+        private static void SetObjectPropertyValueFromControl(T aObject, PropertyInfo aInfo, Control aControl)
         {
             if (aInfo.PropertyType == typeof(int))
             {
@@ -228,11 +230,17 @@ namespace SharpDisplayManager
                     // Apparently you can still get the SelectedValue even when no ValueMember was set
                     string currentItem = ctrl.SelectedValue.ToString();
                     PropertyComboBox value = (PropertyComboBox)aInfo.GetValue(aObject);
-                    value.CurrentItem = currentItem;
-                    //Not strictly needed but makes sure the set method is called
-                    aInfo.SetValue(aObject, value);
-                    //
-                    aObject.OnPropertyChanged(aInfo.Name);
+                    // Make sure the value actually changed before doing anything
+                    // Shall we do that for every control?
+                    if (value.CurrentItem != currentItem)
+                    {
+                        value.CurrentItem = currentItem;
+                        //Not strictly needed but makes sure the set method is called
+                        aInfo.SetValue(aObject, value);
+                        //
+                        aObject.OnPropertyChanged(aInfo.Name);
+                    }
+
                 }
             }
             else if (aInfo.PropertyType == typeof(PropertyButton))
@@ -783,7 +791,13 @@ namespace SharpDisplayManager
         /// <param name="e"></param>
         private void ControlValueChanged(object sender, EventArgs e)
         {
-            UpdateObject();
+            // Only update the object property that correspond to the control value that was change
+            var ctrl = (Control)sender;
+            var pi = (PropertyInfo)ctrl.Tag;
+            SetObjectPropertyValueFromControl(Object, pi, ctrl);
+
+            // Not updating all the object properties anymore
+            //UpdateObject();
         }
 
         /// <summary>

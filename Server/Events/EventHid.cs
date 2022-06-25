@@ -87,6 +87,10 @@ namespace SharpDisplayManager
         ]
         public Ear.PropertyComboBox Device { get; set; } = new Ear.PropertyComboBox();
 
+        [DataMember]
+        public string DeviceFriendlyName { get; set; } = "";
+
+
         /// <summary>
         /// Manage button state for joysticks and gampads
         /// </summary>
@@ -117,6 +121,18 @@ namespace SharpDisplayManager
             Device.Sorted = true;
             //
             UpdateDynamicProperties();
+
+            PropertyChanged += EventHid_PropertyChanged;
+        }
+
+        private void EventHid_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName== "Device")
+            {
+                // Save our device name as we like to use it to describe this event to our user
+                DeviceFriendlyName = CurrentDevice()?.FriendlyName ?? "Device not found";
+            }
+            
         }
 
         /// <summary>
@@ -206,6 +222,18 @@ namespace SharpDisplayManager
                 return ((Hid.Device.Input)x).InstancePath.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
             });
         }
+
+        /// <summary>
+        /// Provide the current device object
+        /// </summary>
+        /// <returns></returns>
+        public Hid.Device.Input CurrentDevice()
+        {
+            // Search our device in our list
+            return  (Hid.Device.Input) Device.Items.Find((d) => { return ((Hid.Device.Input)d).InstancePath.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase); });
+        }
+        
+
 
         private void UpdateDynamicProperties()
         {
