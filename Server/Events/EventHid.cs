@@ -103,6 +103,11 @@ namespace SharpDisplayManager
         /// </summary>
         public List<ushort> Usages { get; set; }
 
+        /// <summary>
+        /// Incoming HID event.
+        /// Could be useful for our axis implementation.
+        /// </summary>
+        Hid.Event HidEvent { get; set; } = null;
 
         protected override void DoConstruct()
         {
@@ -230,9 +235,20 @@ namespace SharpDisplayManager
         public Hid.Device.Input CurrentDevice()
         {
             // Search our device in our list
-            return  (Hid.Device.Input) Device.Items.Find((d) => { return ((Hid.Device.Input)d).InstancePath.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase); });
+            return  GetDevice(Device.CurrentItem);
         }
-        
+
+        /// <summary>
+        /// Provide the device match the given instance path
+        /// </summary>
+        /// <param name="aInstancePath"></param>
+        /// <returns></returns>
+        public Hid.Device.Input GetDevice(string aInstancePath)
+        {
+            // Search our device in our list
+            return (Hid.Device.Input)Device.Items.Find((d) => { return ((Hid.Device.Input)d).InstancePath.Equals(aInstancePath, StringComparison.OrdinalIgnoreCase); });
+        }
+
 
 
         private void UpdateDynamicProperties()
@@ -437,7 +453,7 @@ namespace SharpDisplayManager
         /// </summary>
         /// <param name="aSender"></param>
         /// <param name="aHidEvent"></param>
-        public void HandleHidEvent(object aSender, SharpLib.Hid.Event aHidEvent)
+        public virtual void HandleHidEvent(object aSender, SharpLib.Hid.Event aHidEvent)
         {
             var instancePath = Device.CurrentItem;
 
@@ -482,8 +498,10 @@ namespace SharpDisplayManager
         /// TODO: Optionally save the device name to make it specific to a device.
         /// </summary>
         /// <param name="aHidEvent"></param>
-        private void PrivateCopy(Hid.Event aHidEvent)
+        protected void PrivateCopy(Hid.Event aHidEvent)
         {
+            HidEvent = aHidEvent;
+
             //Copy for scan
             Usages = aHidEvent.Usages;
             UsagePage = aHidEvent.UsagePage;

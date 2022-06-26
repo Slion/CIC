@@ -12,7 +12,9 @@ using SharpLib.Win32;
 
 namespace SharpDisplayManager.Events
 {
-
+    /// <summary>
+    /// TODO: Move this class to SharpLibHid?
+    /// </summary>
     public class Axis
     {
         /// <summary>
@@ -23,6 +25,12 @@ namespace SharpDisplayManager.Events
         public string Name { get; private set; }
         public string FullName { get; private set; }
 
+        public HIDP_VALUE_CAPS Capabilities { get; private set; }
+
+        public int Min { get { return Capabilities.LogicalMin; } }
+        public int Max { get { return Capabilities.LogicalMax; } }
+
+        public int Value { get; set; }
 
         public static string NameFromId(int aId)
         {
@@ -83,6 +91,8 @@ namespace SharpDisplayManager.Events
             //
             Name = Enum.GetName(usageType, aCaps.NotRange.Usage);
             FullName = Enum.GetName(typeof(UsagePage), aCaps.UsagePage) + "." + Name;
+
+            Capabilities = aCaps;
         }
 
     }
@@ -104,6 +114,8 @@ namespace SharpDisplayManager.Events
             {
                 Axis = new Ear.PropertyComboBox();
             }
+
+            AxesByDevice = new Dictionary<string, Dictionary<int, Axis>>();
 
             iDeviceInstancePathForAxis = "";
             Axis.DisplayMember = "Name";
@@ -133,6 +145,12 @@ namespace SharpDisplayManager.Events
          Name = "Axis",
          Description = "Select an axis.")]
         public Ear.PropertyComboBox Axis { get; set; } = new Ear.PropertyComboBox();
+
+        /// <summary>
+        /// Axes by device.
+        /// Used to keep track of previous axes values and determine which axis the user is moving.
+        /// </summary>        
+        public Dictionary<string, Dictionary<int, Axis>> AxesByDevice { get; private set; }
 
 
         void PopulateAxisList()
@@ -206,6 +224,7 @@ namespace SharpDisplayManager.Events
                 // Reset our device list when we stop editing
                 Axis.Items = null;
                 iDeviceInstancePathForAxis = "";
+                AxesByDevice.Clear();
             }
             else if (CurrentState == State.PrepareEdit)
             {
@@ -221,9 +240,195 @@ namespace SharpDisplayManager.Events
         {
             // TODO: How to get the device name for its instance path in Device.CurrentItem?
             //return AttributeName + ": " + Events.Axis.NameFromId(int.Parse(Axis.CurrentItem));
-            return AttributeName + ": " + DeviceFriendlyName + " - " + Axis.CurrentItem.Split('.')[1];
+            return AttributeName + ": " + Axis.CurrentItem.Split('.')[1] + " - " + DeviceFriendlyName;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Matches(object obj)
+        {
+            if (!(obj is EventHid))
+            {
+                return false;
+            }
 
-    }
+            EventHid e = (EventHid)obj;
+
+            return false;
+
+            bool joystick = e.IsJoystick == IsJoystick;
+            bool isJoystick = joystick && IsJoystick;
+            bool gamepad = e.IsGamePad == IsGamePad;
+            bool isGamepad = gamepad && IsGamePad;
+            bool sameUsage = e.Usage == Usage;
+            bool sameDevice = e.Device.CurrentItem.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
+            bool match = e.Key == Key
+                && e.UsagePage == UsagePage
+                && e.UsageCollection == UsageCollection
+                && e.IsGeneric == IsGeneric
+                && e.IsKeyboard == IsKeyboard
+                && e.IsMouse == IsMouse
+                && joystick
+                && gamepad
+                && e.HasModifierAlt == HasModifierAlt
+                && e.HasModifierControl == HasModifierControl
+                && e.HasModifierShift == HasModifierShift
+                && e.HasModifierWindows == HasModifierWindows;
+
+            if (match)
+            {
+                if (isJoystick || isGamepad)
+                {
+                    if (sameDevice)
+                    {
+                        if (e.Usages.Contains(Usage))
+                        {
+                            if (!ButtonDown)
+                            {
+                                //Trace.WriteLine("ButtonDown: " + Brief());
+                                ButtonDown = true;
+                                if (!IsKeyUp)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (ButtonDown)
+                            {
+                                //Trace.WriteLine("ButtonUp: " + Brief());
+                                ButtonDown = false;
+                                if (IsKeyUp)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Not a joystick or a gamepad
+                    // Just check if our key up is a match and we are done here
+                    // TODO: We should only do that for keyboard I guess as remote control and other generic HID may need same treatment as joysticks to support key up and down
+                    return e.IsKeyUp == IsKeyUp && sameUsage;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is just for recording in edit mode so performance is not an issue here.
+        /// </summary>
+        /// <param name="aSender"></param>
+        /// <param name="aHidEvent"></param>
+        public override void HandleHidEvent(object aSender, SharpLib.Hid.Event aHidEvent)
+        {
+            var instancePath = Device.CurrentItem;
+
+            if (CurrentState != State.Edit
+                || (!aHidEvent.Device.IsGamePad && !aHidEvent.Device.IsJoystick)
+                || !aHidEvent.IsValid
+                || aHidEvent.IsBackground
+                || aHidEvent.IsRepeat
+                || aHidEvent.IsStray
+                )
+            {
+                return;
+            }
+
+            // Make sure we know that device
+            var device = GetDevice(aHidEvent.Device.InstancePath);
+            if (device==null)
+            {
+                return;
+            }
+
+            //
+            Dictionary<int, Axis> axes = null;
+            if (!AxesByDevice.ContainsKey(device.InstancePath))
+            {
+                // Create a collection of axis for that device then
+                axes = new Dictionary<int, Axis>();
+                AxesByDevice[device.InstancePath] = axes;
+            }
+            else
+            {
+                // We already have an axis collection for that device, just fetch it then
+                axes = AxesByDevice[device.InstancePath];
+            }
+
+            // TODO: Only copy it if an axis is moving a lot
+
+            //For each axis on that device
+            foreach (KeyValuePair<HIDP_VALUE_CAPS, uint> entry in aHidEvent.UsageValues)
+            {
+                if (!Events.Axis.IsAxis(entry.Key))
+                {
+                    continue;
+                }
+
+                var axis = new Axis(entry.Key);
+                axis.Value = (int)entry.Value;
+                //Check if we already know that device
+                if (axes.ContainsKey(axis.Id))
+                {
+                    // Axis already in our collection, check it's value
+                    // TODO: review and improve those math?
+                    // Should we not use the rest position value instead of the first one we captured? If yes how do we get it?
+                    if (Math.Abs(axis.Value - axes[axis.Id].Value)>Math.Abs((axis.Max - axis.Min)/4))
+                    {
+                        // Value moved enough take on that device and axis then
+                        PrivateCopy(aHidEvent); // Most sets the device for us
+                        
+                        // Check if our device changed
+                        if (!instancePath.Equals(Device.CurrentItem))
+                        {
+                            // Only trigger that one if our device actually changed, we could find ourself in endless loops with HID axis otherwise somehow
+                            OnPropertyChanged("Device");
+                        }
+                        
+                        if (Axis.CurrentItem != axis.FullName)
+                        {
+                            Axis.CurrentItem = axis.FullName;
+                            OnPropertyChanged("Axis");
+                        }
+
+                        //Object description may have changed
+                        OnPropertyChanged("Brief");
+                    }
+                }
+                else
+                {
+                    // First time we meet that axis just keep track of it and its rest value then
+                    axes[axis.Id] = axis;
+                }
+                
+
+
+
+            }
+
+
+                /*
+                PrivateCopy(aHidEvent);
+                //
+
+                //Tell observer the object itself changed
+                OnPropertyChanged("Brief");
+
+                // Check if our device changed
+                if (!instancePath.Equals(Device.CurrentItem))
+                {
+                    // Only trigger that one if our device actually changed, we could find ourself in endless loops with HID axis otherwise somehow
+                    OnPropertyChanged("Device");
+                }
+                */
+            }
+
+
+        }
 }
