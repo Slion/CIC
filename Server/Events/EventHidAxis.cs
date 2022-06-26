@@ -243,6 +243,8 @@ namespace SharpDisplayManager.Events
             return AttributeName + ": " + Axis.CurrentItem.Split('.')[1] + " - " + DeviceFriendlyName;
         }
 
+        int iLastValue=0;
+
         /// <summary>
         /// 
         /// </summary>
@@ -257,67 +259,47 @@ namespace SharpDisplayManager.Events
 
             EventHid e = (EventHid)obj;
 
-            return false;
-
             bool joystick = e.IsJoystick == IsJoystick;
             bool isJoystick = joystick && IsJoystick;
             bool gamepad = e.IsGamePad == IsGamePad;
             bool isGamepad = gamepad && IsGamePad;
-            bool sameUsage = e.Usage == Usage;
-            bool sameDevice = e.Device.CurrentItem.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
-            bool match = e.Key == Key
-                && e.UsagePage == UsagePage
-                && e.UsageCollection == UsageCollection
-                && e.IsGeneric == IsGeneric
-                && e.IsKeyboard == IsKeyboard
-                && e.IsMouse == IsMouse
-                && joystick
-                && gamepad
-                && e.HasModifierAlt == HasModifierAlt
-                && e.HasModifierControl == HasModifierControl
-                && e.HasModifierShift == HasModifierShift
-                && e.HasModifierWindows == HasModifierWindows;
-
-            if (match)
+            if (!isJoystick && !isGamepad)
             {
-                if (isJoystick || isGamepad)
+                return false;
+            }
+
+            bool sameDevice = e.Device.CurrentItem.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
+            if (!sameDevice)
+            {
+                return false;
+            }
+
+            //For each axis on that device
+            foreach (KeyValuePair<HIDP_VALUE_CAPS, uint> entry in e.HidEvent.UsageValues)
+            {
+                if (!Events.Axis.IsAxis(entry.Key))
                 {
-                    if (sameDevice)
-                    {
-                        if (e.Usages.Contains(Usage))
-                        {
-                            if (!ButtonDown)
-                            {
-                                //Trace.WriteLine("ButtonDown: " + Brief());
-                                ButtonDown = true;
-                                if (!IsKeyUp)
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (ButtonDown)
-                            {
-                                //Trace.WriteLine("ButtonUp: " + Brief());
-                                ButtonDown = false;
-                                if (IsKeyUp)
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
+                    continue;
                 }
-                else
+
+                var axis = new Axis(entry.Key);
+                axis.Value = (int)entry.Value;
+
+                if (axis.FullName == Axis.CurrentItem)
                 {
-                    // Not a joystick or a gamepad
-                    // Just check if our key up is a match and we are done here
-                    // TODO: We should only do that for keyboard I guess as remote control and other generic HID may need same treatment as joysticks to support key up and down
-                    return e.IsKeyUp == IsKeyUp && sameUsage;
+                    bool match = false;
+                    if (axis.Value > 200 && !(iLastValue > 200))
+                    {
+                        // We passed our threshold trigger that event
+                        match = true;
+                    }
+                    iLastValue = axis.Value;
+                    return match;
                 }
             }
+
+
+            return false;
         }
 
         /// <summary>
@@ -405,30 +387,8 @@ namespace SharpDisplayManager.Events
                 {
                     // First time we meet that axis just keep track of it and its rest value then
                     axes[axis.Id] = axis;
-                }
-                
-
-
-
+                }                
             }
-
-
-                /*
-                PrivateCopy(aHidEvent);
-                //
-
-                //Tell observer the object itself changed
-                OnPropertyChanged("Brief");
-
-                // Check if our device changed
-                if (!instancePath.Equals(Device.CurrentItem))
-                {
-                    // Only trigger that one if our device actually changed, we could find ourself in endless loops with HID axis otherwise somehow
-                    OnPropertyChanged("Device");
-                }
-                */
-            }
-
-
         }
+    }
 }

@@ -107,7 +107,7 @@ namespace SharpDisplayManager
         /// Incoming HID event.
         /// Could be useful for our axis implementation.
         /// </summary>
-        Hid.Event HidEvent { get; set; } = null;
+        public Hid.Event HidEvent { get; set; } = null;
 
         protected override void DoConstruct()
         {
