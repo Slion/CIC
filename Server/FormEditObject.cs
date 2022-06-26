@@ -795,6 +795,8 @@ namespace SharpDisplayManager
             var ctrl = (Control)sender;
             var pi = (PropertyInfo)ctrl.Tag;
             SetObjectPropertyValueFromControl(Object, pi, ctrl);
+            // Still need to update Ok button state and such
+            UpdateStaticControls();
 
             // Not updating all the object properties anymore
             //UpdateObject();
