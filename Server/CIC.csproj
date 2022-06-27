@@ -269,6 +269,7 @@
     <Compile Include="Actions\ActionMonitorSetting.cs" />
     <Compile Include="AudioManager.cs" />
     <Compile Include="Events\EventHidAxis.cs" />
+    <Compile Include="Events\EventHidAxisZones.cs" />
     <Compile Include="Events\EventSpeech.cs" />
     <Compile Include="Events\EventSpeechDiscarded.cs" />
     <Compile Include="Events\EventSpeechRecognized.cs" />

@@ -153,7 +153,6 @@ namespace SharpDisplayManager
 
             Device.Items = new List<object>();
             
-            // TODO: Allow derived class to filter that list based on usage collection?
             // TODO: Add any option to disable device check
 
             //Get our list of devices
@@ -190,9 +189,10 @@ namespace SharpDisplayManager
                     continue;
                 }
 
-                // Use the device object itself
+                // Allow derived class to filter devices
                 if (IsSupportedDevice(hidDevice))
                 {
+                    // Use the device object itself
                     Device.Items.Add(hidDevice);
                 }                
             }

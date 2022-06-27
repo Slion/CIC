@@ -16,8 +16,8 @@ namespace SharpLib.Ear
     {
         //TODO: shall this be an object, but how would it get persisted then?
         [DataMember]
-        public string CurrentItem { get; set; }
+        public string CurrentItem { get; set; } = "";
 
-        public bool CurrentItemNotFound { get; set; }
+        public bool CurrentItemNotFound { get; set; } = false;
     }
 }

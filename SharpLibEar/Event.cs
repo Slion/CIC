@@ -39,7 +39,7 @@ namespace SharpLib.Ear
         /// Run the actions associated with this event.
         /// </summary>
         /// <returns></returns>
-        public async Task Trigger()
+        public virtual async Task Trigger()
         {
             Trace.WriteLine("Event triggered: " + AttributeName);
             foreach (Action action in Objects.OfType<Action>())

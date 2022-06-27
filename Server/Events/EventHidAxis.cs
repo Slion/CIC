@@ -30,6 +30,8 @@ namespace SharpDisplayManager.Events
         public int Min { get { return Capabilities.LogicalMin; } }
         public int Max { get { return Capabilities.LogicalMax; } }
 
+        public int Range { get { return Max - Min; } }
+
         public int Value { get; set; }
 
         public static string NameFromId(int aId)
@@ -240,66 +242,13 @@ namespace SharpDisplayManager.Events
         {
             // TODO: How to get the device name for its instance path in Device.CurrentItem?
             //return AttributeName + ": " + Events.Axis.NameFromId(int.Parse(Axis.CurrentItem));
+
+            if (string.IsNullOrEmpty(Axis.CurrentItem) || !Axis.CurrentItem.Contains('.'))
+            {
+                return AttributeName + ": No axis set";
+            }
+
             return AttributeName + ": " + Axis.CurrentItem.Split('.')[1] + " - " + DeviceFriendlyName;
-        }
-
-        int iLastValue=0;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Matches(object obj)
-        {
-            if (!(obj is EventHid))
-            {
-                return false;
-            }
-
-            EventHid e = (EventHid)obj;
-
-            bool joystick = e.IsJoystick == IsJoystick;
-            bool isJoystick = joystick && IsJoystick;
-            bool gamepad = e.IsGamePad == IsGamePad;
-            bool isGamepad = gamepad && IsGamePad;
-            if (!isJoystick && !isGamepad)
-            {
-                return false;
-            }
-
-            bool sameDevice = e.Device.CurrentItem.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
-            if (!sameDevice)
-            {
-                return false;
-            }
-
-            //For each axis on that device
-            foreach (KeyValuePair<HIDP_VALUE_CAPS, uint> entry in e.HidEvent.UsageValues)
-            {
-                if (!Events.Axis.IsAxis(entry.Key))
-                {
-                    continue;
-                }
-
-                var axis = new Axis(entry.Key);
-                axis.Value = (int)entry.Value;
-
-                if (axis.FullName == Axis.CurrentItem)
-                {
-                    bool match = false;
-                    if (axis.Value > 200 && !(iLastValue > 200))
-                    {
-                        // We passed our threshold trigger that event
-                        match = true;
-                    }
-                    iLastValue = axis.Value;
-                    return match;
-                }
-            }
-
-
-            return false;
         }
 
         /// <summary>
