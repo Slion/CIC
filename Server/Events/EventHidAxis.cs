@@ -48,6 +48,49 @@ namespace SharpDisplayManager.Events
             return Enum.GetName(usageType, usage);
         }
 
+        /// <summary>
+        /// We try to parse something of the form "UsagePage.Usage" for instance "GenericDesktopControls.Rz"
+        /// </summary>
+        /// <param name="aName"></param>
+        /// <returns></returns>
+        public static int IdFromName(string aName)
+        {
+            var split = aName.Split('.');
+            if (split.Length != 2)
+            {
+                // We have to have exactly 2 strings after our split
+                // Give up otherwise
+                return 0;
+            }
+
+            UsagePage usagePage;
+            if (!Enum.TryParse(split[0], out usagePage))
+            {
+                // Not a know usage page
+                return 0;
+            }
+
+            Type usageType = Utils.UsageType(usagePage);
+            try
+            {
+                var usage = Enum.Parse(usageType, split[1]);
+                return IdFromUsage((ushort)usagePage, (ushort)usage);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        public static int IdFromValueCaps(HIDP_VALUE_CAPS aCaps)
+        {
+            return IdFromUsage(aCaps.UsagePage,aCaps.NotRange.Usage);
+        }
+
+        public static int IdFromUsage(ushort aUsagePage, ushort aUsage)
+        {
+            return (aUsagePage << 16) | aUsage;
+        }
 
         /// <summary>
         /// Utility method to check if the given input value is an axis
@@ -89,7 +132,7 @@ namespace SharpDisplayManager.Events
             }
 
             // Build our axis id which is combined of usage page and usage
-            Id = (aCaps.UsagePage << 16) | aCaps.NotRange.Usage;
+            Id = IdFromValueCaps(aCaps);
             //
             Name = Enum.GetName(usageType, aCaps.NotRange.Usage);
             FullName = Enum.GetName(typeof(UsagePage), aCaps.UsagePage) + "." + Name;
@@ -107,6 +150,7 @@ namespace SharpDisplayManager.Events
     {
 
         string iDeviceInstancePathForAxis = "";
+        public int AxisId { get; set; }
 
         protected override void DoConstruct()
         {
@@ -124,6 +168,7 @@ namespace SharpDisplayManager.Events
             // Need to be a string property as we save it as a string in CurrentItem. Failing that you won't be able to set current item in ComboBox control.
             Axis.ValueMember = "FullName";
 
+            SetAxisId();
             PropertyChanged += EventHidAxis_PropertyChanged;
         }
 
@@ -151,7 +196,9 @@ namespace SharpDisplayManager.Events
         /// <summary>
         /// Axes by device.
         /// Used to keep track of previous axes values and determine which axis the user is moving.
-        /// </summary>        
+        /// The key is the device instance path.
+        /// The key to the value dictionary is the axis ID.
+        /// </summary>
         public Dictionary<string, Dictionary<int, Axis>> AxesByDevice { get; private set; }
 
 
@@ -203,6 +250,14 @@ namespace SharpDisplayManager.Events
         }
 
         /// <summary>
+        /// We compute and save our axis ID to avoid having to do string comparison.
+        /// </summary>
+        void SetAxisId()
+        {
+            AxisId = Events.Axis.IdFromName(Axis.CurrentItem);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         protected override void OnStateLeave()
@@ -227,6 +282,7 @@ namespace SharpDisplayManager.Events
                 Axis.Items = null;
                 iDeviceInstancePathForAxis = "";
                 AxesByDevice.Clear();
+                SetAxisId();
             }
             else if (CurrentState == State.PrepareEdit)
             {
@@ -297,6 +353,7 @@ namespace SharpDisplayManager.Events
             //For each axis on that device
             foreach (KeyValuePair<HIDP_VALUE_CAPS, uint> entry in aHidEvent.UsageValues)
             {
+                // Skip if this usage value is not a axis
                 if (!Events.Axis.IsAxis(entry.Key))
                 {
                     continue;

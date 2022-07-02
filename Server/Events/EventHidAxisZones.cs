@@ -46,6 +46,8 @@ namespace SharpDisplayManager.Events
         int iLastValue = 0;
         int iActionIndex = 0;
 
+        Events.Axis TargetAxis { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -69,9 +71,11 @@ namespace SharpDisplayManager.Events
                 return false;
             }
 
+            // Could we avoid string comparison here? Compute a hash maybe?
             bool sameDevice = e.Device.CurrentItem.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
             if (!sameDevice)
             {
+                // That's not the device we are interested in
                 return false;
             }
 
@@ -83,55 +87,62 @@ namespace SharpDisplayManager.Events
                     continue;
                 }
 
-                // TODO: Avoid allocations here
-                var axis = new Axis(entry.Key);
+                if (Events.Axis.IdFromValueCaps(entry.Key)!=AxisId)
+                {
+                    // That's not the axis we are interested in
+                    continue;
+                }
+
+                // First time here
+                if (TargetAxis==null)
+                {
+                    TargetAxis = new Axis(entry.Key);
+                }
+
+                var axis = TargetAxis;
                 axis.Value = (int)entry.Value;
                 if (Invert)
                 {
                     axis.Value = axis.Range - axis.Value;
                 }
                 
+                // Compute trigger boundaries from our range
+                int lowBound = (axis.Range * Size / 100);
+                int highBound = axis.Range - lowBound;
 
-                //TODO: Could we do it without string comparison, to use the axis ID we would need to save it too
-                if (axis.FullName == Axis.CurrentItem)
+                //
+                bool match = false;
+                if (axis.Value > highBound && !(iLastValue > highBound))
                 {
-                    int lowBound = (axis.Range * Size / 100);
-                    int highBound = axis.Range - lowBound;
-
-
-                    bool match = false;
-                    if (axis.Value > highBound && !(iLastValue > highBound))
+                    // We passed our threshold trigger that event
+                    iActionIndex = 0;
+                    match = true;
+                } 
+                else if (axis.Value < lowBound && !(iLastValue < lowBound)) 
+                {
+                    // We passed our threshold trigger that event
+                    iActionIndex = 3;
+                    match = true;
+                } 
+                // We are between our two boundaries somewhere in the middle of our axis
+                else if (axis.Value >= lowBound && axis.Value <= highBound)
+                {
+                    if (iLastValue > highBound)
                     {
-                        // We passed our threshold trigger that event
-                        iActionIndex = 0;
+                        // We were just going down
+                        iActionIndex = 1;
                         match = true;
-                    } 
-                    else if (axis.Value < lowBound && !(iLastValue < lowBound)) 
-                    {
-                        // We passed our threshold trigger that event
-                        iActionIndex = 3;
-                        match = true;
-                    } 
-                    // We are between our two boundaries somewhere in the middle of our axis
-                    else if (axis.Value >= lowBound && axis.Value <= highBound)
-                    {
-                        if (iLastValue > highBound)
-                        {
-                            // We were just going down
-                            iActionIndex = 1;
-                            match = true;
-                        }
-                        else if (iLastValue < lowBound)
-                        {
-                            // We were just going up
-                            iActionIndex = 2;
-                            match = true;
-                        }
                     }
-
-                    iLastValue = axis.Value;
-                    return match;
+                    else if (iLastValue < lowBound)
+                    {
+                        // We were just going up
+                        iActionIndex = 2;
+                        match = true;
+                    }
                 }
+
+                iLastValue = axis.Value;
+                return match;
             }
 
             return false;
@@ -151,6 +162,19 @@ namespace SharpDisplayManager.Events
                 await ((Ear.Action)Objects[iActionIndex]).Execute(Context);
             }
         }
+
+
+        protected override void OnStateEnter()
+        {
+            base.OnStateEnter();
+
+            if (CurrentState == State.Rest)
+            {
+                // May have changed after edition
+                TargetAxis = null;
+            }
+        }
+
 
     }
 }
