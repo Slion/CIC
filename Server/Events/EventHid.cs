@@ -14,11 +14,12 @@ using System.Diagnostics;
 
 namespace SharpDisplayManager
 {
+
     /// <summary>
-    /// TODO: Consider an option to make it device specific.
+    /// Base HID class can be used to handle any kind of HID events.
+    /// TODO: Move key specific stuff to EventHidKey.
     /// </summary>
     [DataContract]
-    [Ear.AttributeObject(Id = "Event.Hid", Name = "HID", Description = "Handle input from Keyboards and Remotes.")]
     public class EventHid: Ear.Event
     {
         public EventHid()

@@ -11,6 +11,18 @@ using SharpLib.Win32;
 
 namespace SharpDisplayManager.Events
 {
+    /// <summary>
+    /// Enable mapping an axis to keys for instance, with a couple of those you can thus enable WASD.
+    /// That event is special cause it does not trigger all events upon match.
+    /// Instead it triggers only the event at a specific index corresponding to a sub events:
+    /// - Action index 0: When the axis goes in the zone above the higher boundary.
+    /// - Action index 1: When the axis comes back from the zone above the higher boundary.
+    /// - Action index 3: When the axis comes back from the zone below the lower boundary.
+    /// - Action index 4: When the axis goes in the zone below the lower boundary.
+    /// 
+    /// In theory we could implement four different events for that but unless they share some states it means we would do 4 times the same processing.
+    /// I guess the action selection is not that bad, also saves user from having to setup four events. It just needs to be well documented.
+    /// </summary>
     [DataContract]
     [Ear.AttributeObject(Id = "Event.Hid.Axis.Zones", Name = "HID Axis zones", Description = "When your axis enter a certain zone it will trigger an action at a specific index.")]
     class EventHidAxisZones : EventHidAxis
@@ -71,7 +83,7 @@ namespace SharpDisplayManager.Events
                 return false;
             }
 
-            // Could we avoid string comparison here? Compute a hash maybe?
+            // TODO: Avoid string comparison here? Compute a hash maybe?
             bool sameDevice = e.Device.CurrentItem.Equals(Device.CurrentItem, StringComparison.OrdinalIgnoreCase);
             if (!sameDevice)
             {

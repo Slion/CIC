@@ -15,6 +15,8 @@ namespace SharpDisplayManager.Events
     /// <summary>
     /// TODO: Move this class to SharpLibHid?
     /// </summary>
+    /// 
+    [DataContract]
     public class Axis
     {
         /// <summary>
@@ -143,9 +145,10 @@ namespace SharpDisplayManager.Events
     }
 
 
-
+    /// <summary>
+    /// Base class for HID axis events.
+    /// </summary>
     [DataContract]
-    [Ear.AttributeObject(Id = "Event.Hid.Axis", Name = "HID Axis", Description = "Handle input from a controller axis.")]
     class EventHidAxis : EventHid
     {
 
