@@ -25,5 +25,10 @@ namespace SharpDisplayManager
             //That we then show up in our combobox
             return SharpLib.Utils.Reflection.GetAttribute<AttributeObject>(Type).Name;
         }
+
+        public bool Hidden()
+        {
+            return SharpLib.Utils.Reflection.GetAttribute<AttributeObject>(Type).Hidden;
+        }
     }
 }

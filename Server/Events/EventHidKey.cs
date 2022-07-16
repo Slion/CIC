@@ -8,13 +8,13 @@ using Ear = SharpLib.Ear;
 using Hid = SharpLib.Hid;
 
 
-namespace SharpDisplayManager.Events
+namespace SharpDisplayManager
 {
     /// <summary>
     /// TODO: Consider an option to make it device specific.
     /// </summary>
     [DataContract]
-    [Ear.AttributeObject(Id = "Event.Hid", Name = "HID", Description = "Handle input from Keyboard, remote, joystick and gamepad buttons.")]
+    [Ear.AttributeObject(Id = "Event.Hid.Key", Name = "HID", Description = "Handle input from Keyboard, remote, joystick and gamepad buttons.")]
     class EventHidKey : EventHid
     {
     }

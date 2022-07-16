@@ -9,7 +9,7 @@ using Hid = SharpLib.Hid;
 using SharpLib.Hid;
 using SharpLib.Win32;
 
-namespace SharpDisplayManager.Events
+namespace SharpDisplayManager
 {
     /// <summary>
     /// Enable mapping an axis to keys for instance, with a couple of those you can thus enable WASD.
@@ -58,7 +58,7 @@ namespace SharpDisplayManager.Events
         int iLastValue = 0;
         int iActionIndex = 0;
 
-        Events.Axis TargetAxis { get; set; }
+        Axis TargetAxis { get; set; }
 
         /// <summary>
         /// 
@@ -94,12 +94,12 @@ namespace SharpDisplayManager.Events
             //For each axis on that device
             foreach (KeyValuePair<HIDP_VALUE_CAPS, uint> entry in e.HidEvent.UsageValues)
             {
-                if (!Events.Axis.IsAxis(entry.Key))
+                if (!SharpDisplayManager.Axis.IsAxis(entry.Key))
                 {
                     continue;
                 }
 
-                if (Events.Axis.IdFromValueCaps(entry.Key)!=AxisId)
+                if (SharpDisplayManager.Axis.IdFromValueCaps(entry.Key)!=AxisId)
                 {
                     // That's not the axis we are interested in
                     continue;

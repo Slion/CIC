@@ -10,7 +10,7 @@ using Hid = SharpLib.Hid;
 using SharpLib.Hid;
 using SharpLib.Win32;
 
-namespace SharpDisplayManager.Events
+namespace SharpDisplayManager
 {
     /// <summary>
     /// TODO: Move this class to SharpLibHid?
@@ -149,7 +149,7 @@ namespace SharpDisplayManager.Events
     /// Base class for HID axis events.
     /// </summary>
     [DataContract]
-    class EventHidAxis : EventHid
+    public abstract class EventHidAxis : EventHid
     {
 
         string iDeviceInstancePathForAxis = "";
@@ -236,7 +236,7 @@ namespace SharpDisplayManager.Events
             foreach (var axis in device.InputValueCapabilities)
             {
                 // Check if it is actually a known axis
-                if (SharpDisplayManager.Events.Axis.IsAxis(axis))
+                if (SharpDisplayManager.Axis.IsAxis(axis))
                 {
 
                     var a = new Axis(axis);
@@ -257,7 +257,7 @@ namespace SharpDisplayManager.Events
         /// </summary>
         void SetAxisId()
         {
-            AxisId = Events.Axis.IdFromName(Axis.CurrentItem);
+            AxisId = SharpDisplayManager.Axis.IdFromName(Axis.CurrentItem);
         }
 
         /// <summary>
@@ -357,7 +357,7 @@ namespace SharpDisplayManager.Events
             foreach (KeyValuePair<HIDP_VALUE_CAPS, uint> entry in aHidEvent.UsageValues)
             {
                 // Skip if this usage value is not a axis
-                if (!Events.Axis.IsAxis(entry.Key))
+                if (!SharpDisplayManager.Axis.IsAxis(entry.Key))
                 {
                     continue;
                 }

@@ -47,7 +47,12 @@ namespace SharpDisplayManager
             IEnumerable < Type > types = Reflection.GetConcreteClassesDerivedFrom<T>();
             foreach (Type type in types)
             {
+                
                 ItemObjectType item = new ItemObjectType(type);
+                if (item.Hidden())
+                {
+                    continue;
+                }
                 iComboBoxObjectType.Items.Add(item);
             }
 
@@ -62,7 +67,9 @@ namespace SharpDisplayManager
                 // Look up our item in our object type combobox
                 foreach (ItemObjectType item in iComboBoxObjectType.Items)
                 {
-                    if (item.Type == Object.GetType())
+                    if (item.Type == Object.GetType()
+                        // TODO: Remove that at some point, we just used it to transition from EventHid to EventHidKey
+                        || (item.Type==typeof(EventHidKey) && Object.GetType() == typeof(EventHid)))
                     {
                         iComboBoxObjectType.SelectedItem = item;
                     }

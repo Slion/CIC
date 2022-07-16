@@ -20,6 +20,8 @@ namespace SharpDisplayManager
     /// TODO: Move key specific stuff to EventHidKey.
     /// </summary>
     [DataContract]
+    // We do not want to display this type of objects to users in our editor
+    [Ear.AttributeObject(Hidden = true)]
     public class EventHid: Ear.Event
     {
         public EventHid()
