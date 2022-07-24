@@ -49,7 +49,7 @@
         <!-- SharpLibs built-in or otherwise -->
         <file src="SharpLibDisplay.dll" target="lib\net45\SharpLibDisplay.dll" />
         <file src="SharpLibEar.dll" target="lib\net45\SharpLibEar.dll" />
-        <file src="SharpLibHid.dll" target="lib\net45\SharpLibHid.dll" />
+        <file src="SharpLib.Hid.dll" target="lib\net45\SharpLib.Hid.dll" />
         <file src="SharpLibMiniDisplay.dll" target="lib\net45\SharpLibMiniDisplay.dll" />
         <file src="SharpLibNotification.dll" target="lib\net45\SharpLibNotification.dll" />
         <file src="SharpLibUtils.dll" target="lib\net45\SharpLibUtils.dll" />
@@ -60,12 +60,14 @@
         <file src="SharpLibStreamDeck.dll" target="lib\net45\SharpLibStreamDeck.dll" />
         <file src="SharpLibStreamDeckForms.dll" target="lib\net45\SharpLibStreamDeckForms.dll" />
         <file src="SharpLibMicroInput.dll" target="lib\net45\SharpLibMicroInput.dll" />
+        <!-- For keyboard SendInput -->
+        <file src="GregsStack.InputSimulatorStandard.dll" target="lib\net45\GregsStack.InputSimulatorStandard.dll" />        
         <!-- HID Library for Stream Deck -->
         <file src="HidLibrary.dll" target="lib\net45\HidLibrary.dll" />
         <!-- Kinect -->
         <file src="Microsoft.Kinect.dll" target="lib\net45\Microsoft.Kinect.dll" />
         <!-- Speech -->
-        <file src="Microsoft.Speech.dll" target="lib\net45\Microsoft.Speech.dll" />
+        <file src="Microsoft.Speech.dll" target="lib\net45\Microsoft.Speech.dll" />        
         <!-- Add Windows Visual Studio redist -->
         <!-- VS 2013 - needed for HDMI-CEC -->
         <!-- C Run-Time Libraries (CRT) -->
@@ -76,6 +78,6 @@
         <!-- C Run-Time Libraries (CRT) -->
 		<file src="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\vcruntime140.dll" target="lib\net45\vcruntime140.dll" />
 		<!-- Standard C++ Library -->
-		<file src="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvcp140.dll" target="lib\net45\msvcp140.dll" />				
+		<file src="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvcp140.dll" target="lib\net45\msvcp140.dll" />	               
     </files>
 </package>

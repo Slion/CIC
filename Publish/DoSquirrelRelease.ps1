@@ -15,11 +15,80 @@ $aUrl,
 $aAppId
 )
 
+# 
+#Write-Output("NuGetExe: $aNuGetExe")
+#Write-Output("SquirrelExe: $aSquirrelExe")
+#Write-Output("OutDir: $aOutDir")
+#Write-Output("Version: $aVersion")
+#Write-Output("NuSpecPath: $aNuSpecPath")
+#Write-Output("Url: $aUrl")
+#Write-Output("AppId: $aAppId")
+
+#
+# Run a command with arguments and provide its standard and error output
+# TODO: Find a way to return the exit code, that's apparently rather tricky in PowerShell
+Function Execute-Command ($aCommand, $aArguments)
+{
+
+    # See: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.2
+    #Start-Process $aCommand -ArgumentList $aArguments -NoNewWindow -Windowstyle Hidden -PassThru -Wait
+
+
+    Write-Output("Execute:`n$aCommand $aArguments")
+
+    #Try {
+        $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+        $pinfo.FileName = $aCommand
+        $pinfo.RedirectStandardError = $true
+        $pinfo.RedirectStandardOutput = $true
+        $pinfo.UseShellExecute = $false
+        $pinfo.WindowStyle = 'Hidden'
+        $pinfo.CreateNoWindow = $True
+        $pinfo.Arguments = $aArguments
+        $p = New-Object System.Diagnostics.Process
+        $p.StartInfo = $pinfo
+        #Write-Host ($p.StartInfo | Format-List | Out-String)
+        $p.Start() | Out-Null
+        $stdout = $p.StandardOutput.ReadToEnd().Trim()
+        $stderr = $p.StandardError.ReadToEnd().Trim()
+        $p.WaitForExit()
+        # Need to do that as trying to get it directly from Write-Output is not working
+        $exitCode = $p.ExitCode
+
+        if (![string]::IsNullOrEmpty($stdout))
+        {
+            Write-Output("${stdout}")
+        }
+
+        if (![string]::IsNullOrEmpty($stderr))
+        {
+            Write-Output("${stderr}")
+        }
+        
+        Write-Output("ExitCode: ${exitCode}")
+
+
+        #$p | Add-Member "StdOut" $stdout
+        #$p | Add-Member "StdErr" $stderr
+    #}
+    
+    #Catch {
+    #    Write-Output("ERROR!")
+    #}
+    
+    #return $p
+}
+
 # Generate nupkg from nuspec, version and output directory
 Write-Output("Generating nupkg...")
-[System.Diagnostics.Process]::Start($aNuGetExe,
-"pack $aNuSpecPath -Properties Configuration=Release;Version=$aVersion -OutputDirectory $aOutDir -BasePath $aOutDir"
-).WaitForExit()
+#Write-Output("$aNuGetExe  pack $aNuSpecPath -Properties Configuration=Release;Version=$aVersion -OutputDirectory $aOutDir -BasePath $aOutDir")
+#[System.Diagnostics.Process]::Start($aNuGetExe,
+#"pack $aNuSpecPath -Properties Configuration=Release;Version=$aVersion -OutputDirectory $aOutDir -BasePath $aOutDir"
+#).WaitForExit()
+
+Execute-Command $aNuGetExe "pack $aNuSpecPath -Properties Configuration=Release;Version=$aVersion -OutputDirectory $aOutDir -BasePath $aOutDir"
+
+#Write-Host ($res | Format-List | Out-String)
 
 # Create download folder below our output directory, if needed
 $squirrelReleaseDir = $aOutDir + "Squirrel\";
@@ -65,13 +134,18 @@ Invoke-WebRequest -OutFile $localFileName $remoteFileName;
 
 # Do our Squirrel release
 Write-Output("Generate Squirrel release...")
-[System.Diagnostics.Process]::Start($aSquirrelExe,
-" --r $squirrelReleaseDir --releasify $aOutDir$aAppId.$aVersion.nupkg").WaitForExit()
+#Write-Output("$aSquirrelExe  --r $squirrelReleaseDir --releasify $aOutDir$aAppId.$aVersion.nupkg")
+#[System.Diagnostics.Process]::Start($aSquirrelExe,
+#" --r $squirrelReleaseDir --releasify $aOutDir$aAppId.$aVersion.nupkg").WaitForExit()
+Execute-Command $aSquirrelExe " --r $squirrelReleaseDir --releasify $aOutDir$aAppId.$aVersion.nupkg"
 
 # Clean-up by removing the downloaded Squirrel package
 Remove-Item $localFileName
 
 # From here on the Squirrel folder contains only stuff we need to upload
 
+#TODO: report error from executions
 # Success
 exit 0
+
+
